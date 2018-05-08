@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import * as rimraf from 'rimraf';
 import * as archiver from 'archiver';
 import { createDir, writeJSON } from './helpers/util';
 import { SketchPage } from "./models/SketchPage";
@@ -24,8 +25,12 @@ export class Sketch {
     this.generateFolder(pages, doc, meta);
   }
 
-  private generateFolder(pages: SketchPage[], doc: SketchDocument, meta: SketchMeta) {
+  private async cleanup() {
+    await  rimraf(Sketch._folder, () => {});
+    await rimraf(`${Sketch._folder}.sketch`, () => {});
+  }
 
+  private generateFolder (pages: SketchPage[], doc: SketchDocument, meta: SketchMeta) {
     try {
       createDir(Sketch._folder);
       createDir(path.join(Sketch._folder, 'pages'));
@@ -39,8 +44,12 @@ export class Sketch {
         writeJSON(path.join(Sketch._folder, 'pages', page.objectID), page.generateObject())
       })
 
-      const prev = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkBAMAAACCzIhnAAAAG1BMVEXMzMyWlpacnJy+vr6jo6PFxcW3t7eqqqqxsbHbm8QuAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAiklEQVRYhe3QMQ6EIBAF0C+GSInF9mYTs+1ewRsQbmBlayysKefYO2asXbbYxvxHQj6ECQMAEREREf2NQ/fCtp5Zky6vtRMkSJEzhyISynWJnzH6Z8oQlzS7lEc/fLmmQUSvc16OrCPqRl1JePxQYo1ZSWVj9nxrrOb5esw+eXdvzTWfTERERHRXH4tWFZGswQ2yAAAAAElFTkSuQmCC';
-      var buff = new Buffer(prev,'base64');
+      const image = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkBAMAAACCzIhnAAAAG1BMVEXMzMyWlpacnJy+vr6jo6PFxcW3t7eqqqqxsbHbm8QuAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAiklEQVRYhe3QMQ6EIBAF0C+GSInF9mYTs+1ewRsQbmBlayysKefYO2asXbbYxvxHQj6ECQMAEREREf2NQ/fCtp5Zky6vtRMkSJEzhyISynWJnzH6Z8oQlzS7lEc/fLmmQUSvc16OrCPqRl1JePxQYo1ZSWVj9nxrrOb5esw+eXdvzTWfTERERHRXH4tWFZGswQ2yAAAAAElFTkSuQmCC';
+      
+      let data = image.replace(/^data:image\/png;base64,/, "");
+      data  +=  data.replace('+', ' ');
+      
+      var buff = new Buffer(data,'base64');
       
       const stream = fs.createWriteStream(path.join(Sketch._folder, 'previews', 'preview.png'));
       stream.write(buff);

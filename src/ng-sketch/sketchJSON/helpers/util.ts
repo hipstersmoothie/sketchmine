@@ -21,8 +21,5 @@ export function cleanDir(folder: string) {
 
 export function writeJSON(filename: string, content: Object | string) {
   content = (typeof content === 'string')? content : JSON.stringify(content);
-  fs.writeFile(`${filename}.json`, content, 'utf8', ((error: Error) => {
-    console.log(error);
-    // throw new Error(`🚫 It was not possible to write the file ${filename}.json `);
-  }));
+  fs.writeFile(`${filename}.json`, content, 'utf8', () => {});
 }

@@ -42,29 +42,55 @@ export class SketchMeta {
 
 
   generateObject(): Meta {
+    // return {
+    //   commit: SketchMeta._commit,
+    //   pagesAndArtboards: this.addPagesAndArtboards(),
+    //   version: SketchMeta._version,
+    //   fonts: [],
+    //   compatibilityVersion: SketchMeta._compatVersion,
+    //   app: SketchMeta._appUrl,
+    //   autosaved: 0,
+    //   variant: SketchMeta._variant,
+    //   created: {
+    //     commit: SketchMeta._commit,
+    //     appVersion: SketchMeta._appVersion,
+    //     build: SketchMeta._build,
+    //     app: SketchMeta._appUrl,
+    //     compatibilityVersion: SketchMeta._compatVersion,
+    //     version: SketchMeta._version,
+    //     variant: SketchMeta._variant
+    //   },
+    //   saveHistory: [
+    //     `${SketchMeta._variant}.${SketchMeta._build}`
+    //   ],
+    //   appVersion: SketchMeta._appVersion,
+    //   build: SketchMeta._build
+    // }
+    console.log(SketchMeta._version)
     return {
-      commit: SketchMeta._commit,
+      commit: '2b45d75f77b3d86c8cfab3e1090bcc520c37ea74',
       pagesAndArtboards: this.addPagesAndArtboards(),
-      version: SketchMeta._version,
+      version: 101,
       fonts: [],
-      compatibilityVersion: SketchMeta._compatVersion,
-      app: SketchMeta._appUrl,
+      compatibilityVersion: 93,
+      app: 'com.bohemiancoding.sketch3',
       autosaved: 0,
-      variant: SketchMeta._variant,
+      variant: 'NONAPPSTORE',
       created: {
-        commit: SketchMeta._commit,
-        appVersion: SketchMeta._appVersion,
-        build: SketchMeta._build,
-        app: SketchMeta._appUrl,
-        compatibilityVersion: SketchMeta._compatVersion,
-        version: SketchMeta._version,
-        variant: SketchMeta._variant
+        commit: '2b45d75f77b3d86c8cfab3e1090bcc520c37ea74',
+        appVersion: '49.3',
+        build: 51167,
+        app: 'com.bohemiancoding.sketch3',
+        compatibilityVersion: 93,
+        version: 101,
+        variant: 'NONAPPSTORE'
       },
       saveHistory: [
-        `${SketchMeta._variant}.${SketchMeta._build}`
+        'NONAPPSTORE.51167'
       ],
-      appVersion: SketchMeta._appVersion,
-      build: SketchMeta._build
+      appVersion: '49.3',
+      build: 51167
     }
+    
   }
 }
