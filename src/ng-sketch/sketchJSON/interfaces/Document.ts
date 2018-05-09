@@ -1,40 +1,40 @@
-export interface Document {
+export interface IDocument {
   _class: string;
   do_objectID: string;
-  assets: DocumentAssets;
+  assets: IDocumentAssets;
   colorSpace: number;
   currentPageIndex: number;
   foreignSymbols: any[];
-  layerStyles: DocumentLayerStyles;
-  layerSymbols: DocumentLayerStyles;
-  layerTextStyles: DocumentLayerStyles;
-  pages: DocumentPage[];
+  layerStyles: IDocumentLayerStyles;
+  layerSymbols: IDocumentLayerStyles;
+  layerTextStyles: IDocumentLayerStyles;
+  pages: IDocumentPage[];
 }
 
-export interface DocumentAssets {
+export interface IDocumentAssets {
   _class: string;
   colors: any[];
   gradients: any[];
-  imageCollection: DocumentImageCollection;
+  imageCollection: IDocumentImageCollection;
   images: any[];
 }
 
-export interface DocumentPage {
+export interface IDocumentPage {
   _class: string;
   _ref_class: string;
   _ref: string;
 }
 
-export interface DocumentLayerStyles {
+export interface IDocumentLayerStyles {
   _class: string;
   objects: any[];
 }
 
 
-export interface DocumentImageCollection {
+export interface IDocumentImageCollection {
   _class: string;
-  images: Images;
+  images: IImages;
 }
 
-export interface Images {
+export interface IImages {
 }

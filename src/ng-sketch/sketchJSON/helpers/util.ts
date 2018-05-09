@@ -23,3 +23,17 @@ export function writeJSON(filename: string, content: Object | string) {
   content = (typeof content === 'string')? content : JSON.stringify(content);
   fs.writeFile(`${filename}.json`, content, 'utf8', () => {});
 }
+
+export function delFolder(dir: string) {
+  if( fs.existsSync(dir) ) {
+    fs.readdirSync(dir).forEach((file,index) => {
+      const curPath = path.join(dir, file);
+      if(fs.lstatSync(curPath).isDirectory()) { // recurse
+        delFolder(curPath);
+      } else { // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(dir);
+  }
+};

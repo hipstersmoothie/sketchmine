@@ -1,19 +1,19 @@
-export interface Meta {
+export interface IMeta {
   commit: string;
-  pagesAndArtboards: { [key: string]: MetaPagesAndArtboards }
+  pagesAndArtboards: { [key: string]: IMetaPagesAndArtboards }
   version: number;
   fonts: any[];
   compatibilityVersion: number;
   app: string;
   autosaved: number;
   variant: string;
-  created: MetaCreated;
+  created: IMetaCreated;
   saveHistory: string[];
   appVersion: string;
   build: number;
 }
 
-export interface MetaCreated {
+export interface IMetaCreated {
   commit: string;
   appVersion: string;
   build: number;
@@ -23,12 +23,12 @@ export interface MetaCreated {
   variant: string;
 }
 
-export interface MetaPagesAndArtboards {
+export interface IMetaPagesAndArtboards {
   name: string;
-  artboards: { [key: string]: MetaArtboard };
+  artboards: { [key: string]: IMetaArtboard };
 }
 
-export interface MetaArtboard {
+export interface IMetaArtboard {
   name: string;
 }
 

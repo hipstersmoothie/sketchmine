@@ -1,25 +1,25 @@
 import { UUID } from '../helpers/UUID';
-import { Document, DocumentAssets, DocumentPage } from '../interfaces/Document';
-import { SketchPage } from './SketchPage';
+import { IDocument, IDocumentAssets, IDocumentPage } from '../interfaces/Document';
+import { Page } from './Page';
 
-export class SketchDocument {
-  private static _instance: SketchDocument;
+export class Document {
+  private static _instance: Document;
   private static _objectID = UUID.generate();
   private _colors = []
   private _textStyles = [];
   private _pages = [];
 
-  constructor(pages: SketchPage[]) {
-    if (SketchDocument._instance) {
-      return SketchDocument._instance;
+  constructor(pages: Page[]) {
+    if (Document._instance) {
+      return Document._instance;
     }
-    SketchDocument._instance = this;
+    Document._instance = this;
     this._pages = [...pages];
   }
 
-  private addPages(): DocumentPage[] {
+  private addPages(): IDocumentPage[] {
     const pages = [];
-    this._pages.forEach((page: SketchPage) => {
+    this._pages.forEach((page: Page) => {
       pages.push({
         _class: 'MSJSONFileReference',
         _ref_class: 'MSImmutablePage',
@@ -30,7 +30,7 @@ export class SketchDocument {
     return pages;
   }
 
-  private addAssets(): DocumentAssets {
+  private addAssets(): IDocumentAssets {
     return {
       _class: 'assetCollection',
       colors: [],
@@ -43,10 +43,10 @@ export class SketchDocument {
     }
   }
   
-  generateObject(): Document {
+  generateObject(): IDocument {
     return {
       _class: 'document',
-      do_objectID: SketchDocument._objectID,
+      do_objectID: Document._objectID,
       assets: this.addAssets(),
       colorSpace: 0,
       currentPageIndex: 0,
