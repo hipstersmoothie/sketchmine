@@ -1,3 +1,5 @@
+import { IStyle } from "./Style";
+
 export interface IBase {
   _class: string;
   do_objectID: string;
@@ -31,14 +33,6 @@ export interface IBounding {
   width: number;
   x: number;
   y: number;
-}
-
-export interface IStyle {
-  _class: string;
-  do_objectID?: string; // used in Group
-  endDecorationType: number;
-  miterLimit: number;
-  startDecorationType: number;
 }
 
 export interface IExportOptions {

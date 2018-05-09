@@ -1,6 +1,7 @@
 import { UUID } from "../helpers/UUID";
-import { IBase, IExportOptions, IStyle, IBounding, IFrame } from "../interfaces/Base";
+import { IBase, IExportOptions, IBounding, IFrame } from "../interfaces/Base";
 import { IRulerData } from "../interfaces/Page";
+import { IStyle } from "../interfaces/Style";
 
 export class Base {
 
@@ -19,10 +20,6 @@ export class Base {
   set style(style: IStyle) { this._style = style; }
   set bounding(bounding: IBounding) { this._bounding = bounding }
 
-  protected addLayer(layer) {
-    this._layers.push(layer);
-  }
-  
   protected addFrame(name: string): IFrame {
     return {
       _class: name,
@@ -62,6 +59,10 @@ export class Base {
     }
   }
 
+  addLayer(layer) {
+    this._layers.push(layer);
+  }
+  
   generateObject(): IBase {
     if (!this._class) {
       throw new Error('Class not set!');
@@ -83,7 +84,7 @@ export class Base {
       rotation: 0,
       shouldBreakMaskChain: this._breakMaskChain,
       style: this._style ? this._style: undefined,
-      layers: this._layers
+      layers: (this._layers.length > 0) ? this._layers: undefined
     };
   }
 }

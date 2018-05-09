@@ -1,5 +1,25 @@
 import * as fs from 'fs';
 import * as path from 'path';
+const normalizeColor = require('normalize-css-color');
+
+// var normalizeColor: any
+
+interface IRGBA { r: number; g: number; b: number; a: number; }
+
+export function safeToLower(input: string | any): string | any {
+  if (typeof input === 'string') {
+    return input.toLowerCase();
+  }
+
+  return input;
+}
+
+export function cssToRGBA(input: string | any) {
+  const nullableColor = normalizeColor(safeToLower(input));
+  const colorInt = nullableColor === null ? 0x00000000 : nullableColor;
+
+  return normalizeColor.rgba(colorInt) as IRGBA;
+}
 
 export function createDir(folder: string) {
   if (!folder) {

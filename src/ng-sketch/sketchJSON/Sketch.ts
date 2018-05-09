@@ -11,6 +11,9 @@ import { IMeta } from './interfaces/Meta';
 import { SymbolMaster } from './models/SymbolMaster';
 import { Group } from './models/Group';
 import { IBounding } from './interfaces/Base';
+import { Rectangle } from './models/Rectangle';
+import { ShapeGroup } from './models/ShapeGroup';
+import { Style } from './models/Style';
 
 export class Sketch {
   private static _folder = 'dt-asset-lib';
@@ -20,12 +23,22 @@ export class Sketch {
   }
 
   write() {
-    const size: IBounding = {height: 300, width: 300, x: 0, y: 0};
+    const size: IBounding = {height: 32, width: 136, x: 0, y: 0};
+    const pages = [new Page(size)];
     const symbols = new SymbolMaster(size);
     const group = new Group(size, 'dt-button');
+    const shapeGroup = new ShapeGroup(size);
+    const rect = new Rectangle({height: size.height, width: size.width, cornerRadius: 3});
 
-    const pages = [new Page(size)];
 
+    const style = new Style();
+    style.addBorder('#00a1b2', 3);
+    style.addColorFill('#333333');
+    shapeGroup.style = style.generateObject();
+
+
+    shapeGroup.addLayer(rect.generateObject());
+    group.addLayer(shapeGroup.generateObject());
     symbols.addLayer(group.generateObject());
     pages[0].addLayer(symbols.generateObject());
 
@@ -69,6 +82,7 @@ export class Sketch {
       console.error(error);
     }
   }
+
 
   private generateFile() {
     const output = fs.createWriteStream(`${Sketch._folder}.sketch`);

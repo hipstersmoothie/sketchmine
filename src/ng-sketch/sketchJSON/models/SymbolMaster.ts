@@ -1,6 +1,6 @@
 import { ISymbolMaster, IBackgroundColor } from "../interfaces/SymbolMaster";
 import { Base } from "./Base";
-import { IBounding, IBase, IStyle } from "../interfaces/Base";
+import { IBounding, IBase } from "../interfaces/Base";
 
 export class SymbolMaster extends Base {
 
@@ -12,8 +12,6 @@ export class SymbolMaster extends Base {
     super.style = super.addStyle();
     super.bounding = bounding;
   }
-
-  addLayer(layer: any) { super.addLayer(layer); }
 
   private addBackgroundColor(): IBackgroundColor {
     return {
@@ -30,7 +28,7 @@ export class SymbolMaster extends Base {
     return {
       ...base,
       frame: super.addFrame('rect'),
-      hasClickThrough: true,
+      hasClickThrough: false,
       backgroundColor: this.addBackgroundColor(),
       hasBackgroundColor: false,
       horizontalRulerData: super.addRuler(),

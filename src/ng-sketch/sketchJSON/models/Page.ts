@@ -15,15 +15,13 @@ export class Page extends Base {
     super.bounding = bounding;
   }
 
-  addLayer(layer: any) { super.addLayer(layer); }
-
   generateObject(): IPage {
     const base: IBase = super.generateObject();
 
     return {
       ...base,
       frame: super.addFrame('rect'),
-      hasClickThrough: true,
+      hasClickThrough: false,
       horizontalRulerData: super.addRuler(-153),
       includeInCloudUpload: true,
       verticalRulerData: super.addRuler(-290)

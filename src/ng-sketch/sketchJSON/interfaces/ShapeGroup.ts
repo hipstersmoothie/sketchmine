@@ -1,3 +1,4 @@
+
 // {
 //   "_class": "shapeGroup",
 //   "do_objectID": "6D933F3D-456A-4EB1-9676-DF43B1E22122",
@@ -29,30 +30,7 @@
 //   "resizingConstraint": 63,
 //   "resizingType": 0,
 //   "rotation": 0,
-//   "shouldBreakMaskChain": false,
-//   "userInfo": {
-//     "com.matt-curtis.sketch.constraints": {
-//       "constraints": {
-//         "useBottomPinning": 1,
-//         "centerRelativeTo": 0,
-//         "centerHorizontally": 1,
-//         "useFixedWidth": 0,
-//         "useTopPinning": 1,
-//         "sizeRelativeTo": 0,
-//         "useLeftPinning": 1,
-//         "disabled": 0,
-//         "rightPinning": "8",
-//         "centerVertically": 1,
-//         "useRightPinning": 1,
-//         "fixedHeight": "32",
-//         "useFixedHeight": 1,
-//         "topPinning": "8",
-//         "bottomPinning": "8",
-//         "leftPinning": "8",
-//         "pinRelativeTo": 0
-//       }
-//     }
-//   },
+//   "shouldBreakMaskChain": false,,
 //   "style": {
 //     "_class": "style",
 //     "do_objectID": "CE018F63-5FB4-4D60-A0E8-86833F276262",
@@ -123,23 +101,6 @@
 //     "resizingType": 0,
 //     "rotation": 0,
 //     "shouldBreakMaskChain": false,
-//     "userInfo": {
-//       "com.matt-curtis.sketch.constraints": {
-//         "constraints": {
-//           "useFixedWidth": 0,
-//           "centerRelativeTo": 0,
-//           "useTopPinning": 0,
-//           "sizeRelativeTo": 0,
-//           "useLeftPinning": 0,
-//           "disabled": 0,
-//           "centerVertically": 0,
-//           "useRightPinning": 0,
-//           "useFixedHeight": 0,
-//           "useBottomPinning": 0,
-//           "centerHorizontally": 0,
-//           "pinRelativeTo": 0
-//         }
-//       }
 //     },
 //     "booleanOperation": -1,
 //     "edited": false,
