@@ -7,14 +7,11 @@ export class Group extends Base {
 
   private static _class = 'group';
 
-  constructor(bounding: IBounding, name?: string) {
+  constructor(bounding: IBounding) {
     super();
     super.class = Group._class;
     super.bounding = bounding;
     super.style = super.addStyle();
-    if (name) {
-      super.name = name;
-    }
   }
 
   generateObject(): IGroup {

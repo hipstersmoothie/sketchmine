@@ -94,8 +94,8 @@ export class Base {
       resizingType: 0,
       rotation: 0,
       shouldBreakMaskChain: this._breakMaskChain,
-      style: this._style ? this._style: {},
-      layers: (this._layers.length > 0) ? this._layers: []
+      style: this._style ? this._style: undefined,
+      layers: (this._layers.length > 0) ? this._layers: undefined
     };
   }
 }

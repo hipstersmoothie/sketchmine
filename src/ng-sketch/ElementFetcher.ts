@@ -6,6 +6,7 @@ import { ElementNode } from './ElementNode';
 import { IShapeGroup } from './sketchJSON/interfaces/ShapeGroup';
 import { Page } from './sketchJSON/models/Page';
 import { Sketch } from './sketchJSON/Sketch';
+import { IGroup } from './sketchJSON/interfaces/Group';
 
 
 export interface IElement {
@@ -34,7 +35,7 @@ export class ElementFetcher {
       const symbol = new SymbolMaster(size);
       symbol.name = el.name;
 
-      new ElementNode(el).layers.forEach((layer: IShapeGroup) => {
+      new ElementNode(el).layers.forEach((layer: IGroup) => {
         symbol.addLayer(layer);
       });
     

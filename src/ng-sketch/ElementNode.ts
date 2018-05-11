@@ -7,13 +7,15 @@ import { IElement } from "./ElementFetcher";
 import { Rectangle } from "./sketchJSON/models/Rectangle";
 import { parseBorderRadius } from "./sketchJSON/helpers/util";
 import { IRectangle, IRectangleOptions } from "./sketchJSON/interfaces/Rectangle";
+import { Group } from "./sketchJSON/models/Group";
+import { IGroup } from "./sketchJSON/interfaces/Group";
 
 export class ElementNode {
 
   private _element: IElement;
   private _layers = [];
 
-  get layers(): IShapeGroup[] { return this._layers; }
+  get layers(): IGroup[] { return this._layers; }
 
   constructor(element: IElement) {
     this._element = element;
@@ -22,20 +24,26 @@ export class ElementNode {
         this._element.tagName === 'SVG') {
       console.log('🚫 🖼 Images are currently not supported!');
     }
-
+    
+    const group = new Group(this.getBounding());
+    group.name = element.name;
     const shapeGroup = new ShapeGroup(this.getBounding());
     shapeGroup.style = this.addStyles();
 
     shapeGroup.addLayer(this.addshape());
-    this._layers.push(shapeGroup.generateObject());
+    group.addLayer(shapeGroup.generateObject())
+
+    this._layers.push(group.generateObject());
   }
 
   private addshape(): IRectangle {
     const options: IRectangleOptions = {
       width: this._element.boundingClientRect.width,
       height: this._element.boundingClientRect.height,
+      cornerRadius: 3
     }
     const rectangle = new Rectangle(options);
+    rectangle.name = 'Background';
     return rectangle.generateObject();
   }
 
