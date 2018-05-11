@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
-const normalizeColor = require('normalize-css-color');
-
-// var normalizeColor: any
+import { NSArchiveParser } from './NSArchiveParser';
+import * as bplistParser from 'bplist-parser';
+import * as normalizeColor from 'normalize-css-color';
 
 interface IRGBA { r: number; g: number; b: number; a: number; }
 
@@ -21,21 +21,25 @@ export function cssToRGBA(input: string | any) {
   return normalizeColor.rgba(colorInt) as IRGBA;
 }
 
+export function parseBorderRadius(borderRadius, width, height) {
+  const matches = borderRadius.match(/^([0-9.]+)(.+)$/);
+
+  // Sketch uses 'px' units for border radius, so we need to convert % to px
+  if (matches && matches[2] === '%') {
+    const baseVal = Math.max(width, height);
+    const percentageApplied = baseVal * (parseInt(matches[1], 10) / 100);
+
+    return Math.round(percentageApplied);
+  }
+  return parseInt(borderRadius, 10);
+}
+
 export function createDir(folder: string) {
   if (!folder) {
     throw new Error('Could not create the folder, no path provided!');
   }
   if (!fs.existsSync(path.resolve(folder))){
     fs.mkdirSync(path.resolve(folder));
-  }
-}
-
-export function cleanDir(folder: string) {
-  if (!folder) {
-    throw new Error('Could not create the folder, no path provided!');
-  }
-  if (fs.existsSync(path.resolve(folder))) {
-    // TODO: Clean folder first
   }
 }
 
@@ -57,3 +61,16 @@ export function delFolder(dir: string) {
     fs.rmdirSync(dir);
   }
 };
+
+/**
+ * Returns NSArchive from Base64 encoded String+
+ * @param b64 {string} Base64 bplist encoded String
+ * @author BenjaminDobler https://raw.githubusercontent.com/BenjaminDobler/ng-sketch/dcfd27e903848f629bc19ab8a694991d311ee8a4/src/app/services/sketch.document.ts
+ */
+export function parseArchive(b64: string) {
+  const buf = new Buffer( b64, 'base64');
+  const obj = bplistParser.parseBuffer(buf);
+  return obj;
+  // const parser: NSArchiveParser = new NSArchiveParser();
+  // return parser.parse(obj);
+}

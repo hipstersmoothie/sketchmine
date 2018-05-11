@@ -21,7 +21,7 @@ export class Page extends Base {
     return {
       ...base,
       frame: super.addFrame('rect'),
-      hasClickThrough: false,
+      hasClickThrough: true,
       horizontalRulerData: super.addRuler(-153),
       includeInCloudUpload: true,
       verticalRulerData: super.addRuler(-290)

@@ -7,7 +7,6 @@ export class SymbolMaster extends Base {
   constructor(bounding: IBounding) {
     super();
     super.class = 'symbolMaster';
-    super.name = 'dt-button/dt-button-primary/dt-color-main';
     super.breakMaskChain = true;
     super.style = super.addStyle();
     super.bounding = bounding;
@@ -28,7 +27,7 @@ export class SymbolMaster extends Base {
     return {
       ...base,
       frame: super.addFrame('rect'),
-      hasClickThrough: false,
+      hasClickThrough: true,
       backgroundColor: this.addBackgroundColor(),
       hasBackgroundColor: false,
       horizontalRulerData: super.addRuler(),

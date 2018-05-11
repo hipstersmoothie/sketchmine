@@ -78,6 +78,8 @@ export class Rectangle extends Base {
       frame: super.addFrame('rect'),
       edited: false,
       booleanOperation: -1,
+      isClosed: true,
+      pointRadiusBehaviour: 0,
       fixedRadius: 0,
       hasConvertedToNewRoundCorners: true
     } as any;

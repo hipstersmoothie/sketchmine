@@ -21,23 +21,25 @@ export class Base {
   set bounding(bounding: IBounding) { this._bounding = bounding }
 
   protected addFrame(name: string): IFrame {
-    return {
+    const obj: IFrame = {
       _class: name,
       constrainProportions: false,
       ...this._bounding
     };
+    return this.addObjectID(obj);
   }
 
   protected addStyle(
     start: number = 0, 
     mitter: number = 10,
     end: number = 0): IStyle {
-    return {
+    const obj: IStyle = {
       _class: 'style',
       endDecorationType: end,
       miterLimit: mitter,
       startDecorationType: start
     }
+    return this.addObjectID(obj);
   }
 
 
@@ -50,13 +52,22 @@ export class Base {
   }
 
   private addExportOptions(): IExportOptions {
-    return {
+    const obj: IExportOptions = {
       _class: 'exportOptions',
       exportFormats: [],
       includedLayerIds: [],
       layerOptions: 0,
       shouldTrim: false
     }
+    return this.addObjectID(obj);
+  }
+
+  private addObjectID(obj) {
+    if (this._class !== 'symbolMaster' && 
+        this._class !== 'page' ) {
+      obj.do_objectID = UUID.generate();
+    }
+    return obj;
   }
 
   addLayer(layer) {
@@ -83,8 +94,8 @@ export class Base {
       resizingType: 0,
       rotation: 0,
       shouldBreakMaskChain: this._breakMaskChain,
-      style: this._style ? this._style: undefined,
-      layers: (this._layers.length > 0) ? this._layers: undefined
+      style: this._style ? this._style: {},
+      layers: (this._layers.length > 0) ? this._layers: []
     };
   }
 }

@@ -1,6 +1,8 @@
 import { Base } from "./Base";
 import { IBounding, IBase } from "../interfaces/Base";
 import { Style } from "./Style";
+import { UUID } from "../helpers/UUID";
+import { IShapeGroup } from "../interfaces/ShapeGroup";
 
 export class ShapeGroup extends Base {
 
@@ -8,9 +10,10 @@ export class ShapeGroup extends Base {
     super();
     super.class = 'shapeGroup';
     super.bounding = bounding;
+    super.style = super.addStyle();
   }
 
-  generateObject() {
+  generateObject(): IShapeGroup {
     const base: IBase = super.generateObject();
 
     return {
@@ -19,7 +22,8 @@ export class ShapeGroup extends Base {
       hasClickThrough: false,
       clippingMaskMode: 0,
       hasClippingMask: false,
-      windingRule: 1
+      windingRule: 1,
+      originalObjectID: UUID.generate(),
     }
   }
 }

@@ -1,6 +1,7 @@
 import { Base } from './Base';
 import { IBase, IFrame, IBounding } from '../interfaces/Base';
 import { IGroup } from '../interfaces/Group';
+import { UUID } from '../helpers/UUID';
 
 export class Group extends Base {
 
@@ -10,6 +11,7 @@ export class Group extends Base {
     super();
     super.class = Group._class;
     super.bounding = bounding;
+    super.style = super.addStyle();
     if (name) {
       super.name = name;
     }
@@ -21,9 +23,9 @@ export class Group extends Base {
     return {
       ...base,
       frame: super.addFrame('rect'),
+      nameIsFixed: true,
       hasClickThrough: false,
-      clippingMaskMode: 0,
-      hasClippingMask: false
+      originalObjectID: UUID.generate(),
     }
   }
 }

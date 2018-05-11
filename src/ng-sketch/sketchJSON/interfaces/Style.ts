@@ -1,3 +1,5 @@
+import { ITextStyle } from "./Text";
+
 export interface IStyle {
   _class: string,
   do_objectID?: string,
@@ -6,7 +8,8 @@ export interface IStyle {
   endDecorationType: number,
   miterLimit: number,
   startDecorationType: number,
-  contextSettings?: IStyleContextSettings
+  contextSettings?: IStyleContextSettings;
+  textStyle?: ITextStyle;
 }
 
 export interface IStyleContextSettings {
@@ -26,10 +29,10 @@ export interface IBorder {
 
 export interface IColor {
   _class: string;
-  red: number;
-  green: number;
-  blue: number;
   alpha: number;
+  blue: number;
+  green: number;
+  red: number;
 }
 
 export interface IFill {
