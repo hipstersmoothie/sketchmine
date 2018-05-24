@@ -18,12 +18,9 @@ export class Drawer {
       symbolMaster.name = symbol.pageUrl;
 
       if (symbol.elements && symbol.elements.length > 0) {
-        const groupSize = {...symbolSize, x: 0, y: 0};
-        const group = new Group(groupSize);
-        group.name = symbol.pageUrl;
-        group.layers = this.drawElements(symbol.elements);
-        symbolMaster.addLayer(group.generateObject());
+        symbolMaster.layers = this.drawElements(symbol.elements);
       }
+      
       page.addLayer(symbolMaster.generateObject());
     });
     return page;

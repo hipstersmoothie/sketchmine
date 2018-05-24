@@ -72,6 +72,10 @@ export class Base {
   }
 
   addLayer(layer) {
+    if (layer instanceof Array) {
+      this._layers.push(...layer);
+      return;
+    }
     this._layers.push(layer);
   }
   

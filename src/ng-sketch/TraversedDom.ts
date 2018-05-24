@@ -3,16 +3,15 @@ export interface ITraversedDom {
   pageTitle: string;
   elements: ITraversedDomElement[];
 }
-
-
 export interface ITraversedDomElement {
   tagName: string;
   className: string;
-  boundingClientRect: ClientRect | DOMRect;
+  parentRect: DOMRect;
+  boundingClientRect: DOMRect;
   styles: CSSStyleDeclaration;
   children?: (ITraversedDomElement | ITraversedDomTextNode)[] 
 }
-
 export interface ITraversedDomTextNode {
   text: string;
+  tagName: string;
 }

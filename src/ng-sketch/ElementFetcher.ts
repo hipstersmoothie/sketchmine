@@ -14,7 +14,7 @@ import { ITraversedDom } from './TraversedDom';
 export class ElementFetcher {
 
   private static _host = 'http://localhost:4200';
-  private _pages = ['/button/button--primary', '/button/button--secondary', '/tile/tile--default'];
+  private _pages = [/*'/button/button--primary', '/button/button--secondary',*/ '/tile/tile--default'];
   private _symbols: ITraversedDom[] = [];
   private _injectedDomTraverser = path.resolve(__dirname, 'injectedTraverser.js');
 
@@ -22,7 +22,7 @@ export class ElementFetcher {
     await this.collectElements();
     const drawer = new Drawer();    
     const sketch = new Sketch();
-
+    // console.log(JSON.stringify(this._symbols, null, 2))
     const symbolsMaster = drawer.drawSymbols(this._symbols);
 
     sketch.write([symbolsMaster]);
