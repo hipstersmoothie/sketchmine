@@ -35,6 +35,7 @@ rootElements.forEach(element => {
 });
 
 window.localStorage.setItem('tree', JSON.stringify({
-  name: document.title, 
+  pageUrl: window.location.pathname.substr(1),
+  pageTitle: document.title,
   elements
 }));

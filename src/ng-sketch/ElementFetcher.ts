@@ -14,7 +14,7 @@ import { ITraversedDom } from './TraversedDom';
 export class ElementFetcher {
 
   private static _host = 'http://localhost:4200';
-  private _pages = ['/', '/'];
+  private _pages = ['/button/button--primary', '/button/button--secondary', '/tile/tile--default'];
   private _symbols: ITraversedDom[] = [];
   private _injectedDomTraverser = path.resolve(__dirname, 'injectedTraverser.js');
 

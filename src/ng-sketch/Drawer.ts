@@ -16,21 +16,19 @@ export class Drawer {
 
     symbols.forEach(symbol => {
       const symbolSize = this.getSymbolSize(symbol);
-      console.log(symbolSize)
       const symbolMaster = new SymbolMaster(symbolSize);
-      symbolMaster.name = symbol.name;
+      symbolMaster.name = symbol.pageUrl;
 
       if (symbol.elements && symbol.elements.length > 0) {
-        // const group = new Group(size);
-        // group.name = symbol.elements[0].className
+        const groupSize = {...symbolSize, x: 0, y: 0};
+        const group = new Group(groupSize);
+        group.name = symbol.pageUrl;
 
-        // sm.addLayer(group.generateObject());
+        symbolMaster.addLayer(group.generateObject());
       }
 
       page.addLayer(symbolMaster.generateObject());
     });
-
-    // console.log(JSON.stringify(page, null, 2));
     return page;
   }
 
@@ -42,6 +40,7 @@ export class Drawer {
       return bcr;
     }
     bcr.x += Drawer.MARGIN + this._lastSymbol.x + this._lastSymbol.width;
+    this._lastSymbol = bcr;
     return bcr;
   }
 
@@ -59,7 +58,7 @@ export class Drawer {
 
     for (let i = 0, max = pages.length; i < max; i++) {
       const margin = (i > 0)? Drawer.MARGIN : 0;
-      const bcr = pages[i].elements[0].boundingClientRect;
+      const bcr = BoundingClientRectToBounding(pages[i].elements[0].boundingClientRect);
       size.height += bcr.height + margin;
       size.width += bcr.width;
     }

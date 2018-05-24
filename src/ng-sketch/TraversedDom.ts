@@ -1,5 +1,6 @@
 export interface ITraversedDom {
-  name: string;
+  pageUrl: string;
+  pageTitle: string;
   elements: ITraversedDomElement[];
 }
 

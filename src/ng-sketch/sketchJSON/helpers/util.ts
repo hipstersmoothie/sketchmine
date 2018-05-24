@@ -17,10 +17,10 @@ export function safeToLower(input: string | any): string | any {
 
 export function BoundingClientRectToBounding(bcr: ClientRect | DOMRect): IBounding {
   return {
-    height: bcr.height, 
-    width: bcr.width, 
-    x: bcr.left, 
-    y: bcr.top
+    height: Math.round(bcr.height), 
+    width: Math.round(bcr.width),
+    x: Math.round(bcr.left), 
+    y: Math.round(bcr.top),
   };
 }
 
