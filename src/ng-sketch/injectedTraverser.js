@@ -3,7 +3,7 @@ function visitElement(element) {
     tagName: element.tagName,
     className: element.className.split(' ').join('\/'),
     boundingClientRect: element.getBoundingClientRect(),
-    // styles: JSON.parse(JSON.stringify(getComputedStyle(element))), // Workaround Hack    
+    styles: JSON.parse(JSON.stringify(getComputedStyle(element))), // Workaround Hack    
   }
 }
 
@@ -29,7 +29,8 @@ function traverse(node) {
 }
 
 const elements = [];
-const rootElements = [].slice.call(document.querySelectorAll('app-root > *'));
+// const rootElements = [].slice.call(document.querySelectorAll('app-root > *'));
+const rootElements = [].slice.call(document.querySelectorAll('app-root > * > *'));
 rootElements.forEach(element => {
   elements.push(traverse(element))
 });

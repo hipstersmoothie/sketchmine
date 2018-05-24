@@ -14,6 +14,7 @@ export class Base {
   private _name = '';
 
   get objectID(): string { return this._objectID; }
+  set layers(layers: any[]) { this._layers = layers; }
   set name(name: string) { this._name = name; }
   set class(name: string) { this._class = name; }  
   set breakMaskChain(br: boolean) { this._breakMaskChain = br; }
