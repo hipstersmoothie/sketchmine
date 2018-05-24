@@ -3,6 +3,7 @@ import * as path from 'path';
 import { NSArchiveParser } from './NSArchiveParser';
 import * as bplistParser from 'bplist-parser';
 import * as normalizeColor from 'normalize-css-color';
+import { IBounding } from '../interfaces/Base';
 
 interface IRGBA { r: number; g: number; b: number; a: number; }
 
@@ -12,6 +13,15 @@ export function safeToLower(input: string | any): string | any {
   }
 
   return input;
+}
+
+export function BoundingClientRectToBounding(bcr: ClientRect | DOMRect): IBounding {
+  return {
+    height: bcr.height, 
+    width: bcr.width, 
+    x: bcr.left, 
+    y: bcr.top
+  };
 }
 
 export function cssToRGBA(input: string | any) {

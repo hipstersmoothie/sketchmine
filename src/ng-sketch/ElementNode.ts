@@ -3,7 +3,6 @@ import { ShapeGroup } from "./sketchJSON/models/ShapeGroup";
 import { Style } from "./sketchJSON/models/Style";
 import { IStyle } from "./sketchJSON/interfaces/Style";
 import { IShapeGroup } from "./sketchJSON/interfaces/ShapeGroup";
-import { IElement } from "./ElementFetcher";
 import { Rectangle } from "./sketchJSON/models/Rectangle";
 import { parseBorderRadius } from "./sketchJSON/helpers/util";
 import { IRectangle, IRectangleOptions } from "./sketchJSON/interfaces/Rectangle";

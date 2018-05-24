@@ -27,7 +27,7 @@ export class SymbolMaster extends Base {
     return {
       ...base,
       frame: super.addFrame('rect'),
-      hasClickThrough: true,
+      hasClickThrough: false,
       backgroundColor: this.addBackgroundColor(),
       hasBackgroundColor: false,
       horizontalRulerData: super.addRuler(),

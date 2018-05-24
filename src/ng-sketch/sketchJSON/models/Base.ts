@@ -5,7 +5,7 @@ import { IStyle } from "../interfaces/Style";
 
 export class Base {
 
-  private static _objectID = UUID.generate();
+  private _objectID = UUID.generate();
   private _class = null;
   private _layers = [];
   private _style = null;
@@ -13,7 +13,7 @@ export class Base {
   private _breakMaskChain = false;
   private _name = '';
 
-  get objectID(): string { return Base._objectID; }
+  get objectID(): string { return this._objectID; }
   set name(name: string) { this._name = name; }
   set class(name: string) { this._class = name; }  
   set breakMaskChain(br: boolean) { this._breakMaskChain = br; }
@@ -81,7 +81,7 @@ export class Base {
 
     return {
       _class: this._class,
-      do_objectID: Base._objectID,
+      do_objectID: this._objectID,
       exportOptions: this.addExportOptions(),
       isFlippedHorizontal: false,
       isFlippedVertical: false,
