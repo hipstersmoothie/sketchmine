@@ -1,4 +1,5 @@
 import * as path from 'path';
+import chalk from 'chalk';
 import * as puppeteer from 'puppeteer';
 import { SymbolMaster } from './sketchJSON/models/SymbolMaster';
 import { IBounding } from './sketchJSON/interfaces/Base';
@@ -14,7 +15,12 @@ import { ITraversedDom } from './TraversedDom';
 export class ElementFetcher {
 
   private static _host = 'http://localhost:4200';
-  private _pages = ['/button/button--primary', '/button/button--secondary', '/tile/tile--default'];
+  private _pages = [
+    '/button/button--icon', 
+    '/button/button--primary', 
+    '/button/button--secondary', 
+    '/tile/tile--default'
+  ];
   private _symbols: ITraversedDom[] = [];
   private _injectedDomTraverser = path.resolve(__dirname, 'injectedTraverser.js');
 
@@ -22,7 +28,6 @@ export class ElementFetcher {
     await this.collectElements();
     const drawer = new Drawer();    
     const sketch = new Sketch();
-    // console.log(JSON.stringify(this._symbols, null, 2))
     const symbolsMaster = drawer.drawSymbols(this._symbols);
 
     sketch.write([symbolsMaster]);
@@ -40,23 +45,24 @@ export class ElementFetcher {
 
       return await page.evaluate(()=> { return JSON.parse(window.localStorage.tree) });
     } catch(error) {
-      throw new Error(`Something happened while traversing the DOM: \n${error}`);
+      throw new Error(chalk`\n\n🚨 {bgRed Something happened while traversing the DOM:} 🚧\n${error}`);
     }
   }
 
   private async collectElements() {
-    const browser = await puppeteer.launch({headless: true, devtools: false});
+    const options = (process.env.DEBUG_BROWSER)? {headless: false, devtools: true}: {headless: true, devtools: false};
+    const browser = await puppeteer.launch(options);
     try {
       for (let i = 0, max = this._pages.length; i < max; i++) {
         const url = `${ElementFetcher._host}${this._pages[i]}`;
-        console.log(`Fetching Page: ${url}`);
+        if (process.env.DEBUG) {
+          console.log(chalk`🛬 {cyanBright Fetching Page}: ${url}`);
+        }
         this._symbols.push(await this.getPage(browser, url));
       }    
     } catch(error) {
-      throw new Error(`Something happened while launching the headless browser: \n${error}`);
+      throw new Error(chalk`\n\n🚨 {bgRed Something happened while launching the headless browser:} 🌍 🖥\n${error}`);
     }
     await browser.close();
   }
 }
-
-new ElementFetcher().generateSketch();

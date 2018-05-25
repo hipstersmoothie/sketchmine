@@ -1,8 +1,11 @@
+import { TextAlignment } from "./sketchConstants";
+
 export function convertTextAlign(alignment: string) {
   switch(alignment) {
-    case 'center': return 2;
-    case 'right': return 1;
-    case 'left': return 0;
+    case 'center': return TextAlignment.Center;
+    case 'right': return TextAlignment.Right;
+    case 'left': return TextAlignment.Left;
+    case 'justified': return TextAlignment.Justified;
   }
   return 0;
 }

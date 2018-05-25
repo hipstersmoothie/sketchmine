@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as archiver from 'archiver';
-import { createDir, writeJSON, delFolder, parseArchive } from './helpers/util';
+import { createDir, writeJSON, delFolder, bytesToSize } from './helpers/util';
 import { Page } from "./models/Page";
 import { Document } from "./models/Document";
 import { Meta } from "./models/Meta";
@@ -15,54 +15,11 @@ import { Rectangle } from './models/Rectangle';
 import { ShapeGroup } from './models/ShapeGroup';
 import { Style } from './models/Style';
 import { Text } from './models/Text';
+import chalk from 'chalk';
 export class Sketch {
   private static _folder = 'dt-asset-lib';
 
   write(pages: Page[]) {
-    // const size: IBounding = {height: 32, width: 136, x: 0, y: 0};
-    // const pages = [new Page(size)];
-    // const symbols = new SymbolMaster(size);
-    // const group = new Group(size, 'dt-button');
-    // const shapeGroup = new ShapeGroup(size);
-    // const rect = new Rectangle({height: size.height, width: size.width, cornerRadius: 3});
-    // const text = new Text(size, 'aölskdjfölkajsdf', 'button--text');
-
-    // const size2: IBounding = {height: 32, width: 136, x: 150, y: 0};
-    // const symbols2 = new SymbolMaster(size2);
-    // const group2 = new Group(size, 'dt-button2');
-    // const shapeGroup2 = new ShapeGroup(size2);
-    // const rect2 = new Rectangle({height: size.height, width: size.width, cornerRadius: 15});
-
-
-    // const style2 = new Style();
-    // style2.addBorder('#454545', 3);
-    // style2.addColorFill('#00a1b2');
-    // shapeGroup2.style = style2.generateObject();
-
-    // shapeGroup.name = 'Background';
-
-    // const style = new Style();
-    // style.addBorder('#454545', 3);
-    // style.addColorFill('#00a1b2');
-    // shapeGroup.style = style.generateObject();
-
-    // const b64 = 'YnBsaXN0MDDUAQIDBAUGa2xYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8QHQcIDxAeHyAhIi4xNzs\/R0hJSktPU19gYWJjZGZnVSRudWxs0wkKCwwNDlhOU1N0cmluZ1YkY2xhc3NcTlNBdHRyaWJ1dGVzgAKAHIADXlByaW1hcnkgYnV0dG9u0xESChMYHVdOUy5rZXlzWk5TLm9iamVjdHOkFBUWF4AEgAWABoAHpBkaGxyACIAMgBSAG4AaXxAQTlNQYXJhZ3JhcGhTdHlsZV8QH01TQXR0cmlidXRlZFN0cmluZ0ZvbnRBdHRyaWJ1dGVfECpNU0F0dHJpYnV0ZWRTdHJpbmdDb2xvckRpY3Rpb25hcnlBdHRyaWJ1dGVWTlNLZXJu1iMkJSYKJygpKissK18QEk5TUGFyYWdyYXBoU3BhY2luZ1pOU1RhYlN0b3BzW05TQWxpZ25tZW50XE5TVGV4dEJsb2Nrc1tOU1RleHRMaXN0cyNAIAAAAAAAAIAAEAKACYALgAnSEgovMKCACtIyMzQ1WiRjbGFzc25hbWVYJGNsYXNzZXNXTlNBcnJheaI0NlhOU09iamVjdNIyMzg5XxAXTlNNdXRhYmxlUGFyYWdyYXBoU3R5bGWjODo2XxAQTlNQYXJhZ3JhcGhTdHlsZdIKPD0+XxAaTlNGb250RGVzY3JpcHRvckF0dHJpYnV0ZXOAE4AN0xESCkBDRqJBQoAOgA+iREWAEIARgBJfEBNOU0ZvbnRTaXplQXR0cmlidXRlXxATTlNGb250TmFtZUF0dHJpYnV0ZSNALAAAAAAAAF8QE0Jlcm5pbmFTYW5zLVJlZ3VsYXLSMjNMTV8QE05TTXV0YWJsZURpY3Rpb25hcnmjTE42XE5TRGljdGlvbmFyedIyM1BRXxAQTlNGb250RGVzY3JpcHRvcqJSNl8QEE5TRm9udERlc2NyaXB0b3LTERIKVFkdpFVWV1iAFYAWgBeAGKRaWlpagBmAGYAZgBmAGlNyZWRVYWxwaGFUYmx1ZVVncmVlbiM\/8AAAAAAAANIyM05lok42IwAAAAAAAAAA0jIzaGlfEBJOU0F0dHJpYnV0ZWRTdHJpbmeiajZfEBJOU0F0dHJpYnV0ZWRTdHJpbmdfEA9OU0tleWVkQXJjaGl2ZXLRbW5Ucm9vdIABAAgAEQAaACMALQAyADcAVwBdAGQAbQB0AIEAgwCFAIcAlgCdAKUAsAC1ALcAuQC7AL0AwgDEAMYAyADKAMwA3wEBAS4BNQFCAVcBYgFuAXsBhwGQAZIBlAGWAZgBmgGfAaABogGnAbIBuwHDAcYBzwHUAe4B8gIFAgoCJwIpAisCMgI1AjcCOQI8Aj4CQAJCAlgCbgJ3Ao0CkgKoAqwCuQK+AtEC1ALnAu4C8wL1AvcC+QL7AwADAgMEAwYDCAMKAw4DFAMZAx8DKAMtAzADOQM+A1MDVgNrA30DgAOFAAAAAAAAAgEAAAAAAAAAbwAAAAAAAAAAAAAAAAAAA4c=';
-    // console.log(JSON.stringify(parseArchive(b64)));
-
-    // shapeGroup2.addLayer(rect2.generateObject());
-    // group2.addLayer(shapeGroup2.generateObject());
-    // symbols2.addLayer(group2.generateObject());
-
-
-    // shapeGroup.addLayer(rect.generateObject());
-    // group.addLayer(shapeGroup.generateObject());
-    // group.addLayer(text.generateObject());
-    // symbols.addLayer(group.generateObject());
-    // pages[0].addLayer(symbols.generateObject());
-    // pages[0].addLayer(symbols2.generateObject());
-
-
-
     const doc = new Document(pages);
     const meta = new Meta(pages);
 
@@ -108,7 +65,7 @@ export class Sketch {
     const archive = archiver('zip');
     
     output.on('close',  () => {
-        console.log(`\n✅ Sketch file was successfully generated with: ${archive.pointer()} total bytes\n`);
+        console.log(chalk`\n✅ {greenBright Sketch file}: {magenta ${Sketch._folder}.sketch} – was successfully generated with: {cyan ${bytesToSize(archive.pointer())}}\n`);
     });
 
     archive.on('warning', function(err) {

@@ -5,6 +5,7 @@ import { Group } from "./sketchJSON/models/Group";
 import { ITraversedDom, ITraversedDomElement } from "./TraversedDom";
 import { BoundingClientRectToBounding } from "./sketchJSON/helpers/util";
 import { ElementNode } from "./ElementNode";
+import chalk from "chalk";
 
 export class Drawer {
   private static MARGIN = 40;
@@ -13,6 +14,9 @@ export class Drawer {
   drawSymbols(symbols: ITraversedDom[]): Page {
     const page = new Page(this.getPageSize(symbols));
     symbols.forEach(symbol => {
+      if (process.env.DEBUG) {
+        console.log(chalk`\n💎 {greenBright Draw new Symbol}: ${symbol.pageTitle} – ${symbol.pageUrl}`);
+      }
       const symbolSize = this.getSymbolSize(symbol);
       const symbolMaster = new SymbolMaster(symbolSize);
       symbolMaster.name = symbol.pageUrl;

@@ -10,6 +10,7 @@ import { Group } from "./sketchJSON/models/Group";
 import { IGroup } from "./sketchJSON/interfaces/Group";
 import { ITraversedDomElement, ITraversedDomTextNode } from "./TraversedDom";
 import { Text } from "./sketchJSON/models/Text";
+import chalk from "chalk";
 
 export class ElementNode {
   private _layers = [];
@@ -24,17 +25,24 @@ export class ElementNode {
       case 'IMG':
         console.log('🚫 🖼 Images are currently not supported!'); break;
       case 'SVG':
-        console.log('🚫 🖼 Images are currently not supported!'); break;
+        this.generateSVG(element as ITraversedDomElement); break;
       default:
         this.generate(element as ITraversedDomElement);
+    }
+  }
+
+  private generateSVG(element: ITraversedDomElement) {
+    if (process.env.DEBUG) {
+      console.log(chalk`   Add SVG 🖼 ...`);
     }
   }
 
   private generateText(element: ITraversedDomTextNode) {
     const bcr = BoundingClientRectToBounding(element.parentRect);
     const paddedBCR = calcPadding(element.styles.padding, bcr);
-    console.log(bcr)
-    console.log(paddedBCR)
+    if (process.env.DEBUG) {
+      console.log(chalk`   Add Text 📝  with Text: "{yellowBright ${element.text}}"`, paddedBCR);
+    }
     const text = new Text(paddedBCR, element.styles);
     text.text = element.text;
     this._layers.push(text.generateObject());
@@ -44,6 +52,7 @@ export class ElementNode {
   private generate(element: ITraversedDomElement) {
     const size = this.getSize(element);
     const group = new Group(size);
+    // shape Group in group always starts at x:0, y:0
     const shapeGroup = new ShapeGroup({...size, x:0, y:0 });
 
     group.name = element.className || element.tagName.toLowerCase();
@@ -79,10 +88,7 @@ export class ElementNode {
     const style = new Style();
     const cs = element.styles;
 
-    if(!cs) {
-      return;
-    }
-
+    if(!cs) {  return; }
     if (cs.backgroundColor) { style.addColorFill(cs.backgroundColor); }
     if (cs.borderWidth) { style.addBorder(cs.borderColor, parseInt(cs.borderWidth, 10)); }
     if (parseInt(cs.opacity, 10) < 1) { style.opacity = cs.opacity; }
@@ -93,6 +99,10 @@ export class ElementNode {
   private getSize(element: ITraversedDomElement): IBounding {
     const parentBCR = element.parentRect;
     const bcr = element.boundingClientRect;
+
+    if (process.env.DEBUG) {
+      console.log(chalk`   {magentaBright ${element.className}} | {yellowBright ${element.tagName}}`, BoundingClientRectToBounding(element.boundingClientRect));
+    }
 
     if(Object.keys(parentBCR).length > 0) {
       const x = bcr.x - parentBCR.x;

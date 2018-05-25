@@ -1,8 +1,6 @@
-import { Sketch } from './ng-sketch/sketchJSON/Sketch';
+import { ElementFetcher } from "./ng-sketch/ElementFetcher";
 
+process.env.DEBUG = 'true';
+// process.env.DEBUG_BROWSER = 'true';
 
-
-// new Sketch();
-
-
-require('./ng-sketch/ElementFetcher');
+new ElementFetcher().generateSketch();
