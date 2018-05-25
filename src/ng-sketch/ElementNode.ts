@@ -11,6 +11,7 @@ import { IGroup } from "./sketchJSON/interfaces/Group";
 import { ITraversedDomElement, ITraversedDomTextNode } from "./TraversedDom";
 import { Text } from "./sketchJSON/models/Text";
 import chalk from "chalk";
+import { Svg } from "./sketchJSON/models/Svg";
 
 export class ElementNode {
   private _layers = [];
@@ -35,6 +36,12 @@ export class ElementNode {
     if (process.env.DEBUG) {
       console.log(chalk`   Add SVG 🖼 ...`);
     }
+    const size = this.getSize(element);
+    const shapeGroup = new ShapeGroup({...size, x:0, y:0 });
+    const svg = new Svg().generateObject();
+    shapeGroup.style = this.addStyles(element);
+    shapeGroup.addLayer(svg);
+    this._layers.push(shapeGroup.generateObject());
   }
 
   private generateText(element: ITraversedDomTextNode) {
@@ -54,7 +61,6 @@ export class ElementNode {
     const group = new Group(size);
     // shape Group in group always starts at x:0, y:0
     const shapeGroup = new ShapeGroup({...size, x:0, y:0 });
-
     group.name = element.className || element.tagName.toLowerCase();
     shapeGroup.name = 'Background';
     shapeGroup.style = this.addStyles(element);
@@ -89,6 +95,7 @@ export class ElementNode {
     const cs = element.styles;
 
     if(!cs) {  return; }
+    if (element.tagName == 'SVG' && cs.fill) { style.addColorFill(cs.fill); }
     if (cs.backgroundColor) { style.addColorFill(cs.backgroundColor); }
     if (cs.borderWidth) { style.addBorder(cs.borderColor, parseInt(cs.borderWidth, 10)); }
     if (parseInt(cs.opacity, 10) < 1) { style.opacity = cs.opacity; }

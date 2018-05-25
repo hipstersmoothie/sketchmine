@@ -15,17 +15,11 @@ import { ITraversedDom } from './TraversedDom';
 export class ElementFetcher {
 
   private static _host = 'http://localhost:4200';
-  private _pages = [
-    '/button/button--icon', 
-    '/button/button--primary', 
-    '/button/button--secondary', 
-    '/tile/tile--default'
-  ];
   private _symbols: ITraversedDom[] = [];
   private _injectedDomTraverser = path.resolve(__dirname, 'injectedTraverser.js');
 
-  async generateSketch() {
-    await this.collectElements();
+  async generateSketch(pages: string[]) {
+    await this.collectElements(pages);
     const drawer = new Drawer();    
     const sketch = new Sketch();
     const symbolsMaster = drawer.drawSymbols(this._symbols);
@@ -49,12 +43,12 @@ export class ElementFetcher {
     }
   }
 
-  private async collectElements() {
+  private async collectElements(pages: string[]) {
     const options = (process.env.DEBUG_BROWSER)? {headless: false, devtools: true}: {headless: true, devtools: false};
     const browser = await puppeteer.launch(options);
     try {
-      for (let i = 0, max = this._pages.length; i < max; i++) {
-        const url = `${ElementFetcher._host}${this._pages[i]}`;
+      for (let i = 0, max = pages.length; i < max; i++) {
+        const url = `${ElementFetcher._host}${pages[i]}`;
         if (process.env.DEBUG) {
           console.log(chalk`🛬 {cyanBright Fetching Page}: ${url}`);
         }

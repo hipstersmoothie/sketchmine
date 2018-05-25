@@ -1,6 +1,13 @@
 import { ElementFetcher } from "./ng-sketch/ElementFetcher";
 
 process.env.DEBUG = 'true';
-// process.env.DEBUG_BROWSER = 'true';
+// process.env.DEBUG_BROWSER = 'true'; 
 
-new ElementFetcher().generateSketch();
+const pages = [
+  '/button/button--icon', 
+  // '/button/button--primary', 
+  // '/button/button--secondary', 
+  // '/tile/tile--default',
+]
+
+new ElementFetcher().generateSketch(pages);
