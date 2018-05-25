@@ -24,7 +24,7 @@ export class Style {
     });
   }
 
-  private convertColor(color: string | any, alpha: number = 1): IColor {
+  convertColor(color: string | any, alpha: number = 1): IColor {
     const { r, g, b, a } = cssToRGBA(color);
 
     return {

@@ -8,9 +8,11 @@ function visitElement(element, parentNode) {
   }
 }
 
-function visitText(text) {
+function visitText(text, parentNode) {
   return { 
     tagName: 'TEXT',
+    parentRect: (parentNode)? parentNode.getBoundingClientRect():  {},
+    styles: JSON.parse(JSON.stringify(getComputedStyle(parentNode))),
     text: text.textContent 
   }
 }
@@ -20,7 +22,7 @@ function traverse(node, parentNode = undefined) {
   if (node instanceof Element) {
     tree = Object.assign(tree, visitElement(node, parentNode));
   } else if (node instanceof Text) {
-    tree = Object.assign(tree, visitText(node));
+    tree = Object.assign(tree, visitText(node, parentNode));
   }
 
   if(node.hasChildNodes()) {

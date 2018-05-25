@@ -9,41 +9,48 @@ import { IRectangle, IRectangleOptions } from "./sketchJSON/interfaces/Rectangle
 import { Group } from "./sketchJSON/models/Group";
 import { IGroup } from "./sketchJSON/interfaces/Group";
 import { ITraversedDomElement, ITraversedDomTextNode } from "./TraversedDom";
+import { Text } from "./sketchJSON/models/Text";
 
 export class ElementNode {
-
-  private _element: ITraversedDomElement;
   private _layers = [];
 
   get layers(): IGroup[] { return this._layers; }
 
   constructor(element: ITraversedDomElement | ITraversedDomTextNode) {
-    if(element.tagName === 'TEXT') {
-      console.log('🚫 📖 Text is currently not supported!');
-      return;
+    switch(element.tagName) {
+      case 'TEXT': 
+        this.generateText(element as ITraversedDomTextNode); 
+        break;
+      case 'IMG':
+        console.log('🚫 🖼 Images are currently not supported!'); break;
+      case 'SVG':
+        console.log('🚫 🖼 Images are currently not supported!'); break;
+      default:
+        this.generate(element as ITraversedDomElement);
     }
-    if (element.tagName === 'IMG' || 
-        element.tagName === 'SVG') {
-      console.log('🚫 🖼 Images are currently not supported!');
-      return;
-    }
-
-    this._element = element as ITraversedDomElement;
-    this.generate();
   }
 
-  private generate() {
-    const group = new Group(this.getSize());
-    const shapeGroup = new ShapeGroup({...this.getSize(), x:0, y:0 });
+  private generateText(element: ITraversedDomTextNode) {
+    const bcr = BoundingClientRectToBounding(element.parentRect);
+    const text = new Text({...bcr, x:0, y:0 }, element.styles);
+    text.text = element.text;
+    this._layers.push(text.generateObject());
+  }
 
-    group.name = this._element.className || this._element.tagName.toLowerCase();
+
+  private generate(element: ITraversedDomElement) {
+    const size = this.getSize(element);
+    const group = new Group(size);
+    const shapeGroup = new ShapeGroup({...size, x:0, y:0 });
+
+    group.name = element.className || element.tagName.toLowerCase();
     shapeGroup.name = 'Background';
-    shapeGroup.style = this.addStyles();
-    shapeGroup.addLayer(this.addshape());
+    shapeGroup.style = this.addStyles(element);
+    shapeGroup.addLayer(this.addshape(element));
     group.addLayer(shapeGroup.generateObject())
 
-    if (this._element.children && this._element.children.length > 0) {
-      this._element.children.reverse().forEach(child => {
+    if (element.children && element.children.length > 0) {
+      element.children.reverse().forEach(child => {
         const childNode = new ElementNode(child);
         const layers = childNode.layers
         if (layers.length > 0) {
@@ -51,26 +58,23 @@ export class ElementNode {
         }
       })
     }
-
-    console.log(group.generateObject().frame)
-
     this._layers.push(group.generateObject());
   }
 
-  private addshape(): IRectangle {
+  private addshape(element: ITraversedDomElement): IRectangle {
 
     const options: IRectangleOptions = {
-      width: this._element.boundingClientRect.width,
-      height: this._element.boundingClientRect.height,
-      cornerRadius: parseInt(this._element.styles.borderRadius),
+      width: element.boundingClientRect.width,
+      height: element.boundingClientRect.height,
+      cornerRadius: parseInt(element.styles.borderRadius),
     }
     const rectangle = new Rectangle(options);
     return rectangle.generateObject();
   }
 
-  private addStyles(): IStyle {
+  private addStyles(element: ITraversedDomElement): IStyle {
     const style = new Style();
-    const cs = this._element.styles;
+    const cs = element.styles;
 
     if(!cs) {
       return;
@@ -83,9 +87,9 @@ export class ElementNode {
     return style.generateObject();
   }
 
-  private getSize(): IBounding {
-    const parentBCR = this._element.parentRect;
-    const bcr = this._element.boundingClientRect;
+  private getSize(element: ITraversedDomElement): IBounding {
+    const parentBCR = element.parentRect;
+    const bcr = element.boundingClientRect;
 
     if(Object.keys(parentBCR).length > 0) {
       const x = bcr.x - parentBCR.x;
@@ -97,6 +101,6 @@ export class ElementNode {
         y: Math.round(y),
       }
     }
-    return BoundingClientRectToBounding(this._element.boundingClientRect);
+    return BoundingClientRectToBounding(element.boundingClientRect);
   }
 }
