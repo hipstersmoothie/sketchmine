@@ -4,7 +4,7 @@ import { Style } from "./sketchJSON/models/Style";
 import { IStyle } from "./sketchJSON/interfaces/Style";
 import { IShapeGroup } from "./sketchJSON/interfaces/ShapeGroup";
 import { Rectangle } from "./sketchJSON/models/Rectangle";
-import { parseBorderRadius, BoundingClientRectToBounding } from "./sketchJSON/helpers/util";
+import { parseBorderRadius, BoundingClientRectToBounding, calcPadding } from "./sketchJSON/helpers/util";
 import { IRectangle, IRectangleOptions } from "./sketchJSON/interfaces/Rectangle";
 import { Group } from "./sketchJSON/models/Group";
 import { IGroup } from "./sketchJSON/interfaces/Group";
@@ -32,7 +32,10 @@ export class ElementNode {
 
   private generateText(element: ITraversedDomTextNode) {
     const bcr = BoundingClientRectToBounding(element.parentRect);
-    const text = new Text({...bcr, x:0, y:0 }, element.styles);
+    const paddedBCR = calcPadding(element.styles.padding, bcr);
+    console.log(bcr)
+    console.log(paddedBCR)
+    const text = new Text(paddedBCR, element.styles);
     text.text = element.text;
     this._layers.push(text.generateObject());
   }

@@ -1,39 +1,27 @@
-// import { IColor } from "../interfaces/Style";
+export function convertTextAlign(alignment: string) {
+  switch(alignment) {
+    case 'center': return 2;
+    case 'right': return 1;
+    case 'left': return 0;
+  }
+  return 0;
+}
 
-
-
-
-// function createStringAttributes(textStyles: TextStyle): Object {
-//   // const font = findFont(textStyles);
-
-//   const attribs:  = {
-//     MSAttributedStringFontAttribute: font.fontDescriptor(),
-//     NSFont: font,
-//     NSParagraphStyle: makeParagraphStyle(textStyles),
-//     NSUnderline: TEXT_DECORATION_UNDERLINE[textStyles.textDecoration] || 0,
-//     NSStrikethrough: TEXT_DECORATION_LINETHROUGH[textStyles.textDecoration] || 0,
-//   };
-
-//   const color = makeColorFromCSS(textStyles.color || 'black');
-
-//   if (getSketchVersion() >= 50) {
-//     attribs.MSAttributedStringColorAttribute = color;
-//   } else {
-//     attribs.NSColor = NSColor.colorWithDeviceRed_green_blue_alpha(
-//       color.red,
-//       color.green,
-//       color.blue,
-//       color.alpha,
-//     );
-//   }
-
-//   if (textStyles.letterSpacing !== undefined) {
-//     attribs.NSKern = textStyles.letterSpacing;
-//   }
-
-//   if (textStyles.textTransform !== undefined) {
-//     attribs.MSAttributedStringTextTransformAttribute = TEXT_TRANSFORM[textStyles.textTransform] * 1;
-//   }
-
-//   return attribs;
-// }
+export function fixWhiteSpace(text: string, whiteSpace: string) {
+  switch (whiteSpace) {
+    case 'normal':
+    case 'nowrap':
+      return text
+        .trim()
+        .replace(/\n/g, ' ')// replace newline characters with space
+        .replace(/\s+/g, ' ');// collapse whitespace
+    case 'pre-line':
+      return text
+        .replace(/(^[^\S\n]+)|([^\S\n]+$)/g, '')// trim but leave \n
+        .replace(/[^\S\n]+/g, ' ')// collapse whitespace (except \n)
+        .replace(/[^\S\n]?\n[^\S\n]?/g, '\n');// remove whitespace before & after \n
+    default:
+      // pre, pre-wrap
+  }
+  return text;
+}

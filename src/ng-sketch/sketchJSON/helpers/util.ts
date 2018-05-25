@@ -1,7 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { NSArchiveParser } from './NSArchiveParser';
-import * as bplistParser from 'bplist-parser';
 import * as normalizeColor from 'normalize-css-color';
 import { IBounding } from '../interfaces/Base';
 
@@ -11,7 +9,6 @@ export function safeToLower(input: string | any): string | any {
   if (typeof input === 'string') {
     return input.toLowerCase();
   }
-
   return input;
 }
 
@@ -72,15 +69,30 @@ export function delFolder(dir: string) {
   }
 };
 
-/**
- * Returns NSArchive from Base64 encoded String+
- * @param b64 {string} Base64 bplist encoded String
- * @author BenjaminDobler https://raw.githubusercontent.com/BenjaminDobler/ng-sketch/dcfd27e903848f629bc19ab8a694991d311ee8a4/src/app/services/sketch.document.ts
- */
-export function parseArchive(b64: string) {
-  const buf = new Buffer( b64, 'base64');
-  const obj = bplistParser.parseBuffer(buf);
-  return obj;
-  // const parser: NSArchiveParser = new NSArchiveParser();
-  // return parser.parse(obj);
+export function calcPadding(padding: string, bcr: IBounding): IBounding {
+  const spaces = padding.split(' ');
+  const bounding = {...bcr, x: 0, y: 0 };
+  switch (spaces.length) {
+    case 1: 
+      bounding.x = parseInt(spaces[0], 10);
+      bounding.y = parseInt(spaces[0], 10);
+      bounding.height -= parseInt(spaces[0], 10) * 2;
+      bounding.width -= parseInt(spaces[0], 10) * 2; break
+    case 2: 
+      bounding.x = parseInt(spaces[1], 10);
+      bounding.y = parseInt(spaces[0], 10);
+      bounding.height -= parseInt(spaces[0], 10) * 2;
+      bounding.width -= parseInt(spaces[1], 10) * 2; break
+    case 3: 
+      bounding.x = parseInt(spaces[1], 10);
+      bounding.y = parseInt(spaces[0], 10);
+      bounding.height -= parseInt(spaces[0], 10) + parseInt(spaces[2], 10);
+      bounding.width -= parseInt(spaces[1], 10) * 2; break
+    case 4: 
+      bounding.x = parseInt(spaces[3], 10);
+      bounding.y = parseInt(spaces[0], 10);
+      bounding.height -= parseInt(spaces[0], 10) + parseInt(spaces[2], 10);
+      bounding.width -= parseInt(spaces[1], 10) + parseInt(spaces[3], 10); break
+  }
+  return bounding;
 }
