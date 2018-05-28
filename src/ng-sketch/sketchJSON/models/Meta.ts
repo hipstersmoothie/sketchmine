@@ -21,12 +21,14 @@ export class Meta {
     this._pages = [...pages];
   }
 
-  private addArtboards(): { [key: string]: IMetaArtboard } {
-    return {
-      'BAA32457-CC1E-42E6-93F6-138699AA7338': {
-        name: 'dt-button'
+  private addArtboards(page: Page): { [key: string]: IMetaArtboard } {
+    const artboards = {};
+    page.layers.forEach(layer => {
+      artboards[layer.do_objectID] = {
+        name: layer.name
       }
-    }
+    });
+    return artboards;
   }
 
   private addPagesAndArtboards(): { [key: string]: IMetaPagesAndArtboards } {
@@ -34,7 +36,7 @@ export class Meta {
     this._pages.forEach((page: Page) => {
       artboards[page.objectID] = {
         name: 'Symbols',
-        artboards: this.addArtboards()
+        artboards: this.addArtboards(page)
       }
     });
 
