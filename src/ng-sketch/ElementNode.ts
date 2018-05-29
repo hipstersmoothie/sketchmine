@@ -36,12 +36,12 @@ export class ElementNode {
     if (process.env.DEBUG) {
       console.log(chalk`   Add SVG 🖼 ...`);
     }
-    const size = this.getSize(element);
-    const shapeGroup = new ShapeGroup({...size, x:0, y:0 });
-    const svg = new Svg().generateObject();
-    shapeGroup.style = this.addStyles(element);
-    shapeGroup.addLayer(svg);
-    this._layers.push(shapeGroup.generateObject());
+    // const size = this.getSize(element);
+    // const shapeGroup = new ShapeGroup({...size, x:0, y:0 });
+    // const svg = new Svg().generateObject();
+    // shapeGroup.style = this.addStyles(element);
+    // shapeGroup.addLayer(svg);
+    // this._layers.push(shapeGroup.generateObject());
   }
 
   private generateText(element: ITraversedDomTextNode) {
