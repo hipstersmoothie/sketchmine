@@ -30,6 +30,6 @@ export interface IPoint {
  *  
  */
 export interface ISvgPointGroup {
-  booleanOperation: -1 | 0 | 1 | 2 | 3; // Blendmode in sketch constants
+  booleanOperation: number; // Blendmode in sketch constants
   points: ISvgPoint[];
 }

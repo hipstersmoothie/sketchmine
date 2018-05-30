@@ -1,8 +1,11 @@
 import chalk from 'chalk';
 import { DOMParser } from 'xmldom';
 import { parseSVG, makeAbsolute } from 'svg-path-parser';
-import {  ISvgPoint } from './interfaces/ISvgPoint';
+import { ISvgPoint, ISvgPointGroup } from './interfaces/ISvgPoint';
 import { SvgPointsToSketch } from './SvgPointsToSketch';
+import { ShapeGroup } from './models/ShapeGroup';
+import { IBounding } from '../sketchJSON/interfaces/Base';
+import { BooleanOperation } from '../sketchJSON/helpers/sketchConstants';
 
 interface IViewBox {
   width: number;
@@ -10,8 +13,8 @@ interface IViewBox {
 }
 
 export class SvgParser {
-  static parse(svg: string, width: number, height: number) {
-    return new SvgParser(svg, width, height);
+  static parse(svg: string, width: number, height: number): ISvgPointGroup[] {
+    return new SvgParser(svg, width, height).groupPathsToShapes();
   }
 
   private _paths: ISvgPoint[][] = [];
@@ -20,12 +23,13 @@ export class SvgParser {
   constructor(
     private _svg: string, 
     private _width: number, 
-    private _height: number) {
-    this.getPaths();
-    this.groupPathsToShapes();
-    // this.pathToSketchPoints();
-  }
+    private _height: number
+  ) {}
 
+  /**
+   * Parses SVG Element from string and make coordinate Object with absolute coordinates
+   * store it in this._paths object 
+   */
   private getPaths() {
     try {
       const svg = new DOMParser().parseFromString(this._svg.trim(), 'application/xml').childNodes[0] as SVGElement;
@@ -41,7 +45,8 @@ export class SvgParser {
         } 
         const pathData = (child as SVGPathElement).getAttribute('d');
         const path = parseSVG(pathData) as ISvgPoint[];
-        this._paths.push(makeAbsolute(path));
+        const resized = this.resizeCoordinates(path);
+        this._paths.push(makeAbsolute(resized));
       });
 
     } catch(error) {
@@ -49,23 +54,18 @@ export class SvgParser {
     }
   }
 
-  private pathToSketchPoints() {
-    
-    console.log(this._paths)
-
-
-
+  /**
+   * group multiple <path></path> Elementens to a 2D array of shapes
+   * 
+   * @returns ISvgPointGroup[]
+   */
+  private groupPathsToShapes(): ISvgPointGroup[] {
+    this.getPaths();
+    const shapeGroups:  = [];
     this._paths.forEach(path => {
-      const resized = this.resizeCoordinates(path);
-      SvgPointsToSketch.parse(resized);
-    })
-  }
-
-  private groupPathsToShapes() {
-    const shapeGroups = [];
-    this._paths.forEach(path => {
-      
-    })
+      shapeGroups.push(...this.splitPathInGroups(path));
+    });
+    return shapeGroups;
   }
 
   /**
@@ -75,8 +75,38 @@ export class SvgParser {
    * @param path ISvgPoint[]
    * @returns ISvgPointGroup[]
    */
-  private splitPathInGroups(path: ISvgPoint[]) {
+  private splitPathInGroups(path: ISvgPoint[]): ISvgPointGroup[] {
+    const group: ISvgPointGroup[] = [];
+    let shape: ISvgPointGroup = null;
 
+    for(let i = 0, max = path.length-1; i <= max; i++) {
+
+      switch(path[i].code) {
+        case 'M':
+          if (shape !== null) {
+            group.push(shape);
+            shape = null;
+          };
+          shape = {
+            booleanOperation: BooleanOperation.None,
+            points: [path[i]],
+          };
+          break;
+        case 'Z':
+          shape.points.push(path[i]);
+          group.push(shape);
+          shape = null;
+          break;
+        default:
+          shape.points.push(path[i]);
+      }
+
+      // if path is not closed with a Z
+      if (i === max && shape !== null) {
+        group.push(shape);
+      }
+    }
+    return group;
   }
 
   /**
