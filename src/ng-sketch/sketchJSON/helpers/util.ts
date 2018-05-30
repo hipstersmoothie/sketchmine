@@ -12,6 +12,30 @@ export function safeToLower(input: string | any): string | any {
   return input;
 }
 
+/**
+ * Rounds a number to a float with default 4 digits after the comma
+ * 
+ * @param num number
+ * @param round number -> Digits after the comma
+ */
+export function round(num: number, round: number = 4) {
+  return parseFloat(num.toFixed(round));
+}
+
+/**
+ * Check if the values of an array are equal
+ * 
+ * @param array any
+ */
+export function arrayContentEquals(array: any[]) {
+  if (!array.length) {
+    return true;
+  }
+  return !array.filter((element) => {
+    return element !== array[0];
+  }).length;
+}
+
 export function BoundingClientRectToBounding(bcr: ClientRect | DOMRect): IBounding {
   return {
     height: Math.round(bcr.height), 

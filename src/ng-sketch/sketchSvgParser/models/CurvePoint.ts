@@ -2,7 +2,6 @@ import { CurvePointMode } from '../../sketchJSON/helpers/sketchConstants';
 import { ISvgPoint } from '../interfaces/ISvgPoint';
 import { ICurvePoint } from '../interfaces/ICurvePoint';
 
-
 export class CurvePoint {
   protected _lastP: ISvgPoint;
   protected _curP: ISvgPoint;
@@ -19,7 +18,7 @@ export class CurvePoint {
       _class: 'curvePoint',
       cornerRadius: 0,
       curveFrom: `{${this._lastP.x}, ${this._lastP.y}}`,
-      curveMode: CurvePointMode.Straight,
+      curveMode: CurvePointMode.Disconnected,
       curveTo: `{${this._lastP.x}, ${this._lastP.y}}`,
       hasCurveTo: false,
       hasCurveFrom: false,
