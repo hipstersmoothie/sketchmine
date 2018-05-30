@@ -12,6 +12,12 @@ export interface ISvgPoint {
   y0?: number;
 }
 
+
+export interface IPoint {
+  x: number;
+  y: number;
+}
+
 // was used with svg-path library
 // export interface ISvgPath {
 //   content: ISvgPoint[];

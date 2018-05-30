@@ -1,3 +1,4 @@
+import { MoveTo } from './models/MoveTo';
 import { ISvgPoint } from './interfaces/ISvgPoint';
 import { CurvePoint } from './models/CurvePoint';
 import { ICurvePoint } from './interfaces/ICurvePoint';
@@ -21,7 +22,7 @@ export class SvgPointsToSketch {
   private trace() {
     const group  = [];
     let shapePath: ShapePath = null;
-    console.log(this._points)
+    // console.log(this._points)
 
     for(let i = 0, end = this._points.length; i < end; i++) {
       const cur = this._points[i];
@@ -36,6 +37,7 @@ export class SvgPointsToSketch {
             shapePath = null;
           }
           shapePath = new ShapePath(); 
+          shapePath.addPoint(new MoveTo(prev, cur, next).generate());
           break;
         case 'C':
           shapePath.addPoint(new CurveTo(prev, cur, next).generate());
@@ -55,6 +57,11 @@ export class SvgPointsToSketch {
     }
     return group;
   }
+  private pointIsNoAction(point: ISvgPoint): boolean {
+    const actions: any = ['M', 'm', 'Z', 'z'];
+    return !actions.includes(point.code);
+  }
+
   private getPrevCurvePoint(index: number) {
     const prev = this._points[index-1];
     if (prev) {
