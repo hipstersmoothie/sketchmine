@@ -24,8 +24,9 @@ const agent = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%
 </svg>`;
 
 const svgObject = SvgParser.parse(agent, 72, 63);
-const shapeGroup = new SvgToSketch(svgObject);
-console.log(shapeGroup);
+// const shapeGroup = new SvgToSketch(svgObject);
+// shapeGroup
+console.log(svgObject);
 
 
 

@@ -1,7 +1,6 @@
 import { CurvePoint } from "./CurvePoint";
 import { ICurvePoint } from "../interfaces/ICurvePoint";
 import { CurvePointMode } from "../../sketchJSON/helpers/sketchConstants";
-import { ISvgPoint, IPoint } from "../interfaces/ISvgPoint";
 import { round, arrayContentEquals } from "../../sketchJSON/helpers/util";
 
 export class CurveTo extends CurvePoint {

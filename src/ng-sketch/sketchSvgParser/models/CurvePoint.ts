@@ -1,5 +1,5 @@
 import { CurvePointMode } from '../../sketchJSON/helpers/sketchConstants';
-import { ISvgPoint, IPoint } from '../interfaces/ISvgPoint';
+import { ISvgPoint, IPoint } from '../interfaces/ISvg';
 import { ICurvePoint } from '../interfaces/ICurvePoint';
 import { round } from '../../sketchJSON/helpers/util';
 

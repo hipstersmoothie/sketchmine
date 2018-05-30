@@ -1,10 +1,18 @@
-import { ISvgPointGroup } from "./interfaces/ISvgPoint";
+import { ISvgPointGroup, ISvg } from './interfaces/ISvg';
+import { IShapeGroup } from './interfaces/ShapeGroup';
+import { ShapeGroup } from './models/ShapeGroup';
 
 export class SvgToSketch {
   
-  constructor(private svgObject: ISvgPointGroup[]) {
-    
+  constructor(private _svgObject: ISvg) {
+
   }
+
+
+
+  // generateObject(): IShapeGroup {
+  //   return new ShapeGroup({...this._svgObject.size, x: 0, y: 0 })
+  // }
 }
 
 // for(let i = 0, max = this._paths.length-1; i <= max; i++) {

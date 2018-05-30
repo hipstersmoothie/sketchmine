@@ -1,5 +1,5 @@
 import { MoveTo } from './models/MoveTo';
-import { ISvgPoint } from './interfaces/ISvgPoint';
+import { ISvgPoint } from './interfaces/ISvg';
 import { LineTo } from './models/LineTo';
 import { CurveTo } from './models/CurveTo';
 import { ShapePath } from './models/ShapePath';

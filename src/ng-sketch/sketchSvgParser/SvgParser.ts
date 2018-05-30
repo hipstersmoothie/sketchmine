@@ -1,24 +1,19 @@
 import chalk from 'chalk';
 import { DOMParser } from 'xmldom';
 import { parseSVG, makeAbsolute } from 'svg-path-parser';
-import { ISvgPoint, ISvgPointGroup } from './interfaces/ISvgPoint';
+import { ISvgPoint, ISvgPointGroup, ISvgView, ISvg } from './interfaces/ISvg';
 import { SvgPointsToSketch } from './SvgPointsToSketch';
 import { ShapeGroup } from './models/ShapeGroup';
 import { IBounding } from '../sketchJSON/interfaces/Base';
 import { BooleanOperation } from '../sketchJSON/helpers/sketchConstants';
 
-interface IViewBox {
-  width: number;
-  height: number;
-}
-
 export class SvgParser {
-  static parse(svg: string, width: number, height: number): ISvgPointGroup[] {
+  static parse(svg: string, width: number, height: number): ISvg {
     return new SvgParser(svg, width, height).groupPathsToShapes();
   }
 
   private _paths: ISvgPoint[][] = [];
-  private _viewBox: IViewBox;
+  private _viewBox: ISvgView;
 
   constructor(
     private _svg: string, 
@@ -57,15 +52,18 @@ export class SvgParser {
   /**
    * group multiple <path></path> Elementens to a 2D array of shapes
    * 
-   * @returns ISvgPointGroup[]
+   * @returns ISvg[]
    */
-  private groupPathsToShapes(): ISvgPointGroup[] {
+  private groupPathsToShapes(): ISvg {
     this.getPaths();
-    const shapeGroups:  = [];
+    const shapeGroups: ISvgPointGroup[] = [];
     this._paths.forEach(path => {
       shapeGroups.push(...this.splitPathInGroups(path));
     });
-    return shapeGroups;
+    return {
+      shapes: shapeGroups,
+      size: { width: this._width, height: this._height },
+    }
   }
 
   /**
@@ -113,10 +111,10 @@ export class SvgParser {
    * Extract the svg Size from the view box and the width and height coordinates
    * and returns { width, height } Object
    *
-   * @returns IViewBox{ width: number, height:number }
+   * @returns ISvgView{ width: number, height:number }
    * @param svg SVGElement
    */
-  private getSize(svg: SVGElement): IViewBox {
+  private getSize(svg: SVGElement): ISvgView {
     const w = svg.getAttribute('width');
     const h = svg.getAttribute('height');
     const v = svg.getAttribute('viewBox').split(' ');
@@ -141,7 +139,7 @@ export class SvgParser {
    */
   private resizeCoordinates(path: ISvgPoint[]): ISvgPoint[] {
     const resized = [];
-    const factor: IViewBox = {...this._viewBox};
+    const factor: ISvgView = {...this._viewBox};
     path.forEach(point => {
       const p = {
         ...point,
