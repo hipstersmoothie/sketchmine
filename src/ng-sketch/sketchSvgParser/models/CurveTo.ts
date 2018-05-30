@@ -11,7 +11,8 @@ export class CurveTo extends CurvePoint {
 
     // Check if the point equals the point of the control Point from the tangent 
     // to decide if it as has curveFrom (otherwise it is a Point without tangent)
-    if(this.next.x1 && this.next.y1 &&
+    if(this.next && 
+      this.next.x1 && this.next.y1 &&
       !super.pointEqalsPoint(
       {x: this.next.x1, y: this.next.y1}, // Tangent control Point
       {x: this.cur.x, y: this.cur.y}  // Actual Point on curve

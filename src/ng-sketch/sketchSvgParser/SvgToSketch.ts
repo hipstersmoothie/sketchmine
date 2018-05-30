@@ -1,34 +1,21 @@
 import { ISvgPointGroup, ISvg } from './interfaces/ISvg';
 import { IShapeGroup } from './interfaces/ShapeGroup';
 import { ShapeGroup } from './models/ShapeGroup';
+import { IBounding } from '../sketchJSON/interfaces/Base';
+import { SvgPointsToSketch } from './SvgPointsToSketch';
 
 export class SvgToSketch {
   
-  constructor(private _svgObject: ISvg) {
+  constructor(private _svgObject: ISvg) { }
 
+  generateObject(): any[] {
+    const size: IBounding = {... this._svgObject.size, x: 0, y: 0};
+    const shapeGroupLayers = [];
+
+    this._svgObject.shapes.forEach(shape => {
+      shapeGroupLayers.push(SvgPointsToSketch.parse(shape.points));
+    })
+    
+    return shapeGroupLayers;
   }
-
-
-
-  // generateObject(): IShapeGroup {
-  //   return new ShapeGroup({...this._svgObject.size, x: 0, y: 0 })
-  // }
 }
-
-// for(let i = 0, max = this._paths.length-1; i <= max; i++) {
-//   const path = this._paths[i];
-//   // only one Path no need for ShapeGroup
-//   if (max === 0) {
-
-//   } else {
-//     const size: IBounding = { width: this._width, height: this._height, x: 0, y: 0 };
-//     const shapegroup = new ShapeGroup(size);
-//   }
-// }
-
-// private toSketch() {
-//   this._paths.forEach(path => {
-//     const resized = this.resizeCoordinates(path);
-//     SvgPointsToSketch.parse(resized);
-//   })
-// }
