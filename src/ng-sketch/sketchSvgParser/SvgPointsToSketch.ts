@@ -1,67 +1,42 @@
 import { MoveTo } from './models/MoveTo';
 import { ISvgPoint } from './interfaces/ISvgPoint';
-import { CurvePoint } from './models/CurvePoint';
-import { ICurvePoint } from './interfaces/ICurvePoint';
 import { LineTo } from './models/LineTo';
 import { CurveTo } from './models/CurveTo';
-import { ShapePath } from './ShapePath';
+import { ShapePath } from './models/ShapePath';
 
 export class SvgPointsToSketch {
   static parse(points: ISvgPoint[]) {
     return new SvgPointsToSketch(points).trace();
   }
 
-  private _offsetX: number;
-  private _offsetY: number;
+  constructor(private _points: ISvgPoint[]) {}
 
-  constructor(private _points: ISvgPoint[]) {
-    // Todo: provide offset later
-    this._offsetX = 0;
-		this._offsetY = 0;
-  }
   private trace() {
-    const group  = [];
-    let shapePath: ShapePath = null;
-    // console.log(this._points)
+    const shapePath: ShapePath = new ShapePath();
 
-    for(let i = 0, end = this._points.length; i < end; i++) {
+    for(let i = 0, end = this._points.length-1; i <= end; i++) {
       const cur = this._points[i];
       const prev = this.getPrevCurvePoint(i);
       const next = this.getNextCurvePoint(i);
 
       switch (cur.code) {
         case 'M':
-          // If new Shape beginns without closing the last
-          if (shapePath !== null) {
-            group.push(shapePath.generateObject());
-            shapePath = null;
-          }
-          shapePath = new ShapePath(); 
           shapePath.addPoint(new MoveTo(prev, cur, next).generate());
           break;
         case 'C':
           shapePath.addPoint(new CurveTo(prev, cur, next).generate());
           break;
+        case 'L':
+          shapePath.addPoint(new LineTo(prev, cur, next).generate());
+          break;
         case 'Z':
           shapePath.close();
-          group.push(shapePath.generateObject());
-          shapePath = null;
           break;
       }
-
-      // Path is not closed with a Z command so return it
-      if (i === end && shapePath !== null) {
-        group.push(shapePath.generateObject());
-        shapePath = null;
-      }
     }
-    return group;
+    return shapePath.generateObject();
   }
-  private pointIsNoAction(point: ISvgPoint): boolean {
-    const actions: any = ['M', 'm', 'Z', 'z'];
-    return !actions.includes(point.code);
-  }
-
+  
   private getPrevCurvePoint(index: number) {
     const prev = this._points[index-1];
     if (prev) {
@@ -69,6 +44,7 @@ export class SvgPointsToSketch {
     }
     return null;
   }
+
   private getNextCurvePoint(index: number): ISvgPoint {
     const next = this._points[index+1];
     if (next) {

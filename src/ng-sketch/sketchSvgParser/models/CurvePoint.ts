@@ -6,9 +6,9 @@ import { round } from '../../sketchJSON/helpers/util';
 export class CurvePoint {
 
   constructor(
-    protected _lastP: ISvgPoint,
-    protected _curP: ISvgPoint,
-    protected _nextP: ISvgPoint
+    private _lastP: ISvgPoint,
+    private _curP: ISvgPoint,
+    private _nextP: ISvgPoint
   ) {
   }
 

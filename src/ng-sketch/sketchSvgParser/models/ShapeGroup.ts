@@ -1,8 +1,6 @@
-import { Base } from "./Base";
-import { IBounding, IBase } from "../interfaces/Base";
-import { Style } from "./Style";
-import { UUID } from "../helpers/UUID";
-import { IShapeGroup } from "../interfaces/ShapeGroup";
+import { Base } from '../../sketchJSON/models/Base';
+import { IShapeGroup } from '../interfaces/ShapeGroup';
+import { IBounding, IBase } from '../../sketchJSON/interfaces/Base';
 
 export class ShapeGroup extends Base {
 
@@ -23,7 +21,6 @@ export class ShapeGroup extends Base {
       clippingMaskMode: 0,
       hasClippingMask: false,
       windingRule: 1,
-      originalObjectID: UUID.generate(),
     }
   }
 }

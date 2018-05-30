@@ -1,17 +1,16 @@
-import { IBounding } from "./sketchJSON/interfaces/Base";
-import { ShapeGroup } from "./sketchJSON/models/ShapeGroup";
-import { Style } from "./sketchJSON/models/Style";
-import { IStyle } from "./sketchJSON/interfaces/Style";
-import { IShapeGroup } from "./sketchJSON/interfaces/ShapeGroup";
-import { Rectangle } from "./sketchJSON/models/Rectangle";
-import { parseBorderRadius, BoundingClientRectToBounding, calcPadding } from "./sketchJSON/helpers/util";
-import { IRectangle, IRectangleOptions } from "./sketchJSON/interfaces/Rectangle";
-import { Group } from "./sketchJSON/models/Group";
-import { IGroup } from "./sketchJSON/interfaces/Group";
-import { ITraversedDomElement, ITraversedDomTextNode } from "./TraversedDom";
-import { Text } from "./sketchJSON/models/Text";
-import chalk from "chalk";
-import { Svg } from "./sketchJSON/models/Svg";
+import { Style } from './sketchJSON/models/Style';
+import { IStyle } from './sketchJSON/interfaces/Style';
+import { Rectangle } from './sketchJSON/models/Rectangle';
+import { parseBorderRadius, BoundingClientRectToBounding, calcPadding } from './sketchJSON/helpers/util';
+import { IRectangle, IRectangleOptions } from './sketchJSON/interfaces/Rectangle';
+import { Group } from './sketchJSON/models/Group';
+import { IGroup } from './sketchJSON/interfaces/Group';
+import { ITraversedDomElement, ITraversedDomTextNode } from './TraversedDom';
+import { Text } from './sketchJSON/models/Text';
+import chalk from 'chalk';
+import { Svg } from './sketchJSON/models/Svg';
+import { IBounding } from './sketchJSON/interfaces/Base';
+import { ShapeGroup } from './sketchSvgParser/models/ShapeGroup';
 
 export class ElementNode {
   private _layers = [];

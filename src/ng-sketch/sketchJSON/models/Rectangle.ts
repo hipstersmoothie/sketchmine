@@ -1,6 +1,7 @@
 import { Base } from "./Base";
-import { IBase, IBounding } from "../interfaces/Base";
-import { IPath, ICurvePoint, IPoint, IRectangleOptions, IRectangle } from "../interfaces/Rectangle";
+import { IPath, IPoint, IRectangleOptions, IRectangle } from "../interfaces/Rectangle";
+import { ICurvePoint } from "../../sketchSvgParser/interfaces/ICurvePoint";
+import { IBounding, IBase } from "../interfaces/Base";
 
 export class Rectangle extends Base {
   private _cornerRadius: Array<number>;

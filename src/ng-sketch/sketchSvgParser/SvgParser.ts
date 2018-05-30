@@ -22,11 +22,13 @@ export class SvgParser {
     private _width: number, 
     private _height: number) {
     this.getPaths();
+    this.groupPathsToShapes();
+    // this.pathToSketchPoints();
   }
 
   private getPaths() {
     try {
-      const svg = new DOMParser().parseFromString(this._svg, 'application/xml').childNodes[0] as SVGElement;
+      const svg = new DOMParser().parseFromString(this._svg.trim(), 'application/xml').childNodes[0] as SVGElement;
       if (svg.tagName !== 'svg') {
         throw new Error(chalk`No SVG element provided for parsing!\nyou provided:{grey \n${this._svg}\n\n}`);
       }
@@ -45,17 +47,45 @@ export class SvgParser {
     } catch(error) {
       throw new Error(chalk`\n\n🚨 {bgRed Failed to parse the SVG DOM:} 🖼\n${error}`)
     }
-
-    this.pathToSketchPoints();
   }
 
   private pathToSketchPoints() {
+    
+    console.log(this._paths)
+
+
+
     this._paths.forEach(path => {
       const resized = this.resizeCoordinates(path);
       SvgPointsToSketch.parse(resized);
     })
   }
 
+  private groupPathsToShapes() {
+    const shapeGroups = [];
+    this._paths.forEach(path => {
+      
+    })
+  }
+
+  /**
+   * SVGO puts multiple Movetos and Closepaths in one path element.
+   * so this function is to ungroup the path element if it is compressed
+   * 
+   * @param path ISvgPoint[]
+   * @returns ISvgPointGroup[]
+   */
+  private splitPathInGroups(path: ISvgPoint[]) {
+
+  }
+
+  /**
+   * Extract the svg Size from the view box and the width and height coordinates
+   * and returns { width, height } Object
+   *
+   * @returns IViewBox{ width: number, height:number }
+   * @param svg SVGElement
+   */
   private getSize(svg: SVGElement): IViewBox {
     const w = svg.getAttribute('width');
     const h = svg.getAttribute('height');
@@ -72,6 +102,13 @@ export class SvgParser {
     };
   }
 
+  /**
+   * Takes an Array of points and resizes the coordinates that the max width is 1 and the beginning is 0
+   * Sketch SVGs reach from 0 to 1 (like percentage)
+   * 
+   * @returns ISvgPoint[]
+   * @param path ISvgPoint[] Array of Svg Points
+   */
   private resizeCoordinates(path: ISvgPoint[]): ISvgPoint[] {
     const resized = [];
     const factor: IViewBox = {...this._viewBox};

@@ -1,9 +1,9 @@
-import { ICurvePoint } from "../sketchJSON/interfaces/Rectangle";
-import { Base } from "../sketchJSON/models/Base";
-import { IBase } from "../sketchJSON/interfaces/Base";
-import { BooleanOperation, MaskMode } from "../sketchJSON/helpers/sketchConstants";
+import { ICurvePoint } from '../interfaces/ICurvePoint';
+import { Base } from '../../sketchJSON/models/Base';
+import { BooleanOperation, MaskMode } from '../../sketchJSON/helpers/sketchConstants';
+import { IBase } from '../../sketchJSON/interfaces/Base';
 
-export class ShapePath extends Base{
+export class ShapePath extends Base {
 
   private _points: ICurvePoint[] = [];
   private _closed: boolean = false;

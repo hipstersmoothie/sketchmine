@@ -6,35 +6,27 @@ import { round, arrayContentEquals } from "../../sketchJSON/helpers/util";
 
 export class MoveTo extends CurvePoint {
 
-  constructor(last: ISvgPoint, cur: ISvgPoint, next: ISvgPoint) {
-    super(last, cur, next);
-  }
-
   /**
    * Todo : implement hasCurveTo and curveTo
    *        - need to check the last point if it is a curve
    */   
   generate(): ICurvePoint {
-    const point = this.cur;
-    const last = this.last;
-    const next = this.next;
     let hasCurveTo = false;
     let hasCurveFrom = false;
-
-    // Check if next exists and if it has tangent Points
-    if (next && next.x1 && next.y1) {
-      hasCurveFrom = true
-    }
+    
+    // Check if the next point has the properties x1 and y1 (tangent controll points)
+    // then you know that it has a curve from
+    hasCurveFrom = ['x1', 'y1'].every((key) => Object.keys(this.next).includes(key) );
 
     return {
       _class: 'curvePoint',
       cornerRadius: 0,
-      curveFrom: (hasCurveFrom)? `{${next.x1}, ${next.y1}}`: `{${point.x}, ${point.x}}`,
+      curveFrom: (hasCurveFrom)? `{${this.next.x1}, ${this.next.y1}}`: `{${this.cur.x}, ${this.cur.x}}`,
       curveMode: CurvePointMode.Disconnected,
-      curveTo: `{${point.x}, ${point.x}}`,
+      curveTo: `{${this.cur.x}, ${this.cur.x}}`,
       hasCurveFrom,
       hasCurveTo,
-      point: `{${point.x}, ${point.y}}`,
+      point: `{${this.cur.x}, ${this.cur.y}}`,
     };
   }
 }

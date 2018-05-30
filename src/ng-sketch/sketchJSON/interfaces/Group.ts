@@ -1,4 +1,4 @@
-import { IBase } from "./Base";
+import { IBase } from './Base';
 
 export interface IGroup extends IBase {
   // clippingMaskMode: number;

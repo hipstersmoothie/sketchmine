@@ -1,4 +1,5 @@
 import { IBase, IFrame } from "./Base";
+import { ICurvePoint } from "../../sketchSvgParser/interfaces/ICurvePoint";
 
 export interface IRectangle extends IBase {
   path: IPath;
@@ -18,17 +19,6 @@ export interface IRectangleOptions {
 export interface IPoint {
   x: number; // 0 | 1
   y: number;// 0 | 1
-}
-
-export interface ICurvePoint {
-  _class: string;
-  cornerRadius: number;
-  curveFrom: string;
-  curveMode: number;
-  curveTo: string;
-  hasCurveFrom: boolean;
-  hasCurveTo: boolean;
-  point: string;
 }
 
 export interface IPath {
