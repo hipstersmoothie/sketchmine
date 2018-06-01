@@ -49,7 +49,8 @@ const agent = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%
 </svg>`;
 
 
-
+// Test drawing svgs
+/*
 const size: IBounding = {width: 512, height: 512, x: 0, y: 0};
 const shapeGroup = new ShapeGroup(size);
 const style = new Style()
@@ -58,12 +59,6 @@ shapeGroup.layers = new SvgToSketch(svgObject).generateObject();
 shapeGroup.name = 'SVG';
 style.addColorFill('#ff00fa');
 shapeGroup.style = style.generateObject();
-
-
-
-// console.log(shapeGroup);
-
-
 
 // write test svg
 const sketch = new Sketch();
@@ -79,3 +74,4 @@ symbolMaster.addLayer(group.generateObject());
 page.addLayer(symbolMaster.generateObject());
 
 sketch.write([page]);
+*/

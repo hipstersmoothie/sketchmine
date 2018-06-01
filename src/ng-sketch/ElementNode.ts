@@ -5,19 +5,21 @@ import { parseBorderRadius, BoundingClientRectToBounding, calcPadding } from './
 import { IRectangle, IRectangleOptions } from './sketchJSON/interfaces/Rectangle';
 import { Group } from './sketchJSON/models/Group';
 import { IGroup } from './sketchJSON/interfaces/Group';
-import { ITraversedDomElement, ITraversedDomTextNode } from './TraversedDom';
+import { ITraversedDomElement, ITraversedDomTextNode, ITraversedDomSvgNode } from './TraversedDom';
 import { Text } from './sketchJSON/models/Text';
 import chalk from 'chalk';
 import { Svg } from './sketchJSON/models/Svg';
 import { IBounding } from './sketchJSON/interfaces/Base';
 import { ShapeGroup } from './sketchSvgParser/models/ShapeGroup';
+import { SvgParser } from './sketchSvgParser/SvgParser';
+import { SvgToSketch } from './sketchSvgParser/SvgToSketch';
 
 export class ElementNode {
   private _layers = [];
 
   get layers(): IGroup[] { return this._layers; }
 
-  constructor(element: ITraversedDomElement | ITraversedDomTextNode) {
+  constructor(element: ITraversedDomElement | ITraversedDomTextNode | ITraversedDomSvgNode) {
     switch(element.tagName) {
       case 'TEXT': 
         this.generateText(element as ITraversedDomTextNode); 
@@ -25,22 +27,25 @@ export class ElementNode {
       case 'IMG':
         console.log('🚫 🖼 Images are currently not supported!'); break;
       case 'SVG':
-        this.generateSVG(element as ITraversedDomElement); break;
+        this.generateSVG(element as ITraversedDomSvgNode); break;
       default:
         this.generate(element as ITraversedDomElement);
     }
   }
 
-  private generateSVG(element: ITraversedDomElement) {
+  private generateSVG(element: ITraversedDomSvgNode) {
     if (process.env.DEBUG) {
       console.log(chalk`   Add SVG 🖼 ...`);
     }
-    // const size = this.getSize(element);
-    // const shapeGroup = new ShapeGroup({...size, x:0, y:0 });
-    // const svg = new Svg().generateObject();
-    // shapeGroup.style = this.addStyles(element);
-    // shapeGroup.addLayer(svg);
-    // this._layers.push(shapeGroup.generateObject());
+    
+    const size = this.getSize(element);
+    const shapeGroup = new ShapeGroup({...size, x:0, y:0 });
+    shapeGroup.style = this.addStyles(element);
+    shapeGroup.name = 'SVG';
+
+    const svgObject = SvgParser.parse(element.html, size.width, size.height);
+    shapeGroup.layers = new SvgToSketch(svgObject).generateObject();
+    this._layers.push(shapeGroup.generateObject());
   }
 
   private generateText(element: ITraversedDomTextNode) {
@@ -102,7 +107,7 @@ export class ElementNode {
     return style.generateObject();
   }
 
-  private getSize(element: ITraversedDomElement): IBounding {
+  private getSize(element: ITraversedDomElement | ITraversedDomSvgNode): IBounding {
     const parentBCR = element.parentRect;
     const bcr = element.boundingClientRect;
 

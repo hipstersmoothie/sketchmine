@@ -17,3 +17,7 @@ export interface ITraversedDomElement extends ITraversedElement {
 export interface ITraversedDomTextNode extends ITraversedElement{
   text: string;
 }
+
+export interface ITraversedDomSvgNode extends ITraversedDomElement {
+  html: string;
+}

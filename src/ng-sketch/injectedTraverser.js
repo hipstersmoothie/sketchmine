@@ -1,12 +1,16 @@
 function visitElement(element, parentNode) {
   const className = (typeof element.className === 'string')? element.className.split(' ').join('\/') : undefined;
-  return {
+  const el = {
     tagName: element.tagName.toUpperCase(),
     className: className,
     parentRect: (parentNode)? parentNode.getBoundingClientRect():  {},
     boundingClientRect: element.getBoundingClientRect(),
     styles: JSON.parse(JSON.stringify(getComputedStyle(element))), // Workaround Hack    
   }
+  if (element.tagName === 'svg') {
+    el.html = element.outerHTML;
+  }
+  return el;
 }
 
 function visitText(text, parentNode) {
