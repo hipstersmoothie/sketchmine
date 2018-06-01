@@ -35,14 +35,20 @@ export class SvgParser {
       this._viewBox = this.getSize(svg);
 
       [].slice.call(svg.childNodes).forEach((child: Node) => {
-        if (child.nodeName !== 'path') {
-          return;
-        } 
-        const pathData = (child as SVGPathElement).getAttribute('d');
-        const path = parseSVG(pathData) as ISvgPoint[];
+        if(child.nodeName === 'path') {
+          const pathData = (child as SVGPathElement).getAttribute('d');
+          const path = parseSVG(pathData) as ISvgPoint[];
+          const resized = this.resizeCoordinates(path);
+          this._paths.push(makeAbsolute(resized));
+
+        } else if (child.nodeName === 'circle') {
+          const circle = child as SVGCircleElement;
+          const cx = parseInt(circle.getAttribute('cx'), 10);
+          const cy = parseInt(circle.getAttribute('cy'), 10);
+          const r = parseInt(circle.getAttribute('r'), 10);
+          this._paths.push(this.circleToPath(cx,cy,r));
+        }
         
-        const resized = this.resizeCoordinates(path);
-        this._paths.push(makeAbsolute(resized));
       });
 
     } catch(error) {
@@ -129,6 +135,65 @@ export class SvgParser {
       width: parseInt(w, 10), 
       height: parseInt(h, 10),
     };
+  }
+
+  /**
+   * Converts a circle in 4 anchorpoints to render them in Sketch
+   * 
+   * @param cx number
+   * @param cy number
+   * @param radius number
+   * @returns ISvgPoint[]
+   * @description https://stackoverflow.com/questions/1734745/how-to-create-circle-with-b%C3%A9zier-curves
+   * @example 
+   * <circle fill="inherit" cx="256" cy="256.00006" r="44.00003"></circle>
+   */
+  private circleToPath(cx: number, cy: number, radius: number): ISvgPoint[] {
+    const factor: ISvgView = {...this._viewBox};
+    const tangentPoint = ((4/3)*Math.tan(Math.PI/8))/2;
+    // console.log(tangentPoint/2)
+
+    const points = [{
+      code: 'M',
+      command: 'move to',
+      relative: false,
+      x: 0.5,
+      y: 0,
+    },{
+      code: 'C',
+      command: 'curve to',
+      relative: false,
+      x: 1, y: 0.5,
+      x1: 0.5 + tangentPoint, y1: 0,
+      x2: 1, y2: 0.5 - tangentPoint,
+      x0: 0.5, y0: 0,
+    },{
+      code: 'C',
+      command: 'curve to',
+      relative: false,
+      x: 0.5, y: 1,
+      x1: 1, y1: 0.5 + tangentPoint,
+      x2: 0.5 + tangentPoint, y2: 1,
+      x0: 1, y0: 0.5,
+    },{
+      code: 'C',
+      command: 'curve to',
+      relative: false,
+      x: 0, y: 0.5,
+      x1: 0.5 - tangentPoint, y1: 1,
+      x2: 0, y2: 0.5 + tangentPoint,
+      x0: 0.5, y0: 1,
+    },{
+      code: 'C',
+      command: 'curve to',
+      relative: false,
+      x: 0.5, y: 0,
+      x1: 0, y1: 0.5 - tangentPoint,
+      x2: 0.5 - tangentPoint, y2: 0,
+      x0: 0, y0: 0.5,
+    }]
+
+    return points;
   }
 
   /**
