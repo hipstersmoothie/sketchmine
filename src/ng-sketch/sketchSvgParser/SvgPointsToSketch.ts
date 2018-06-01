@@ -1,5 +1,5 @@
 import { MoveTo } from './models/MoveTo';
-import { ISvgPoint } from './interfaces/ISvg';
+import { ISvgPoint, ISvg } from './interfaces/ISvg';
 import { LineTo } from './models/LineTo';
 import { CurveTo } from './models/CurveTo';
 import { ShapePath } from './models/ShapePath';
@@ -22,55 +22,53 @@ export class SvgPointsToSketch {
 
     for(let i = 0, end = this._points.length-1; i <= end; i++) {
       const cur = this._points[i];
-      const prev = this.getPrevCurvePoint(i);
       const next = this.getNextCurvePoint(i);
+
+      // console.log(cur)
 
       switch (cur.code) {
         case 'M':
-          shapePath.addPoint(new MoveTo(prev, cur, next).generate());
+          shapePath.addPoint(new MoveTo(cur, next).generate());
           break;
         case 'S':  
         case 'C':
-          shapePath.addPoint(new CurveTo(prev, cur, next).generate());
+          shapePath.addPoint(new CurveTo(cur, next).generate());
           break;
         case 'Q':
-          shapePath.addPoint(new QuadraticCurveTo(prev, cur, next).generate());
-          break;
-        case 'L':
-          shapePath.addPoint(new LineTo(prev, cur, next).generate());
+          shapePath.addPoint(new QuadraticCurveTo(cur, next).generate());
           break;
         case 'H':
-          shapePath.addPoint(new LineTo(prev, cur, next).generate());
-          break;
         case 'V':
-          shapePath.addPoint(new LineTo(prev, cur, next).generate());
+        case 'L':
+          shapePath.addPoint(new LineTo(cur, next).generate());
           break;
         case 'Z':
           shapePath.close();
           break;
         default:
           console.log(`The SVG command: "${cur.code}" is not implemented yet! Sorry 🙁\n`);
-          // console.log(JSON.stringify);
       }
-
-      // console.log(JSON.stringify(shapePath.points[i], null, 2))
     }
     return shapePath.generateObject();
   }
-  
-  private getPrevCurvePoint(index: number) {
-    const prev = this._points[index-1];
-    if (prev) {
-      return prev;
-    }
-    return null;
+
+  private isActionPoint(point: ISvgPoint): boolean {
+    return ['M', 'm', 'z', 'Z'].includes(point.code);
   }
 
   private getNextCurvePoint(index: number): ISvgPoint {
-    const next = this._points[index+1];
-    if (next) {
-      return next;
+    let next: ISvgPoint;
+
+    while(!next) {
+      const p = this._points[index+1];
+      if (p) {
+        if (!this.isActionPoint(p)) {
+          next = p;
+        }
+        index ++;
+      }
+      index = 0;
     }
-    return null;
+    return next;
   }
 }

@@ -50,10 +50,10 @@ const agent = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%
 
 
 
-const size: IBounding = {width: 190, height: 160, x: 0, y: 0};
+const size: IBounding = {width: 512, height: 512, x: 0, y: 0};
 const shapeGroup = new ShapeGroup(size);
 const style = new Style()
-const svgObject = SvgParser.parse(quadratic, size.width, size.height);
+const svgObject = SvgParser.parse(agent, size.width, size.height);
 shapeGroup.layers = new SvgToSketch(svgObject).generateObject();
 shapeGroup.name = 'SVG';
 style.addColorFill('#ff00fa');
@@ -67,7 +67,7 @@ shapeGroup.style = style.generateObject();
 
 // write test svg
 const sketch = new Sketch();
-const pageSize: IBounding = { height: 100, width: 100, x: 0, y: 0};
+const pageSize: IBounding = { height: 512, width: 512, x: 0, y: 0};
 const page = new Page(pageSize);
 page.name = 'SVG Symbol Test Page';
 const symbolMaster = new SymbolMaster(pageSize);

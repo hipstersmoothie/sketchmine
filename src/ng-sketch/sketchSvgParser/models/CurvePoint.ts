@@ -6,13 +6,10 @@ import { round } from '../../sketchJSON/helpers/util';
 export class CurvePoint {
 
   constructor(
-    private _lastP: ISvgPoint,
     private _curP: ISvgPoint,
     private _nextP: ISvgPoint
-  ) {
-  }
+  ) { }
 
-  get last(): ISvgPoint { return this._lastP; }
   get cur(): ISvgPoint { return this._curP; }
   get next(): ISvgPoint { return this._nextP; }
 
@@ -35,14 +32,11 @@ export class CurvePoint {
    * @returns ISvgPoint
    */
   protected reflectTrough(point: IPoint, reflectPoint: IPoint) {
-    console.log(point, reflectPoint)
     const dx = reflectPoint.x - point.x;
     const dy = reflectPoint.y - point.y;
-    console.log(dx);
 
     const x = dx + reflectPoint.x;
     const y = dy + reflectPoint.y;
-    console.log(x)
     return {x,y};
   }
 

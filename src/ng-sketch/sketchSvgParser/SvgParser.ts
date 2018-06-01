@@ -40,7 +40,7 @@ export class SvgParser {
         } 
         const pathData = (child as SVGPathElement).getAttribute('d');
         const path = parseSVG(pathData) as ISvgPoint[];
-        console.log(this._viewBox)
+        
         const resized = this.resizeCoordinates(path);
         this._paths.push(makeAbsolute(resized));
       });
@@ -156,7 +156,6 @@ export class SvgParser {
 
       resized.push(p);
     });
-    // return path;
     return resized;
   }
 }
