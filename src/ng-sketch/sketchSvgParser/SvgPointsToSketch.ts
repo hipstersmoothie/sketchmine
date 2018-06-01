@@ -5,6 +5,7 @@ import { CurveTo } from './models/CurveTo';
 import { ShapePath } from './models/ShapePath';
 import { IBounding } from '../sketchJSON/interfaces/Base';
 import { QuadraticCurveTo } from './models/QuadraticCurveTo';
+import chalk from 'chalk';
 
 export class SvgPointsToSketch {
   static parse(points: ISvgPoint[], size: IBounding) {
@@ -23,8 +24,6 @@ export class SvgPointsToSketch {
     for(let i = 0, end = this._points.length-1; i <= end; i++) {
       const cur = this._points[i];
       const next = this.getNextCurvePoint(i);
-
-      // console.log(cur)
 
       switch (cur.code) {
         case 'M':
@@ -46,7 +45,7 @@ export class SvgPointsToSketch {
           shapePath.close();
           break;
         default:
-          console.log(`The SVG command: "${cur.code}" is not implemented yet! Sorry 🙁\n`);
+          console.log(chalk`{red The SVG command: "${cur.code}" is not implemented yet!} 😢 Sorry 🙁 \nTry to render without this Point...`);
       }
     }
     return shapePath.generateObject();
@@ -56,6 +55,12 @@ export class SvgPointsToSketch {
     return ['M', 'm', 'z', 'Z'].includes(point.code);
   }
 
+  /** 
+   * getting the next Point that is not an Action point, to know if it is a curve or something else.
+   * 
+   * @param index number
+   * @returns ISvgPoint
+  */
   private getNextCurvePoint(index: number): ISvgPoint {
     let next: ISvgPoint;
 

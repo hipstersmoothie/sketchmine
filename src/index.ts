@@ -9,9 +9,9 @@ process.env.DEBUG_SVG = 'true';
 
 const pages = [
   '/button/button--icon', 
-  // '/button/button--primary', 
+  '/button/button--primary', 
   // '/button/button--secondary', 
-  // '/tile/tile--default',
+  '/tile/tile--default',
 ];
 
 new ElementFetcher().generateSketch(pages);
