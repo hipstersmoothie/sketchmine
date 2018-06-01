@@ -8,7 +8,7 @@ import { Sketch } from './sketchJSON/Sketch';
 import { IGroup } from './sketchJSON/interfaces/Group';
 import { Group } from './sketchJSON/models/Group';
 import { Drawer } from './Drawer';
-import { ITraversedDom } from './TraversedDom';
+import { ITraversedDom } from './ITraversedDom';
 
 export class ElementFetcher {
 

@@ -5,7 +5,7 @@ import { parseBorderRadius, BoundingClientRectToBounding, calcPadding } from './
 import { IRectangle, IRectangleOptions } from './sketchJSON/interfaces/Rectangle';
 import { Group } from './sketchJSON/models/Group';
 import { IGroup } from './sketchJSON/interfaces/Group';
-import { ITraversedDomElement, ITraversedDomTextNode, ITraversedDomSvgNode } from './TraversedDom';
+import { ITraversedDomElement, ITraversedDomTextNode, ITraversedDomSvgNode } from './ITraversedDom';
 import { Text } from './sketchJSON/models/Text';
 import chalk from 'chalk';
 import { Svg } from './sketchJSON/models/Svg';
@@ -49,6 +49,8 @@ export class ElementNode {
   }
 
   private generateText(element: ITraversedDomTextNode) {
+
+    console.log(element.styles.padding);
     const bcr = BoundingClientRectToBounding(element.parentRect);
     const paddedBCR = calcPadding(element.styles.padding, bcr);
     if (process.env.DEBUG) {
@@ -70,6 +72,7 @@ export class ElementNode {
     shapeGroup.style = this.addStyles(element);
     shapeGroup.addLayer(this.addshape(element));
     group.addLayer(shapeGroup.generateObject())
+    console.log(element.styles.padding);
 
     if (element.children && element.children.length > 0) {
       element.children.reverse().forEach(child => {

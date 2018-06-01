@@ -51,7 +51,8 @@ export class Text extends Base {
 
   private paragraphStyle(): IParagraphStyle {
     const lh = this._styles.lineHeight;
-    const lineHeight =  (lh !== 'normal') ? parseInt(lh, 10) : undefined;
+    // Disable lineheight (only needed for multi line text – otherwise conflicts with padding)
+    const lineHeight = parseInt(this._styles.fontSize, 10);// (lh !== 'normal') ? parseInt(lh, 10) : undefined;
     return {
       _class: 'paragraphStyle',
       alignment: 0,

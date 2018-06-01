@@ -2,7 +2,7 @@ import { Page } from "./sketchJSON/models/Page";
 import { IBounding } from "./sketchJSON/interfaces/Base";
 import { SymbolMaster } from "./sketchJSON/models/SymbolMaster";
 import { Group } from "./sketchJSON/models/Group";
-import { ITraversedDom, ITraversedDomElement } from "./TraversedDom";
+import { ITraversedDom, ITraversedDomElement } from "./ITraversedDom";
 import { BoundingClientRectToBounding } from "./sketchJSON/helpers/util";
 import { ElementNode } from "./ElementNode";
 import chalk from "chalk";
