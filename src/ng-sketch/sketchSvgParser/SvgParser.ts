@@ -40,6 +40,7 @@ export class SvgParser {
         } 
         const pathData = (child as SVGPathElement).getAttribute('d');
         const path = parseSVG(pathData) as ISvgPoint[];
+        console.log(this._viewBox)
         const resized = this.resizeCoordinates(path);
         this._paths.push(makeAbsolute(resized));
       });
@@ -143,18 +144,19 @@ export class SvgParser {
     path.forEach(point => {
       const p = {
         ...point,
-        x: point.x/factor.width,
-        y: point.y/factor.height,
+        x: (!isNaN(point.x))? point.x/factor.width : null,
+        y: (!isNaN(point.y))? point.y/factor.height : null,
       }
-      if (point.x0) { p.x0 = point.x0/factor.width; }
-      if (point.x1) { p.x1 = point.x1/factor.width; }
-      if (point.x2) { p.x2 = point.x2/factor.width; }
-      if (point.y0) { p.y0 = point.y0/factor.height; }
-      if (point.y1) { p.y1 = point.y1/factor.height; }
-      if (point.y2) { p.y2 = point.y2/factor.height; }
+      if (!isNaN(point.x0)) { p.x0 = point.x0/factor.width; }
+      if (!isNaN(point.x1)) { p.x1 = point.x1/factor.width; }
+      if (!isNaN(point.x2)) { p.x2 = point.x2/factor.width; }
+      if (!isNaN(point.y0)) { p.y0 = point.y0/factor.height; }
+      if (!isNaN(point.y1)) { p.y1 = point.y1/factor.height; }
+      if (!isNaN(point.y2)) { p.y2 = point.y2/factor.height; }
 
       resized.push(p);
     });
+    // return path;
     return resized;
   }
 }

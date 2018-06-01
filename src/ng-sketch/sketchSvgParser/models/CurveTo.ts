@@ -29,7 +29,7 @@ export class CurveTo extends CurvePoint {
       hasCurveTo = true;
     }
 
-    return {
+    const curvePoint = {
       _class: 'curvePoint',
       cornerRadius: 0,
       curveFrom: (hasCurveFrom)? `{${this.next.x1}, ${this.next.y1}}` : `{${this.cur.x}, ${this.cur.y}}`,
@@ -38,6 +38,19 @@ export class CurveTo extends CurvePoint {
       hasCurveFrom,
       hasCurveTo,
       point: `{${this.cur.x}, ${this.cur.y}}`,
+    } as ICurvePoint;
+
+    // if it is a smooth curve the next reflect the last control point
+    if (this.isSmoothCurveTo(this.next)) {
+      const point = {  x: this.cur.x2, y: this.cur.y2 }
+      const reflector = { x: this.cur.x, y: this.cur.y }
+      const ref = this.reflectTrough(point, reflector);
+
+      curvePoint.hasCurveFrom = true;
+      curvePoint.curveMode = CurvePointMode.Mirrored;
+      curvePoint.curveFrom = `{${ref.x}, ${ref.y}}`;
     }
+
+    return curvePoint;
   }
 }

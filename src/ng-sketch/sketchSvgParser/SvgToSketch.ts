@@ -13,7 +13,7 @@ export class SvgToSketch {
     const shapeGroupLayers = [];
 
     this._svgObject.shapes.forEach(shape => {
-      shapeGroupLayers.push(SvgPointsToSketch.parse(shape.points));
+      shapeGroupLayers.push(SvgPointsToSketch.parse(shape.points, size));
     })
     
     return shapeGroupLayers;
