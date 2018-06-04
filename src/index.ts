@@ -14,5 +14,5 @@ const pages = [
   '/tile/tile--default',
 ];
 
-import './ng-sketch/sketchSvgParser/test';
-// new ElementFetcher().generateSketch(pages);
+// import './ng-sketch/sketchSvgParser/test';
+new ElementFetcher().generateSketch(pages);
