@@ -62,13 +62,17 @@ export class ElementNode {
   private generate(element: ITraversedDomElement) {
     const size = this.getSize(element);
     const group = new Group(size);
-    // shape Group in group always starts at x:0, y:0
-    const shapeGroup = new ShapeGroup({...size, x:0, y:0 });
     group.name = element.className || element.tagName.toLowerCase();
-    shapeGroup.name = 'Background';
-    shapeGroup.style = this.addStyles(element);
-    shapeGroup.addLayer(this.addshape(element));
-    group.addLayer(shapeGroup.generateObject())
+
+    // add Background shape only if it has styling
+    if (!this.hasDefaultStyling(element.styles)) {
+      // shape Group in group always starts at x:0, y:0
+      const shapeGroup = new ShapeGroup({...size, x:0, y:0 });
+      shapeGroup.name = 'Background';
+      shapeGroup.style = this.addStyles(element);
+      shapeGroup.addLayer(this.addshape(element));
+      group.addLayer(shapeGroup.generateObject())
+    }
 
     if (element.children && element.children.length > 0) {
       element.children.reverse().forEach(child => {
@@ -80,6 +84,23 @@ export class ElementNode {
       })
     }
     this._layers.push(group.generateObject());
+  }
+
+  private hasDefaultStyling(styles: CSSStyleDeclaration) {
+
+    const DEFAULT_VALUES = {
+      backgroundColor: 'rgba(0, 0, 0, 0)',
+      backgroundImage: 'none',
+      borderWidth: '0px',
+      boxShadow: 'none'
+    };
+
+    return Object.keys(DEFAULT_VALUES).every(key => {
+      const defaultValue = DEFAULT_VALUES[key];
+      const value = styles[key];
+  
+      return defaultValue === value;
+    });
   }
 
   private addshape(element: ITraversedDomElement): IRectangle {

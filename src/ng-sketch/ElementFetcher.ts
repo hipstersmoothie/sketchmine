@@ -16,7 +16,7 @@ export class ElementFetcher {
   private _symbols: ITraversedDom[] = [];
   private _injectedDomTraverser = path.resolve(__dirname, 'injectedTraverser.js');
 
-  async generateSketch(pages: string[]) {
+  async generateSketchFile(pages: string[]) {
     await this.collectElements(pages);
     const drawer = new Drawer();    
     const sketch = new Sketch();
@@ -55,6 +55,8 @@ export class ElementFetcher {
     } catch(error) {
       throw new Error(chalk`\n\n🚨 {bgRed Something happened while launching the headless browser:} 🌍 🖥\n${error}`);
     }
-    await browser.close();
+    if (!process.env.DEBUG_BROWSER) {
+      await browser.close();
+    }
   }
 }
