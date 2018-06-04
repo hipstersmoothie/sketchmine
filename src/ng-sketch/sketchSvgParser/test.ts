@@ -33,6 +33,10 @@ const smoothCurve = `
   <path d="M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80" stroke="black" fill="transparent"/>
 </svg>`;
 
+const circle = `
+<svg version="1.1" id="Work_area" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+  <path d="M256,0 C396.380005,0 512,114.620003 512,256 C512,396.380005 396.380005,512 256,512 C114.620003,512 0,401.880005 0,256 C8.93257405e-15,110.119995 114.620003,1.73140561e-14 256,0 Z" id="SVG"></path>
+</svg>`;
 
 const cloud = `
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
@@ -55,6 +59,7 @@ const more = `
   <circle fill="inherit" cx="256" cy="256.00006" r="44.00003"></circle>
   <circle fill="inherit" cx="108.00002" cy="256.00006" r="44"></circle>
 </svg>`;
+
 
 const richFace = `
 <svg version="1.1" id="Work_area" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">

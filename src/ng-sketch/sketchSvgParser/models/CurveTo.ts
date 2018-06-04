@@ -11,7 +11,8 @@ export class CurveTo extends CurvePoint {
 
     // Check if the point equals the point of the control Point from the tangent 
     // to decide if it as has curveFrom (otherwise it is a Point without tangent)
-    if(this.next.x1 && this.next.y1 &&
+    if(!isNaN(this.next.x1) && 
+      !isNaN(this.next.y1) &&
       !super.pointEqalsPoint(
       {x: this.next.x1, y: this.next.y1}, // Tangent control Point
       {x: this.cur.x, y: this.cur.y}  // Actual Point on curve
@@ -20,14 +21,15 @@ export class CurveTo extends CurvePoint {
     }
 
     // check the same for the other Tangent Point of the curve
-    if(this.cur.x2 && this.cur.y2 &&
+    if(!isNaN(this.cur.x2) && 
+      !isNaN(this.cur.y2) &&
       !super.pointEqalsPoint(
       {x: this.cur.x2, y: this.cur.y2}, // Tangent control Point
       {x: this.cur.x, y: this.cur.y}  // Actual Point on curve
     )) {
       hasCurveTo = true;
     }
-
+    
     const curvePoint = {
       _class: 'curvePoint',
       cornerRadius: 0,

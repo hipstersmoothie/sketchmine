@@ -20,9 +20,9 @@ export class MoveTo extends CurvePoint {
     return {
       _class: 'curvePoint',
       cornerRadius: 0,
-      curveFrom: (hasCurveFrom)? `{${this.next.x1}, ${this.next.y1}}`: `{${this.cur.x}, ${this.cur.x}}`,
+      curveFrom: (hasCurveFrom)? `{${this.next.x1}, ${this.next.y1}}`: `{${this.cur.x}, ${this.cur.y}}`,
       curveMode: CurvePointMode.Disconnected,
-      curveTo: `{${this.cur.x}, ${this.cur.x}}`,
+      curveTo: `{${this.cur.x}, ${this.cur.y}}`,
       hasCurveFrom,
       hasCurveTo,
       point: `{${this.cur.x}, ${this.cur.y}}`,

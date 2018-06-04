@@ -8,7 +8,8 @@ export class LineTo extends CurvePoint {
     let hasCurveFrom = false;
 
     // check if next is a curve
-    if(this.next.x1 && this.next.y1 &&
+    if(!isNaN(this.next.x1) && 
+      !isNaN(this.next.y1) &&
       !super.pointEqalsPoint(
       {x: this.next.x1, y: this.next.y1}, // Tangent control Point
       {x: this.cur.x, y: this.cur.y}  // Actual Point on curve
