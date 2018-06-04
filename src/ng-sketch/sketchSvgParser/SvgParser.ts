@@ -41,11 +41,9 @@ export class SvgParser {
           const path = parseSVG(pathData) as ISvgPoint[];
           const resized = this.resizeCoordinates(path);
           this._paths.push(makeAbsolute(resized));
-          console.log(resized)
 
         } else if (child.nodeName === 'circle') {
           const circle = child as SVGCircleElement;
-          // console.log(this.circleToPath(circle))
           this._paths.push(this.circleToPath(circle));
         }
         
