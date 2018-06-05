@@ -1,14 +1,13 @@
-import { IPage } from "../interfaces/Page";
-import { UUID } from "../helpers/UUID";
-import { SymbolMaster } from "./SymbolMaster";
-import { Base } from "./Base";
-import { IBounding, IBase } from "../interfaces/Base";
-
+import { IPage } from '../interfaces/Page';
+import { UUID } from '../helpers/UUID';
+import { SymbolMaster } from './SymbolMaster';
+import { Base } from './Base';
+import { IBounding, IBase } from '../interfaces/Base';
 
 export class Page extends Base {
 
   constructor(bounding: IBounding) {
-    super()
+    super();
     super.class = 'page';
     super.name = 'Symbols';
     super.style = super.addStyle();
@@ -24,8 +23,7 @@ export class Page extends Base {
       hasClickThrough: false,
       horizontalRulerData: super.addRuler(-153),
       includeInCloudUpload: true,
-      verticalRulerData: super.addRuler(-290)
-    }
-    
+      verticalRulerData: super.addRuler(-290),
+    };
   }
 }

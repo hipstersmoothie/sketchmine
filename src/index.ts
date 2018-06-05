@@ -8,12 +8,13 @@ process.env.DEBUG_SVG = 'true';
 // process.env.DEBUG_BROWSER = 'true';
 
 const pages = [
-  '/icon/icon--agent',
-  // '/icon/icon--richface',
-  // '/button/button--icon',
-  // '/button/button--primary',
-  // '/button/button--secondary',
-  // '/tile/tile--default',
+  // '/icon/icon--agent',
+  // '/chart/chart--default',
+  '/icon/icon--richface',
+  '/button/button--icon',
+  '/button/button--primary',
+  '/button/button--secondary',
+  '/tile/tile--default',
 ];
 
 // import './ng-sketch/sketchSvgParser/test';
