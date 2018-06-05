@@ -3,13 +3,17 @@ export interface ISvg {
   shapes: ISvgPointGroup[];
 }
 
+export interface ISvgShape {
+  points: ISvgPoint[];
+  style?: any;
+}
 
 export interface ISvgView {
   width: number;
   height: number;
 }
 /**
- * 
+ *
  * booleanOperation from Sketch constants: ->
  *  export const BooleanOperation = {
  *    None: -1,
@@ -18,13 +22,13 @@ export interface ISvgView {
  *    Intersect: 2,
  *    Difference: 3
  *  };
- *  
+ *
  */
 export interface ISvgPointGroup {
   booleanOperation: number; // Blendmode in sketch constants
   points: ISvgPoint[];
+  style: Map<SvgStyle, string>;
 }
-
 
 export interface ISvgPoint {
   code: string;
@@ -44,3 +48,5 @@ export interface IPoint {
   x: number;
   y: number;
 }
+
+export type SvgStyle = 'fill' | 'stroke' | 'strokeWidth' | 'fillOpacity' | 'strokeOpacity';

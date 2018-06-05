@@ -1,15 +1,15 @@
-import { IPoint, ISvgPoint } from "../interfaces/ISvg";
-import { Point } from "./Point";
+import { IPoint, ISvgPoint } from '../interfaces/ISvg';
+import { Point } from './Point';
 
 /**
  * Converts a rect in 4 Lines
- * 
+ *
  * @param width number
  * @param height number
  * @param x number
  * @param y number
  * @returns ISvgPoint[]
- * @example 
+ * @example
  * 	<rect width="1" height="2" x="0" fill="#008d46" />
  */
 export class Rect {
@@ -18,20 +18,20 @@ export class Rect {
     private _width: number,
     private _height: number,
     private _x: number,
-    private _y: number
+    private _y: number,
   ) { }
 
   generate(): ISvgPoint[] {
 
-    const moveTo = new Point('M', {x: 0, y: 0});
+    const moveTo = new Point('M', { x: 0, y: 0 });
 
-    const c1 = new Point('L', {x: this._width, y: 0});
-    const c2 = new Point('L', {x: this._width, y: this._height});
-    const c3 = new Point('L', {x: 0, y: this._height});
+    const c1 = new Point('L', { x: this._width, y: 0 });
+    const c2 = new Point('L', { x: this._width, y: this._height });
+    const c3 = new Point('L', { x: 0, y: this._height });
     const close = new Point('Z');
 
-    const offsetX = (!isNaN(this._x))? this._x : 0;
-    const offsetY = (!isNaN(this._y))? this._y : 0;
+    const offsetX = (!isNaN(this._x)) ? this._x : 0;
+    const offsetY = (!isNaN(this._y)) ? this._y : 0;
 
     moveTo.addOffset(offsetX, offsetY);
     c1.addOffset(offsetX, offsetY);

@@ -12,7 +12,7 @@ export interface ITraversedElement {
 export interface ITraversedDomElement extends ITraversedElement {
   className: string;
   boundingClientRect: DOMRect;
-  children?: (ITraversedDomElement | ITraversedDomTextNode)[] 
+  children?: (ITraversedDomElement | ITraversedDomTextNode)[];
 }
 export interface ITraversedDomTextNode extends ITraversedElement{
   text: string;

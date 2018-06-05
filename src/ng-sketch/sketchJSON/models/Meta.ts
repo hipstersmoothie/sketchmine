@@ -1,5 +1,5 @@
-import { IMeta, IMetaPagesAndArtboards, IMetaArtboard } from "../interfaces/Meta";
-import { Page } from "./Page";
+import { IMeta, IMetaPagesAndArtboards, IMetaArtboard } from '../interfaces/Meta';
+import { Page } from './Page';
 
 export class Meta {
   private static _instance: Meta;
@@ -9,7 +9,7 @@ export class Meta {
   private static _appUrl = 'com.bohemiancoding.sketch3';
   private static _commit = '2b45d75f77b3d86c8cfab3e1090bcc520c37ea74';
   private static _variant = 'NONAPPSTORE';
-  private static _fonts = [ 'BerninaSans-Regular' ];
+  private static _fonts = ['BerninaSans-Regular'];
   private static _build = 51167;
   private _pages = [];
 
@@ -23,10 +23,10 @@ export class Meta {
 
   private addArtboards(page: Page): { [key: string]: IMetaArtboard } {
     const artboards = {};
-    page.layers.forEach(layer => {
+    page.layers.forEach((layer) => {
       artboards[layer.do_objectID] = {
-        name: layer.name
-      }
+        name: layer.name,
+      };
     });
     return artboards;
   }
@@ -36,13 +36,12 @@ export class Meta {
     this._pages.forEach((page: Page) => {
       artboards[page.objectID] = {
         name: 'Symbols',
-        artboards: this.addArtboards(page)
-      }
+        artboards: this.addArtboards(page),
+      };
     });
 
     return artboards as { [key: string]: IMetaPagesAndArtboards };
   }
-
 
   generateObject(): IMeta {
     return {
@@ -61,13 +60,13 @@ export class Meta {
         app: Meta._appUrl,
         compatibilityVersion: Meta._compatVersion,
         version: Meta._version,
-        variant: Meta._variant
+        variant: Meta._variant,
       },
       saveHistory: [
-        `${Meta._variant}.${Meta._build}`
+        `${Meta._variant}.${Meta._build}`,
       ],
       appVersion: Meta._appVersion,
-      build: Meta._build
-    }
+      build: Meta._build,
+    };
   }
 }

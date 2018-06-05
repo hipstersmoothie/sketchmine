@@ -1,12 +1,13 @@
-import { SvgParser } from "./SvgParser";
-import { Sketch } from "../sketchJSON/Sketch";
-import { Page } from "../sketchJSON/models/Page";
-import { SymbolMaster } from "../sketchJSON/models/SymbolMaster";
-import { Group } from "../sketchJSON/models/Group";
-import { SvgToSketch } from "./SvgToSketch";
-import { ShapeGroup } from "./models/ShapeGroup";
-import { IBounding } from "../sketchJSON/interfaces/Base";
-import { Style } from "../sketchJSON/models/Style";
+/* tslint:disable */
+import { SvgParser } from './SvgParser';
+import { Sketch } from '../sketchJSON/Sketch';
+import { Page } from '../sketchJSON/models/Page';
+import { SymbolMaster } from '../sketchJSON/models/SymbolMaster';
+import { Group } from '../sketchJSON/models/Group';
+import { SvgToSketch } from './SvgToSketch';
+import { ShapeGroup } from './models/ShapeGroup';
+import { IBounding } from '../sketchJSON/interfaces/Base';
+import { Style } from '../sketchJSON/models/Style';
 
 const curves = `
 <svg width="190" height="160" xmlns="http://www.w3.org/2000/svg">
@@ -186,14 +187,11 @@ const sql = `
 
 // Test drawing svgs
 
-const size: IBounding = {width: 150, height: 100, x: 0, y: 0};
-const shapeGroup = new ShapeGroup(size);
-const style = new Style()
-const svgObject = SvgParser.parse(rect, size.width, size.height);
-shapeGroup.layers = new SvgToSketch(svgObject).generateObject();
-shapeGroup.name = 'SVG';
-style.addColorFill('#ff00fa');
-shapeGroup.style = style.generateObject();
+const size: IBounding = {width: 100, height: 100, x: 0, y: 0};
+// const shapeGroup = new ShapeGroup(size);
+const svgObject = SvgParser.parse(more, size.width, size.height);
+// shapeGroup.layers = new SvgToSketch(svgObject).generateObject();
+// shapeGroup.name = 'SVG';
 
 // write test svg
 const sketch = new Sketch();
@@ -201,9 +199,9 @@ const page = new Page(size);
 page.name = 'SVG Symbol Test Page';
 const symbolMaster = new SymbolMaster(size);
 const group = new Group(size);
-group.name = 'Agent SVG'
+group.name = 'Agent SVG';
 
-group.addLayer(shapeGroup.generateObject());
+group.layers = new SvgToSketch(svgObject).generateObject();
 symbolMaster.addLayer(group.generateObject());
 page.addLayer(symbolMaster.generateObject());
 

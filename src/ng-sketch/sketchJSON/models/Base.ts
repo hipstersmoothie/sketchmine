@@ -1,7 +1,7 @@
-import { UUID } from "../helpers/UUID";
-import { IBase, IExportOptions, IBounding, IFrame } from "../interfaces/Base";
-import { IRulerData } from "../interfaces/Page";
-import { IStyle } from "../interfaces/Style";
+import { UUID } from '../helpers/UUID';
+import { IBase, IExportOptions, IBounding, IFrame } from '../interfaces/Base';
+import { IRulerData } from '../interfaces/Page';
+import { IStyle } from '../interfaces/Style';
 
 export class Base {
 
@@ -17,40 +17,39 @@ export class Base {
   get layers() { return this._layers; }
   set layers(layers: any[]) { this._layers = layers; }
   set name(name: string) { this._name = name; }
-  set class(name: string) { this._class = name; }  
+  set class(name: string) { this._class = name; }
   set breakMaskChain(br: boolean) { this._breakMaskChain = br; }
   set style(style: IStyle) { this._style = style; }
-  set bounding(bounding: IBounding) { this._bounding = bounding }
+  set bounding(bounding: IBounding) { this._bounding = bounding; }
 
   protected addFrame(name: string): IFrame {
     const obj: IFrame = {
       _class: name,
       constrainProportions: false,
-      ...this._bounding
+      ...this._bounding,
     };
     return this.addObjectID(obj);
   }
 
   protected addStyle(
-    start: number = 0, 
+    start: number = 0,
     mitter: number = 10,
     end: number = 0): IStyle {
     const obj: IStyle = {
       _class: 'style',
       endDecorationType: end,
       miterLimit: mitter,
-      startDecorationType: start
-    }
+      startDecorationType: start,
+    };
     return this.addObjectID(obj);
   }
-
 
   protected addRuler(base: number = 0): IRulerData {
     return {
       _class: 'rulerData',
-      base: base,
-      guides: []
-    }
+      base,
+      guides: [],
+    };
   }
 
   private addExportOptions(): IExportOptions {
@@ -59,14 +58,14 @@ export class Base {
       exportFormats: [],
       includedLayerIds: [],
       layerOptions: 0,
-      shouldTrim: false
-    }
+      shouldTrim: false,
+    };
     return this.addObjectID(obj);
   }
 
   private addObjectID(obj) {
-    if (this._class !== 'symbolMaster' && 
-        this._class !== 'page' ) {
+    if (this._class !== 'symbolMaster' &&
+        this._class !== 'page') {
       obj.do_objectID = UUID.generate();
     }
     return obj;
@@ -79,7 +78,7 @@ export class Base {
     }
     this._layers.push(layer);
   }
-  
+
   generateObject(): IBase {
     if (!this._class) {
       throw new Error('Class not set!');
@@ -100,8 +99,8 @@ export class Base {
       resizingType: 0,
       rotation: 0,
       shouldBreakMaskChain: this._breakMaskChain,
-      style: this._style ? this._style: undefined,
-      layers: (this._layers.length > 0) ? this._layers: undefined
+      style: this._style ? this._style : undefined,
+      layers: (this._layers.length > 0) ? this._layers : undefined,
     };
   }
 }

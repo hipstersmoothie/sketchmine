@@ -1,6 +1,6 @@
-import { CurvePoint } from "./CurvePoint";
-import { ICurvePoint } from "../interfaces/ICurvePoint";
-import { CurvePointMode } from "../../sketchJSON/helpers/sketchConstants";
+import { CurvePoint } from './CurvePoint';
+import { ICurvePoint } from '../interfaces/ICurvePoint';
+import { CurvePointMode } from '../../sketchJSON/helpers/sketchConstants';
 
 export class LineTo extends CurvePoint {
 
@@ -8,11 +8,11 @@ export class LineTo extends CurvePoint {
     let hasCurveFrom = false;
 
     // check if next is a curve
-    if(!isNaN(this.next.x1) && 
+    if (!isNaN(this.next.x1) &&
       !isNaN(this.next.y1) &&
       !super.pointEqalsPoint(
-      {x: this.next.x1, y: this.next.y1}, // Tangent control Point
-      {x: this.cur.x, y: this.cur.y}  // Actual Point on curve
+      { x: this.next.x1, y: this.next.y1 }, // Tangent control Point
+      { x: this.cur.x, y: this.cur.y }, // Actual Point on curve
     )) {
       hasCurveFrom = true;
     }
@@ -20,7 +20,7 @@ export class LineTo extends CurvePoint {
     return {
       _class: 'curvePoint',
       cornerRadius: 0,
-      curveFrom: (hasCurveFrom)? `{${this.next.x1}, ${this.next.y1}}` : `{${this.cur.x}, ${this.cur.y}}`,
+      curveFrom: (hasCurveFrom) ? `{${this.next.x1}, ${this.next.y1}}` : `{${this.cur.x}, ${this.cur.y}}`,
       curveMode: CurvePointMode.Disconnected,
       curveTo: `{${this.cur.x}, ${this.cur.x}}`,
       hasCurveFrom,

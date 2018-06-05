@@ -1,21 +1,21 @@
-import { ITextStyle } from "./Text";
+import { ITextStyle } from './Text';
 
 export interface IStyle {
-  _class: string,
-  do_objectID?: string,
-  fills?: IFill[],
-  borders?: IBorder[],
-  endDecorationType: number,
-  miterLimit: number,
-  startDecorationType: number,
+  _class: string;
+  do_objectID?: string;
+  fills?: IFill[];
+  borders?: IBorder[];
+  endDecorationType: number;
+  miterLimit: number;
+  startDecorationType: number;
   contextSettings?: IStyleContextSettings;
   textStyle?: ITextStyle;
 }
 
 export interface IStyleContextSettings {
-  _class: string,
-  blendMode: number,
-  opacity: string
+  _class: string;
+  blendMode: number;
+  opacity: string;
 }
 
 export interface IBorder {

@@ -14,7 +14,7 @@ export function safeToLower(input: string | any): string | any {
 
 /**
  * Rounds a number to a float with default 4 digits after the comma
- * 
+ *
  * @param num number
  * @param round number -> Digits after the comma
  */
@@ -24,7 +24,7 @@ export function round(num: number, round: number = 4) {
 
 /**
  * Check if the values of an array are equal
- * 
+ *
  * @param array any
  */
 export function arrayContentEquals(array: any[]) {
@@ -36,11 +36,11 @@ export function arrayContentEquals(array: any[]) {
   }).length;
 }
 
-export function BoundingClientRectToBounding(bcr: ClientRect | DOMRect): IBounding {
+export function boundingClientRectToBounding(bcr: ClientRect | DOMRect): IBounding {
   return {
-    height: Math.round(bcr.height), 
+    height: Math.round(bcr.height),
     width: Math.round(bcr.width),
-    x: Math.round(bcr.left), 
+    x: Math.round(bcr.left),
     y: Math.round(bcr.top),
   };
 }
@@ -69,21 +69,21 @@ export function createDir(folder: string) {
   if (!folder) {
     throw new Error('Could not create the folder, no path provided!');
   }
-  if (!fs.existsSync(path.resolve(folder))){
+  if (!fs.existsSync(path.resolve(folder))) {
     fs.mkdirSync(path.resolve(folder));
   }
 }
 
 export function writeJSON(filename: string, content: Object | string) {
-  content = (typeof content === 'string')? content : JSON.stringify(content);
-  fs.writeFile(`${filename}.json`, content, 'utf8', () => {});
+  const _content = (typeof content === 'string') ? content : JSON.stringify(content);
+  fs.writeFile(`${filename}.json`, _content, 'utf8', () => {});
 }
 
 export function delFolder(dir: string) {
-  if( fs.existsSync(dir) ) {
-    fs.readdirSync(dir).forEach((file,index) => {
+  if (fs.existsSync(dir)) {
+    fs.readdirSync(dir).forEach((file, index) => {
       const curPath = path.join(dir, file);
-      if(fs.lstatSync(curPath).isDirectory()) { // recurse
+      if (fs.lstatSync(curPath).isDirectory()) { // recurse
         delFolder(curPath);
       } else { // delete file
         fs.unlinkSync(curPath);
@@ -91,42 +91,42 @@ export function delFolder(dir: string) {
     });
     fs.rmdirSync(dir);
   }
-};
+}
 
 export function bytesToSize(bytes: number): string {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  if (bytes == 0) {
+  if (bytes === 0) {
     return '0 Byte';
   }
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   const pow = bytes / Math.pow(1024, i);
   return `${Math.round(pow)} ${sizes[i]}`;
-};
+}
 
 export function calcPadding(padding: string, bcr: IBounding): IBounding {
   const spaces = padding.split(' ');
-  const bounding = {...bcr, x: 0, y: 0 };
+  const bounding = { ...bcr, x: 0, y: 0 };
   switch (spaces.length) {
-    case 1: 
+    case 1:
       bounding.x = parseInt(spaces[0], 10);
       bounding.y = parseInt(spaces[0], 10);
       bounding.height -= parseInt(spaces[0], 10) * 2;
-      bounding.width -= parseInt(spaces[0], 10) * 2; break
-    case 2: 
+      bounding.width -= parseInt(spaces[0], 10) * 2; break;
+    case 2:
       bounding.x = parseInt(spaces[1], 10);
       bounding.y = parseInt(spaces[0], 10);
       bounding.height -= parseInt(spaces[0], 10) * 2;
-      bounding.width -= parseInt(spaces[1], 10) * 2; break
-    case 3: 
+      bounding.width -= parseInt(spaces[1], 10) * 2; break;
+    case 3:
       bounding.x = parseInt(spaces[1], 10);
       bounding.y = parseInt(spaces[0], 10);
       bounding.height -= parseInt(spaces[0], 10) + parseInt(spaces[2], 10);
-      bounding.width -= parseInt(spaces[1], 10) * 2; break
-    case 4: 
+      bounding.width -= parseInt(spaces[1], 10) * 2; break;
+    case 4:
       bounding.x = parseInt(spaces[3], 10);
       bounding.y = parseInt(spaces[0], 10);
       bounding.height -= parseInt(spaces[0], 10) + parseInt(spaces[2], 10);
-      bounding.width -= parseInt(spaces[1], 10) + parseInt(spaces[3], 10); break
+      bounding.width -= parseInt(spaces[1], 10) + parseInt(spaces[3], 10); break;
   }
   return bounding;
 }

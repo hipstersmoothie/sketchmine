@@ -1,4 +1,4 @@
-import { IStyle } from "./Style";
+import { IStyle } from './Style';
 
 export interface IBase {
   _class: string;
@@ -18,7 +18,7 @@ export interface IBase {
   rotation: number;
   shouldBreakMaskChain: boolean;
   style: IStyle;
-  hasClickThrough?: boolean;	
+  hasClickThrough?: boolean;
   layers: any[];
 }
 

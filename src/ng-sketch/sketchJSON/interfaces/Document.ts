@@ -30,7 +30,6 @@ export interface IDocumentLayerStyles {
   objects: any[];
 }
 
-
 export interface IDocumentImageCollection {
   _class: string;
   images: IImages;

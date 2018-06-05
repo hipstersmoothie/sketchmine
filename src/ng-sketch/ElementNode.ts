@@ -19,9 +19,9 @@ export class ElementNode {
   get layers(): IGroup[] { return this._layers; }
 
   constructor(element: ITraversedDomElement | ITraversedDomTextNode | ITraversedDomSvgNode) {
-    switch(element.tagName) {
-      case 'TEXT': 
-        this.generateText(element as ITraversedDomTextNode); 
+    switch (element.tagName) {
+      case 'TEXT':
+        this.generateText(element as ITraversedDomTextNode);
         break;
       case 'IMG':
         console.log('🚫 🖼 Images are currently not supported!'); break;
@@ -36,9 +36,9 @@ export class ElementNode {
     if (process.env.DEBUG) {
       console.log(chalk`   Add SVG 🖼 ...`);
     }
-    
+
     const size = this.getSize(element);
-    const shapeGroup = new ShapeGroup({...size, x:0, y:0 });
+    const shapeGroup = new ShapeGroup({ ...size, x:0, y:0 });
     shapeGroup.style = this.addStyles(element);
     shapeGroup.name = 'SVG';
 
@@ -58,7 +58,6 @@ export class ElementNode {
     this._layers.push(text.generateObject());
   }
 
-
   private generate(element: ITraversedDomElement) {
     const size = this.getSize(element);
     const group = new Group(size);
@@ -67,21 +66,21 @@ export class ElementNode {
     // add Background shape only if it has styling
     if (!this.hasDefaultStyling(element.styles)) {
       // shape Group in group always starts at x:0, y:0
-      const shapeGroup = new ShapeGroup({...size, x:0, y:0 });
+      const shapeGroup = new ShapeGroup({ ...size, x:0, y:0 });
       shapeGroup.name = 'Background';
       shapeGroup.style = this.addStyles(element);
       shapeGroup.addLayer(this.addshape(element));
-      group.addLayer(shapeGroup.generateObject())
+      group.addLayer(shapeGroup.generateObject());
     }
 
     if (element.children && element.children.length > 0) {
-      element.children.reverse().forEach(child => {
+      element.children.reverse().forEach((child) => {
         const childNode = new ElementNode(child);
-        const layers = childNode.layers
+        const layers = childNode.layers;
         if (layers.length > 0) {
           group.addLayer(layers);
         }
-      })
+      });
     }
     this._layers.push(group.generateObject());
   }
@@ -91,13 +90,13 @@ export class ElementNode {
       backgroundColor: 'rgba(0, 0, 0, 0)',
       backgroundImage: 'none',
       borderWidth: '0px',
-      boxShadow: 'none'
+      boxShadow: 'none',
     };
 
-    return Object.keys(DEFAULT_VALUES).every(key => {
+    return Object.keys(DEFAULT_VALUES).every((key) => {
       const defaultValue = DEFAULT_VALUES[key];
       const value = styles[key];
-  
+
       return defaultValue === value;
     });
   }
@@ -107,8 +106,8 @@ export class ElementNode {
     const options: IRectangleOptions = {
       width: element.boundingClientRect.width,
       height: element.boundingClientRect.height,
-      cornerRadius: parseInt(element.styles.borderRadius),
-    }
+      cornerRadius: parseInt(element.styles.borderRadius, 10),
+    };
     const rectangle = new Rectangle(options);
     return rectangle.generateObject();
   }
@@ -117,8 +116,8 @@ export class ElementNode {
     const style = new Style();
     const cs = element.styles;
 
-    if(!cs) {  return; }
-    if (element.tagName == 'SVG' && cs.fill) { style.addColorFill(cs.fill); }
+    if (!cs) {  return; }
+    if (element.tagName === 'SVG' && cs.fill) { style.addColorFill(cs.fill); }
     if (cs.backgroundColor) { style.addColorFill(cs.backgroundColor); }
     if (cs.borderWidth) { style.addBorder(cs.borderColor, parseInt(cs.borderWidth, 10)); }
     if (parseInt(cs.opacity, 10) < 1) { style.opacity = cs.opacity; }
@@ -131,18 +130,21 @@ export class ElementNode {
     const bcr = element.boundingClientRect;
 
     if (process.env.DEBUG) {
-      console.log(chalk`   {magentaBright ${element.className}} | {yellowBright ${element.tagName}}`, BoundingClientRectToBounding(element.boundingClientRect));
+      console.log(
+        chalk`   {magentaBright ${element.className}} | {yellowBright ${element.tagName}}`,
+        BoundingClientRectToBounding(element.boundingClientRect),
+      );
     }
 
-    if(Object.keys(parentBCR).length > 0) {
+    if (Object.keys(parentBCR).length > 0) {
       const x = bcr.x - parentBCR.x;
       const y = bcr.y - parentBCR.y;
-      return { 
-        height: Math.round(bcr.height), 
+      return {
+        height: Math.round(bcr.height),
         width: Math.round(bcr.width),
-        x: Math.round(x), 
+        x: Math.round(x),
         y: Math.round(y),
-      }
+      };
     }
     return BoundingClientRectToBounding(element.boundingClientRect);
   }

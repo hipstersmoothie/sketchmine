@@ -1,28 +1,30 @@
 import { MoveTo } from './models/MoveTo';
-import { ISvgPoint, ISvg } from './interfaces/ISvg';
+import { ISvgPoint, ISvg, ISvgShape } from './interfaces/ISvg';
 import { LineTo } from './models/LineTo';
 import { CurveTo } from './models/CurveTo';
 import { ShapePath } from './models/ShapePath';
 import { IBounding } from '../sketchJSON/interfaces/Base';
 import { QuadraticCurveTo } from './models/QuadraticCurveTo';
 import chalk from 'chalk';
+import { isActionPoint } from './util/point';
 
 export class SvgPointsToSketch {
-  static parse(points: ISvgPoint[], size: IBounding) {
-    return new SvgPointsToSketch(points, size).trace();
+  static parse(shape: ISvgShape, size: IBounding) {
+    return new SvgPointsToSketch(shape, size).trace();
   }
 
   constructor(
-    private _points: ISvgPoint[], 
-    private _size: IBounding
+    private _shape: ISvgShape,
+    private _size: IBounding,
   ) {}
 
   private trace() {
+    const points: ISvgPoint[] = this._shape.points;
     const shapePath: ShapePath = new ShapePath();
     shapePath.bounding = this._size;
 
-    for(let i = 0, end = this._points.length-1; i <= end; i++) {
-      const cur = this._points[i];
+    for (let i = 0, end = points.length - 1; i <= end; i += 1) {
+      const cur = points[i];
       const prev = this.getPrevCurvePoint(i);
       const next = this.getNextCurvePoint(i);
 
@@ -30,7 +32,7 @@ export class SvgPointsToSketch {
         case 'M':
           shapePath.addPoint(new MoveTo(prev, cur, next).generate());
           break;
-        case 'S':  
+        case 'S':
         case 'C':
           shapePath.addPoint(new CurveTo(prev, cur, next).generate());
           break;
@@ -46,56 +48,57 @@ export class SvgPointsToSketch {
           shapePath.close();
           break;
         default:
-          console.log(chalk`{red The SVG command: "${cur.code}" is not implemented yet!} 😢 Sorry 🙁 \nTry to render without this Point...`);
+          console.log(
+            chalk`{red The SVG command: "${cur.code}" is not implemented yet!} 😢 Sorry 🙁
+            Try to render without this Point...`,
+          );
       }
     }
     return shapePath.generateObject();
   }
 
-  private isActionPoint(point: ISvgPoint): boolean {
-    return ['M', 'm', 'z', 'Z'].includes(point.code);
-  }
-
-  /** 
+  /**
    * getting the prev Point that is not an Action point, to know if it is a curve or something else.
-   * 
+   *
    * @param index number
    * @returns ISvgPoint
   */
   private getPrevCurvePoint(index: number): ISvgPoint {
     let prev: ISvgPoint;
+    let i = index;
 
-    while(!prev) {
-      const p = this._points[index-1];
+    while (!prev) {
+      const p = this._shape.points[i - 1];
       if (p) {
-        if (!this.isActionPoint(p)) {
+        if (!isActionPoint(p)) {
           prev = p;
         }
-        index --;
+        i -= 1;
       }
-      index = this._points.length - 1;
+      i = this._shape.points.length - 1;
     }
     return prev;
   }
 
-  /** 
+  /**
    * getting the next Point that is not an Action point, to know if it is a curve or something else.
-   * 
+   *
    * @param index number
    * @returns ISvgPoint
   */
   private getNextCurvePoint(index: number): ISvgPoint {
     let next: ISvgPoint;
+    let i = index;
 
-    while(!next) {
-      const p = this._points[index+1];
+    while (!next) {
+      const p = this._shape.points[i + 1];
       if (p) {
-        if (!this.isActionPoint(p)) {
+        if (!isActionPoint(p)) {
           next = p;
         }
-        index ++;
+        i += 1;
       }
-      index = 0;
+      i = 0;
     }
     return next;
   }

@@ -1,10 +1,10 @@
-import { Base } from "./Base";
-import { IPath, IPoint, IRectangleOptions, IRectangle } from "../interfaces/Rectangle";
-import { ICurvePoint } from "../../sketchSvgParser/interfaces/ICurvePoint";
-import { IBounding, IBase } from "../interfaces/Base";
+import { Base } from './Base';
+import { IPath, IPoint, IRectangleOptions, IRectangle } from '../interfaces/Rectangle';
+import { ICurvePoint } from '../../sketchSvgParser/interfaces/ICurvePoint';
+import { IBounding, IBase } from '../interfaces/Base';
 
 export class Rectangle extends Base {
-  private _cornerRadius: Array<number>;
+  private _cornerRadius: number[];
   private _width: number;
   private _height: number;
 
@@ -12,18 +12,20 @@ export class Rectangle extends Base {
     super();
     super.class = 'rectangle';
     this._cornerRadius = this.convertRadius(options.cornerRadius); // topLeft, topRight, bottomRight, bottomLeft
-    super.bounding =  { 
-      height: options.height, 
-      width: options.width, 
-      x: 0, 
-      y: 0 
-    } as IBounding
+    super.bounding =  {
+      height: options.height,
+      width: options.width,
+      x: 0,
+      y: 0,
+    } as IBounding;
   }
 
-  private convertRadius(radius: number | Array<number>): Array<number> {
+  private convertRadius(radius: number | number[]): number[] {
     if (!radius) {
       return [0, 0, 0, 0];
-    } else if (typeof radius === 'number') {
+    }
+
+    if (typeof radius === 'number') {
       return [radius, radius, radius, radius];
     }
     return radius;
@@ -34,15 +36,15 @@ export class Rectangle extends Base {
       _class: 'path',
       isClosed: true,
       pointRadiusBehaviour: 1,
-      points: this.curvePoints()
-    }
+      points: this.curvePoints(),
+    };
   }
 
   private curvePoints(): ICurvePoint[] {
-    const points: ICurvePoint[] = []
-    for(let i = 0, max = 4; i < 4; i++) {
+    const points: ICurvePoint[] = [];
+    for (let i = 0, max = 4; i < 4; i += 1) {
       let point = { x: 0, y: 0 };
-      switch(i) {
+      switch (i) {
         case 1:
           point = { x: 1, y: 0 }; break;
         case 2:
@@ -55,7 +57,6 @@ export class Rectangle extends Base {
     return points;
   }
 
-
   private curvePoint(point: IPoint, radius: number): ICurvePoint {
     return {
       _class: 'curvePoint',
@@ -65,8 +66,8 @@ export class Rectangle extends Base {
       curveTo: `{${point.x}, ${point.y}}`,
       hasCurveFrom: false,
       hasCurveTo: false,
-      point: `{${point.x}, ${point.y}}`
-    }
+      point: `{${point.x}, ${point.y}}`,
+    };
   }
 
   generateObject(): IRectangle {
@@ -82,7 +83,7 @@ export class Rectangle extends Base {
       isClosed: true,
       pointRadiusBehaviour: 0,
       fixedRadius: 0,
-      hasConvertedToNewRoundCorners: true
+      hasConvertedToNewRoundCorners: true,
     } as any;
   }
 }

@@ -1,17 +1,17 @@
-import { IRulerData } from "./Page";
-import { IBase } from "./Base";
+import { IRulerData } from './Page';
+import { IBase } from './Base';
 
 export interface ISymbolMaster extends IBase {
-  backgroundColor: IBackgroundColor;		
-  hasBackgroundColor: boolean;	
-  horizontalRulerData: IRulerData;		
-  includeBackgroundColorInExport: boolean;		
-  includeInCloudUpload: boolean;		
-  isFlowHome: boolean;		
-  resizesContent: boolean;		
-  verticalRulerData: IRulerData;		
-  includeBackgroundColorInInstance: boolean;		
-  symbolID: string;		
+  backgroundColor: IBackgroundColor;
+  hasBackgroundColor: boolean;
+  horizontalRulerData: IRulerData;
+  includeBackgroundColorInExport: boolean;
+  includeInCloudUpload: boolean;
+  isFlowHome: boolean;
+  resizesContent: boolean;
+  verticalRulerData: IRulerData;
+  includeBackgroundColorInInstance: boolean;
+  symbolID: string;
   changeIdentifier: number;
 }
 
