@@ -4,7 +4,7 @@ import { Sketch } from "ng-sketch/sketchJSON/Sketch";
 import { Page } from "ng-sketch/sketchJSON/models/Page";
 
 process.env.DEBUG = 'true';
-// process.env.DEBUG_SVG = 'true';
+process.env.DEBUG_SVG = 'true';
 // process.env.DEBUG_BROWSER = 'true'; 
 
 const pages = [

@@ -87,7 +87,6 @@ export class ElementNode {
   }
 
   private hasDefaultStyling(styles: CSSStyleDeclaration) {
-
     const DEFAULT_VALUES = {
       backgroundColor: 'rgba(0, 0, 0, 0)',
       backgroundImage: 'none',

@@ -7,6 +7,7 @@ import { ShapeGroup } from './models/ShapeGroup';
 import { IBounding } from '../sketchJSON/interfaces/Base';
 import { BooleanOperation } from '../sketchJSON/helpers/sketchConstants';
 import { Circle } from './models/Circle';
+import { Rect } from './models/Rect';
 
 export class SvgParser {
   static parse(svg: string, width: number, height: number): ISvg {
@@ -36,7 +37,7 @@ export class SvgParser {
       this._viewBox = this.getSize(svg);
 
       [].slice.call(svg.childNodes).forEach((child: Node) => {
-        if(child.nodeName === 'path') {
+        if (child.nodeName === 'path') {
           const pathData = (child as SVGPathElement).getAttribute('d');
           const path = parseSVG(pathData) as ISvgPoint[];
           const resized = this.resizeCoordinates(path);
@@ -45,6 +46,16 @@ export class SvgParser {
         } else if (child.nodeName === 'circle') {
           const circle = child as SVGCircleElement;
           this._paths.push(this.circleToPath(circle));
+        } else if (child.nodeName === 'rect') {
+          const rect = child as SVGRectElement;
+          this._paths.push(this.rectToPath(rect));
+        } else if (child.nodeName === '#text') {
+          // this case is the tagname -> we do not care so return
+          return;
+        } else {
+          if (process.env.DEBUG_SVG) {
+            console.log(chalk`{red The SVG element: "${child.nodeName}" is not implemented yet!} 😢 Sorry 🙁 \nTry to render without this Element...`)
+          }
         }
         
       });
@@ -123,7 +134,7 @@ export class SvgParser {
     const w = svg.getAttribute('width');
     const h = svg.getAttribute('height');
     const v = svg.getAttribute('viewBox').split(' ');
-    if (w.includes('%') && h.includes('%')) {
+    if (v.length > 1) {
       return { 
         width: parseInt(v[2], 10), 
         height: parseInt(v[3], 10),
@@ -137,16 +148,35 @@ export class SvgParser {
 
   /**
    * Converts a circle in 4 anchorpoints to render them in Sketch
+   * 
+   * @param _circle: SVGCircleElement
+   * @returns ISvgPoint[]
    */
   private circleToPath(_circle: SVGCircleElement): ISvgPoint[] {
     const factor: ISvgView = {...this._viewBox};
-
     const cx = parseInt(_circle.getAttribute('cx'), 10) / factor.width;
     const cy = parseInt(_circle.getAttribute('cy'), 10) / factor.height;
     const radius = parseInt(_circle.getAttribute('r'), 10) / factor.width;
 
     const circle = new Circle(cx, cy, radius).generate();
     return circle;
+  }
+
+  /**
+   * Converts a rectangle to 4 Lines
+   * 
+   * @param _rect SVGRectElement
+   * @returns ISvgPoint[]
+   */
+  private rectToPath(_rect: SVGRectElement): ISvgPoint[] {
+    const factor: ISvgView = {...this._viewBox};
+    const width = parseInt(_rect.getAttribute('width'), 10) / factor.width;
+    const height = parseInt(_rect.getAttribute('height'), 10) / factor.height;
+    const x = parseInt(_rect.getAttribute('x'), 10) / factor.width;
+    const y = parseInt(_rect.getAttribute('y'), 10) / factor.width;
+
+    const rect = new Rect(width, height, x, y).generate()
+    return rect;
   }
 
   /**

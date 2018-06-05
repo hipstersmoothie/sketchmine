@@ -38,6 +38,13 @@ const circle = `
   <path d="M256,0 C396.380005,0 512,114.620003 512,256 C512,396.380005 396.380005,512 256,512 C114.620003,512 0,401.880005 0,256 C8.93257405e-15,110.119995 114.620003,1.73140561e-14 256,0 Z" id="SVG"></path>
 </svg>`;
 
+const rect = `
+<svg width="150" height="100" viewBox="0 0 3 2">
+	<rect width="1" height="2" x="0" fill="#008d46" />
+	<rect width="1" height="2" x="1" fill="#ffffff" />
+	<rect width="1" height="2" x="2" fill="#d2232c" />
+</svg>`;
+
 const cloud = `
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
 <path fill="inherit" d="M403.659,215.39696c0.48169-3.90862,0.72571-7.89008,0.72571-11.92065
@@ -179,10 +186,10 @@ const sql = `
 
 // Test drawing svgs
 
-const size: IBounding = {width: 512, height: 512, x: 0, y: 0};
+const size: IBounding = {width: 150, height: 100, x: 0, y: 0};
 const shapeGroup = new ShapeGroup(size);
 const style = new Style()
-const svgObject = SvgParser.parse(more, size.width, size.height);
+const svgObject = SvgParser.parse(rect, size.width, size.height);
 shapeGroup.layers = new SvgToSketch(svgObject).generateObject();
 shapeGroup.name = 'SVG';
 style.addColorFill('#ff00fa');
@@ -190,11 +197,10 @@ shapeGroup.style = style.generateObject();
 
 // write test svg
 const sketch = new Sketch();
-const pageSize: IBounding = { height: 512, width: 512, x: 0, y: 0};
-const page = new Page(pageSize);
+const page = new Page(size);
 page.name = 'SVG Symbol Test Page';
-const symbolMaster = new SymbolMaster(pageSize);
-const group = new Group(pageSize);
+const symbolMaster = new SymbolMaster(size);
+const group = new Group(size);
 group.name = 'Agent SVG'
 
 group.addLayer(shapeGroup.generateObject());
