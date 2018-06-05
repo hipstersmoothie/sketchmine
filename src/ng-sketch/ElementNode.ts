@@ -1,7 +1,7 @@
 import { Style } from './sketchJSON/models/Style';
 import { IStyle } from './sketchJSON/interfaces/Style';
 import { Rectangle } from './sketchJSON/models/Rectangle';
-import { parseBorderRadius, BoundingClientRectToBounding, calcPadding } from './sketchJSON/helpers/util';
+import { boundingClientRectToBounding, calcPadding } from './sketchJSON/helpers/util';
 import { IRectangle, IRectangleOptions } from './sketchJSON/interfaces/Rectangle';
 import { Group } from './sketchJSON/models/Group';
 import { IGroup } from './sketchJSON/interfaces/Group';
@@ -12,6 +12,8 @@ import { IBounding } from './sketchJSON/interfaces/Base';
 import { ShapeGroup } from './sketchSvgParser/models/ShapeGroup';
 import { SvgParser } from './sketchSvgParser/SvgParser';
 import { SvgToSketch } from './sketchSvgParser/SvgToSketch';
+import { SvgStyle } from './sketchSvgParser/interfaces/ISvg';
+import { addStyle, overrideSvgStyle } from './sketchSvgParser/util/styles';
 
 export class ElementNode {
   private _layers = [];
@@ -36,19 +38,20 @@ export class ElementNode {
     if (process.env.DEBUG) {
       console.log(chalk`   Add SVG 🖼 ...`);
     }
-
     const size = this.getSize(element);
-    const shapeGroup = new ShapeGroup({ ...size, x:0, y:0 });
-    shapeGroup.style = this.addStyles(element);
-    shapeGroup.name = 'SVG';
 
     const svgObject = SvgParser.parse(element.html, size.width, size.height);
-    shapeGroup.layers = new SvgToSketch(svgObject).generateObject();
-    this._layers.push(shapeGroup.generateObject());
+    // svgObject.shapes.map(shape => overrideSvgStyle(shape.style, element.styles));
+    // const styles = this.addStyles(element);
+
+    const svg = new SvgToSketch(svgObject);
+    svg.styles = element.styles;
+
+    this._layers.push(...svg.generateObject());
   }
 
   private generateText(element: ITraversedDomTextNode) {
-    const bcr = BoundingClientRectToBounding(element.parentRect);
+    const bcr = boundingClientRectToBounding(element.parentRect);
     const paddedBCR = calcPadding(element.styles.padding, bcr);
     if (process.env.DEBUG) {
       console.log(chalk`   Add Text 📝  with Text: "{yellowBright ${element.text}}"`, paddedBCR);
@@ -117,7 +120,6 @@ export class ElementNode {
     const cs = element.styles;
 
     if (!cs) {  return; }
-    if (element.tagName === 'SVG' && cs.fill) { style.addColorFill(cs.fill); }
     if (cs.backgroundColor) { style.addColorFill(cs.backgroundColor); }
     if (cs.borderWidth) { style.addBorder(cs.borderColor, parseInt(cs.borderWidth, 10)); }
     if (parseInt(cs.opacity, 10) < 1) { style.opacity = cs.opacity; }
@@ -132,7 +134,7 @@ export class ElementNode {
     if (process.env.DEBUG) {
       console.log(
         chalk`   {magentaBright ${element.className}} | {yellowBright ${element.tagName}}`,
-        BoundingClientRectToBounding(element.boundingClientRect),
+        boundingClientRectToBounding(element.boundingClientRect),
       );
     }
 
@@ -146,6 +148,6 @@ export class ElementNode {
         y: Math.round(y),
       };
     }
-    return BoundingClientRectToBounding(element.boundingClientRect);
+    return boundingClientRectToBounding(element.boundingClientRect);
   }
 }

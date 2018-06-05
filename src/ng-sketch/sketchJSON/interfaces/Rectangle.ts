@@ -1,5 +1,5 @@
-import { IBase, IFrame } from "./Base";
-import { ICurvePoint } from "../../sketchSvgParser/interfaces/ICurvePoint";
+import { IBase, IFrame } from './Base';
+import { ICurvePoint } from '../../sketchSvgParser/interfaces/ICurvePoint';
 
 export interface IRectangle extends IBase {
   path: IPath;
@@ -11,14 +11,14 @@ export interface IRectangle extends IBase {
 }
 
 export interface IRectangleOptions {
-  width: number; 
+  width: number;
   height: number;
-  cornerRadius?: number | Array<number>;
+  cornerRadius?: number | number[];
 }
 
 export interface IPoint {
   x: number; // 0 | 1
-  y: number;// 0 | 1
+  y: number; // 0 | 1
 }
 
 export interface IPath {

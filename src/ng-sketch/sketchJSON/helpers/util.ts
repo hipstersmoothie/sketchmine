@@ -130,3 +130,26 @@ export function calcPadding(padding: string, bcr: IBounding): IBounding {
   }
   return bounding;
 }
+
+/**
+ * Compares two maps if the key value pares are equal
+ *
+ * @param map1 Map<any, any>
+ * @param map2 Map<any, any>
+ * @returns boolean
+ */
+export function compareMaps(map1: Map<any, any>, map2: Map<any, any>): boolean {
+  if (map1.size !== map2.size) {
+    return false;
+  }
+  let testVal;
+  for (const [key, val] of map1) {
+    testVal = map2.get(key);
+    // in cases of an undefined value, make sure the key
+    // actually exists on the object so there are no false positives
+    if (testVal !== val || (testVal === undefined && !map2.has(key))) {
+      return false;
+    }
+  }
+  return true;
+}

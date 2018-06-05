@@ -5,9 +5,14 @@ import { IBounding } from '../sketchJSON/interfaces/Base';
 import { SvgPointsToSketch } from './SvgPointsToSketch';
 import { Style } from '../sketchJSON/models/Style';
 import { IStyle } from '../sketchJSON/interfaces/Style';
+import chalk from 'chalk';
+import { addCssStyleToSvg } from './util/styles';
 
 export class SvgToSketch {
 
+  private _styles: CSSStyleDeclaration;
+
+  set styles(styles: CSSStyleDeclaration) { this._styles = styles; }
   constructor(private _svgObject: ISvg) { }
 
   generateObject(): any[] {
@@ -19,7 +24,12 @@ export class SvgToSketch {
     this._svgObject.shapes.forEach((shape) => {
       // if the paths/rects or Elements have different styles like varying fills
       // it is not possible to group them so we need a own shape group for each fill/style
-      if (this.hasDifferentStyles()) {
+      if (process.env.DEBUG_SVG) {
+        if (!this.hasNoStyles()) {
+          console.log(chalk`   The SVG has inline styles: `, JSON.stringify(shape.style, null, 2));
+        }
+      }
+      if (!this.hasNoStyles()) {
         const shapeGroup = new ShapeGroup(size);
         shapeGroup.addLayer(SvgPointsToSketch.parse(shape, size));
         shapeGroup.name = 'SVG';
@@ -30,35 +40,40 @@ export class SvgToSketch {
       shapeGroupLayers.push(SvgPointsToSketch.parse(shape, size));
     });
 
-    if (!this.hasDifferentStyles()) {
+    if (this.hasNoStyles()) {
       const shapeGroup = new ShapeGroup(size);
       shapeGroup.name = 'SVG';
       shapeGroup.layers = shapeGroupLayers;
+      if (this._styles) {
+        shapeGroup.style = addCssStyleToSvg(this._styles);
+      }
       groupLayers.push(shapeGroup.generateObject());
     }
-
-    // console.log(groupLayers);
     return groupLayers;
   }
 
   /**
    * Checks if some styles are set on the svg shapes
    */
-  private hasDifferentStyles(): boolean {
-    return !this._svgObject.shapes.every(shape => shape.style.size === 0);
+  private hasNoStyles(): boolean {
+    return this._svgObject.shapes.every(shape => shape.style.size === 0);
   }
 }
 
 function addSvgShapeStyle(shape: ISvgPointGroup): IStyle {
-  const _s = shape.style;
+  const shapeStyle = shape.style;
   const style = new Style();
 
-  const fill = _s.get('fill');
+  const fill = shapeStyle.get('fill');
+  const fillOpacity = parseInt(shapeStyle.get('fillOpacity'), 10) || 1;
+  const stroke = shapeStyle.get('stroke');
+  const strokeWidth = parseInt(shapeStyle.get('strokeWidth'), 10);
+
   if (fill && fill !== 'inherit') {
-    style.addColorFill(fill, parseInt(_s.get('fillOpacity'), 10) || 1);
+    style.addColorFill(fill, fillOpacity);
   }
-  if (_s.get('stroke')) {
-    style.addBorder(_s.get('stroke'), parseInt(_s.get('strokeWidth'), 10));
+  if (strokeWidth > 0) {
+    style.addBorder(stroke, strokeWidth);
   }
   return style.generateObject();
 }

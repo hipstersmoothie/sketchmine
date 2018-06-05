@@ -23,6 +23,6 @@ export class Group extends Base {
       nameIsFixed: true,
       hasClickThrough: false,
       originalObjectID: UUID.generate(),
-    }
+    };
   }
 }

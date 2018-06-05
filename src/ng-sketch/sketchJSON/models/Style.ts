@@ -20,7 +20,7 @@ export class Style {
       color: this.convertColor(color),
       fillType: 0,
       position: 1,
-      thickness: thickness
+      thickness,
     });
   }
 
@@ -32,7 +32,7 @@ export class Style {
       red: r / 255,
       green: g / 255,
       blue: b / 255,
-      alpha: a * alpha
+      alpha: a * alpha,
     };
   }
 
@@ -45,8 +45,8 @@ export class Style {
       noiseIndex: 0,
       noiseIntensity: 0,
       patternFillType: 1,
-      patternTileScale: 1
-    }
+      patternTileScale: 1,
+    };
   }
 
   generateObject(): IStyle {
@@ -62,8 +62,8 @@ export class Style {
       contextSettings: {
         _class: 'graphicsContextSettings',
         blendMode: 0,
-        opacity: this._opacity
-      }
+        opacity: this._opacity,
+      },
     };
   }
 }

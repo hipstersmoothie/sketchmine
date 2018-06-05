@@ -8,6 +8,7 @@ import { IBounding } from '../sketchJSON/interfaces/Base';
 import { BooleanOperation } from '../sketchJSON/helpers/sketchConstants';
 import { Circle } from './models/Circle';
 import { Rect } from './models/Rect';
+import { addStyle } from './util/styles';
 
 export class SvgParser {
   static parse(svg: string, width: number, height: number): ISvg {
@@ -242,12 +243,4 @@ export class SvgParser {
     });
     return resized;
   }
-}
-
-function addStyle(styles: Map<SvgStyle, string>, node: Element, attributeName: string, mapName?: SvgStyle) {
-  const value = node.getAttribute(attributeName);
-  if (value) {
-    styles.set(mapName || attributeName as SvgStyle, value);
-  }
-  return styles;
 }

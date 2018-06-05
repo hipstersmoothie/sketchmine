@@ -21,9 +21,6 @@ export class ShapeGroup extends Base {
       clippingMaskMode: 0,
       hasClippingMask: false,
       windingRule: 1,
-    }
+    };
   }
 }
-
-
-
