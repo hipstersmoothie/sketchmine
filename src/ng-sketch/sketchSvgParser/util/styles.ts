@@ -11,8 +11,15 @@ import { IStyle } from '../../sketchJSON/interfaces/Style';
  * @param mapName SvgStyle
  */
 export function addStyle(styles: Map<SvgStyle, string>, node: Element, attributeName: string, mapName?: SvgStyle) {
+  enum NONE_VALUES {
+    'inherit',
+    'transparent',
+    'none',
+    '0px',
+  }
+
   const value = node.getAttribute(attributeName);
-  if (value) {
+  if (value && !Object.values(NONE_VALUES).includes(value)) {
     styles.set(mapName || attributeName as SvgStyle, value);
   }
   return styles;

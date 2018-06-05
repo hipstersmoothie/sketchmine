@@ -51,7 +51,6 @@ export class SvgToSketch {
     }
     return groupLayers;
   }
-
   /**
    * Checks if some styles are set on the svg shapes
    */

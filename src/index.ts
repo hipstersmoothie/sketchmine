@@ -8,7 +8,7 @@ process.env.DEBUG_SVG = 'true';
 // process.env.DEBUG_BROWSER = 'true';
 
 const pages = [
-  // '/icon/icon--agent',
+  '/icon/icon--agent',
   // '/chart/chart--default',
   '/icon/icon--richface',
   '/button/button--icon',
