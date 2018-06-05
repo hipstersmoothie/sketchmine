@@ -1,0 +1,17 @@
+
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Sketch 💎",
+      "type": "node",
+      "request": "launch",
+      "args": [
+          "${workspaceFolder}/src/index.ts"
+      ],
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector"
+    }
+  ]
+}
