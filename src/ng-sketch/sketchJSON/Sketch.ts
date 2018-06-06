@@ -1,7 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as archiver from 'archiver';
-import { createDir, delFolder, bytesToSize } from './helpers/util';
+import { createDir, bytesToSize } from './helpers/util';
+import { copyFile } from './helpers/utils/copy-file';
+import { delFolder } from './helpers/utils/del-folder';
 import { writeJSON } from './helpers/utils/write-json';
 import { Page } from './models/Page';
 import { Document } from './models/Document';
@@ -15,7 +17,7 @@ import { Rectangle } from './models/Rectangle';
 import { Style } from './models/Style';
 import { Text } from './models/Text';
 import chalk from 'chalk';
-import { copyFile } from './helpers/utils/copy-file';
+
 export class Sketch {
   private static FILE_NAME = 'dt-asset-lib';
   private static TMP_PATH = path.resolve('_tmp');
@@ -25,16 +27,12 @@ export class Sketch {
     this._outDir = outDir || './';
   }
 
-  write(pages: Page[]) {
+  write(pages: Page[]): Promise<any> {
     const doc = new Document(pages);
     const meta = new Meta(pages);
 
-    this.generateFolder(pages, doc, meta);
-    this.generateFile();
-
-    if (!process.env.DEBUG) {
-      this.cleanup();
-    }
+    this.generateFolderStructure(pages, doc, meta);
+    return this.generateFile();
   }
 
   /**
@@ -52,7 +50,7 @@ export class Sketch {
    * @param doc Document
    * @param meta Meta
    */
-  private generateFolder (pages: Page[], doc: Document, meta: Meta) {
+  private generateFolderStructure (pages: Page[], doc: Document, meta: Meta) {
     try {
       delFolder(Sketch.TMP_PATH);
       createDir(Sketch.TMP_PATH);
@@ -77,35 +75,45 @@ export class Sketch {
 
   /**
    * Generate the .sketch file from the previously created Folder.
+   * returns promise to check when the sketch file was generated
+   * @returns Promise<any>
    */
-  private generateFile() {
-    const output = fs.createWriteStream(path.resolve(this._outDir, `${Sketch.FILE_NAME}.sketch`));
-    const archive = archiver('zip');
+  private generateFile(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      createDir(this._outDir);
+      const output = fs.createWriteStream(path.resolve(this._outDir, `${Sketch.FILE_NAME}.sketch`));
+      const archive = archiver('zip');
 
-    output.on('close',  () => {
-      console.log(
-        chalk`\n✅ \t{greenBright Sketch file}: {magenta ${Sketch.FILE_NAME}.sketch} – `,
-        chalk`was successfully generated with: {cyan ${bytesToSize(archive.pointer())}}\n`,
-        chalk`\tIn the folder: {grey ${path.resolve(this._outDir)}/}`,
-      );
-    });
+      output.on('close',  () => {
+        console.log(
+          chalk`\n✅ \t{greenBright Sketch file}: {magenta ${Sketch.FILE_NAME}.sketch} – `,
+          chalk`was successfully generated with: {cyan ${bytesToSize(archive.pointer())}}\n`,
+          chalk`\tIn the folder: {grey ${path.resolve(this._outDir)}/}`,
+        );
 
-    archive.on('warning', (err) => {
-      if (err.code === 'ENOENT') {
-        if (process.env.DEBUG) {
-          console.log('Sketch-File could not be written: ENOENT', err);
+        if (!process.env.DEBUG) {
+          this.cleanup();
         }
-      } else {
-        throw err;
-      }
-    });
+        resolve();
+      });
 
-    archive.on('error', (err) => {
-      throw err;
-    });
+      archive.on('warning', (err) => {
+        if (err.code === 'ENOENT') {
+          if (process.env.DEBUG) {
+            console.log('Sketch-File could not be written: ENOENT', err);
+          }
+        } else {
+          reject(err);
+        }
+      });
 
-    archive.pipe(output);
-    archive.directory(path.join(Sketch.TMP_PATH), false);
-    archive.finalize();
+      archive.on('error', (err) => {
+        reject(err);
+      });
+
+      archive.pipe(output);
+      archive.directory(path.join(Sketch.TMP_PATH), false);
+      archive.finalize();
+    });
   }
 }

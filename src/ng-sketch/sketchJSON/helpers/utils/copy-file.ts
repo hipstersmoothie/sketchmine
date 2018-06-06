@@ -2,6 +2,12 @@ import * as path from 'path';
 import * as fs from 'fs';
 import chalk from 'chalk';
 
+/**
+ * Copy file from one destination to another destination
+ *
+ * @param file string
+ * @param dest string
+ */
 export function copyFile(file: string, dest: string) {
   const filename = path.basename(file);
   const source = fs.createReadStream(file);

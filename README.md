@@ -50,6 +50,7 @@ Just run `npm run test`
 convert a folder to a .sketch file
 
 ``` bash
+declare filename=dt-asset-lib
 # rm -rf ${filename}.sketch
 cd ${filename}
 zip -r -X ../${filename}.zip *
@@ -63,6 +64,7 @@ open ${filename}.sketch
 convert .sketch file to folder:
 
 ``` bash
+declare filename=dt-asset-lib
 # rm -rf ${filename}.sketch
 # cp ./${filename}.bak.sketch ${filename}.sketch
 mv ${filename}.sketch ${filename}.zip

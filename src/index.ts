@@ -5,7 +5,7 @@ import { Page } from 'ng-sketch/sketchJSON/models/Page';
 
 const pages = [
   '/icon/icon--agent',
-  // '/icon/icon--richface',
+  '/icon/icon--richface',
   // '/button/button--icon',
   // '/button/button--primary',
   // '/button/button--secondary',
