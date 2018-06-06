@@ -5,7 +5,7 @@
 
 Generates a Sketch App Symbol library out of the *Dynatrace Angular Components Library*.
 
-## How to get running?
+## How to get running
 
 The generator needs a list of pages (urls) to crawl and draw.
 Each page is drawn as own Symbol.
@@ -71,7 +71,6 @@ mv ${filename}.sketch ${filename}.zip
 unzip ${filename}.zip -d ./${filename}
 rm -rf ${filename}.zip
 ```
-
 
 #### Maintainer
 

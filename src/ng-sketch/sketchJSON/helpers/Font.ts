@@ -1,5 +1,16 @@
 import { TextAlignment } from './sketchConstants';
 
+const textWeights = {
+  lighter: 200,
+  normal: 400,
+  bold: 700,
+  bolder: 900,
+  initial: 400,
+  inherit: 400,
+};
+
+export type fontStyle = 'normal' | 'italic' | 'oblique' | 'initial' | 'inherit';
+
 export function convertTextAlign(alignment: string) {
   switch (alignment) {
     case 'center': return TextAlignment.Center;
@@ -27,4 +38,39 @@ export function fixWhiteSpace(text: string, whiteSpace: string) {
       // pre, pre-wrap
   }
   return text;
+}
+
+export function fontMapping(
+  fontFamily: string,
+  fontWeight: string,
+  style: fontStyle = 'normal',
+): string {
+  const weight = convertFontWeightToNumber(fontWeight);
+
+  if (fontFamily !== 'BerninaSansWeb') {
+    return fontFamily;
+  }
+
+  if (weight === 900) { return 'BerninaSans-Extrabold'; }
+  if (weight === 900 && style === 'italic') { return 'BerninaSans-ExtraboldItalic'; }
+  if (weight === 700) { return 'BerninaSans-Bold'; }
+  if (weight === 700 && style === 'italic') { return 'BerninaSans-BoldItalic'; }
+  if (weight === 600) { return 'BerninaSans-Semibold'; }
+  if (weight === 600 && style === 'italic') { return 'BerninaSans-SemiboldItalic'; }
+  if (weight === 400) { return 'BerninaSans'; }
+  if (weight === 400 && style === 'italic') { return 'BerninaSans-Italic'; }
+  if (weight === 300) { return 'BerninaSans-Light'; }
+  if (weight === 300 && style === 'italic') { return 'BerninaSans-LightItalic'; }
+
+  return 'BerninaSans';
+}
+
+export function convertFontWeightToNumber(fontWeight: string): number{
+  if (Object.keys(textWeights).includes(fontWeight)) {
+    if (fontWeight === 'initial' || fontWeight === 'inherit') {
+      return 400;
+    }
+    return textWeights[fontWeight] || 400;
+  }
+  return parseInt(fontWeight, 10);
 }

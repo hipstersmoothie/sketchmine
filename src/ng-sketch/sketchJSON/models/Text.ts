@@ -9,7 +9,7 @@ import {
 } from '../interfaces/Text';
 import { Style } from './Style';
 import { IStyle } from '../interfaces/Style';
-import { fixWhiteSpace } from '../helpers/font';
+import { fixWhiteSpace, fontMapping, fontStyle } from '../helpers/font';
 
 // TODO: multiline text attribute
 export class Text extends Base {
@@ -70,10 +70,14 @@ export class Text extends Base {
   }
 
   private fontAttributes(): IMSAttributedStringFontAttribute {
+    const fontFamily = this._styles.fontFamily.split(',')[0];
+    const fontWeight = this._styles.fontWeight;
+    const fontVariant = this._styles.fontStyle as fontStyle;
+
     return {
       _class: 'fontDescriptor',
       attributes: {
-        name: this._styles.fontFamily.split(',')[0],
+        name: fontMapping(fontFamily, fontWeight, fontVariant),
         size: parseInt(this._styles.fontSize, 10),
       },
     };

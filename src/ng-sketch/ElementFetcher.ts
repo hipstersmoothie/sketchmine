@@ -13,10 +13,12 @@ import { ITraversedDom } from './ITraversedDom';
 export class ElementFetcher {
 
   private static HOST = 'http://localhost:4200';
+  private static SELECTOR = 'app-root > * > *';
   private _symbols: ITraversedDom[] = [];
   private _injectedDomTraverser = path.resolve(__dirname, 'injectedTraverser.js');
 
   set host(host: string) { ElementFetcher.HOST = host; }
+  set selector(sel: string) { ElementFetcher.SELECTOR = sel; }
 
   async generateSketchFile(pages: string[]) {
     await this.collectElements(pages);
@@ -24,6 +26,9 @@ export class ElementFetcher {
     const sketch = new Sketch();
     const symbolsMaster = drawer.drawSymbols(this._symbols);
 
+    if (process.env.DEBUG_TRAVERSER) {
+      console.log(JSON.stringify(this._symbols, null, 2));
+    }
     sketch.write([symbolsMaster]);
   }
 
@@ -33,6 +38,10 @@ export class ElementFetcher {
     try {
       await page.goto(url, { waitUntil: 'networkidle0' });
 
+
+      await page.addScriptTag({
+        content: `window.TRAVERSER_SELECTOR = '${ElementFetcher.SELECTOR}';`,
+      });
       await page.addScriptTag({
         path: this._injectedDomTraverser,
       });
