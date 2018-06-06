@@ -9,7 +9,6 @@ process.env.DEBUG_SVG = 'true';
 
 const pages = [
   '/icon/icon--agent',
-  // '/chart/chart--default',
   '/icon/icon--richface',
   '/button/button--icon',
   '/button/button--primary',

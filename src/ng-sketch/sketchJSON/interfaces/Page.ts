@@ -1,4 +1,4 @@
-import { IBase } from "./Base";
+import { IBase } from './Base';
 
 export interface IPage extends IBase{
   horizontalRulerData: IRulerData;
@@ -11,6 +11,3 @@ export interface IRulerData {
   base: number;
   guides: any[];
 }
-
-
-
