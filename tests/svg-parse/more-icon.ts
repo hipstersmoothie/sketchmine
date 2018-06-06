@@ -1,18 +1,25 @@
 import { expect } from 'chai';
-import { SvgParser } from '../../src/ng-sketch/sketchSvgParser/SvgParser';
+import * as fs from 'fs';
+import * as path from 'path';
 import chalk from 'chalk';
-
-const svg = `
-<svg width="512px" height="512px" viewBox="0 0 512 512">
-  <circle fill="inherit" cx="403.99997" cy="256.00006" r="44"></circle>
-  <circle fill="inherit" cx="256" cy="256.00006" r="44.00003"></circle>
-  <circle fill="inherit" cx="108.00002" cy="256.00006" r="44"></circle>
-</svg>`;
+import { ISvg } from '../../src/ng-sketch/sketchSvgParser/interfaces/ISvg';
+import { SvgParser } from '../../src/ng-sketch/sketchSvgParser/SvgParser';
 
 describe('[•••] More svg ', () => {
+  let svgObject: ISvg;
   const width = 512;
   const height = 512;
-  const svgObject = SvgParser.parse(svg, width, height);
+
+  before((done) => {
+    const moreFile = path.resolve(__dirname, '..', 'fixtures', 'more.svg');
+    fs.readFile(moreFile, 'utf8', (err, fileContents) => {
+      if (err) {
+        throw err;
+      }
+      svgObject = SvgParser.parse(fileContents, width, height);
+      done();
+    });
+  });
 
   it(
     `The more icon should have a width and height of ` +
