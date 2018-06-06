@@ -74,11 +74,6 @@ export function createDir(folder: string) {
   }
 }
 
-export function writeJSON(filename: string, content: Object | string) {
-  const _content = (typeof content === 'string') ? content : JSON.stringify(content);
-  fs.writeFile(`${filename}.json`, _content, 'utf8', () => {});
-}
-
 export function delFolder(dir: string) {
   if (fs.existsSync(dir)) {
     fs.readdirSync(dir).forEach((file, index) => {

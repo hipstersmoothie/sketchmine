@@ -39,7 +39,7 @@ export class ElementFetcher {
 
       return await page.evaluate(() => JSON.parse(window.localStorage.tree));
     } catch (error) {
-      throw new Error(chalk`\n\n🚨 {bgRed Something happened while traversing the DOM:} 🚧\n${error}`);
+      throw Error(chalk`\n\n🚨 {bgRed Something happened while traversing the DOM:} 🚧\n${error}`);
     }
   }
 
@@ -56,7 +56,7 @@ export class ElementFetcher {
         this._symbols.push(await this.getPage(browser, url));
       }
     } catch (error) {
-      throw new Error(chalk`\n\n🚨 {bgRed Something happened while launching the headless browser:} 🌍 🖥\n${error}`);
+      throw Error(chalk`\n\n🚨 {bgRed Something happened while launching the headless browser:} 🌍 🖥\n${error}`);
     }
     if (!process.env.DEBUG_BROWSER) {
       await browser.close();
