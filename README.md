@@ -45,6 +45,32 @@ process.env.DEBUG_BROWSER = 'true';
 
 Just run `npm run test`
 
+### Useful bash scripts
+
+convert a folder to a .sketch file
+
+``` bash
+# rm -rf ${filename}.sketch
+cd ${filename}
+zip -r -X ../${filename}.zip *
+cd ..
+mv ${filename}.zip ${filename}.sketch
+rm -rf ${filename}.zip
+open ${filename}.sketch
+
+```
+
+convert .sketch file to folder:
+
+``` bash
+# rm -rf ${filename}.sketch
+# cp ./${filename}.bak.sketch ${filename}.sketch
+mv ${filename}.sketch ${filename}.zip
+unzip ${filename}.zip -d ./${filename}
+rm -rf ${filename}.zip
+```
+
+
 #### Maintainer
 
 [Lukas Holzer](lukas.holzer@dynatrace.com)
