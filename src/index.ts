@@ -12,7 +12,6 @@ const pages = [
   // '/tile/tile--default',
 ];
 
-// import './ng-sketch/sketchSvgParser/test';
 const elementFetcher = new ElementFetcher();
 elementFetcher.host = 'http://localhost:4200';
 elementFetcher.generateSketchFile(pages);
