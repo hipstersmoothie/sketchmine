@@ -1,6 +1,6 @@
 export interface IMeta {
   commit: string;
-  pagesAndArtboards: { [key: string]: IMetaPagesAndArtboards }
+  pagesAndArtboards: { [key: string]: IMetaPagesAndArtboards };
   version: number;
   fonts: any[];
   compatibilityVersion: number;
@@ -31,4 +31,3 @@ export interface IMetaPagesAndArtboards {
 export interface IMetaArtboard {
   name: string;
 }
-

@@ -1,28 +1,27 @@
-import { IPoint, ISvgPoint } from "../interfaces/ISvg";
+import { IPoint, ISvgPoint } from '../interfaces/ISvg';
 
 export class Point {
 
   static COMMAND_LIST = {
-    'M': 'moveto',
-    'L': 'lineto',
-    'V': 'vertical lineto',
-    'H': 'horizontal lineto',
-    'C': 'curveto',
-    'S': 'smooth curveto',
-    'Q': 'quadratic curveto',
-    'T': 'smooth quadratic curveto',
-    'A': 'elliptical arc',
-    'Z': 'closepath',
-  }
+    M: 'moveto',
+    L: 'lineto',
+    V: 'vertical lineto',
+    H: 'horizontal lineto',
+    C: 'curveto',
+    S: 'smooth curveto',
+    Q: 'quadratic curveto',
+    T: 'smooth quadratic curveto',
+    A: 'elliptical arc',
+    Z: 'closepath',
+  };
 
   constructor(
     private _code: string,
     private _point?: IPoint,
     private _c1?: IPoint,
     private _c2?: IPoint,
-    private _last?: IPoint
+    private _last?: IPoint,
   ) {}
-
 
   addOffset(x: number, y: number) {
     if (this._point) {

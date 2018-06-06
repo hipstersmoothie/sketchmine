@@ -7,7 +7,7 @@ import { SvgParser } from '../../src/ng-sketch/sketchSvgParser/SvgParser';
 
 describe('SVG Parser', () => {
 
-  context('[•••] More svg:', () => {
+  context('More svg:', () => {
     let svgObject: ISvg;
     const width = 512;
     const height = 512;

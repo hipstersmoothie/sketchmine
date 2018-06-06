@@ -1,8 +1,8 @@
 import { IBase } from '../../sketchJSON/interfaces/Base';
 
 export interface IShapeGroup extends IBase {
-  hasClickThrough: boolean; 
+  hasClickThrough: boolean;
   clippingMaskMode: number;
-  hasClippingMask: boolean; 
+  hasClippingMask: boolean;
   windingRule: number;
 }

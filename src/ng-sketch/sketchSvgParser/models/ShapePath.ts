@@ -9,7 +9,7 @@ export class ShapePath extends Base {
   private _closed: boolean = false;
   private _booleanOperation: number = BooleanOperation.None;
 
-  set booleanOperation(op: number) { this._booleanOperation = op }
+  set booleanOperation(op: number) { this._booleanOperation = op; }
   get points(): ICurvePoint[] { return this._points; }
   close() { this._closed = true; }
 
@@ -33,7 +33,6 @@ export class ShapePath extends Base {
       isClosed: this._closed,
       pointRadiusBehaviour: 1,
       points: this._points,
-    }
+    };
   }
 }
-

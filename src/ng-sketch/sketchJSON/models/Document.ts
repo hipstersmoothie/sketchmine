@@ -5,7 +5,7 @@ import { Page } from './Page';
 export class Document {
   private static _instance: Document;
   private static _objectID = UUID.generate();
-  private _colors = []
+  private _colors = [];
   private _textStyles = [];
   private _pages = [];
 
@@ -23,8 +23,8 @@ export class Document {
       pages.push({
         _class: 'MSJSONFileReference',
         _ref_class: 'MSImmutablePage',
-        _ref: `pages/${page.objectID}`
-      })
+        _ref: `pages/${page.objectID}`,
+      });
     });
 
     return pages;
@@ -37,12 +37,12 @@ export class Document {
       gradients: [],
       imageCollection: {
         _class: 'imageCollection',
-        images: {}
+        images: {},
       },
-      images: []
-    }
+      images: [],
+    };
   }
-  
+
   generateObject(): IDocument {
     return {
       _class: 'document',
@@ -53,17 +53,17 @@ export class Document {
       foreignSymbols: [],
       layerStyles: {
         _class: 'sharedStyleContainer',
-        objects: []
+        objects: [],
       },
       layerSymbols: {
         _class: 'symbolContainer',
-        objects: []
+        objects: [],
       },
       layerTextStyles: {
         _class: 'sharedTextStyleContainer',
-        objects: []
+        objects: [],
       },
-      pages: this.addPages()
-    }
+      pages: this.addPages(),
+    };
   }
 }

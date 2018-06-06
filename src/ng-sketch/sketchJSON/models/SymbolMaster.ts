@@ -1,6 +1,6 @@
-import { ISymbolMaster, IBackgroundColor } from "../interfaces/SymbolMaster";
-import { Base } from "./Base";
-import { IBounding, IBase } from "../interfaces/Base";
+import { ISymbolMaster, IBackgroundColor } from '../interfaces/SymbolMaster';
+import { Base } from './Base';
+import { IBounding, IBase } from '../interfaces/Base';
 
 export class SymbolMaster extends Base {
 
@@ -18,8 +18,8 @@ export class SymbolMaster extends Base {
       alpha: 1,
       blue: 1,
       green: 1,
-      red: 1
-    }
+      red: 1,
+    };
   }
 
   generateObject(): any {
@@ -38,7 +38,7 @@ export class SymbolMaster extends Base {
       verticalRulerData: super.addRuler(),
       includeBackgroundColorInInstance: false,
       symbolID: 'ADA677BF-506E-4E73-AB94-E4E132D5C34B',
-      changeIdentifier: 3
-    }
+      changeIdentifier: 3,
+    };
   }
 }

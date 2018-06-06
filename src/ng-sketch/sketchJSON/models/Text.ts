@@ -1,11 +1,17 @@
-import { Base } from "./Base";
-import { IBounding, IBase } from "../interfaces/Base";
-import { IText, IAttributedString, IMSAttributedStringFontAttribute, IParagraphStyle, IEncodedAttributes } from "../interfaces/Text";
-import { Style } from "./Style";
-import { IStyle } from "../interfaces/Style";
-import { fixWhiteSpace } from "../helpers/font";
+import { Base } from './Base';
+import { IBounding, IBase } from '../interfaces/Base';
+import {
+  IText,
+  IAttributedString,
+  IMSAttributedStringFontAttribute,
+  IParagraphStyle,
+  IEncodedAttributes,
+} from '../interfaces/Text';
+import { Style } from './Style';
+import { IStyle } from '../interfaces/Style';
+import { fixWhiteSpace } from '../helpers/font';
 
-// TODO: multiline text attribute 
+// TODO: multiline text attribute
 export class Text extends Base {
   private _text = '';
   private _styles: CSSStyleDeclaration;
@@ -33,8 +39,8 @@ export class Text extends Base {
           location: 0,
           length: this._text.length,
           attributes: this.attributes(),
-        }
-      ]
+        },
+      ],
     };
   }
 
@@ -45,22 +51,22 @@ export class Text extends Base {
       MSAttributedStringFontAttribute: this.fontAttributes(),
       MSAttributedStringColorAttribute: this._styleClass.convertColor(this._styles.color),
       paragraphStyle: this.paragraphStyle(),
-      kerning: 0
-    }
+      kerning: 0,
+    };
   }
 
   private paragraphStyle(): IParagraphStyle {
     const lh = this._styles.lineHeight;
     // Disable lineheight (only needed for multi line text – otherwise conflicts with padding)
-    const lineHeight = parseInt(this._styles.fontSize, 10);// (lh !== 'normal') ? parseInt(lh, 10) : undefined;
+    const lineHeight = parseInt(this._styles.fontSize, 10); // (lh !== 'normal') ? parseInt(lh, 10) : undefined;
     return {
       _class: 'paragraphStyle',
       alignment: 0,
       maximumLineHeight: lineHeight,
       minimumLineHeight: lineHeight,
       paragraphSpacing: 0,
-      allowsDefaultTighteningForTruncation: 0
-    }
+      allowsDefaultTighteningForTruncation: 0,
+    };
   }
 
   private fontAttributes(): IMSAttributedStringFontAttribute {
@@ -68,9 +74,9 @@ export class Text extends Base {
       _class: 'fontDescriptor',
       attributes: {
         name: this._styles.fontFamily.split(',')[0],
-        size: parseInt(this._styles.fontSize, 10)
-      }
-    }
+        size: parseInt(this._styles.fontSize, 10),
+      },
+    };
   }
 
   private generateStyle(): IStyle {
@@ -79,9 +85,9 @@ export class Text extends Base {
       textStyle: {
         _class: 'textStyle',
         encodedAttributes: this.attributes(),
-        verticalAlignment: 0
-      }
-    }
+        verticalAlignment: 0,
+      },
+    };
   }
 
   generateObject(): IText {
@@ -95,7 +101,7 @@ export class Text extends Base {
       dontSynchroniseWithSymbol: false,
       glyphBounds: '{{0, 0}, {103, 18}}',
       lineSpacingBehaviour: 2,
-      textBehaviour: 0
-    }
+      textBehaviour: 0,
+    };
   }
 }
