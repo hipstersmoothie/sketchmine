@@ -1,14 +1,19 @@
-# 💎 Amgular to Sketch App Generator 💎 
 
-Generates a Sketch App Symbol library out of the Dynatrace Components Library.
+<img src="https://cdn.worldvectorlogo.com/logos/sketch-1.svg" alt="Sketch Logo" width="150"/>
 
+# Angular to Sketch App Generator
 
-## How to get running? 🛵
-The generator needs a list of pages (urls) to crawl and draw. 
-Each page is drawn as own Symbol. 
-To modify the host of the page go to `./ng-sketch/ElementFetcher.ts` and update the **_host** variable:
+Generates a Sketch App Symbol library out of the *Dynatrace Angular Components Library*.
+
+## How to get running?
+
+The generator needs a list of pages (urls) to crawl and draw.
+Each page is drawn as own Symbol.
+To modify the host of the page you can use the setter function.
+
 ``` typescript
-private static _host = 'http://localhost:4200';
+const elementFetcher = new ElementFetcher();
+elementFetcher.host = 'http://localhost:4200';
 ```
 
 Just start the angular app on port **4200**, and pass the pages for the symbols in the index.ts
@@ -25,22 +30,21 @@ const pages = [
 new ElementFetcher().generateSketchFile(pages);
 ```
 
+### Debugging
 
-### Debugging 🚨
 There are some debugging variables specified to modify the console output.
+They are specefied in the `.vscode/launch.json` to be parsed while debugging with VSCode.
 
 ``` javascript
 process.env.DEBUG = 'true';
 process.env.DEBUG_SVG = 'true';
-process.env.DEBUG_BROWSER = 'true'; 
+process.env.DEBUG_BROWSER = 'true';
 ```
 
-### Testing the SVG generator 📉
-Import the testfile from the **sketchSvgParser** where you can create symbols with an svg
+### Testing the SVG generator
 
-``` typescript
-import './ng-sketch/sketchSvgParser/test';
-```
+Just run `npm run test`
 
 #### Maintainer
+
 [Lukas Holzer](lukas.holzer@dynatrace.com)
