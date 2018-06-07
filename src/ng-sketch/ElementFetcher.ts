@@ -38,9 +38,10 @@ export class ElementFetcher {
     try {
       await page.goto(url, { waitUntil: 'networkidle0' });
 
-
       await page.addScriptTag({
-        content: `window.TRAVERSER_SELECTOR = '${ElementFetcher.SELECTOR}';`,
+        content: `
+        window.TRAVERSER_SELECTOR = '${ElementFetcher.SELECTOR}';
+        `,
       });
       await page.addScriptTag({
         path: this._injectedDomTraverser,

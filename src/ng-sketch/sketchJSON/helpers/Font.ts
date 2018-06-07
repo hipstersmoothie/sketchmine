@@ -65,7 +65,7 @@ export function fontMapping(
   return 'BerninaSans';
 }
 
-export function convertFontWeightToNumber(fontWeight: string): number{
+export function convertFontWeightToNumber(fontWeight: string): number {
   if (Object.keys(textWeights).includes(fontWeight)) {
     if (fontWeight === 'initial' || fontWeight === 'inherit') {
       return 400;
