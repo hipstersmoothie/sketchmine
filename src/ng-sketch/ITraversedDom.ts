@@ -1,7 +1,11 @@
 export interface ITraversedDom {
   pageUrl: string;
   pageTitle: string;
-  elements: ITraversedDomElement[];
+  element: ITraversedDomElement;
+  assets: IAsset[];
+}
+export interface IAsset {
+  [id: string]: string;
 }
 
 export interface ITraversedElement {
@@ -20,4 +24,9 @@ export interface ITraversedDomTextNode extends ITraversedElement{
 
 export interface ITraversedDomSvgNode extends ITraversedDomElement {
   html: string;
+}
+
+export interface ITraversedDomImageNode extends ITraversedDomElement {
+  src: string;
+  name?: string;
 }

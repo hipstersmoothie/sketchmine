@@ -21,12 +21,12 @@ export class Text extends Base {
 
   constructor(bounding: IBounding, styles) {
     super();
-    super.bounding = bounding;
-    super.class = 'text';
+    this.bounding = bounding;
+    this.class = 'text';
     this._styles = styles;
     this._styleClass = new Style();
     // call setter
-    super.style = this.generateStyle();
+    this.style = this.generateStyle();
   }
 
   private generateAttributedString(): IAttributedString {

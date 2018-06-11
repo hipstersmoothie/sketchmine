@@ -9,11 +9,14 @@ import { IGroup } from './sketchJSON/interfaces/Group';
 import { Group } from './sketchJSON/models/Group';
 import { Drawer } from './Drawer';
 import { ITraversedDom } from './ITraversedDom';
+import { AssetHandler } from './sketchJSON/AssetHandler';
+import { exec } from 'child_process';
 
 export class ElementFetcher {
 
   private static HOST = 'http://localhost:4200';
   private static SELECTOR = 'app-root > * > *';
+  private _assetHandler: AssetHandler = new AssetHandler();
   private _symbols: ITraversedDom[] = [];
   private _injectedDomTraverser = path.resolve(__dirname, 'injectedTraverser.js');
 
@@ -21,15 +24,37 @@ export class ElementFetcher {
   set selector(sel: string) { ElementFetcher.SELECTOR = sel; }
 
   async generateSketchFile(pages: string[]) {
-    await this.collectElements(pages);
     const drawer = new Drawer();
     const sketch = new Sketch();
-    const symbolsMaster = drawer.drawSymbols(this._symbols);
-
-    if (process.env.DEBUG_TRAVERSER) {
-      console.log(JSON.stringify(this._symbols, null, 2));
+    await this.collectElements(pages);
+    if (this.assets()) {
+      sketch.prepareFolders();
+      await this.downloadAssets();
     }
-    sketch.write([symbolsMaster]);
+    const symbolsMaster = drawer.drawSymbols(this._symbols);
+    await sketch.write([symbolsMaster]);
+    exec('open dt-asset-lib.sketch');
+
+  }
+
+  /**
+   * Checks if there are assets in the symbols
+   * @returns boolean
+   */
+  private assets(): boolean {
+    return this._symbols.some(symbol => Object.keys(symbol.assets).length > 0);
+  }
+
+  /**
+   * Download all Assets for all pages to the folder
+   */
+  private async downloadAssets() {
+    this._assetHandler.clean();
+    if (process.env.DEBUG) {
+      console.log(chalk`\n📷\t{blueBright Downloading images}:`);
+    }
+    const assets = this._symbols.map(symbol => this._assetHandler.download(symbol.assets));
+    await Promise.all(assets);
   }
 
   private async getPage(browser: puppeteer.Browser, url: string): Promise<ITraversedDom> {
@@ -39,15 +64,12 @@ export class ElementFetcher {
       await page.goto(url, { waitUntil: 'networkidle0' });
 
       await page.addScriptTag({
-        content: `
-        window.TRAVERSER_SELECTOR = '${ElementFetcher.SELECTOR}';
-        `,
+        content: `window.TRAVERSER_SELECTOR = '${ElementFetcher.SELECTOR}';`,
       });
       await page.addScriptTag({
         path: this._injectedDomTraverser,
       });
-
-      return await page.evaluate(() => JSON.parse(window.localStorage.tree));
+      return await page.evaluate(() => JSON.parse((window as any).TREE));
     } catch (error) {
       throw Error(chalk`\n\n🚨 {bgRed Something happened while traversing the DOM:} 🚧\n${error}`);
     }
@@ -61,7 +83,7 @@ export class ElementFetcher {
       for (let i = 0, max = pages.length; i < max; i += 1) {
         const url = `${ElementFetcher.HOST}${pages[i]}`;
         if (process.env.DEBUG) {
-          console.log(chalk`🛬 {cyanBright Fetching Page}: ${url}`);
+          console.log(chalk`🛬\t{cyanBright Fetching Page}: ${url}`);
         }
         this._symbols.push(await this.getPage(browser, url));
       }

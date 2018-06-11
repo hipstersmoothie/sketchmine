@@ -15,14 +15,14 @@ export class Drawer {
     const page = new Page(this.getPageSize(symbols));
     symbols.forEach((symbol) => {
       if (process.env.DEBUG) {
-        console.log(chalk`\n💎 {greenBright Draw new Symbol}: ${symbol.pageTitle} – ${symbol.pageUrl}`);
+        console.log(chalk`\n💎\t{greenBright Draw new Symbol}: ${symbol.pageTitle} – ${symbol.pageUrl}`);
       }
       const symbolSize = this.getSymbolSize(symbol);
       const symbolMaster = new SymbolMaster(symbolSize);
       symbolMaster.name = symbol.pageUrl;
 
-      if (symbol.elements && symbol.elements.length > 0) {
-        symbolMaster.layers = this.drawElements(symbol.elements);
+      if (symbol.element) {
+        symbolMaster.layers = this.drawElements(symbol.element);
       }
 
       page.addLayer(symbolMaster.generateObject());
@@ -30,17 +30,13 @@ export class Drawer {
     return page;
   }
 
-  private drawElements(elements: ITraversedDomElement[]) {
-    const layers = [];
-    elements.forEach((element) => {
-      const node = new ElementNode(element);
-      layers.push(...node.layers);
-    });
-    return layers;
+  private drawElements(element: ITraversedDomElement) {
+    const node = new ElementNode(element);
+    return [...node.layers];
   }
 
   private getSymbolSize(symbol: ITraversedDom): IBounding {
-    const element = this.getLargestElement(symbol.elements);
+    const element = symbol.element;
     const bcr = boundingClientRectToBounding(element.boundingClientRect);
     if (!this._lastSymbol) {
       this._lastSymbol = bcr;
@@ -51,20 +47,11 @@ export class Drawer {
     return bcr;
   }
 
-  private getLargestElement(elements: ITraversedDomElement[]): ITraversedDomElement {
-    if (elements.length === 1) {
-      return elements[0];
-    }
-    return elements.reduce((prev, current) => {
-      return (prev.boundingClientRect.width > current.boundingClientRect.width) ? prev : current;
-    });
-  }
-
   private getPageSize(pages: ITraversedDom[]): IBounding {
     const size: IBounding = { height: 0, width: 0, x: 0, y: 0 };
     for (let i = 0, max = pages.length; i < max; i += 1) {
       const margin = (i > 0) ? Drawer.MARGIN : 0;
-      const bcr = boundingClientRectToBounding(pages[i].elements[0].boundingClientRect);
+      const bcr = boundingClientRectToBounding(pages[i].element.boundingClientRect);
       size.height += bcr.height + margin;
       size.width += bcr.width;
     }

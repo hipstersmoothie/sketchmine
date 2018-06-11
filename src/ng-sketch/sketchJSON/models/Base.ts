@@ -28,7 +28,7 @@ export class Base {
       constrainProportions: false,
       ...this._bounding,
     };
-    return this.addObjectID(obj);
+    return obj;
   }
 
   protected addStyle(
@@ -41,7 +41,7 @@ export class Base {
       miterLimit: mitter,
       startDecorationType: start,
     };
-    return this.addObjectID(obj);
+    return obj;
   }
 
   protected addRuler(base: number = 0): IRulerData {
@@ -60,9 +60,10 @@ export class Base {
       layerOptions: 0,
       shouldTrim: false,
     };
-    return this.addObjectID(obj);
+    return obj;
   }
 
+  // DEPRECATED: not used anymored
   private addObjectID(obj) {
     if (this._class !== 'symbolMaster' &&
         this._class !== 'page') {

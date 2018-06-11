@@ -5,7 +5,7 @@ import { UUID } from '../helpers/UUID';
 export class Style {
   private _borders: IBorder[] = [];
   private _fills: IFill[] = [];
-  private _opacity: string = '1';
+  private _opacity: string;
 
   set opacity(input: number | string) { this._opacity = `${input}`; }
 
@@ -51,19 +51,23 @@ export class Style {
 
   generateObject(): IStyle {
 
-    return {
+    const style = {
       _class: 'style',
-      do_objectID: UUID.generate(),
-      fills: this._fills,
-      borders: this._borders,
       endDecorationType: 0,
       miterLimit: 10,
       startDecorationType: 0,
-      contextSettings: {
+    } as IStyle;
+
+    if (this._fills.length > 0) { style.fills = this._fills; }
+    if (this._borders.length > 0) { style.borders = this._borders; }
+    if (this._opacity) {
+      style.contextSettings = {
         _class: 'graphicsContextSettings',
         blendMode: 0,
         opacity: this._opacity,
-      },
-    };
+      };
+    }
+
+    return style;
   }
 }

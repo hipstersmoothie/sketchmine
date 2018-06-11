@@ -39,6 +39,7 @@ They are specefied in the `.vscode/launch.json` to be parsed while debugging wit
 process.env.DEBUG = 'true';
 process.env.DEBUG_SVG = 'true';
 process.env.DEBUG_BROWSER = 'true';
+process.env.DEBUG_TRAVERSER = 'true';
 ```
 
 ### Testing the SVG generator

@@ -16,7 +16,7 @@ export function copyFile(file: string, dest: string) {
   source.pipe(destSource);
   source.on('end', () => {
     if (process.env.DEBUG) {
-      console.log(chalk`\tSuccessfully copied {grey ${file}} to \n\t{grey ${dest}}`);
+      console.log(chalk`\n\tSuccessfully copied {grey ${file}} to ⇢ \n\t{grey ${dest}}`);
     }
   });
   source.on('error', (error) => {

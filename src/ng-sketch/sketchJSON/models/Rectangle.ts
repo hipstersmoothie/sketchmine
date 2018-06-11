@@ -76,7 +76,7 @@ export class Rectangle extends Base {
     return {
       ...base,
       points: this.curvePoints(),
-      path: this.addPath(),
+      // path: this.addPath(), Not neeeded anymore (Maybe Deprecated), saw in latest JSON diff
       frame: super.addFrame('rect'),
       edited: false,
       booleanOperation: -1,

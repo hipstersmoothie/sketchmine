@@ -43,6 +43,17 @@ export class Sketch {
   }
 
   /**
+   * Create Folder structure for the .sketch File Format
+   */
+  prepareFolders() {
+    delFolder(Sketch.TMP_PATH);
+    createDir(Sketch.TMP_PATH);
+    createDir(path.join(Sketch.TMP_PATH, 'pages'));
+    createDir(path.join(Sketch.TMP_PATH, 'previews'));
+    createDir(path.join(Sketch.TMP_PATH, 'images'));
+  }
+
+  /**
    * Generates a Folder in the Sketchapp open file format hierarchy.
    * from the given pages with the meta
    *
@@ -52,11 +63,9 @@ export class Sketch {
    */
   private generateFolderStructure (pages: Page[], doc: Document, meta: Meta) {
     try {
-      delFolder(Sketch.TMP_PATH);
-      createDir(Sketch.TMP_PATH);
-      createDir(path.join(Sketch.TMP_PATH, 'pages'));
-      createDir(path.join(Sketch.TMP_PATH, 'previews'));
-
+      if (!fs.existsSync(Sketch.TMP_PATH)) {
+        this.prepareFolders();
+      }
       writeJSON(path.join(Sketch.TMP_PATH, 'document'), doc.generateObject());
       writeJSON(path.join(Sketch.TMP_PATH, 'meta'), meta.generateObject());
       writeJSON(path.join(Sketch.TMP_PATH, 'user'), {});

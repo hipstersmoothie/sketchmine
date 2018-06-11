@@ -5,7 +5,12 @@ import { boundingClientRectToBounding, calcPadding } from './sketchJSON/helpers/
 import { IRectangle, IRectangleOptions } from './sketchJSON/interfaces/Rectangle';
 import { Group } from './sketchJSON/models/Group';
 import { IGroup } from './sketchJSON/interfaces/Group';
-import { ITraversedDomElement, ITraversedDomTextNode, ITraversedDomSvgNode } from './ITraversedDom';
+import {
+  ITraversedDomElement,
+  ITraversedDomTextNode,
+  ITraversedDomSvgNode,
+  ITraversedDomImageNode,
+} from './ITraversedDom';
 import { Text } from './sketchJSON/models/Text';
 import chalk from 'chalk';
 import { IBounding } from './sketchJSON/interfaces/Base';
@@ -14,6 +19,7 @@ import { SvgParser } from './sketchSvgParser/SvgParser';
 import { SvgToSketch } from './sketchSvgParser/SvgToSketch';
 import { SvgStyle } from './sketchSvgParser/interfaces/ISvg';
 import { addStyle, overrideSvgStyle } from './sketchSvgParser/util/styles';
+import { Bitmap } from './sketchJSON/models/Bitmap';
 
 export class ElementNode {
   private _layers = [];
@@ -21,25 +27,40 @@ export class ElementNode {
   get layers(): IGroup[] { return this._layers; }
 
   constructor(element: ITraversedDomElement | ITraversedDomTextNode | ITraversedDomSvgNode) {
+    if (!element) {
+      return;
+    }
     switch (element.tagName) {
       case 'TEXT':
         this.generateText(element as ITraversedDomTextNode);
         break;
       case 'IMG':
-        console.log('🚫 🖼 Images are currently not supported!'); break;
+        this.generateIMG(element as ITraversedDomImageNode);
+        break;
       case 'SVG':
-        this.generateSVG(element as ITraversedDomSvgNode); break;
+        this.generateSVG(element as ITraversedDomSvgNode);
+        break;
       default:
         this.generate(element as ITraversedDomElement);
     }
   }
 
-  private generateSVG(element: ITraversedDomSvgNode) {
+  private generateIMG(element: ITraversedDomImageNode) {
     if (process.env.DEBUG) {
-      console.log(chalk`   Add SVG 🖼 ...`);
+      console.log(chalk`\tAdd Image 🖼\t{grey ${element.src}}`);
     }
     const size = this.getSize(element);
+    const image = new Bitmap(size);
+    image.src = element.src;
+    image.name = element.name;
+    this._layers.push(image.generateObject());
+  }
 
+  private generateSVG(element: ITraversedDomSvgNode) {
+    if (process.env.DEBUG) {
+      console.log(chalk`\tAdd SVG 🖼 ...`);
+    }
+    const size = this.getSize(element);
     const svgObject = SvgParser.parse(element.html, size.width, size.height);
     // svgObject.shapes.map(shape => overrideSvgStyle(shape.style, element.styles));
     // const styles = this.addStyles(element);
@@ -54,7 +75,7 @@ export class ElementNode {
     const bcr = boundingClientRectToBounding(element.parentRect);
     const paddedBCR = calcPadding(element.styles.padding, bcr);
     if (process.env.DEBUG) {
-      console.log(chalk`   Add Text 📝  with Text: "{yellowBright ${element.text}}"`, paddedBCR);
+      console.log(chalk`\tAdd Text 📝  with Text: "{yellowBright ${element.text}}"`, paddedBCR);
     }
     const text = new Text(paddedBCR, element.styles);
     text.text = element.text;
@@ -131,9 +152,9 @@ export class ElementNode {
     const parentBCR = element.parentRect;
     const bcr = element.boundingClientRect;
 
-    if (process.env.DEBUG) {
+    if (process.env.DEBUG && element.className) {
       console.log(
-        chalk`   {magentaBright ${element.className}} | {yellowBright ${element.tagName}}`,
+        chalk`\t{magentaBright ${element.className}} | {yellowBright ${element.tagName}}`,
         boundingClientRectToBounding(element.boundingClientRect),
       );
     }
