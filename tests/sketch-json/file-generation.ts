@@ -6,8 +6,10 @@ import chalk from 'chalk';
 import { Sketch } from '../../src/ng-sketch/sketchJSON/Sketch';
 import * as unzip from 'unzip';
 import { delFolder } from '../../src/ng-sketch/sketchJSON/helpers/utils/del-folder';
+import { fileValidations } from './file-validations';
+import { groupValidation } from './group';
 
-describe('Sketch', () => {
+describe('💎  Sketch File', () => {
   const fileName = 'dt-asset-lib';
   const testTmp = path.resolve('./tests/_tmp');
   const sketchFile = path.resolve(testTmp, `${fileName}.sketch`);
@@ -48,7 +50,17 @@ describe('Sketch', () => {
     });
   });
 
+  describe('\n    🚧  JSON validation:\n', () => {
+    // general File Validations
+    fileValidations();
+
+    describe('\n\t🛠   Validating modules:\n', () => {
+      groupValidation();
+    });
+  });
+
   after(() => {
+    console.log(chalk`\n\t{grey 🗑  clean up tests workspace...}`);
     delFolder(testTmp);
   });
 

@@ -9,7 +9,7 @@ export class Meta {
   private static _appUrl = 'com.bohemiancoding.sketch3';
   private static _commit = '2b45d75f77b3d86c8cfab3e1090bcc520c37ea74';
   private static _variant = 'NONAPPSTORE';
-  private static _fonts = ['BerninaSans-Regular'];
+  private static _fonts = ['BerninaSans'];
   private static _build = 51167;
   private _pages = [];
 

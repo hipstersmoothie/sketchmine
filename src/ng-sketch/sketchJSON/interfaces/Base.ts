@@ -37,7 +37,6 @@ export interface IBounding {
 
 export interface IExportOptions {
   _class: string;
-  do_objectID?: string; // used in Group
   exportFormats: any[];
   includedLayerIds: any[];
   layerOptions: number;
