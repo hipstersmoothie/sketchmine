@@ -87,11 +87,11 @@ var images = new AssetHelper();
 class DomVisitor {
   visitElement(element) {
     const className = (typeof element.className === 'string')? element.className.split(' ').join('\/') : undefined;
-    const tagName = element.tagName.toUpperCase()
+    const tagName = element.tagName.toUpperCase();
     const el = { 
       tagName: tagName,
       className: className,
-      parentRect: (element.parentNode) ? element.parentNode.getBoundingClientRect() : {},
+      parentRect: (element.parentNode && element !== hostElement) ? element.parentNode.getBoundingClientRect() : {},
       boundingClientRect: element.getBoundingClientRect(),
       styles: this.getStyle(element),
     };

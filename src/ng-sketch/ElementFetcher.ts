@@ -92,7 +92,7 @@ export class ElementFetcher {
     } catch (error) {
       throw Error(chalk`\n\n🚨 {bgRed Something happened while launching the headless browser:} 🌍 🖥\n${error}`);
     }
-    if (!process.env.DEBUG_BROWSER) {
+    if (process.env.DEBUG_BROWSER === 'no-close') {
       await browser.close();
     }
   }
