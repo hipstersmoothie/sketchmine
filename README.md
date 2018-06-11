@@ -42,6 +42,12 @@ process.env.DEBUG_BROWSER = 'true';
 process.env.DEBUG_TRAVERSER = 'true';
 ```
 
+Open and close sketch.app on MacOS for easier development.
+
+``` javascript
+process.env.SKETCH = 'open-close';
+```
+
 ### Testing the SVG generator
 
 Just run `npm run test`

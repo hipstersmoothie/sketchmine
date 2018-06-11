@@ -33,8 +33,10 @@ export class ElementFetcher {
     }
     const symbolsMaster = drawer.drawSymbols(this._symbols);
     await sketch.write([symbolsMaster]);
-    exec('open dt-asset-lib.sketch');
 
+    if (process.env.SKETCH === 'open-close') {
+      exec('open dt-asset-lib.sketch');
+    }
   }
 
   /**

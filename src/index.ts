@@ -14,12 +14,15 @@ const pages = [
   '/tile/tile--default',
 ];
 
+process.env.SKETCH = 'open-close';
 process.env.DEBUG = 'true';
 // process.env.DEBUG_BROWSER = 'true';
 
 try {
   // close running sketch app
-  exec(`osascript -e 'quit app "Sketch"'`);
+  if (process.env.SKETCH === 'open-close') {
+    exec(`osascript -e 'quit app "Sketch"'`);
+  }
 
   const elementFetcher = new ElementFetcher();
   elementFetcher.host = 'http://localhost:4200';
