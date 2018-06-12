@@ -1,21 +1,14 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as archiver from 'archiver';
-import { createDir, bytesToSize } from './helpers/util';
-import { copyFile } from './helpers/utils/copy-file';
-import { delFolder } from './helpers/utils/del-folder';
-import { writeJSON } from './helpers/utils/write-json';
+import { bytesToSize } from './helpers/util';
+import { createDir } from '../../utils/create-dir';
+import { copyFile } from '../../utils/copy-file';
+import { delFolder } from '../../utils/del-folder';
+import { writeJSON } from '../../utils/write-json';
 import { Page } from './models/Page';
 import { Document } from './models/Document';
 import { Meta } from './models/Meta';
-import { IPage } from './interfaces/Page';
-import { IDocument } from './interfaces/Document';
-import { IMeta } from './interfaces/Meta';
-import { SymbolMaster } from './models/SymbolMaster';
-import { Group } from './models/Group';
-import { Rectangle } from './models/Rectangle';
-import { Style } from './models/Style';
-import { Text } from './models/Text';
 import chalk from 'chalk';
 
 export class Sketch {

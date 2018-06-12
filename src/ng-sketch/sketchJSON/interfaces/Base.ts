@@ -19,7 +19,7 @@ export interface IBase {
   shouldBreakMaskChain: boolean;
   style: IStyle;
   hasClickThrough?: boolean;
-  layers: any[];
+  layers?: any[];
 }
 
 export interface IFrame extends IBounding {

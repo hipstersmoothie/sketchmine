@@ -1,5 +1,3 @@
-import * as fs from 'fs';
-import * as path from 'path';
 import * as normalizeColor from 'normalize-css-color';
 import { IBounding } from '../interfaces/Base';
 
@@ -63,15 +61,6 @@ export function parseBorderRadius(borderRadius, width, height) {
     return Math.round(percentageApplied);
   }
   return parseInt(borderRadius, 10);
-}
-
-export function createDir(folder: string) {
-  if (!folder) {
-    throw new Error('Could not create the folder, no path provided!');
-  }
-  if (!fs.existsSync(path.resolve(folder))) {
-    fs.mkdirSync(path.resolve(folder));
-  }
 }
 
 export function bytesToSize(bytes: number): string {

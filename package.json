@@ -5,8 +5,16 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon",
+    "validate": "nodemon --watch src --exec \"ts-node src/validate/index.ts -v\"",
     "lint": "tslint -p tsconfig.json",
     "test": "mocha -r ts-node/register tests/**/*.ts"
+  },
+  "nodemonConfig": {  
+    "verbose": true,
+    "watch": ["src"],
+    "ext": "ts, js",
+    "ignore": ["src/**/*.spec.ts"],
+    "exec": "ts-node src/index.ts"
   },
   "author": "",
   "license": "ISC",

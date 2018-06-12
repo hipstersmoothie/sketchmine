@@ -1,9 +1,8 @@
-import { delFolder } from './helpers/utils/del-folder';
-import { createDir } from './helpers/util';
+import { delFolder } from '../../utils/del-folder';
+import { createDir } from '../../utils/create-dir';
 import * as fs from 'fs';
 import * as path from 'path';
 import axios from 'axios';
-import { UUID } from './helpers/UUID';
 import { IAsset } from '../ITraversedDom';
 import chalk from 'chalk';
 

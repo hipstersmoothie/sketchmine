@@ -1,8 +1,4 @@
 import { ElementFetcher } from './ng-sketch/ElementFetcher';
-import { SvgParser } from './ng-sketch/sketchSvgParser/SvgParser';
-import { Sketch } from 'ng-sketch/sketchJSON/Sketch';
-import { Page } from 'ng-sketch/sketchJSON/models/Page';
-import { EXDEV } from 'constants';
 import { exec } from 'child_process';
 
 const pages = [

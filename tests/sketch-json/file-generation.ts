@@ -5,7 +5,7 @@ import chalk from 'chalk';
 
 import { Sketch } from '../../src/ng-sketch/sketchJSON/Sketch';
 import * as unzip from 'unzip';
-import { delFolder } from '../../src/ng-sketch/sketchJSON/helpers/utils/del-folder';
+import { delFolder } from '../../src/utils/del-folder';
 import { fileValidations } from './file-validations';
 import { groupValidation } from './group';
 
