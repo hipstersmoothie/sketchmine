@@ -1,5 +1,6 @@
 import { IValidationRule, IValdiationContext } from './interfaces/IValidationRule';
 import { IBase } from 'ng-sketch/sketchJSON/interfaces/Base';
+import { IPage } from 'ng-sketch/sketchJSON/interfaces/page';
 import { readFile } from '../utils/read-file';
 import chalk from 'chalk';
 import { Teacher } from './Teacher';
@@ -8,28 +9,38 @@ export class Validator {
   private _rulesSelectors: string[];
   private _matchedRules: IValdiationContext[] = [];
 
+  private _files: IPage[] = [];
+
   constructor(
     private _rules: IValidationRule[],
-    private _file?: string,
   ) {
     // selector array is faster to check than always lookup in an object
     this._rulesSelectors = this._rules.map(rule => rule.selector);
   }
 
-  async validate(file?: string) {
-    if (!this._file && !file) {
-      throw Error(chalk`{bgRed Please Provide a path to a JSON file so that we can validate it for you!}`);
+  /**
+   * Add files to validate
+   * You can Provide a String (path) to a file or an object with the filecontent to be validated
+   * @param file string | Object
+   */
+  async addFile(file: string | Object): Promise<void> {
+    if (!file) {
+      throw Error(chalk`{bgRed Please Provide a path to a JSON file, or an object so that we can validate it!}`);
     }
+    const content = (typeof file === 'object') ? file : JSON.parse(await readFile(file));
+    this._files.push(content);
+  }
 
-    if (process.env.DEBUG) {
-      console.log(chalk`{bgCyan Start debugging Sketch file:}\n${this._file}`);
-    }
-
-    if (file) {
-      const content = JSON.parse(await readFile(file));
-      this.collectModules(content);
-      // console.log(this._matchedRules);
-      this.correct();
+  /**
+   * Validates a sketch file with the given rules.
+   */
+  async validate() {
+    if (this._files.length > 0) {
+      this._files.forEach((content) => {
+        this.collectModules(content);
+        console.log(this._matchedRules);
+        this.correct();
+      });
     }
   }
 

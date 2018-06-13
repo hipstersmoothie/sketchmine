@@ -5,15 +5,19 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon",
-    "validate": "nodemon --watch src --exec \"ts-node src/validate/index.ts -v\"",
+    "validate": "NODE_ENV=DEBUG nodemon --watch src --exec \"ts-node src/validate/index.ts -v\"",
     "lint": "tslint -p tsconfig.json",
     "test": "mocha -r ts-node/register tests/**/*.ts"
   },
-  "nodemonConfig": {  
+  "nodemonConfig": {
     "verbose": true,
-    "watch": ["src"],
+    "watch": [
+      "src"
+    ],
     "ext": "ts, js",
-    "ignore": ["src/**/*.spec.ts"],
+    "ignore": [
+      "src/**/*.spec.ts"
+    ],
     "exec": "ts-node src/index.ts"
   },
   "author": "",
@@ -26,7 +30,7 @@
     "@types/mocha": "^5.2.1",
     "@types/puppeteer": "^1.3.1",
     "@types/rimraf": "^2.0.2",
-    "@types/unzip": "^0.1.1",
+    "@types/unzipper": "^0.8.4",
     "@types/xmldom": "^0.1.29",
     "axios": "^0.18.0",
     "chai": "^4.1.2",
@@ -45,7 +49,7 @@
     "svg-path": "^0.2.1",
     "svg-path-parser": "^1.1.0",
     "typescript": "^2.8.3",
-    "unzip": "^0.1.11",
+    "unzipper": "^0.8.14",
     "xmldom": "^0.1.27"
   }
 }

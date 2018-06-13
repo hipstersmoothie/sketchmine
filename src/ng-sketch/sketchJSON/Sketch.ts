@@ -4,7 +4,7 @@ import * as archiver from 'archiver';
 import { bytesToSize } from './helpers/util';
 import { createDir } from '../../utils/create-dir';
 import { copyFile } from '../../utils/copy-file';
-import { delFolder } from '../../utils/del-folder';
+import { delDir } from '../../utils/del-folder';
 import { writeJSON } from '../../utils/write-json';
 import { Page } from './models/Page';
 import { Document } from './models/Document';
@@ -32,14 +32,14 @@ export class Sketch {
    * Cleans the _tmp folder
    */
   cleanup() {
-    delFolder(Sketch.TMP_PATH);
+    delDir(Sketch.TMP_PATH);
   }
 
   /**
    * Create Folder structure for the .sketch File Format
    */
   prepareFolders() {
-    delFolder(Sketch.TMP_PATH);
+    delDir(Sketch.TMP_PATH);
     createDir(Sketch.TMP_PATH);
     createDir(path.join(Sketch.TMP_PATH, 'pages'));
     createDir(path.join(Sketch.TMP_PATH, 'previews'));

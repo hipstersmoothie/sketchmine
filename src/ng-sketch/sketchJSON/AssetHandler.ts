@@ -1,4 +1,4 @@
-import { delFolder } from '../../utils/del-folder';
+import { delDir } from '../../utils/del-folder';
 import { createDir } from '../../utils/create-dir';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -51,11 +51,11 @@ export class AssetHandler {
   }
 
   private createTmp() {
-    delFolder(AssetHandler.ASSET_TMP);
+    delDir(AssetHandler.ASSET_TMP);
     createDir(AssetHandler.ASSET_TMP);
   }
 
   clean() {
-    delFolder(AssetHandler.ASSET_TMP);
+    delDir(AssetHandler.ASSET_TMP);
   }
 }
