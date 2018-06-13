@@ -1,4 +1,5 @@
 import { CentralDirectory, Open as unzip } from 'unzipper';
+import chalk from 'chalk';
 
 /**
  * Get a Promised Array of File buffers from zip,
@@ -16,6 +17,7 @@ export async function zipToBuffer(pathToZip: string, filter?: RegExp): Promise<B
     }
     return Promise.all(files.map(async file => await file.buffer()));
   } catch (error) {
+    console.log(chalk`{bgRed Error unzipping File:\n}{grey ${pathToZip}}`);
     throw Error(error);
   }
 }

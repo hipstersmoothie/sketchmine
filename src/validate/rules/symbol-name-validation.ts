@@ -1,16 +1,17 @@
 import { IValdiationContext } from '../interfaces/IValidationRule';
-import { ValidationError } from '../error/ValidationError';
+import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../error/ValidationError';
 import chalk from 'chalk';
+import { ErrorHandler } from '../error/ErrorHandler';
 
 enum THEMELESS {
   icons = 'icons',
   globalNavigations = 'global-navigations',
-  member = 'member',
+  menubar = 'menubar',
 }
 
 enum THEME_NAMES {
-  dark = 'bg-dark',
-  light = 'bg-light',
+  dark = 'dark-bg',
+  light = 'light-bg',
 }
 
 export function symbolNameValidation(
@@ -32,28 +33,31 @@ export function symbolNameValidation(
   };
 
   if (name.length < 2) {
-    return new ValidationError({
+    const error = new WrongSymbolNamingError({
       message: `The symbolname should contain at least 1 backslash / so that it is correct grouped!`,
       ...object,
     });
+    ErrorHandler.addError(error);
   }
 
   // check if theme name is correct set
   const themeName = checkThemeInName(name);
   if (typeof themeName !== 'boolean') {
-    return new ValidationError({
+    const error = new WrongSymbolNamingError({
       message: themeName,
       ...object,
     });
+    ErrorHandler.addError(error);
   }
 
   // Check for duplicate names
   const names = homeworks.map(homework => homework.name);
   if (names.indexOf(task.name) !== names.lastIndexOf(task.name)) {
-    return new ValidationError({
-      message: chalk`Duplycated Symbol!\n  The Symbol {grey ${task.name}} exists!`,
+    const error = new DuplicatedSymbolError({
+      message: chalk`Duplycated Symbol!\nThe Symbol {grey ${task.name}} exists!`,
       ...object,
     });
+    ErrorHandler.addError(error);
   }
 
   return true;

@@ -1,7 +1,7 @@
 import * as normalizeColor from 'normalize-css-color';
 import { IBounding } from '../interfaces/Base';
 
-interface IRGBA { r: number; g: number; b: number; a: number; }
+export interface IRGBA { r: number; g: number; b: number; a: number; }
 
 export function safeToLower(input: string | any): string | any {
   if (typeof input === 'string') {
@@ -43,11 +43,11 @@ export function boundingClientRectToBounding(bcr: ClientRect | DOMRect): IBoundi
   };
 }
 
-export function cssToRGBA(input: string | any) {
+export function cssToRGBA(input: string | any): IRGBA {
   const nullableColor = normalizeColor(safeToLower(input));
   const colorInt = nullableColor === null ? 0x00000000 : nullableColor;
 
-  return normalizeColor.rgba(colorInt) as IRGBA;
+  return normalizeColor.rgba(colorInt);
 }
 
 export function parseBorderRadius(borderRadius, width, height) {

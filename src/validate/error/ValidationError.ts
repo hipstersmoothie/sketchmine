@@ -21,3 +21,11 @@ export class ValidationError extends Error {
     this.name = this._validationError.name;
   }
 }
+
+export class DuplicatedSymbolError extends ValidationError { }
+export class WrongSymbolNamingError extends ValidationError { }
+export class ColorNotInPaletteError extends ValidationError {
+  constructor(public color: string, _validationError: IValidationErrorContext) {
+    super(_validationError);
+  }
+}

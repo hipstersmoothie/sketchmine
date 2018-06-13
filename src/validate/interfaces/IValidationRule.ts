@@ -1,13 +1,20 @@
 import { ValidationError } from '../error/ValidationError';
 import { IStyle } from 'ng-sketch/sketchJSON/interfaces/Style';
 
-export type SketchModel = 'document' | 'page' | 'symbolMaster' | 'group';
+export type SketchModel =
+'document' |
+'page' |
+'symbolMaster' |
+'group' |
+'path' |
+'shapeGroup' |
+'rectangle';
 export type ValidationFunction = (homework: IValdiationContext[], currentTask: number) => ValidationError | boolean;
 
 export interface IValidationRule {
   name: string;
   description?: string;
-  selector: SketchModel;
+  selector: SketchModel[];
   validation: ValidationFunction;
 }
 

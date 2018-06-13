@@ -1,12 +1,13 @@
-import { IValidationRule, IValdiationContext } from './interfaces/IValidationRule';
+import { IValidationRule, IValdiationContext, SketchModel } from './interfaces/IValidationRule';
 import { IBase } from 'ng-sketch/sketchJSON/interfaces/Base';
 import { IPage } from 'ng-sketch/sketchJSON/interfaces/page';
 import { readFile } from '../utils/read-file';
 import chalk from 'chalk';
 import { Teacher } from './Teacher';
+import { ErrorHandler } from './error/ErrorHandler';
 
 export class Validator {
-  private _rulesSelectors: string[];
+  private _rulesSelectors: string[] = [];
   private _matchedRules: IValdiationContext[] = [];
 
   private _files: IPage[] = [];
@@ -15,7 +16,7 @@ export class Validator {
     private _rules: IValidationRule[],
   ) {
     // selector array is faster to check than always lookup in an object
-    this._rulesSelectors = this._rules.map(rule => rule.selector);
+    this._rules.forEach((rule: IValidationRule) => this._rulesSelectors.push(...rule.selector));
   }
 
   /**
@@ -35,19 +36,22 @@ export class Validator {
    * Validates a sketch file with the given rules.
    */
   async validate() {
-    if (this._files.length > 0) {
-      this._files.forEach((content) => {
-        this.collectModules(content);
-        console.log(this._matchedRules);
-        this.correct();
-      });
+    if (this._files.length === 0) {
+      throw Error(chalk`{bgRed No files to validate!}`);
     }
+    this._files.forEach((content) => {
+      this.collectModules(content);
+      this.correct();
+    });
   }
 
   /**
    * 👩🏼‍🏫 The teacher applies the rules for you
    */
   private correct() {
+    if (this._matchedRules.length === 0) {
+      return;
+    }
     // We call her verena, because pinkys girlfriend is a teacher 💁🏻‍
     const verena = new Teacher(this._rules);
     verena.improve(this._matchedRules);
@@ -58,10 +62,10 @@ export class Validator {
    * and stores it in an array
    * @param content IBase
    */
-  private collectModules(content: IBase) {
+  private collectModules(content: IPage | IBase) {
 
     if (this._rulesSelectors.includes(content._class)) {
-      const rule = this._rules.find(rule => rule.selector === content._class);
+      const rule = this._rules.find(rule => rule.selector.includes(content._class as SketchModel));
       this._matchedRules.push(this.getProperties(content));
     }
 
@@ -80,10 +84,16 @@ export class Validator {
    * @returns IValidationContext
    */
   private getProperties(layer: IBase): IValdiationContext {
-    return {
+    const obj =  {
       _class: layer._class,
       do_objectID: layer.do_objectID,
       name: layer.name,
-    };
+    } as IValdiationContext;
+
+    if (layer.style) {
+      obj.style = layer.style;
+    }
+
+    return obj;
   }
 }

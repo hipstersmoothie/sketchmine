@@ -1,4 +1,4 @@
-import { IValdiationContext, IValidationRule } from './interfaces/IValidationRule';
+import { IValdiationContext, IValidationRule, SketchModel } from './interfaces/IValidationRule';
 import chalk from 'chalk';
 
 export class Teacher {
@@ -13,7 +13,7 @@ export class Teacher {
 
   private applyCorrection(homework: IValdiationContext[], currentTask: number) {
     const task = homework[currentTask];
-    const specification = this._rules.find(rule => rule.selector === task._class);
+    const specification = this._rules.find(rule => rule.selector.includes(task._class as SketchModel));
 
     if (!specification) {
       return;
@@ -23,9 +23,9 @@ export class Teacher {
       const mark = specification.validation.call(specification.validation, homework, currentTask);
 
       if (typeof mark === 'boolean' && mark === true) {
-        console.log(
-          chalk`{green ✔︎ ${specification.name}} {grey — passed for} ${task.name}`,
-        );
+        // console.log(
+        //   chalk`{green ✔︎ ${specification.name}} {grey — passed for} ${task.name}`,
+        // );
         return;
       }
       console.log(
