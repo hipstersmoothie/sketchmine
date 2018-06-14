@@ -1,4 +1,4 @@
-import { IValidationContextParents } from '../interfaces/validation-rule';
+import { IValidationContextParents } from '../interfaces/validation-rule.interface';
 
 export interface IValidationErrorContext {
   message: string;

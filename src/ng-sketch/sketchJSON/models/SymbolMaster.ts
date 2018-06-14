@@ -1,4 +1,4 @@
-import { ISymbolMaster, IBackgroundColor } from '../interfaces/SymbolMaster';
+import { ISymbolMaster, IBackgroundColor } from '../interfaces/symbol-master.interface';
 import { Base } from './Base';
 import { IBounding, IBase } from '../interfaces/Base';
 

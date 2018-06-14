@@ -1,4 +1,4 @@
-import { ElementFetcher } from './ng-sketch/ElementFetcher';
+import { ElementFetcher } from './ng-sketch/element-fetcher';
 import { exec } from 'child_process';
 
 const pages = [

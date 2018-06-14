@@ -1,7 +1,7 @@
 import { ValidationError, ColorNotInPaletteError } from './validation-error';
 import chalk from 'chalk';
-import { IErrorHandler } from '../interfaces/error-handler';
-import { IValidationRule } from '../interfaces/validation-rule';
+import { IErrorHandler } from '../interfaces/error-handler.interface';
+import { IValidationRule } from '../interfaces/validation-rule.interface';
 export class ErrorHandler {
 
   private static instance: ErrorHandler;

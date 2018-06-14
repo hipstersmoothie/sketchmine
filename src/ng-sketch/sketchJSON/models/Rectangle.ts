@@ -1,5 +1,5 @@
 import { Base } from './Base';
-import { IPath, IPoint, IRectangleOptions, IRectangle } from '../interfaces/Rectangle';
+import { IPath, IPoint, IRectangleOptions, IRectangle } from '../interfaces/rectangle.interface';
 import { ICurvePoint } from '../../sketchSvgParser/interfaces/ICurvePoint';
 import { IBounding, IBase } from '../interfaces/Base';
 

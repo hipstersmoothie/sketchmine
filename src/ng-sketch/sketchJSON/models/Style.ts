@@ -1,5 +1,5 @@
 import { cssToRGBA } from '../helpers/util';
-import { IBorder, IFill, IColor, IStyle } from '../interfaces/Style';
+import { IBorder, IFill, IColor, IStyle } from '../interfaces/style.interface';
 import { UUID } from '../helpers/UUID';
 
 export class Style {

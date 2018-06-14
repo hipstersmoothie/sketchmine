@@ -3,9 +3,9 @@ import * as fs from 'fs';
 import { ValidationError, ColorNotInPaletteError } from '../error/validation-error';
 import { round } from '../../ng-sketch/sketchJSON/helpers/util';
 import { rgbToHex } from '../../utils/rgb-to-hex';
-import { IValidationContext } from '../interfaces/validation-rule';
-import { IDynatraceColorPalette, IDynatraceColor } from '../interfaces/dynatrace-color';
-import { IFill, IBorder } from 'ng-sketch/sketchJSON/interfaces/Style';
+import { IValidationContext } from '../interfaces/validation-rule.interface';
+import { IDynatraceColorPalette, IDynatraceColor } from '../interfaces/dynatrace-color.interface';
+import { IFill, IBorder } from 'ng-sketch/sketchJSON/interfaces/style.interface';
 
 const colorJSON = fs.readFileSync('tests/fixtures/colors.json').toString();
 const colors: string[] = removeUnusedColors(JSON.parse(colorJSON));

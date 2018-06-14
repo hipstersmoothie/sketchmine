@@ -1,4 +1,4 @@
-import { IRulerData } from './Page';
+import { IRulerData } from './page.interface';
 import { IBase } from './Base';
 
 export interface ISymbolMaster extends IBase {

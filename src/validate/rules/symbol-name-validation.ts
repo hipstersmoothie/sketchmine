@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../error/validation-error';
-import { IValidationContext } from '../interfaces/validation-rule';
+import { IValidationContext } from '../interfaces/validation-rule.interface';
 
 enum ThemeLess {
   icons = 'icons',

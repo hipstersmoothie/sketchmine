@@ -1,16 +1,16 @@
 import { Style } from './sketchJSON/models/Style';
-import { IStyle } from './sketchJSON/interfaces/Style';
+import { IStyle } from './sketchJSON/interfaces/style.interface';
 import { Rectangle } from './sketchJSON/models/Rectangle';
 import { boundingClientRectToBounding, calcPadding } from './sketchJSON/helpers/util';
-import { IRectangle, IRectangleOptions } from './sketchJSON/interfaces/Rectangle';
+import { IRectangle, IRectangleOptions } from './sketchJSON/interfaces/rectangle.interface';
 import { Group } from './sketchJSON/models/Group';
-import { IGroup } from './sketchJSON/interfaces/Group';
+import { IGroup } from './sketchJSON/interfaces/group.interface';
 import {
   ITraversedDomElement,
   ITraversedDomTextNode,
   ITraversedDomSvgNode,
   ITraversedDomImageNode,
-} from './ITraversedDom';
+} from './traversed-dom.interface';
 import { Text } from './sketchJSON/models/Text';
 import chalk from 'chalk';
 import { IBounding } from './sketchJSON/interfaces/Base';

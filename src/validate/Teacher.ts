@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { IValidationContext, IValidationRule, SketchModel } from './interfaces/validation-rule';
+import { IValidationContext, IValidationRule, SketchModel } from './interfaces/validation-rule.interface';
 import { ErrorHandler } from './error/error-handler';
 import { ValidationError } from './error/validation-error';
 

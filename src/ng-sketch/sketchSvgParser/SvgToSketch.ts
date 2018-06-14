@@ -4,7 +4,7 @@ import { ShapeGroup } from './models/ShapeGroup';
 import { IBounding } from '../sketchJSON/interfaces/Base';
 import { SvgPointsToSketch } from './SvgPointsToSketch';
 import { Style } from '../sketchJSON/models/Style';
-import { IStyle } from '../sketchJSON/interfaces/Style';
+import { IStyle } from '../sketchJSON/interfaces/style.interface';
 import chalk from 'chalk';
 import { addCssStyleToSvg } from './util/styles';
 

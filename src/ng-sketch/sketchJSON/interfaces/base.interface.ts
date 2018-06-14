@@ -1,4 +1,4 @@
-import { IStyle } from './Style';
+import { IStyle } from './style.interface';
 
 export interface IBase {
   _class: string;

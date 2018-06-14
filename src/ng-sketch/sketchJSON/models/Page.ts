@@ -1,4 +1,4 @@
-import { IPage } from '../interfaces/Page';
+import { IPage } from '../interfaces/page.interface';
 import { UUID } from '../helpers/UUID';
 import { SymbolMaster } from './SymbolMaster';
 import { Base } from './Base';

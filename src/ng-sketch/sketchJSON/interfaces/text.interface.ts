@@ -1,5 +1,5 @@
-import { IBase } from './Base';
-import { IStyle, IColor } from './Style';
+import { IBase } from './base.interface';
+import { IStyle, IColor } from './style.interface';
 
 export interface IText extends IBase {
   style: IStyle;

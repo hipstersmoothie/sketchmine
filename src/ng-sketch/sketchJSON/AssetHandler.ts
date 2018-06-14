@@ -3,7 +3,7 @@ import { createDir } from '../../utils/create-dir';
 import * as fs from 'fs';
 import * as path from 'path';
 import axios from 'axios';
-import { IAsset } from '../ITraversedDom';
+import { IAsset } from '../traversed-dom.interface';
 import chalk from 'chalk';
 
 export class AssetHandler {

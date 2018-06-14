@@ -5,10 +5,10 @@ import { SymbolMaster } from './sketchJSON/models/SymbolMaster';
 import { ElementNode } from './ElementNode';
 import { Page } from './sketchJSON/models/Page';
 import { Sketch } from './sketchJSON/Sketch';
-import { IGroup } from './sketchJSON/interfaces/Group';
+import { IGroup } from './sketchJSON/interfaces/group.interface';
 import { Group } from './sketchJSON/models/Group';
-import { Drawer } from './Drawer';
-import { ITraversedDom } from './ITraversedDom';
+import { Drawer } from './drawer';
+import { ITraversedDom } from './traversed-dom.interface';
 import { AssetHandler } from './sketchJSON/AssetHandler';
 import { exec } from 'child_process';
 

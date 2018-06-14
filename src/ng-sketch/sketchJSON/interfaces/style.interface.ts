@@ -1,4 +1,4 @@
-import { ITextStyle } from './Text';
+import { ITextStyle } from './text.interface';
 
 export interface IStyle {
   _class: string;

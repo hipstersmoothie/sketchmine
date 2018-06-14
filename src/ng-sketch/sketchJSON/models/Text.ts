@@ -6,9 +6,9 @@ import {
   IMSAttributedStringFontAttribute,
   IParagraphStyle,
   IEncodedAttributes,
-} from '../interfaces/Text';
+} from '../interfaces/text.interface';
 import { Style } from './Style';
-import { IStyle } from '../interfaces/Style';
+import { IStyle } from '../interfaces/style.interface';
 import { fixWhiteSpace, fontMapping, fontStyle } from '../helpers/font';
 
 // TODO: multiline text attribute

@@ -1,7 +1,7 @@
 import { UUID } from '../helpers/UUID';
 import { IBase, IExportOptions, IBounding, IFrame } from '../interfaces/Base';
-import { IRulerData } from '../interfaces/Page';
-import { IStyle } from '../interfaces/Style';
+import { IRulerData } from '../interfaces/page.interface';
+import { IStyle } from '../interfaces/style.interface';
 
 export class Base {
 

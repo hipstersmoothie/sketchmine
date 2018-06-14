@@ -1,5 +1,5 @@
 import { UUID } from '../helpers/UUID';
-import { IDocument, IDocumentAssets, IDocumentPage } from '../interfaces/Document';
+import { IDocument, IDocumentAssets, IDocumentPage } from '../interfaces/document.interface';
 import { Page } from './Page';
 
 export class Document {

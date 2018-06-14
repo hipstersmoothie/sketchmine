@@ -1,4 +1,4 @@
-import { IMeta, IMetaPagesAndArtboards, IMetaArtboard } from '../interfaces/Meta';
+import { IMeta, IMetaPagesAndArtboards, IMetaArtboard } from '../interfaces/meta.interface';
 import { Page } from './Page';
 
 export class Meta {

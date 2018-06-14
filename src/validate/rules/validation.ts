@@ -1,4 +1,4 @@
-import { IValidationContext } from '../interfaces/validation-rule';
+import { IValidationContext } from '../interfaces/validation-rule.interface';
 import { ValidationError } from '../error/validation-error';
 
 export abstract class Validation {

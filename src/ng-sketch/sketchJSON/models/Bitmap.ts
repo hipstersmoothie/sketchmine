@@ -1,7 +1,7 @@
 import { Base } from './Base';
 import { IBase, IFrame, IBounding } from '../interfaces/Base';
 import { UUID } from '../helpers/UUID';
-import { IBitmap, IImage } from '../interfaces/Bitmap';
+import { IBitmap, IImage } from '../interfaces/bitmap.interface';
 import { Style } from './Style';
 
 export class Bitmap extends Base {
