@@ -1,7 +1,7 @@
 import chalk from 'chalk';
-import { IValidationContext, IValidationRule, SketchModel } from './interfaces/IValidationRule';
-import { ErrorHandler } from './error/ErrorHandler';
-import { ValidationError } from './error/ValidationError';
+import { IValidationContext, IValidationRule, SketchModel } from './interfaces/validation-rule';
+import { ErrorHandler } from './error/error-handler';
+import { ValidationError } from './error/validation-error';
 
 export class Teacher {
   private _handler: ErrorHandler;
@@ -26,11 +26,11 @@ export class Teacher {
 
     try {
       const marks:(ValidationError | boolean)[] = specification.validation
-        .call(this, homework, currentTask);
+        .call(null, homework, currentTask);
 
       if (marks instanceof Array) {
         marks.forEach((mark) => {
-          if (typeof mark === 'boolean' && mark === true) {
+          if (mark === true) {
             this._handler.addSuccess(specification);
           } else if (mark instanceof ValidationError) {
             mark.description = specification.description;

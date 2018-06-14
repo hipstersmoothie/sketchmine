@@ -1,4 +1,4 @@
-import { ValidationError } from '../error/ValidationError';
+import { ValidationError } from '../error/validation-error';
 
 export namespace IErrorHandler {
   export interface RulesStack {

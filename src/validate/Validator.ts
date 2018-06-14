@@ -1,10 +1,10 @@
-import { IValidationRule, IValidationContext, SketchModel } from './interfaces/IValidationRule';
+import { IValidationRule, IValidationContext, SketchModel } from './interfaces/validation-rule';
 import { IBase } from 'ng-sketch/sketchJSON/interfaces/Base';
 import { IPage } from 'ng-sketch/sketchJSON/interfaces/page';
 import { readFile } from '../utils/read-file';
 import chalk from 'chalk';
-import { Teacher } from './Teacher';
-import { ErrorHandler } from './error/ErrorHandler';
+import { Teacher } from './teacher';
+import { ErrorHandler } from './error/error-handler';
 
 export class Validator {
   private _rulesSelectors: string[] = [];

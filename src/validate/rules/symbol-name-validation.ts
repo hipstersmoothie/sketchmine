@@ -1,14 +1,14 @@
 import chalk from 'chalk';
-import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../error/ValidationError';
-import { IValidationContext } from '../interfaces/IValidationRule';
+import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../error/validation-error';
+import { IValidationContext } from '../interfaces/validation-rule';
 
-enum THEMELESS {
+enum ThemeLess {
   icons = 'icons',
   globalNavigations = 'global-navigations',
   menubar = 'menubar',
 }
 
-enum THEME_NAMES {
+enum ThemeNames {
   dark = 'dark-bg',
   light = 'light-bg',
 }
@@ -64,10 +64,10 @@ export function symbolNameValidation(
  * @returns boolean | string
  */
 function checkThemeInName(name: string[]): boolean | string {
-  if (Object.values(THEMELESS).includes(name[0])) {
+  if (Object.values(ThemeLess).includes(name[0])) {
     return true;
   }
-  const themes = Object.values(THEME_NAMES);
+  const themes = Object.values(ThemeNames);
   if (themes.includes(name[1])) {
     return true;
   }

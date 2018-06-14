@@ -1,7 +1,7 @@
-import { ValidationError, ColorNotInPaletteError } from './ValidationError';
+import { ValidationError, ColorNotInPaletteError } from './validation-error';
 import chalk from 'chalk';
-import { IErrorHandler } from '../interfaces/IErrorHandler';
-import { IValidationRule } from '../interfaces/IValidationRule';
+import { IErrorHandler } from '../interfaces/error-handler';
+import { IValidationRule } from '../interfaces/validation-rule';
 export class ErrorHandler {
 
   private static instance: ErrorHandler;
@@ -65,9 +65,7 @@ export class ErrorHandler {
         }
 
         if (this._colors.size > 0) {
-          stackedOutput += chalk`{grey   There are {white ${this._colors.size.toString()} Colors} used, }` +
-          chalk`{grey that are not in the color palette:\n}`;
-          stackedOutput += `${Array.from(this._colors).join(', ')}  \n\n`;
+          stackedOutput += this.colorPaletteError();
         }
 
       }
@@ -91,13 +89,23 @@ export class ErrorHandler {
     }
   }
 
+  private colorPaletteError(): string {
+    let output = chalk`{grey   There are {white ${this._colors.size.toString()} Colors} used, }` +
+    chalk`{grey that are not in the color palette:\n\n}`;
+    if (process.env.VERBOSE) {
+      Array.from(this._colors).forEach(color => output += chalk`{hex('${color}') ███} ${color}\n`);
+    }
+    this._colors.clear();
+    return output;
+  }
+
   private tracedFailings(failings: ValidationError[], rule: string) {
     for (let i = 1, max = failings.length; i <= max; i += 1) {
       const item = failings[i - 1];
       const trace = (item.parents.artboard) ? item.parents.artboard : item.parents.symbolMaster;
       console.log(
-        chalk`{red ${i.toString()}) ${item.constructor.name}} → {grey ${item.parents.page} → ${trace}}\n`,
-        chalk`{magenta ${item.objectId}} — ${item.name}\n`,
+        chalk`{redBright ${i.toString()}) ${item.constructor.name}} → {grey ${item.parents.page} → ${trace}}\n`,
+        chalk`{red ${item.objectId}} — ${item.name}\n`,
         chalk`${item.message}\n`,
       );
 

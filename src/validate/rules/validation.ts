@@ -1,5 +1,5 @@
-import { IValidationContext } from '../interfaces/IValidationRule';
-import { ValidationError } from '../error/ValidationError';
+import { IValidationContext } from '../interfaces/validation-rule';
+import { ValidationError } from '../error/validation-error';
 
 export abstract class Validation {
   // make abstract class to extend the single validations

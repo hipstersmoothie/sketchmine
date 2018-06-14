@@ -1,4 +1,4 @@
-import { ValidationError } from '../error/ValidationError';
+import { ValidationError } from '../error/validation-error';
 import { IStyle } from 'ng-sketch/sketchJSON/interfaces/Style';
 
 export type SketchModel =

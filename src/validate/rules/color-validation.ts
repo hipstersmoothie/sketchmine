@@ -1,10 +1,10 @@
 import chalk from 'chalk';
 import * as fs from 'fs';
-import { ValidationError, ColorNotInPaletteError } from '../error/ValidationError';
+import { ValidationError, ColorNotInPaletteError } from '../error/validation-error';
 import { round } from '../../ng-sketch/sketchJSON/helpers/util';
 import { rgbToHex } from '../../utils/rgb-to-hex';
-import { IValidationContext } from '../interfaces/IValidationRule';
-import { IDynatraceColorPalette, IDynatraceColor } from '../interfaces/IDynatraceColor';
+import { IValidationContext } from '../interfaces/validation-rule';
+import { IDynatraceColorPalette, IDynatraceColor } from '../interfaces/dynatrace-color';
 import { IFill, IBorder } from 'ng-sketch/sketchJSON/interfaces/Style';
 
 const colorJSON = fs.readFileSync('tests/fixtures/colors.json').toString();
@@ -56,7 +56,7 @@ function colorInPalette(task: IValidationContext, fill: IFill | IBorder): ColorN
       {
         objectId: task.do_objectID,
         name: task.name,
-        message: chalk`The Color {cyan ${hex}} is not in the Dynatrace Color Palette!\n` +
+        message: chalk`The Color {bold {hex('${hex}') ███} ${hex}} is not in the Dynatrace Color Palette!\n` +
         chalk`Take a look at {grey https://styles.lab.dynatrace.org/resources/colors}`,
       },
     );

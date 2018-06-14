@@ -1,4 +1,4 @@
-import { IValidationRule } from './interfaces/IValidationRule';
+import { IValidationRule } from './interfaces/validation-rule';
 import { symbolNameValidation } from './rules/symbol-name-validation';
 import { colorValidation } from './rules/color-validation';
 

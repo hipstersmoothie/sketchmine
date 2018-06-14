@@ -1,9 +1,9 @@
 import * as path from 'path';
 import { zipToBuffer as unzip } from '../utils/zip-to-buffer';
 import { rules } from './config';
-import { Validator } from './Validator';
+import { Validator } from './validator';
 import chalk from 'chalk';
-import { ErrorHandler } from './error/ErrorHandler';
+import { ErrorHandler } from './error/error-handler';
 
 const allComponents = path.resolve('tests/fixtures/01_all_components_library.sketch');
 const url = path.resolve('tests/fixtures/name-validation-test.sketch');
@@ -17,6 +17,7 @@ if (process.env.DEBUG) {
 }
 
 console.log(chalk`\n💎💎💎  Start Validating Sketch File:  💎💎💎\n`);
+
 unzip(url, /pages\/.*?\.json/).then(async (result) => {
   try {
     if (process.env.VERBOSE) {
