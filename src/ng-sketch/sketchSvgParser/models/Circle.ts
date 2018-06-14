@@ -1,4 +1,4 @@
-import { IPoint, ISvgPoint } from '../interfaces/ISvg';
+import { IPoint, ISvgPoint } from '../interfaces/svg.interface';
 import { Point } from './Point';
 
 /**

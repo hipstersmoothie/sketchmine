@@ -1,7 +1,7 @@
-import { Base } from './Base';
+import { Base } from './base';
 import { IBase, IFrame, IBounding } from '../interfaces/Base';
 import { IGroup } from '../interfaces/group.interface';
-import { UUID } from '../helpers/UUID';
+import { UUID } from '../helpers/uuid';
 
 export class Group extends Base {
 

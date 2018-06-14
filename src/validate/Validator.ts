@@ -1,6 +1,5 @@
 import { IValidationRule, IValidationContext, SketchModel } from './interfaces/validation-rule.interface';
-import { IBase } from 'ng-sketch/sketchJSON/interfaces/Base';
-import { IPage } from 'ng-sketch/sketchJSON/interfaces/page.interface';
+import { IBase } from 'ng-sketch/sketchJSON/interfaces/base.interface';
 import { readFile } from '../utils/read-file';
 import chalk from 'chalk';
 import { Teacher } from './teacher';
@@ -12,7 +11,7 @@ export class Validator {
   private _currentArtboard: string;
   private _currentSymbol: string;
   private _currentPage: string;
-  private _files: IPage[] = [];
+  private _files: IBase[] = [];
 
   constructor(private _rules: IValidationRule[]) {
     // selector array is faster to check than always lookup in an object
@@ -62,7 +61,7 @@ export class Validator {
    * and stores it in an array
    * @param content IBase
    */
-  private collectModules(content: IPage | IBase) {
+  private collectModules(content: IBase) {
     this.setCurrentParents(content);
 
     if (this._rulesSelectors.includes(content._class)) {
@@ -84,9 +83,9 @@ export class Validator {
 
   /**
    * Get the current Artboard, Page, SymbolMaster
-   * @param content IPage | IBase
+   * @param content IBase
    */
-  private setCurrentParents(content: IPage | IBase) {
+  private setCurrentParents(content: IBase) {
     if (content._class === 'page') {
       this._currentArtboard = undefined;
       this._currentSymbol = undefined;

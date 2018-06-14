@@ -1,10 +1,10 @@
-import { Page } from './sketchJSON/models/Page';
+import { Page } from './sketchJSON/models/page';
 import { IBounding } from './sketchJSON/interfaces/Base';
-import { SymbolMaster } from './sketchJSON/models/SymbolMaster';
-import { Group } from './sketchJSON/models/Group';
+import { SymbolMaster } from './sketchJSON/models/symbol-master';
+import { Group } from './sketchJSON/models/group';
 import { ITraversedDom, ITraversedDomElement } from './traversed-dom.interface';
 import { boundingClientRectToBounding } from './sketchJSON/helpers/util';
-import { ElementNode } from './ElementNode';
+import { ElementNode } from './element-node';
 import chalk from 'chalk';
 
 export class Drawer {

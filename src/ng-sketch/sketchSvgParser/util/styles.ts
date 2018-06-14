@@ -1,5 +1,5 @@
-import { SvgStyle } from '../interfaces/ISvg';
-import { Style } from '../../sketchJSON/models/Style';
+import { SvgStyle } from '../interfaces/svg.interface';
+import { Style } from '../../sketchJSON/models/style';
 import { IStyle } from '../../sketchJSON/interfaces/style.interface';
 
 /**

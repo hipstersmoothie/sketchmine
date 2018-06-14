@@ -1,4 +1,4 @@
-import { TextAlignment } from './sketchConstants';
+import { TextAlignment } from './sketch-constants';
 
 const textWeights = {
   lighter: 200,

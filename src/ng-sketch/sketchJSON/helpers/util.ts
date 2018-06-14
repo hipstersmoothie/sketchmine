@@ -1,5 +1,5 @@
 import * as normalizeColor from 'normalize-css-color';
-import { IBounding } from '../interfaces/Base';
+import { IBounding } from '../interfaces/base.interface';
 
 export interface IRGBA { r: number; g: number; b: number; a: number; }
 

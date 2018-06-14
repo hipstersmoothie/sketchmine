@@ -1,6 +1,6 @@
 import { cssToRGBA } from '../helpers/util';
 import { IBorder, IFill, IColor, IStyle } from '../interfaces/style.interface';
-import { UUID } from '../helpers/UUID';
+import { UUID } from '../helpers/uuid';
 
 export class Style {
   private _borders: IBorder[] = [];

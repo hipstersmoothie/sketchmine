@@ -1,9 +1,9 @@
-import { Style } from './sketchJSON/models/Style';
+import { Style } from './sketchJSON/models/style';
 import { IStyle } from './sketchJSON/interfaces/style.interface';
-import { Rectangle } from './sketchJSON/models/Rectangle';
+import { Rectangle } from './sketchJSON/models/rectangle';
 import { boundingClientRectToBounding, calcPadding } from './sketchJSON/helpers/util';
 import { IRectangle, IRectangleOptions } from './sketchJSON/interfaces/rectangle.interface';
-import { Group } from './sketchJSON/models/Group';
+import { Group } from './sketchJSON/models/group';
 import { IGroup } from './sketchJSON/interfaces/group.interface';
 import {
   ITraversedDomElement,
@@ -11,15 +11,15 @@ import {
   ITraversedDomSvgNode,
   ITraversedDomImageNode,
 } from './traversed-dom.interface';
-import { Text } from './sketchJSON/models/Text';
+import { Text } from './sketchJSON/models/text';
 import chalk from 'chalk';
 import { IBounding } from './sketchJSON/interfaces/Base';
-import { ShapeGroup } from './sketchSvgParser/models/ShapeGroup';
-import { SvgParser } from './sketchSvgParser/SvgParser';
-import { SvgToSketch } from './sketchSvgParser/SvgToSketch';
-import { SvgStyle } from './sketchSvgParser/interfaces/ISvg';
+import { ShapeGroup } from './sketchSvgParser/models/shape-group';
+import { SvgParser } from './sketchSvgParser/svg-parser';
+import { SvgToSketch } from './sketchSvgParser/svg-to-sketch';
+import { SvgStyle } from './sketchSvgParser/interfaces/svg.interface';
 import { addStyle, overrideSvgStyle } from './sketchSvgParser/util/styles';
-import { Bitmap } from './sketchJSON/models/Bitmap';
+import { Bitmap } from './sketchJSON/models/bitmap';
 
 export class ElementNode {
   private _layers = [];

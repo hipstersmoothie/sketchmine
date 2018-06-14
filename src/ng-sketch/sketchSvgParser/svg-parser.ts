@@ -1,13 +1,13 @@
 import chalk from 'chalk';
 import { DOMParser } from 'xmldom';
 import { parseSVG, makeAbsolute } from 'svg-path-parser';
-import { ISvgPoint, ISvgPointGroup, ISvgView, ISvg, ISvgShape, SvgStyle } from './interfaces/ISvg';
-import { SvgPointsToSketch } from './SvgPointsToSketch';
-import { ShapeGroup } from './models/ShapeGroup';
+import { ISvgPoint, ISvgPointGroup, ISvgView, ISvg, ISvgShape, SvgStyle } from './interfaces/svg.interface';
+import { SvgPointsToSketch } from './svg-points-to-sketch';
+import { ShapeGroup } from './models/shape-group';
 import { IBounding } from '../sketchJSON/interfaces/Base';
-import { BooleanOperation } from '../sketchJSON/helpers/sketchConstants';
-import { Circle } from './models/Circle';
-import { Rect } from './models/Rect';
+import { BooleanOperation } from '../sketchJSON/helpers/sketch-constants';
+import { Circle } from './models/circle';
+import { Rect } from './models/rect';
 import { addStyle } from './util/styles';
 
 export class SvgParser {

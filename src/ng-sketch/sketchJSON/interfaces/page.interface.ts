@@ -1,4 +1,4 @@
-import { IBase } from './Base';
+import { IBase } from './base.interface';
 
 export interface IPage extends IBase{
   horizontalRulerData: IRulerData;

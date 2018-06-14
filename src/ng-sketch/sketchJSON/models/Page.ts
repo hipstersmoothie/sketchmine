@@ -1,6 +1,6 @@
 import { IPage } from '../interfaces/page.interface';
 import { UUID } from '../helpers/UUID';
-import { SymbolMaster } from './SymbolMaster';
+import { SymbolMaster } from './symbol-master';
 import { Base } from './Base';
 import { IBounding, IBase } from '../interfaces/Base';
 

@@ -1,12 +1,12 @@
 import * as path from 'path';
 import chalk from 'chalk';
 import * as puppeteer from 'puppeteer';
-import { SymbolMaster } from './sketchJSON/models/SymbolMaster';
-import { ElementNode } from './ElementNode';
-import { Page } from './sketchJSON/models/Page';
-import { Sketch } from './sketchJSON/Sketch';
+import { SymbolMaster } from './sketchJSON/models/symbol-master';
+import { ElementNode } from './element-node';
+import { Page } from './sketchJSON/models/page';
+import { Sketch } from './sketchJSON/sketch';
 import { IGroup } from './sketchJSON/interfaces/group.interface';
-import { Group } from './sketchJSON/models/Group';
+import { Group } from './sketchJSON/models/group';
 import { Drawer } from './drawer';
 import { ITraversedDom } from './traversed-dom.interface';
 import { AssetHandler } from './sketchJSON/AssetHandler';

@@ -6,9 +6,9 @@ import { createDir } from '../../utils/create-dir';
 import { copyFile } from '../../utils/copy-file';
 import { delDir } from '../../utils/del-folder';
 import { writeJSON } from '../../utils/write-json';
-import { Page } from './models/Page';
-import { Document } from './models/Document';
-import { Meta } from './models/Meta';
+import { Page } from './models/page';
+import { Document } from './models/document';
+import { Meta } from './models/meta';
 import chalk from 'chalk';
 
 export class Sketch {

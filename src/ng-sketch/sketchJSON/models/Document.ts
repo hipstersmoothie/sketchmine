@@ -1,6 +1,6 @@
 import { UUID } from '../helpers/UUID';
 import { IDocument, IDocumentAssets, IDocumentPage } from '../interfaces/document.interface';
-import { Page } from './Page';
+import { Page } from './page';
 
 export class Document {
   private static _instance: Document;

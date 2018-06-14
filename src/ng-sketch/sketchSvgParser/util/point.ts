@@ -1,4 +1,4 @@
-import { ISvgPoint } from '../interfaces/ISvg';
+import { ISvgPoint } from '../interfaces/svg.interface';
 
 /**
  * Checks if the provided point is an Action Point like close Path or start drawing with a moveto

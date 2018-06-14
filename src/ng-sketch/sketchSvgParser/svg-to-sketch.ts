@@ -1,9 +1,9 @@
-import { ISvgPointGroup, ISvg } from './interfaces/ISvg';
-import { IShapeGroup } from './interfaces/ShapeGroup';
-import { ShapeGroup } from './models/ShapeGroup';
+import { ISvgPointGroup, ISvg } from './interfaces/svg.interface';
+import { IShapeGroup } from './interfaces/shape-group.interface';
+import { ShapeGroup } from './models/shape-group';
 import { IBounding } from '../sketchJSON/interfaces/Base';
-import { SvgPointsToSketch } from './SvgPointsToSketch';
-import { Style } from '../sketchJSON/models/Style';
+import { SvgPointsToSketch } from './svg-points-to-sketch';
+import { Style } from '../sketchJSON/models/style';
 import { IStyle } from '../sketchJSON/interfaces/style.interface';
 import chalk from 'chalk';
 import { addCssStyleToSvg } from './util/styles';

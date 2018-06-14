@@ -1,5 +1,5 @@
-import { IPoint, ISvgPoint } from '../interfaces/ISvg';
-import { Point } from './Point';
+import { IPoint, ISvgPoint } from '../interfaces/svg.interface';
+import { Point } from './point';
 
 /**
  * Converts a rect in 4 Lines

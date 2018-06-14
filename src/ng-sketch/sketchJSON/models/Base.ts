@@ -1,4 +1,4 @@
-import { UUID } from '../helpers/UUID';
+import { UUID } from '../helpers/uuid';
 import { IBase, IExportOptions, IBounding, IFrame } from '../interfaces/Base';
 import { IRulerData } from '../interfaces/page.interface';
 import { IStyle } from '../interfaces/style.interface';

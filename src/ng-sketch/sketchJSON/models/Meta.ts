@@ -1,5 +1,5 @@
 import { IMeta, IMetaPagesAndArtboards, IMetaArtboard } from '../interfaces/meta.interface';
-import { Page } from './Page';
+import { Page } from './page';
 
 export class Meta {
   private static _instance: Meta;
