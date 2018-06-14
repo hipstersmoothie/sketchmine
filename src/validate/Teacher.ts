@@ -1,17 +1,22 @@
-import { IValdiationContext, IValidationRule, SketchModel } from './interfaces/IValidationRule';
 import chalk from 'chalk';
+import { IValidationContext, IValidationRule, SketchModel } from './interfaces/IValidationRule';
+import { ErrorHandler } from './error/ErrorHandler';
+import { ValidationError } from './error/ValidationError';
 
 export class Teacher {
+  private _handler: ErrorHandler;
 
-  constructor(private _rules: IValidationRule[]) {}
+  constructor(private _rules: IValidationRule[]) {
+    this._handler = new ErrorHandler();
+  }
 
-  improve(homework: IValdiationContext[]) {
+  improve(homework: IValidationContext[]) {
     for (let i = 0, max = homework.length; i < max; i += 1) {
       this.applyCorrection(homework, i);
     }
   }
 
-  private applyCorrection(homework: IValdiationContext[], currentTask: number) {
+  private applyCorrection(homework: IValidationContext[], currentTask: number) {
     const task = homework[currentTask];
     const specification = this._rules.find(rule => rule.selector.includes(task._class as SketchModel));
 
@@ -20,19 +25,20 @@ export class Teacher {
     }
 
     try {
-      const mark = specification.validation.call(specification.validation, homework, currentTask);
+      const marks:(ValidationError | boolean)[] = specification.validation
+        .call(this, homework, currentTask);
 
-      if (typeof mark === 'boolean' && mark === true) {
-        // console.log(
-        //   chalk`{green ✔︎ ${specification.name}} {grey — passed for} ${task.name}`,
-        // );
-        return;
+      if (marks instanceof Array) {
+        marks.forEach((mark) => {
+          if (typeof mark === 'boolean' && mark === true) {
+            this._handler.addSuccess(specification);
+          } else if (mark instanceof ValidationError) {
+            mark.description = specification.description;
+            mark.parents = task.parents;
+            this._handler.addError(specification, mark);
+          }
+        });
       }
-      console.log(
-        chalk`{redBright ✘ ${specification.name} failed!}\n\n`,
-        chalk` {red ${mark.name}}\n`,
-        chalk` ${mark.message}\n\n`,
-      );
     } catch (error) {
       console.log(error);
     }

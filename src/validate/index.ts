@@ -7,12 +7,21 @@ import { ErrorHandler } from './error/ErrorHandler';
 
 const allComponents = path.resolve('tests/fixtures/01_all_components_library.sketch');
 const url = path.resolve('tests/fixtures/name-validation-test.sketch');
+const allFine = path.resolve('tests/fixtures/all-fine-validation.sketch');
 
 const validator = new Validator(rules);
+const handler = new ErrorHandler();
 
-unzip(allComponents, /pages\/.*?\.json/).then(async (result) => {
+if (process.env.DEBUG) {
+  process.env.VERBOSE = 'true';
+}
+
+console.log(chalk`\n💎💎💎  Start Validating Sketch File:  💎💎💎\n`);
+unzip(url, /pages\/.*?\.json/).then(async (result) => {
   try {
-    console.log(chalk`\n⏱  Parsing and Validating ${result.length.toString()} Pages: \n\n`);
+    if (process.env.VERBOSE) {
+      console.log(chalk`\n⏱  Parsing and Validating ${result.length.toString()} Pages: \n\n`);
+    }
     await result.forEach((file) => {
       const content = file.toString();
       try {
@@ -20,16 +29,18 @@ unzip(allComponents, /pages\/.*?\.json/).then(async (result) => {
 
         validator.addFile(page);
       } catch (error) {
-        console.log(content);
-        console.log(content.substring(2181820, 2182000));
         throw Error(error);
       }
     });
   } catch (error) {
-    console.log(chalk`{bgRed Error Parsing Files:\n}`);
-    console.log(error);
+    if (process.env.DEBUG) {
+      console.log(chalk`{bgRed Error Parsing Files:\n}`);
+      console.log(error);
+    }
   }
 
   validator.validate();
-  ErrorHandler.emit();
+  handler.emit();
+}).catch((error) => {
+  throw error;
 });

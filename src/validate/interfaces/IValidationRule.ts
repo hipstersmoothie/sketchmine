@@ -9,18 +9,26 @@ export type SketchModel =
 'path' |
 'shapeGroup' |
 'rectangle';
-export type ValidationFunction = (homework: IValdiationContext[], currentTask: number) => ValidationError | boolean;
+export type ValidationFunction = (homework: IValidationContext[], currentTask: number) => (ValidationError | boolean)[];
 
 export interface IValidationRule {
   name: string;
-  description?: string;
   selector: SketchModel[];
   validation: ValidationFunction;
+  description?: string;
+  ignoreArtboards?: string[];
 }
 
-export interface IValdiationContext {
+export interface IValidationContext {
   _class: string;
-  name: string;
   do_objectID: string;
+  name: string;
   style?: IStyle;
+  parents: IValidationContextParents;
+}
+
+export interface IValidationContextParents {
+  page: string;
+  artboard: string;
+  symbolMaster: string;
 }

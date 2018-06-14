@@ -1,7 +1,6 @@
-import { IValdiationContext } from '../interfaces/IValidationRule';
-import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../error/ValidationError';
 import chalk from 'chalk';
-import { ErrorHandler } from '../error/ErrorHandler';
+import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../error/ValidationError';
+import { IValidationContext } from '../interfaces/IValidationRule';
 
 enum THEMELESS {
   icons = 'icons',
@@ -15,52 +14,47 @@ enum THEME_NAMES {
 }
 
 export function symbolNameValidation(
-  homeworks: IValdiationContext[],
+  homeworks: IValidationContext[],
   currentTask: number,
-  ): ValidationError | boolean {
+  ): (ValidationError | boolean)[] {
   const task = homeworks[currentTask];
   if (!task) {
     console.error(
       chalk`{bgRed [symbol-name-validation.ts]} -> symbolNameValidation needs a valid task` +
       chalk`{cyan IValdiationContext[]} parameter with index!\n`,
     );
-    return false;
+    return;
   }
+
+  const errors: (ValidationError | boolean)[] = [];
   const name = task.name.split('/');
+  const themeName = checkThemeInName(name);
+  const names = homeworks.map(homework => homework.name);
   const object = {
     objectId: task.do_objectID,
     name: task.name,
   };
 
   if (name.length < 2) {
-    const error = new WrongSymbolNamingError({
+    errors.push(new WrongSymbolNamingError({
       message: `The symbolname should contain at least 1 backslash / so that it is correct grouped!`,
       ...object,
-    });
-    ErrorHandler.addError(error);
-  }
-
-  // check if theme name is correct set
-  const themeName = checkThemeInName(name);
-  if (typeof themeName !== 'boolean') {
-    const error = new WrongSymbolNamingError({
+    }));
+  } else if (typeof themeName !== 'boolean') {
+    errors.push(new WrongSymbolNamingError({
       message: themeName,
       ...object,
-    });
-    ErrorHandler.addError(error);
-  }
-
-  // Check for duplicate names
-  const names = homeworks.map(homework => homework.name);
-  if (names.indexOf(task.name) !== names.lastIndexOf(task.name)) {
-    const error = new DuplicatedSymbolError({
+    }));
+  } else if (names.indexOf(task.name) !== names.lastIndexOf(task.name)) {
+    errors.push(new DuplicatedSymbolError({
       message: chalk`Duplycated Symbol!\nThe Symbol {grey ${task.name}} exists!`,
       ...object,
-    });
-    ErrorHandler.addError(error);
+    }));
+  } else {
+    errors.push(true);
   }
 
-  return true;
+  return errors;
 }
 
 /**

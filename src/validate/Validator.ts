@@ -1,4 +1,4 @@
-import { IValidationRule, IValdiationContext, SketchModel } from './interfaces/IValidationRule';
+import { IValidationRule, IValidationContext, SketchModel } from './interfaces/IValidationRule';
 import { IBase } from 'ng-sketch/sketchJSON/interfaces/Base';
 import { IPage } from 'ng-sketch/sketchJSON/interfaces/page';
 import { readFile } from '../utils/read-file';
@@ -8,13 +8,13 @@ import { ErrorHandler } from './error/ErrorHandler';
 
 export class Validator {
   private _rulesSelectors: string[] = [];
-  private _matchedRules: IValdiationContext[] = [];
-
+  private _matchedRules: IValidationContext[] = [];
+  private _currentArtboard: string;
+  private _currentSymbol: string;
+  private _currentPage: string;
   private _files: IPage[] = [];
 
-  constructor(
-    private _rules: IValidationRule[],
-  ) {
+  constructor(private _rules: IValidationRule[]) {
     // selector array is faster to check than always lookup in an object
     this._rules.forEach((rule: IValidationRule) => this._rulesSelectors.push(...rule.selector));
   }
@@ -63,9 +63,13 @@ export class Validator {
    * @param content IBase
    */
   private collectModules(content: IPage | IBase) {
+    this.setCurrentParents(content);
 
     if (this._rulesSelectors.includes(content._class)) {
       const rule = this._rules.find(rule => rule.selector.includes(content._class as SketchModel));
+      if (rule.ignoreArtboards && rule.ignoreArtboards.includes(this._currentArtboard)) {
+        return;
+      }
       this._matchedRules.push(this.getProperties(content));
     }
 
@@ -79,16 +83,39 @@ export class Validator {
   }
 
   /**
+   * Get the current Artboard, Page, SymbolMaster
+   * @param content IPage | IBase
+   */
+  private setCurrentParents(content: IPage | IBase) {
+    if (content._class === 'page') {
+      this._currentArtboard = undefined;
+      this._currentSymbol = undefined;
+      this._currentPage = content.name;
+    }
+    if (content._class === 'artboard') {
+      this._currentArtboard = content.name;
+    }
+    if (content._class === 'symbolMaster') {
+      this._currentSymbol = content.name;
+    }
+  }
+
+  /**
    * Get only needed properties from Object.
    * @param layer IBase
    * @returns IValidationContext
    */
-  private getProperties(layer: IBase): IValdiationContext {
+  private getProperties(layer: IBase): IValidationContext {
     const obj =  {
       _class: layer._class,
       do_objectID: layer.do_objectID,
       name: layer.name,
-    } as IValdiationContext;
+      parents: {
+        page: this._currentPage,
+        artboard: this._currentArtboard,
+        symbolMaster: this._currentSymbol,
+      },
+    } as IValidationContext;
 
     if (layer.style) {
       obj.style = layer.style;

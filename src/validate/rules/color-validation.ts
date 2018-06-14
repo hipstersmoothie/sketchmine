@@ -1,19 +1,19 @@
+import chalk from 'chalk';
 import * as fs from 'fs';
 import { ValidationError, ColorNotInPaletteError } from '../error/ValidationError';
-import { IValdiationContext } from '../interfaces/IValidationRule';
-import chalk from 'chalk';
 import { round } from '../../ng-sketch/sketchJSON/helpers/util';
-import { IDynatraceColorPalette, IDynatraceColor } from '../interfaces/IDynatraceColor';
 import { rgbToHex } from '../../utils/rgb-to-hex';
-import { ErrorHandler } from '../error/ErrorHandler';
+import { IValidationContext } from '../interfaces/IValidationRule';
+import { IDynatraceColorPalette, IDynatraceColor } from '../interfaces/IDynatraceColor';
+import { IFill, IBorder } from 'ng-sketch/sketchJSON/interfaces/Style';
 
 const colorJSON = fs.readFileSync('tests/fixtures/colors.json').toString();
 const colors: string[] = removeUnusedColors(JSON.parse(colorJSON));
 
 export function colorValidation(
-  homeworks: IValdiationContext[],
+  homeworks: IValidationContext[],
   currentTask: number,
-  ): ValidationError | boolean {
+  ): (ValidationError | boolean)[] {
 
   const task = homeworks[currentTask];
   if (!task) {
@@ -21,36 +21,45 @@ export function colorValidation(
       chalk`{bgRed [color-validation.ts]} -> colorValdiation needs a valid task` +
       chalk`{cyan IValdiationContext[]} parameter with index!\n`,
     );
-    return false;
+    return;
   }
 
-  const object = {
-    objectId: task.do_objectID,
-    name: task.name,
-  };
+  const errors: (ValidationError | boolean)[] = [];
 
   if (task.style) {
     if (task.style.fills) {
-      task.style.fills.forEach((fill) => {
-        const hex = rgbToHex(
-          round(fill.color.red * 255, 0),
-          round(fill.color.green * 255, 0),
-          round(fill.color.blue * 255, 0),
-        ).toUpperCase();
-
-        if (!colors.includes(hex)) {
-          const error = new ColorNotInPaletteError(
-            hex,
-            {
-              message: chalk`The Color {cyan ${hex}} is not in the Dynatrace Color Palette!\n` +
-              chalk`Take a look at {grey https://styles.lab.dynatrace.org/resources/colors}`,
-              ...object,
-            },
-          );
-          ErrorHandler.addError(error);
-        }
-      });
+      for (let i = 0, max = task.style.fills.length; i < max; i += 1) {
+        const color = task.style.fills[i];
+        errors.push(colorInPalette(task, color));
+      }
     }
+    if (task.style.borders) {
+      for (let i = 0, max = task.style.borders.length; i < max; i += 1) {
+        const color = task.style.borders[i];
+        errors.push(colorInPalette(task, color));
+      }
+    }
+  }
+  return errors;
+}
+
+function colorInPalette(task: IValidationContext, fill: IFill | IBorder): ColorNotInPaletteError | boolean {
+  const hex = rgbToHex(
+    round(fill.color.red * 255, 0),
+    round(fill.color.green * 255, 0),
+    round(fill.color.blue * 255, 0),
+  ).toUpperCase();
+
+  if (!colors.includes(hex)) {
+    return new ColorNotInPaletteError(
+      hex,
+      {
+        objectId: task.do_objectID,
+        name: task.name,
+        message: chalk`The Color {cyan ${hex}} is not in the Dynatrace Color Palette!\n` +
+        chalk`Take a look at {grey https://styles.lab.dynatrace.org/resources/colors}`,
+      },
+    );
   }
   return true;
 }
