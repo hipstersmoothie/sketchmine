@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon",
-    "validate": "DEBUG=true nodemon --watch src --exec \"ts-node src/validate/index.ts -v\"",
+    "validate": "DEBUG=true nodemon --watch src --exec \"ts-node src/validate/index.ts -v\" --file=tests/fixtures/name-validation-test.sketch",
     "lint": "tslint -p tsconfig.json",
     "test": "mocha -r ts-node/register tests/**/*.ts"
   },
