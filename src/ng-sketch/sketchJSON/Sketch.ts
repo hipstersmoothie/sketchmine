@@ -1,15 +1,13 @@
+import { copyFile } from '../../utils/copy-file';
+import { createDir } from '../../utils/create-dir';
+import { delDir } from '../../utils/del-folder';
+import { Document } from './models/document';
+import { generateSketchFile } from '../../utils/generate-sketch-file';
+import { Meta } from './models/meta';
+import { Page } from './models/page';
+import { writeJSON } from '../../utils/write-json';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as archiver from 'archiver';
-import { bytesToSize } from './helpers/util';
-import { createDir } from '../../utils/create-dir';
-import { copyFile } from '../../utils/copy-file';
-import { delDir } from '../../utils/del-folder';
-import { writeJSON } from '../../utils/write-json';
-import { Page } from './models/page';
-import { Document } from './models/document';
-import { Meta } from './models/meta';
-import chalk from 'chalk';
 
 export class Sketch {
   private static FILE_NAME = 'dt-asset-lib';
@@ -25,7 +23,7 @@ export class Sketch {
     const meta = new Meta(pages);
 
     this.generateFolderStructure(pages, doc, meta);
-    return this.generateFile();
+    return generateSketchFile(this._outDir, Sketch.FILE_NAME, Sketch.TMP_PATH);
   }
 
   /**
@@ -73,49 +71,5 @@ export class Sketch {
     } catch (error) {
       console.error(error);
     }
-  }
-
-  /**
-   * Generate the .sketch file from the previously created Folder.
-   * returns promise to check when the sketch file was generated
-   * @returns Promise<any>
-   */
-  private generateFile(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      createDir(this._outDir);
-      const output = fs.createWriteStream(path.resolve(this._outDir, `${Sketch.FILE_NAME}.sketch`));
-      const archive = archiver('zip');
-
-      output.on('close',  () => {
-        console.log(
-          chalk`\n✅ \t{greenBright Sketch file}: {magenta ${Sketch.FILE_NAME}.sketch} – `,
-          chalk`was successfully generated with: {cyan ${bytesToSize(archive.pointer())}}\n`,
-          chalk`\tIn the folder: {grey ${path.resolve(this._outDir)}/}`,
-        );
-
-        if (!process.env.DEBUG) {
-          this.cleanup();
-        }
-        resolve();
-      });
-
-      archive.on('warning', (err) => {
-        if (err.code === 'ENOENT') {
-          if (process.env.DEBUG) {
-            console.log('Sketch-File could not be written: ENOENT', err);
-          }
-        } else {
-          reject(err);
-        }
-      });
-
-      archive.on('error', (err) => {
-        reject(err);
-      });
-
-      archive.pipe(output);
-      archive.directory(path.join(Sketch.TMP_PATH), false);
-      archive.finalize();
-    });
   }
 }

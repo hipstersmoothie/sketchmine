@@ -24,7 +24,7 @@ unzip(argv.file, /pages\/.*?\.json/).then(async (result) => {
       console.log(chalk`\n⏱  Parsing and Validating ${result.length.toString()} Pages: \n\n`);
     }
     await result.forEach((file) => {
-      const content = file.toString();
+      const content = file.buffer.toString();
       try {
         const page = JSON.parse(content);
 
