@@ -1,7 +1,6 @@
 import { CurvePoint } from './curve-point';
 import { ICurvePoint } from '../interfaces/curve-point.interface';
 import { CurvePointMode } from '../../sketchJSON/helpers/sketch-constants';
-import { round, arrayContentEquals } from '../../sketchJSON/helpers/util';
 
 export class QuadraticCurveTo extends CurvePoint {
 

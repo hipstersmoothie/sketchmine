@@ -1,6 +1,5 @@
 import { Base } from './Base';
-import { IBase, IFrame, IBounding } from '../interfaces/Base';
-import { UUID } from '../helpers/UUID';
+import { IBase, IBounding } from '../interfaces/base.interface';
 import { IBitmap, IImage } from '../interfaces/bitmap.interface';
 import { Style } from './style';
 

@@ -1,6 +1,6 @@
-import { ISymbolMaster, IBackgroundColor } from '../interfaces/symbol-master.interface';
+import { IBackgroundColor } from '../interfaces/symbol-master.interface';
 import { Base } from './base';
-import { IBounding, IBase } from '../interfaces/Base';
+import { IBounding, IBase } from '../interfaces/base.interface';
 
 export class SymbolMaster extends Base {
 

@@ -1,9 +1,9 @@
 import { MoveTo } from './models/move-to';
-import { ISvgPoint, ISvg, ISvgShape } from './interfaces/svg.interface';
+import { ISvgPoint, ISvgShape } from './interfaces/svg.interface';
 import { LineTo } from './models/line-to';
 import { CurveTo } from './models/curve-to';
 import { ShapePath } from './models/shape-path';
-import { IBounding } from '../sketchJSON/interfaces/Base';
+import { IBounding } from '../sketchJSON/interfaces/base.interface';
 import { QuadraticCurveTo } from './models/quadratic-curve-to';
 import chalk from 'chalk';
 import { isActionPoint } from './util/point';

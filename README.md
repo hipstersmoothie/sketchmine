@@ -1,6 +1,14 @@
 
 <img src="https://cdn.worldvectorlogo.com/logos/sketch-1.svg" alt="Sketch Logo" width="150"/>
 
+# Dynatrace .sketch plugins and tooling
+
+This tooling set is for the dynatrace barista designsystem.
+
+<hr>
+<details>
+<summary>1) Generator: generating .sketch files from HTML</summary>
+
 # Angular to Sketch App Generator
 
 Generates a Sketch App Symbol library out of the *Dynatrace Angular Components Library*.
@@ -78,6 +86,35 @@ mv ${filename}.sketch ${filename}.zip
 unzip ${filename}.zip -d ./${filename}
 rm -rf ${filename}.zip
 ```
+
+</details>
+
+<details>
+<summary>2) Validator: Validating sketch files</summary>
+
+# Validator
+
+This tool is found in `src/validate`
+
+## Configuration
+
+the selector can be `'document' | 'page' | 'symbolMaster' | 'group' | 'path' | 'shapeGroup' | 'rectangle'`
+
+``` typescript
+export const rules: IValidationRule[] = [
+  {
+    selector: ['symbolMaster','rectangle', 'path', ...], // all kind of sketch instances
+    name: 'name-of-the-rule',
+    description: `Description of the rule to display in output`,
+    ignoreArtboards: ['artbord-name-to-be-ignored],
+    validation: functionThatValidates,
+  },
+];
+
+
+```
+
+</details>
 
 #### Maintainer
 

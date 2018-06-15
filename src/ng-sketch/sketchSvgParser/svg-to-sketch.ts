@@ -1,7 +1,6 @@
 import { ISvgPointGroup, ISvg } from './interfaces/svg.interface';
-import { IShapeGroup } from './interfaces/shape-group.interface';
 import { ShapeGroup } from './models/shape-group';
-import { IBounding } from '../sketchJSON/interfaces/Base';
+import { IBounding } from '../sketchJSON/interfaces/base.interface';
 import { SvgPointsToSketch } from './svg-points-to-sketch';
 import { Style } from '../sketchJSON/models/style';
 import { IStyle } from '../sketchJSON/interfaces/style.interface';

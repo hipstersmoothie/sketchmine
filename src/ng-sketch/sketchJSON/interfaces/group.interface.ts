@@ -1,8 +1,6 @@
-import { IBase } from './Base';
+import { IBase } from './base.interface';
 
 export interface IGroup extends IBase {
-  // clippingMaskMode: number;
-  // hasClippingMask: boolean;
   originalObjectID?: string;
   userInfo?: UserInfo;
 }

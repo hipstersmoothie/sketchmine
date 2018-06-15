@@ -32,6 +32,7 @@
     "@types/rimraf": "^2.0.2",
     "@types/unzipper": "^0.8.4",
     "@types/xmldom": "^0.1.29",
+    "@types/yargs": "^11.0.0",
     "axios": "^0.18.0",
     "chai": "^4.1.2",
     "mocha": "^5.2.0",
@@ -50,6 +51,7 @@
     "svg-path-parser": "^1.1.0",
     "typescript": "^2.8.3",
     "unzipper": "^0.8.14",
-    "xmldom": "^0.1.27"
+    "xmldom": "^0.1.27",
+    "yargs": "^11.0.0"
   }
 }

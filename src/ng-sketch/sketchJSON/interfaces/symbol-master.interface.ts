@@ -1,5 +1,5 @@
 import { IRulerData } from './page.interface';
-import { IBase } from './Base';
+import { IBase } from './base.interface';
 
 export interface ISymbolMaster extends IBase {
   backgroundColor: IBackgroundColor;

@@ -1,4 +1,4 @@
-import { IBase, IFrame } from './Base';
+import { IBase, IFrame } from './base.interface';
 import { ICurvePoint } from '../../sketchSvgParser/interfaces/curve-point.interface';
 
 export interface IRectangle extends IBase {

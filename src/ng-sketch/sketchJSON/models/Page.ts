@@ -1,8 +1,6 @@
 import { IPage } from '../interfaces/page.interface';
-import { UUID } from '../helpers/UUID';
-import { SymbolMaster } from './symbol-master';
 import { Base } from './Base';
-import { IBounding, IBase } from '../interfaces/Base';
+import { IBounding, IBase } from '../interfaces/base.interface';
 
 export class Page extends Base {
 

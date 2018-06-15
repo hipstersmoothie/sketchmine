@@ -5,8 +5,6 @@ import { Page } from './page';
 export class Document {
   private static _instance: Document;
   private static _objectID = UUID.generate();
-  private _colors = [];
-  private _textStyles = [];
   private _pages = [];
 
   constructor(pages: Page[]) {

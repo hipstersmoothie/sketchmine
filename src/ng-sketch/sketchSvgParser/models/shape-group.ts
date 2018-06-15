@@ -1,6 +1,6 @@
 import { Base } from '../../sketchJSON/models/base';
 import { IShapeGroup } from '../interfaces/shape-group.interface';
-import { IBounding, IBase } from '../../sketchJSON/interfaces/Base';
+import { IBounding, IBase } from '../../sketchJSON/interfaces/base.interface';
 
 export class ShapeGroup extends Base {
 

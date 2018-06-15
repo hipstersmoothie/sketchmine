@@ -1,5 +1,5 @@
 import { Base } from './base';
-import { IBounding, IBase } from '../interfaces/Base';
+import { IBounding, IBase } from '../interfaces/base.interface';
 import {
   IText,
   IAttributedString,

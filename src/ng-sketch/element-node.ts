@@ -13,12 +13,10 @@ import {
 } from './traversed-dom.interface';
 import { Text } from './sketchJSON/models/text';
 import chalk from 'chalk';
-import { IBounding } from './sketchJSON/interfaces/Base';
+import { IBounding } from './sketchJSON/interfaces/base.interface';
 import { ShapeGroup } from './sketchSvgParser/models/shape-group';
 import { SvgParser } from './sketchSvgParser/svg-parser';
 import { SvgToSketch } from './sketchSvgParser/svg-to-sketch';
-import { SvgStyle } from './sketchSvgParser/interfaces/svg.interface';
-import { addStyle, overrideSvgStyle } from './sketchSvgParser/util/styles';
 import { Bitmap } from './sketchJSON/models/bitmap';
 
 export class ElementNode {

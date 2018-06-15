@@ -1,12 +1,10 @@
 import { Base } from './Base';
-import { IPath, IPoint, IRectangleOptions, IRectangle } from '../interfaces/rectangle.interface';
+import { IPoint, IRectangleOptions, IRectangle } from '../interfaces/rectangle.interface';
 import { ICurvePoint } from '../../sketchSvgParser/interfaces/curve-point.interface';
-import { IBounding, IBase } from '../interfaces/Base';
+import { IBounding, IBase } from '../interfaces/base.interface';
 
 export class Rectangle extends Base {
   private _cornerRadius: number[];
-  private _width: number;
-  private _height: number;
 
   constructor(options: IRectangleOptions) {
     super();
@@ -29,15 +27,6 @@ export class Rectangle extends Base {
       return [radius, radius, radius, radius];
     }
     return radius;
-  }
-
-  private addPath(): IPath {
-    return {
-      _class: 'path',
-      isClosed: true,
-      pointRadiusBehaviour: 1,
-      points: this.curvePoints(),
-    };
   }
 
   private curvePoints(): ICurvePoint[] {

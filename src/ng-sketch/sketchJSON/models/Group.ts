@@ -1,5 +1,5 @@
 import { Base } from './base';
-import { IBase, IFrame, IBounding } from '../interfaces/Base';
+import { IBase, IBounding } from '../interfaces/base.interface';
 import { IGroup } from '../interfaces/group.interface';
 import { UUID } from '../helpers/uuid';
 

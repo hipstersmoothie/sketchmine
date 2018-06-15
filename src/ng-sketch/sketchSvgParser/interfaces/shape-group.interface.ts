@@ -1,4 +1,4 @@
-import { IBase } from '../../sketchJSON/interfaces/Base';
+import { IBase } from '../../sketchJSON/interfaces/base.interface';
 
 export interface IShapeGroup extends IBase {
   hasClickThrough: boolean;

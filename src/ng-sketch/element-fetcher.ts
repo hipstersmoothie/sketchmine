@@ -9,7 +9,7 @@ import { IGroup } from './sketchJSON/interfaces/group.interface';
 import { Group } from './sketchJSON/models/group';
 import { Drawer } from './drawer';
 import { ITraversedDom } from './traversed-dom.interface';
-import { AssetHandler } from './sketchJSON/AssetHandler';
+import { AssetHandler } from './sketchJSON/asset-handler';
 import { exec } from 'child_process';
 
 export class ElementFetcher {
