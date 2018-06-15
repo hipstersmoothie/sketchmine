@@ -12,10 +12,8 @@ export class ColorReplacer {
   }
 
   replace(file: IBase) {
-    // console.log(this._oldColors)
     this.findColorObject(file);
     return file;
-    // console.log(JSON.stringify(file, null, 2));
   }
 
   private findColorObject(_object) {
