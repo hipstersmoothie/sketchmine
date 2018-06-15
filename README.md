@@ -42,12 +42,14 @@ new ElementFetcher().generateSketchFile(pages);
 
 There are some debugging variables specified to modify the console output.
 They are specefied in the `.vscode/launch.json` to be parsed while debugging with VSCode.
+The environment Variable of `process.env.SKETCH = 'open-close'` opens and closes the Sketch app automatically on a MacOS machine.
 
 ``` javascript
 process.env.DEBUG = 'true';
 process.env.DEBUG_SVG = 'true';
 process.env.DEBUG_BROWSER = 'true';
 process.env.DEBUG_TRAVERSER = 'true';
+process.env.SKETCH = 'open-close';
 ```
 
 Open and close sketch.app on MacOS for easier development.
@@ -95,6 +97,7 @@ rm -rf ${filename}.zip
 # Validator
 
 This tool is found in `src/validate`
+run `node dist/validate --file=path/to/file.sketch`
 
 ## Configuration
 
@@ -110,8 +113,47 @@ export const rules: IValidationRule[] = [
     validation: functionThatValidates,
   },
 ];
+```
+
+## Debugging
+
+The following Debug variables are specified for enhanced logging.
+
+``` javascript
+process.env.DEBUG = 'true';
+process.env.VERBOSE = 'true';
+```
+
+</details>
 
 
+<details>
+<summary>3) Color Replacer</summary>
+
+# Color Replacer to change a set of unused legacy colors
+
+run `node dist/color-replacer --file=path/to/file.sketch --colors=path/to/colors.json`
+The script creates a `./_tmp`dir in the current workdir with the canged file.
+
+All colors have to be provided as **HEX** colors
+The **colors.json** file follows following convention:
+
+## Debugging 
+
+The environment Variable of `process.env.SKETCH = 'open-close'` opens and closes the Sketch app automatically on a MacOS machine.
+
+``` javascript
+process.env.DEBUG = 'true';
+process.env.VERBOSE = 'true';
+process.env.SKETCH = 'open-close';
+```
+
+```json
+{
+  "oldcolor": "newcolor",
+  "#AJ54K0": "#333333",
+  ...
+}
 ```
 
 </details>
