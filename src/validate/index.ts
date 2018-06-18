@@ -43,5 +43,6 @@ unzip(argv.file, /pages\/.*?\.json/).then(async (result) => {
   validator.validate();
   handler.emit();
 }).catch((error) => {
+  process.exit(1);
   throw error;
 });
