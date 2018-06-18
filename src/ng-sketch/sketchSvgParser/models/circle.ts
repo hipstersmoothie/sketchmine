@@ -1,5 +1,5 @@
-import { IPoint, ISvgPoint } from '../interfaces/svg.interface';
-import { Point } from './Point';
+import { ISvgPoint } from '../interfaces/svg.interface';
+import { Point } from './point';
 
 /**
  * Converts a circle in 4 anchorpoints to render them in Sketch

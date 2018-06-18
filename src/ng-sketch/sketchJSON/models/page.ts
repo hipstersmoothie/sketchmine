@@ -1,5 +1,5 @@
 import { IPage } from '../interfaces/page.interface';
-import { Base } from './Base';
+import { Base } from './base';
 import { IBounding, IBase } from '../interfaces/base.interface';
 
 export class Page extends Base {

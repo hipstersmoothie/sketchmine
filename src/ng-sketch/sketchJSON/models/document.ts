@@ -1,4 +1,4 @@
-import { UUID } from '../helpers/UUID';
+import { UUID } from '../helpers/uuid';
 import { IDocument, IDocumentAssets, IDocumentPage } from '../interfaces/document.interface';
 import { Page } from './page';
 

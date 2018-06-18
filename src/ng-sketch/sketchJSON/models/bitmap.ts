@@ -1,4 +1,4 @@
-import { Base } from './Base';
+import { Base } from './base';
 import { IBase, IBounding } from '../interfaces/base.interface';
 import { IBitmap, IImage } from '../interfaces/bitmap.interface';
 import { Style } from './style';

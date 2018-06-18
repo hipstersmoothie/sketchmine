@@ -7,7 +7,7 @@ import {
   IParagraphStyle,
   IEncodedAttributes,
 } from '../interfaces/text.interface';
-import { Style } from './Style';
+import { Style } from './style';
 import { IStyle } from '../interfaces/style.interface';
 import { fixWhiteSpace, fontMapping, fontStyle } from '../helpers/font';
 
