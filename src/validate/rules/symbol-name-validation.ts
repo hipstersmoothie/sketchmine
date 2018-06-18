@@ -4,7 +4,7 @@ import { IValidationContext } from '../interfaces/validation-rule.interface';
 
 enum ThemeLess {
   icons = 'icons',
-  globalNavigations = 'global-navigations',
+  globalNavigations = 'global-navigation',
   menubar = 'menubar',
 }
 
