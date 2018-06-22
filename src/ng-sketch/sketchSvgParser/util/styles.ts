@@ -1,6 +1,6 @@
 import { SvgStyle } from '../interfaces/svg.interface';
-import { Style } from '../../sketchJSON/models/style';
-import { IStyle } from '../../sketchJSON/interfaces/style.interface';
+import { Style } from '../../sketch-draw/models/style';
+import { IStyle } from '../../sketch-draw/interfaces/style.interface';
 
 /**
  * add Style attributes to a map if it has a value, so that no undefined values are in the map

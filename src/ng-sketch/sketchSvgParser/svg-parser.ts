@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { DOMParser } from 'xmldom';
 import { parseSVG, makeAbsolute } from 'svg-path-parser';
 import { ISvgPoint, ISvgPointGroup, ISvgView, ISvg, ISvgShape, SvgStyle } from './interfaces/svg.interface';
-import { BooleanOperation } from '../sketchJSON/helpers/sketch-constants';
+import { BooleanOperation } from '../sketch-draw/helpers/sketch-constants';
 import { Circle } from './models/circle';
 import { Rect } from './models/rect';
 import { addStyle } from './util/styles';

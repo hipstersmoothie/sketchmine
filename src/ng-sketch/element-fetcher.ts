@@ -1,10 +1,10 @@
 import * as path from 'path';
 import chalk from 'chalk';
 import * as puppeteer from 'puppeteer';
-import { Sketch } from './sketchJSON/sketch';
+import { Sketch } from './sketch-draw/sketch';
 import { Drawer } from './drawer';
 import { ITraversedDom } from './traversed-dom.interface';
-import { AssetHandler } from './sketchJSON/asset-handler';
+import { AssetHandler } from './sketch-draw/asset-handler';
 import { exec } from 'child_process';
 
 export class ElementFetcher {

@@ -1,7 +1,7 @@
 import { ICurvePoint } from '../interfaces/curve-point.interface';
-import { Base } from '../../sketchJSON/models/base';
-import { BooleanOperation } from '../../sketchJSON/helpers/sketch-constants';
-import { IBase } from '../../sketchJSON/interfaces/base.interface';
+import { Base } from '../../sketch-draw/models/base';
+import { BooleanOperation } from '../../sketch-draw/helpers/sketch-constants';
+import { IBase } from '../../sketch-draw/interfaces/base.interface';
 
 export class ShapePath extends Base {
 

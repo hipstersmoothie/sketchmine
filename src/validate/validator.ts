@@ -1,5 +1,5 @@
 import { IValidationRule, IValidationContext, SketchModel } from './interfaces/validation-rule.interface';
-import { IBase } from '../ng-sketch/sketchJSON/interfaces/base.interface';
+import { IBase } from '../ng-sketch/sketch-draw/interfaces/base.interface';
 import { readFile } from '../utils/read-file';
 import chalk from 'chalk';
 import { Teacher } from './teacher';

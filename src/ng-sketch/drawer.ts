@@ -1,8 +1,8 @@
-import { Page } from './sketchJSON/models/page';
-import { IBounding } from './sketchJSON/interfaces/base.interface';
-import { SymbolMaster } from './sketchJSON/models/symbol-master';
+import { Page } from './sketch-draw/models/page';
+import { IBounding } from './sketch-draw/interfaces/base.interface';
+import { SymbolMaster } from './sketch-draw/models/symbol-master';
 import { ITraversedDom, ITraversedDomElement } from './traversed-dom.interface';
-import { boundingClientRectToBounding } from './sketchJSON/helpers/util';
+import { boundingClientRectToBounding } from './sketch-draw/helpers/util';
 import { ElementNode } from './element-node';
 import chalk from 'chalk';
 

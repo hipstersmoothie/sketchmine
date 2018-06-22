@@ -1,6 +1,6 @@
 import { CurvePoint } from './curve-point';
 import { ICurvePoint } from '../interfaces/curve-point.interface';
-import { CurvePointMode } from '../../sketchJSON/helpers/sketch-constants';
+import { CurvePointMode } from '../../sketch-draw/helpers/sketch-constants';
 
 export class MoveTo extends CurvePoint {
 

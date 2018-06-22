@@ -3,7 +3,7 @@ import { ISvgPoint, ISvgShape } from './interfaces/svg.interface';
 import { LineTo } from './models/line-to';
 import { CurveTo } from './models/curve-to';
 import { ShapePath } from './models/shape-path';
-import { IBounding } from '../sketchJSON/interfaces/base.interface';
+import { IBounding } from '../sketch-draw/interfaces/base.interface';
 import { QuadraticCurveTo } from './models/quadratic-curve-to';
 import chalk from 'chalk';
 import { isActionPoint } from './util/point';

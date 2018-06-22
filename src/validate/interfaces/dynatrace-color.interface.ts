@@ -1,4 +1,4 @@
-import { IColor } from '../../ng-sketch/sketchJSON/interfaces/style.interface';
+import { IColor } from '../../ng-sketch/sketch-draw/interfaces/style.interface';
 
 export interface IDynatraceColorPalette {
   [key: string]: IDynatraceColor;

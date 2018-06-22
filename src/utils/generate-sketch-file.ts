@@ -1,4 +1,4 @@
-import { bytesToSize } from '../ng-sketch/sketchJSON/helpers/util';
+import { bytesToSize } from '../ng-sketch/sketch-draw/helpers/util';
 import { createDir } from '../utils/create-dir';
 import { fileBuffer } from './zip-to-buffer';
 import * as archiver from 'archiver';

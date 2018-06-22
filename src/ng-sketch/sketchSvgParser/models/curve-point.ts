@@ -1,5 +1,5 @@
 import { ISvgPoint, IPoint } from '../interfaces/svg.interface';
-import { round } from '../../sketchJSON/helpers/util';
+import { round } from '../../sketch-draw/helpers/util';
 
 export class CurvePoint {
 

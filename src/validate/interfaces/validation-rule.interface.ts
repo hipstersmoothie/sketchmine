@@ -1,5 +1,5 @@
 import { ValidationError } from '../error/validation-error';
-import { IStyle } from '../../ng-sketch/sketchJSON/interfaces/style.interface';
+import { IStyle } from '../../ng-sketch/sketch-draw/interfaces/style.interface';
 
 export type SketchModel =
 'document' |

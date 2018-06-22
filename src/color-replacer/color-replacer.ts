@@ -1,8 +1,8 @@
 import { colorDefinition } from './interfaces/color-definition.interface';
-import { IBase } from '../ng-sketch/sketchJSON/interfaces/base.interface';
-import { IColor } from '../ng-sketch/sketchJSON/interfaces/style.interface';
+import { IBase } from '../ng-sketch/sketch-draw/interfaces/base.interface';
+import { IColor } from '../ng-sketch/sketch-draw/interfaces/style.interface';
 import { rgbToHex } from '../utils/rgb-to-hex';
-import { round, cssToRGBA } from '../ng-sketch/sketchJSON/helpers/util';
+import { round, cssToRGBA } from '../ng-sketch/sketch-draw/helpers/util';
 
 export class ColorReplacer {
   private _oldColors: string[];
