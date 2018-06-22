@@ -14,9 +14,9 @@ import {
 import { Text } from './sketch-draw/models/text';
 import chalk from 'chalk';
 import { IBounding } from './sketch-draw/interfaces/base.interface';
-import { ShapeGroup } from './sketchSvgParser/models/shape-group';
-import { SvgParser } from './sketchSvgParser/svg-parser';
-import { SvgToSketch } from './sketchSvgParser/svg-to-sketch';
+import { ShapeGroup } from './sketch-svg-parser/models/shape-group';
+import { SvgParser } from './sketch-svg-parser/svg-parser';
+import { SvgToSketch } from './sketch-svg-parser/svg-to-sketch';
 import { Bitmap } from './sketch-draw/models/bitmap';
 
 export class ElementNode {

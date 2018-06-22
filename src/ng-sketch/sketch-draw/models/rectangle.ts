@@ -1,6 +1,6 @@
 import { Base } from './base';
 import { IPoint, IRectangleOptions, IRectangle } from '../interfaces/rectangle.interface';
-import { ICurvePoint } from '../../sketchSvgParser/interfaces/curve-point.interface';
+import { ICurvePoint } from '../../sketch-svg-parser/interfaces/curve-point.interface';
 import { IBounding, IBase } from '../interfaces/base.interface';
 
 export class Rectangle extends Base {
