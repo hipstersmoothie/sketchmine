@@ -44,6 +44,11 @@ export function colorValidation(
 }
 
 function colorInPalette(task: IValidationContext, fill: IFill | IBorder): ColorNotInPaletteError | boolean {
+  // only activated Fills should be validated
+  if (fill.hasOwnProperty('isEnabled') && !fill.isEnabled) {
+    return true;
+  }
+
   const hex = rgbToHex(
     round(fill.color.red * 255, 0),
     round(fill.color.green * 255, 0),
