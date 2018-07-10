@@ -5,8 +5,22 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon",
+    "build": "tsc",
+    "validate": "DEBUG=true nodemon --watch src --exec \"ts-node src/validate/index.ts -v\" --file=tests/fixtures/name-validation-test.sketch",
+    "color-replacer": "nodemon --watch src --exec \"ts-node src/color-replacer/index.ts -v\" --file=tests/fixtures/name-validation-test.sketch --colors=src/color-replacer/legacy-colors.json",
     "lint": "tslint -p tsconfig.json",
     "test": "mocha -r ts-node/register tests/**/*.ts"
+  },
+  "nodemonConfig": {
+    "verbose": true,
+    "watch": [
+      "src"
+    ],
+    "ext": "ts, js",
+    "ignore": [
+      "src/**/*.spec.ts"
+    ],
+    "exec": "ts-node src/index.ts"
   },
   "author": "",
   "license": "ISC",
@@ -18,8 +32,9 @@
     "@types/mocha": "^5.2.1",
     "@types/puppeteer": "^1.3.1",
     "@types/rimraf": "^2.0.2",
-    "@types/unzip": "^0.1.1",
+    "@types/unzipper": "^0.8.4",
     "@types/xmldom": "^0.1.29",
+    "@types/yargs": "^11.0.0",
     "axios": "^0.18.0",
     "chai": "^4.1.2",
     "mocha": "^5.2.0",
@@ -37,7 +52,8 @@
     "svg-path": "^0.2.1",
     "svg-path-parser": "^1.1.0",
     "typescript": "^2.8.3",
-    "unzip": "^0.1.11",
-    "xmldom": "^0.1.27"
+    "unzipper": "^0.8.14",
+    "xmldom": "^0.1.27",
+    "yargs": "^11.0.0"
   }
 }

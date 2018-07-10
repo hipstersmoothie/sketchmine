@@ -1,6 +1,35 @@
+import { expect } from 'chai';
+import * as fs from 'fs';
+import * as path from 'path';
+import chalk from 'chalk';
+import { IDocument } from '../../src/ng-sketch/sketchJSON/interfaces/Document';
+
 export function fileValidations() {
+  const testTmp = path.resolve('./tests/_tmp');
 
   context('Pages are correctly registerd', () => {
+    let document: IDocument;
+    let pagesFiles: string[];
+
+    before((done) => {
+      const file = path.resolve(testTmp, 'dt-asset-lib', 'document.json');
+      fs.readFile(file, { encoding: 'utf-8' }, (err, data: string) => {
+        if (!err) {
+          document = JSON.parse(data);
+          done();
+        } else {
+          console.log(chalk`{bgRed Failed reading document.json`, err);
+        }
+      });
+    });
+
+    before((done) => {
+      const pages = path.resolve(testTmp, 'dt-asset-lib', 'pages');
+      fs.readdir(pages, (err, files) => {
+        pagesFiles = files;
+        done();
+      });
+    });
     // "pages": [{
     //   "_class": "MSJSONFileReference",
     //   "_ref_class": "MSImmutablePage",
@@ -8,12 +37,22 @@ export function fileValidations() {
     // }]
     // }
     it('document.json has pages array', () => {
+      expect(document.pages).to.be.an('array');
+      expect(
+        document.pages.length,
+        'No Pages registered!',
+      ).to.be.greaterThan(0);
     });
 
     it('pages array matches the size of jsons', () => {
+      expect(pagesFiles.length).to.equal(document.pages.length);
     });
 
     it('pages id matches the file name', () => {
+      pagesFiles.forEach((page) => {
+        const pages = document.pages.map(registerdPage => registerdPage._ref_class.replace('pages\/', ''));
+        expect(pages.includes(page)).to.be('true');
+      });
     });
   });
 
