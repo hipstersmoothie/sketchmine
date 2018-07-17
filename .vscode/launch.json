@@ -7,12 +7,19 @@
       "type": "node",
       "request": "launch",
       "args": [
-          "${workspaceFolder}/src/index.ts"
+          "${workspaceFolder}/src/index.ts",
+          "--colors",
       ],
       "runtimeArgs": ["-r", "ts-node/register"],
       "cwd": "${workspaceRoot}",
       "protocol": "inspector",
-      "env": { "DEBUG": "true", "DEBUG_SVG": "true", "DEBUG_BROWSER": "true" }
+      "env": { 
+        "DEBUG": "true",
+        "DEBUG_SVG": "true",
+        "DEBUG_BROWSER": "true",
+        "DEBUG_TRAVERSER": "true",
+        "SKETCH": "open-close"
+      }
     }
   ]
 }
