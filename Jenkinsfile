@@ -27,6 +27,7 @@ pipeline {
             def parentCommit = sh(returnStdout: true, script: "git rev-list --parents -n 1 ${firstCommitInBranch}").tokenize(' ').last();
             def diff = sh(returnStdout: true, script: "git diff --name-only HEAD ${parentCommit}");
             def diffTokenized = diff.tokenize('\n').findAll { it.contains('.sketch') };
+            sh 'git reset -q'
             diffTokenized.each {
               sh(returnStdout: true, script: "git lfs pull --include=${it}");
             }
@@ -35,7 +36,7 @@ pipeline {
           }
         }
         
-        checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/feat/sketch-dt-validation']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: './sketch-validator']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'Buildmaster', url: 'https://bitbucket.lab.dynatrace.org/scm/wx/ng-sketch.git']]]
+        checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: './sketch-validator']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'Buildmaster', url: 'https://bitbucket.lab.dynatrace.org/scm/wx/ng-sketch.git']]]
         dir('sketch-validator') {
           nvm(version: 'v8.9.4', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
             sh 'npm install && npm run build'
