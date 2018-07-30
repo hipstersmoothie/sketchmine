@@ -11,7 +11,7 @@ import * as extractZip from 'extract-zip';
 const extract = promisify(extractZip);
 
 import * as unzip from 'unzipper';
-import { delDir } from '../../src/utils/del-folder';
+import { delDir, createDir } from '../../src/utils';
 import { fileValidations } from './file-validations';
 import { groupValidation } from './group';
 import { ElementFetcher } from '../../src/ng-sketch/element-fetcher';
@@ -22,7 +22,9 @@ describe('➡ Sketch File generation 💎', () => {
   const sketchFile = path.join(testTmp, `${fileName}.sketch`);
 
   before(async () => {
+    process.env.DEBUG = 'true';
     delDir(testTmp);
+    createDir(testTmp);
     const elementFetcher = new ElementFetcher();
     elementFetcher.host = `file://${path.resolve(__dirname, '..', 'fixtures', 'test-page.html')}`;
     await elementFetcher.generateSketchFile([''], testTmp);

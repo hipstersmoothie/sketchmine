@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import * as fs from 'fs';
 import { ValidationError, ColorNotInPaletteError } from '../error/validation-error';
 import { round } from '../../ng-sketch/sketch-draw/helpers/util';
-import { rgbToHex } from '../../utils/rgb-to-hex';
+import { rgbToHex } from '../../utils';
 import { IValidationContext } from '../interfaces/validation-rule.interface';
 import { IDynatraceColorPalette, IDynatraceColor } from '../interfaces/dynatrace-color.interface';
 import { IFill, IBorder } from '../../ng-sketch/sketch-draw/interfaces/style.interface';

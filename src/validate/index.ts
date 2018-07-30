@@ -1,4 +1,4 @@
-import { zipToBuffer as unzip } from '../utils/zip-to-buffer';
+import { zipToBuffer as unzip } from '../utils';
 import { rules } from './config';
 import { Validator } from './validator';
 import chalk from 'chalk';
