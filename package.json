@@ -9,7 +9,7 @@
     "validate": "DEBUG=true nodemon --watch src --exec \"ts-node src/validate/index.ts -v\" --file=tests/fixtures/name-validation-test.sketch",
     "color-replacer": "nodemon --watch src --exec \"ts-node src/color-replacer/index.ts -v\" --file=tests/fixtures/name-validation-test.sketch --colors=src/color-replacer/legacy-colors.json",
     "lint": "tslint -p tsconfig.json",
-    "test": "mocha --exit -c -r ts-node/register tests/**/*.ts"
+    "test": "mocha --timeout 5000 --exit -c -r ts-node/register tests/**/*.ts"
   },
   "nodemonConfig": {
     "verbose": true,

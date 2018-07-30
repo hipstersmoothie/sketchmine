@@ -66,7 +66,7 @@ describe('➡ Sketch File generation 💎', () => {
 
   after(() => {
     console.log(chalk`\n\t{grey 🗑  clean up tests workspace...}`);
-    // delDir(testTmp);
+    delDir(testTmp);
   });
 
 });

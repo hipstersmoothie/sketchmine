@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import chalk from 'chalk';
+import { createDir } from './create-dir';
 
 /**
  * Copy file from one destination to another destination
@@ -11,6 +12,7 @@ import chalk from 'chalk';
 export function copyFile(file: string, dest: string) {
   const filename = path.basename(file);
   const source = fs.createReadStream(file);
+  createDir(dest);
   const destSource = fs.createWriteStream(path.resolve(dest, filename));
 
   source.pipe(destSource);
