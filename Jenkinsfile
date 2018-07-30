@@ -7,7 +7,6 @@ pipeline {
 
   options {
     timestamps()
-    skipDefaultCheckout()
     buildDiscarder(logRotator(numToKeepStr: '1'))
     timeout(time: 30, unit: 'MINUTES')
   }
