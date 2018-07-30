@@ -18,9 +18,9 @@ export class ElementFetcher {
   set host(host: string) { ElementFetcher.HOST = host; }
   set selector(sel: string) { ElementFetcher.SELECTOR = sel; }
 
-  async generateSketchFile(pages: string[]) {
+  async generateSketchFile(pages: string[], outDir?: string): Promise<boolean> {
     const drawer = new Drawer();
-    const sketch = new Sketch();
+    const sketch = new Sketch(outDir);
     await this.collectElements(pages);
     if (this.assets()) {
       sketch.prepareFolders();
@@ -29,6 +29,8 @@ export class ElementFetcher {
     const symbolsMaster = drawer.drawSymbols(this._symbols);
     await sketch.write([symbolsMaster]);
     sketch.cleanup();
+
+    return Promise.resolve(true);
 
     if (process.env.SKETCH === 'open-close') {
       exec('open dt-asset-lib.sketch');

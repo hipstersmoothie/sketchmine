@@ -2,8 +2,10 @@ import { expect } from 'chai';
 import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
-import { ISvg } from '../../src/ng-sketch/sketchSvgParser/interfaces/ISvg';
-import { SvgParser } from '../../src/ng-sketch/sketchSvgParser/SvgParser';
+import { SvgParser } from '../../src/ng-sketch/sketch-svg-parser/svg-parser';
+import { ISvg } from '@sketch-svg-parser/interfaces';
+
+const MORE_SVG = path.resolve(__dirname, '..', 'fixtures', 'more.svg');
 
 describe('SVG Parser', () => {
 
@@ -13,8 +15,7 @@ describe('SVG Parser', () => {
     const height = 512;
 
     before((done) => {
-      const moreFile = path.resolve(__dirname, '..', 'fixtures', 'more.svg');
-      fs.readFile(moreFile, 'utf8', (err, fileContents) => {
+      fs.readFile(MORE_SVG, 'utf8', (err, fileContents) => {
         if (err) {
           throw err;
         }

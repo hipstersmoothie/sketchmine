@@ -9,7 +9,7 @@
     "validate": "DEBUG=true nodemon --watch src --exec \"ts-node src/validate/index.ts -v\" --file=tests/fixtures/name-validation-test.sketch",
     "color-replacer": "nodemon --watch src --exec \"ts-node src/color-replacer/index.ts -v\" --file=tests/fixtures/name-validation-test.sketch --colors=src/color-replacer/legacy-colors.json",
     "lint": "tslint -p tsconfig.json",
-    "test": "mocha -r ts-node/register tests/**/*.ts"
+    "test": "mocha --exit -c -r ts-node/register tests/**/*.ts"
   },
   "nodemonConfig": {
     "verbose": true,
@@ -22,8 +22,12 @@
     ],
     "exec": "ts-node src/index.ts"
   },
-  "author": "",
+  "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.lab.dynatrace.org/projects/WX/repos/ng-sketch/browse"
+  },
   "devDependencies": {
     "@types/archiver": "^2.1.1",
     "@types/axios": "^0.14.0",
@@ -46,14 +50,30 @@
   "dependencies": {
     "archiver": "^2.1.1",
     "chalk": "^2.4.1",
+    "extract-zip": "^1.6.7",
+    "module-alias": "^2.1.0",
     "normalize-css-color": "^1.0.2",
     "puppeteer": "^1.3.0",
     "rimraf": "^2.6.2",
     "svg-path": "^0.2.1",
     "svg-path-parser": "^1.1.0",
-    "typescript": "^2.8.3",
+    "typescript": "^2.9.2",
     "unzipper": "^0.8.14",
     "xmldom": "^0.1.27",
     "yargs": "^11.0.0"
+  },
+  "_moduleAliases": {
+    "@sketch-draw/*": [
+      "dist/ng-sketch/sketch-draw/*"
+    ],
+    "@sketch-draw": [
+      "dist/ng-sketch/sketch-draw/index"
+    ],
+    "@sketch-svg-parser/*": [
+      "dist/ng-sketch/sketch-svg-parser/*"
+    ],
+    "@color-replacer/*": [
+      "dist/color-replacer/*"
+    ]
   }
 }

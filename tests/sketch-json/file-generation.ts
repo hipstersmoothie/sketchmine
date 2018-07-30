@@ -2,26 +2,31 @@ import { expect } from 'chai';
 import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
+import { promisify } from 'util';
 
-import { Sketch } from '../../src/ng-sketch/sketchJSON/Sketch';
+import { Sketch } from '../../src/ng-sketch/sketch-draw';
+
+import * as extractZip from 'extract-zip';
+
+const extract = promisify(extractZip);
+
 import * as unzip from 'unzipper';
 import { delDir } from '../../src/utils/del-folder';
 import { fileValidations } from './file-validations';
 import { groupValidation } from './group';
+import { ElementFetcher } from '../../src/ng-sketch/element-fetcher';
 
-describe('💎  Sketch File', () => {
+describe('➡ Sketch File generation 💎', () => {
   const fileName = 'dt-asset-lib';
   const testTmp = path.resolve('./tests/_tmp');
-  const sketchFile = path.resolve(testTmp, `${fileName}.sketch`);
+  const sketchFile = path.join(testTmp, `${fileName}.sketch`);
 
-  before((done) => {
+  before(async () => {
     delDir(testTmp);
-    const sketch = new Sketch(testTmp);
-    sketch.write([]).then(() => {
-      const stream = fs.createReadStream(sketchFile)
-        .pipe(unzip.Extract({ path: path.resolve(testTmp, fileName) }))
-        .on('close', done);
-    });
+    const elementFetcher = new ElementFetcher();
+    elementFetcher.host = `file://${path.resolve(__dirname, '..', 'fixtures', 'test-page.html')}`;
+    await elementFetcher.generateSketchFile([''], testTmp);
+    await extract(sketchFile, { dir: path.join(testTmp, fileName) });
   });
 
   context('File structure:', () => {
@@ -50,18 +55,18 @@ describe('💎  Sketch File', () => {
     });
   });
 
-  describe('\n    🚧  JSON validation:\n', () => {
+  describe('JSON validation: 🚧 \n', () => {
     // general File Validations
     fileValidations();
 
-    describe('\n\t🛠   Validating modules:\n', () => {
+    describe('Validating modules: 🛠 \n', () => {
       groupValidation();
     });
   });
 
   after(() => {
     console.log(chalk`\n\t{grey 🗑  clean up tests workspace...}`);
-    delDir(testTmp);
+    // delDir(testTmp);
   });
 
 });
