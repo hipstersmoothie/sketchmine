@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
@@ -13,8 +12,8 @@ export function fileValidations() {
   let document: IDocument;
   let pagesFiles: string[];
 
-  context('Pages are correctly registerd', () => {
-    before((done) => {
+  describe('Pages are correctly registerd', () => {
+    beforeAll((done) => {
       fs.readFile(DOCUMENT_JSON, { encoding: 'utf-8' }, (err, data: string) => {
         if (!err) {
           document = JSON.parse(data);
@@ -25,7 +24,7 @@ export function fileValidations() {
       });
     });
 
-    before((done) => {
+    beforeAll((done) => {
       const pages = path.resolve(TEST_TMP, FOLDER_NAME, 'pages');
       fs.readdir(pages, (err, files) => {
         pagesFiles = files;
@@ -33,30 +32,27 @@ export function fileValidations() {
       });
     });
     it('document.json has pages array', () => {
-      expect(document.pages).to.be.an('array');
-      expect(
-        document.pages.length,
-        'No Pages registered!',
-      ).to.be.greaterThan(0);
+      expect(document.pages instanceof Array).toBe(true);
+      expect(document.pages.length).toBeGreaterThan(0);
     });
 
     it('pages array matches the size of jsons', () => {
-      expect(pagesFiles.length).to.equal(document.pages.length);
+      expect(pagesFiles.length).toEqual(document.pages.length);
     });
 
     it('pages id matches the file name', () => {
       pagesFiles.forEach((page) => {
         const id = page.replace('.json', '');
         const pages = document.pages.map(registerdPage => registerdPage._ref.replace('pages\/', ''));
-        expect(pages.includes(id)).to.be.true;
+        expect(pages.includes(id)).toBeTruthy();
       });
     });
   });
 
-  context('Validate meta.json', () => {
+  describe('Validate meta.json', () => {
     let meta: IMeta;
 
-    before((done) => {
+    beforeAll((done) => {
       fs.readFile(META_JSON, { encoding: 'utf-8' }, (err, data: string) => {
         if (!err) {
           meta = JSON.parse(data);
@@ -69,12 +65,11 @@ export function fileValidations() {
 
     it('Artbords and symbols are registerd in meta.json', () => {
       const pageAndArtboardKeys = Object.keys(meta.pagesAndArtboards);
-      expect(pageAndArtboardKeys.length)
-        .to.equal(pagesFiles.length, 'Pages are not listed in meta.json');
+      expect(pageAndArtboardKeys.length).toEqual(pagesFiles.length);
     });
 
     it('Bernina Sans is registered', () => {
-      expect(meta.fonts.includes('BerninaSans')).to.be.true;
+      expect(meta.fonts.includes('BerninaSans')).toBeTruthy();
     });
   });
 }

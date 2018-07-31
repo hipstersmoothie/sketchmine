@@ -1,5 +1,4 @@
-import { IRulerData } from './page.interface';
-import { IBase } from './base.interface';
+import { IRulerData, IBase } from '@sketch-draw/interfaces';
 
 export interface ISymbolMaster extends IBase {
   backgroundColor: IBackgroundColor;

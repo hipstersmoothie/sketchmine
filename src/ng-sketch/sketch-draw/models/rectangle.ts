@@ -1,14 +1,13 @@
-import { Base } from './base';
-import { IPoint, IRectangleOptions, IRectangle } from '../interfaces/rectangle.interface';
-import { ICurvePoint } from '../../sketch-svg-parser/interfaces/curve-point.interface';
-import { IBounding, IBase } from '../interfaces/base.interface';
+import { Base } from '@sketch-draw/models/base';
+import { IPoint, IRectangleOptions, IRectangle, IBounding, IBase } from '@sketch-draw/interfaces';
+import { ICurvePoint } from '@sketch-svg-parser/interfaces';
 
 export class Rectangle extends Base {
   private _cornerRadius: number[];
 
   constructor(options: IRectangleOptions) {
     super();
-    super.class = 'rectangle';
+    super.className = 'rectangle';
     this._cornerRadius = this.convertRadius(options.cornerRadius); // topLeft, topRight, bottomRight, bottomLeft
     super.bounding =  {
       height: options.height,
@@ -31,7 +30,7 @@ export class Rectangle extends Base {
 
   private curvePoints(): ICurvePoint[] {
     const points: ICurvePoint[] = [];
-    for (let i = 0, max = 4; i < 4; i += 1) {
+    for (let i = 0, max = 4; i < max; i += 1) {
       let point = { x: 0, y: 0 };
       switch (i) {
         case 1:

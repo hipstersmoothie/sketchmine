@@ -1,8 +1,7 @@
-import { copyFile, createDir, delDir, generateSketchFile, writeJSON } from '../../utils';
-import { Document } from './models/document';
-import { Meta } from './models/meta';
-import { Page } from './models/page';
-import * as fs from 'fs';
+import { copyFile, createDir, delDir, generateSketchFile, writeJSON } from '@utils';
+import { Document } from '@sketch-draw/models/document';
+import { Meta } from '@sketch-draw/models/meta';
+import { Page } from '@sketch-draw/models/page';
 import * as path from 'path';
 import chalk from 'chalk';
 

@@ -1,26 +1,41 @@
+
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
     "baseUrl": "src",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "module": "commonjs",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "target": "ES6",
+    "downlevelIteration": true,
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": true,
     "moduleResolution": "node",
-    "outDir": "dist",
+    "noUnusedParameters": true,
+    "outDir": "dest/",
+    "sourceMap": true,
+    "types": [
+      "jest"
+    ],
+    "typeRoots": [
+      "/.node_modules/@types"
+    ],
     "paths": {
       "@sketch-draw/*": ["ng-sketch/sketch-draw/*"],
       "@sketch-draw": ["ng-sketch/sketch-draw/index"],
       "@sketch-svg-parser/*": ["ng-sketch/sketch-svg-parser/*"],
-      "@color-replacer/*": ["color-replacer/*"]
+      "@color-replacer/*": ["color-replacer/*"],
+      "@utils/*": ["utils/*"],
+      "@utils": ["utils/index"]
     },
-    "sourceMap": true,
-    "target": "es2017"
   },
   "include": [
+    "tests/**/*.test.ts",
     "src/**/*.ts",
-    "tests/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
-  ]
+    "node_modules/",
+  ],
 }

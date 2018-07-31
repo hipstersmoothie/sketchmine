@@ -1,6 +1,7 @@
 {
   "extends": "tslint-config-airbnb",
   "rules": {
+    "no-unused-expression": true,
     "object-shorthand-properties-first": false,
     "max-line-length": {
       "options": [120]

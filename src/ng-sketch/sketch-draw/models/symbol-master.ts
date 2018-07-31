@@ -1,12 +1,11 @@
-import { IBackgroundColor } from '../interfaces/symbol-master.interface';
-import { Base } from './base';
-import { IBounding, IBase } from '../interfaces/base.interface';
+import { Base } from '@sketch-draw/models/base';
+import { IBounding, IBase, IBackgroundColor } from '@sketch-draw/interfaces';
 
 export class SymbolMaster extends Base {
 
   constructor(bounding: IBounding) {
     super();
-    super.class = 'symbolMaster';
+    super.className = 'symbolMaster';
     super.breakMaskChain = true;
     super.style = super.addStyle();
     super.bounding = bounding;

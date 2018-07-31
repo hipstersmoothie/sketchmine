@@ -1,7 +1,7 @@
-import { ICurvePoint } from '../interfaces/curve-point.interface';
-import { Base } from '../../sketch-draw/models/base';
-import { BooleanOperation } from '../../sketch-draw/helpers/sketch-constants';
-import { IBase } from '../../sketch-draw/interfaces/base.interface';
+import { Base } from '@sketch-draw/models/base';
+import { BooleanOperation } from '@sketch-draw/helpers/sketch-constants';
+import { IBase } from '@sketch-draw/interfaces';
+import { ICurvePoint } from '@sketch-svg-parser/interfaces';
 
 export class ShapePath extends Base {
 
@@ -15,7 +15,7 @@ export class ShapePath extends Base {
 
   constructor() {
     super();
-    super.class = 'shapePath';
+    super.className = 'shapePath';
   }
 
   addPoint(point: ICurvePoint) {

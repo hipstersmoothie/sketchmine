@@ -1,9 +1,10 @@
-import { bytesToSize } from '../ng-sketch/sketch-draw/helpers/util';
-import { createDir, fileBuffer } from './';
-import * as archiver from 'archiver';
+import { bytesToSize } from '@sketch-draw/helpers/util';
+import { createDir } from '@utils/create-dir';
+import { fileBuffer } from '@utils/zip-to-buffer';
 import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
+const archiver = require('archiver');
 const log = console.log;
 
 /**

@@ -1,6 +1,588 @@
 <html>
 <head>
   <title>dt-button/primary</title>
+  <style type="text/css">/* You can add global styles to this file, and also import other style files */
+    @font-face {
+      font-family: BerninaSansWeb;
+      src:  url(//assets.dynatrace.com/groundhog/v6.1.1/assets/fonts/BerninaSans-Web-Regular.woff) format("woff"), 
+            url(//assets.dynatrace.com/groundhog/v6.1.1/assets/fonts/BerninaSans-Web-Regular.woff2) format("woff2");
+      font-weight: 400; }
+    @font-face {
+      font-family: BerninaSansWeb;
+      src:  url(//assets.dynatrace.com/groundhog/v6.1.1/assets/fonts/BerninaSans-Web-Light.woff) format("woff"), 
+            url(//assets.dynatrace.com/groundhog/v6.1.1/assets/fonts/BerninaSans-Web-Light.woff2) format("woff2");
+      font-weight: 300; }
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    [_nghost-c2] {
+      font-family: BerninaSansWeb, "Open Sans", sans-serif;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      position: relative;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: pointer;
+      outline: 0;
+      border: 1px solid;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      -webkit-tap-highlight-color: transparent;
+      display: inline-block;
+      white-space: nowrap;
+      text-decoration: none;
+      text-align: center;
+      overflow: hidden;
+      vertical-align: middle;
+      height: 32px;
+      border-radius: 3px;
+      font-size: 14px;
+      line-height: 30px;
+      line-height: -moz-block-height;
+      padding: 0 15px
+    }
+    
+    [_nghost-c2]:hover {
+      text-decoration: none
+    }
+    
+    [disabled][_nghost-c2] {
+      cursor: default;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      outline: 0
+    }
+    
+    [_nghost-c2]:focus:not([disabled]) {
+      outline: 0;
+      -webkit-box-shadow: 0 0 0 2px #ccc;
+      box-shadow: 0 0 0 2px #ccc
+    }
+    
+    [_nghost-c2]::-moz-focus-inner {
+      border: 0
+    }
+    
+    .dt-icon-button[_nghost-c2] {
+      padding-left: 0;
+      padding-right: 0;
+      width: 32px;
+      text-align: center
+    }
+    
+    .dt-button-nested[_nghost-c2] {
+      border: 0
+    }
+    
+    .dt-button-nested[_nghost-c2]:active:not([disabled]),
+    .dt-button-nested[_nghost-c2]:hover:not([disabled]) {
+      background: #f8f8f8
+    }
+    
+    .dt-button-icon[_ngcontent-c2] {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
+      margin-top: 5px;
+      vertical-align: top
+    }
+    
+    .dt-icon-button[_nghost-c2] .dt-button-icon[_ngcontent-c2] {
+      margin-right: 0
+    }
+    
+    .dt-button-primary[_nghost-c2] {
+      background: #00a1b2;
+      border-color: #00a1b2;
+      color: #fff
+    }
+    
+    .dt-button-primary[_nghost-c2]:hover:not([disabled]) {
+      background: #00848e;
+      border-color: #00848e;
+      color: #fff
+    }
+    
+    .dt-button-primary[_nghost-c2]:active:not([disabled]) {
+      background: #006d75;
+      border-color: #006d75;
+      color: #fff
+    }
+    
+    .dt-button-primary[_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #fff
+    }
+    
+    .dt-button-primary[disabled][_nghost-c2] {
+      background: #ccc;
+      border-color: #ccc;
+      color: #fff
+    }
+    
+    .dt-button-secondary[_nghost-c2] {
+      background: 0 0;
+      border-color: #00a1b2;
+      color: #00a1b2
+    }
+    
+    .dt-button-secondary[_nghost-c2]:hover:not([disabled]) {
+      background: #f8f8f8;
+      border-color: #00848e;
+      color: #00848e
+    }
+    
+    .dt-button-secondary[_nghost-c2]:active:not([disabled]) {
+      background: #f8f8f8;
+      border-color: #006d75;
+      color: #006d75
+    }
+    
+    .dt-button-secondary[_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #00a1b2
+    }
+    
+    .dt-button-secondary[_nghost-c2]:hover:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #00848e
+    }
+    
+    .dt-button-secondary[_nghost-c2]:active:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #006d75
+    }
+    
+    .dt-button-secondary[disabled][_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #ccc
+    }
+    
+    .dt-button-secondary[disabled][_nghost-c2] {
+      background: #fff;
+      border-color: #ccc;
+      color: #ccc
+    }
+    
+    .dt-color-warning.dt-button-primary[_nghost-c2] {
+      background: #e6be00;
+      border-color: #e6be00;
+      color: #fff
+    }
+    
+    .dt-color-warning.dt-button-primary[_nghost-c2]:hover:not([disabled]) {
+      background: #c9a000;
+      border-color: #c9a000;
+      color: #fff
+    }
+    
+    .dt-color-warning.dt-button-primary[_nghost-c2]:active:not([disabled]) {
+      background: #ab8300;
+      border-color: #ab8300;
+      color: #fff
+    }
+    
+    .dt-color-warning.dt-button-primary[_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #fff
+    }
+    
+    .dt-color-warning.dt-button-primary[disabled][_nghost-c2] {
+      background: #ccc;
+      border-color: #ccc;
+      color: #fff
+    }
+    
+    .dt-color-warning.dt-button-secondary[_nghost-c2] {
+      background: 0 0;
+      border-color: #e6be00;
+      color: #e6be00
+    }
+    
+    .dt-color-warning.dt-button-secondary[_nghost-c2]:hover:not([disabled]) {
+      background: #f8f8f8;
+      border-color: #c9a000;
+      color: #c9a000
+    }
+    
+    .dt-color-warning.dt-button-secondary[_nghost-c2]:active:not([disabled]) {
+      background: #f8f8f8;
+      border-color: #ab8300;
+      color: #ab8300
+    }
+    
+    .dt-color-warning.dt-button-secondary[_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #e6be00
+    }
+    
+    .dt-color-warning.dt-button-secondary[_nghost-c2]:hover:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #c9a000
+    }
+    
+    .dt-color-warning.dt-button-secondary[_nghost-c2]:active:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #ab8300
+    }
+    
+    .dt-color-warning.dt-button-secondary[disabled][_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #ccc
+    }
+    
+    .dt-color-warning.dt-button-secondary[disabled][_nghost-c2] {
+      background: #fff;
+      border-color: #ccc;
+      color: #ccc
+    }
+    
+    .dt-color-cta.dt-button-primary[_nghost-c2] {
+      background: #5ead35;
+      border-color: #5ead35;
+      color: #fff
+    }
+    
+    .dt-color-cta.dt-button-primary[_nghost-c2]:hover:not([disabled]) {
+      background: #3f962a;
+      border-color: #3f962a;
+      color: #fff
+    }
+    
+    .dt-color-cta.dt-button-primary[_nghost-c2]:active:not([disabled]) {
+      background: #1f7e1e;
+      border-color: #1f7e1e;
+      color: #fff
+    }
+    
+    .dt-color-cta.dt-button-primary[_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #fff
+    }
+    
+    .dt-color-cta.dt-button-primary[disabled][_nghost-c2] {
+      background: #ccc;
+      border-color: #ccc;
+      color: #fff
+    }
+    
+    .dt-color-cta.dt-button-secondary[_nghost-c2] {
+      background: 0 0;
+      border-color: #5ead35;
+      color: #5ead35
+    }
+    
+    .dt-color-cta.dt-button-secondary[_nghost-c2]:hover:not([disabled]) {
+      background: #f8f8f8;
+      border-color: #3f962a;
+      color: #3f962a
+    }
+    
+    .dt-color-cta.dt-button-secondary[_nghost-c2]:active:not([disabled]) {
+      background: #f8f8f8;
+      border-color: #1f7e1e;
+      color: #1f7e1e
+    }
+    
+    .dt-color-cta.dt-button-secondary[_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #5ead35
+    }
+    
+    .dt-color-cta.dt-button-secondary[_nghost-c2]:hover:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #3f962a
+    }
+    
+    .dt-color-cta.dt-button-secondary[_nghost-c2]:active:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #1f7e1e
+    }
+    
+    .dt-color-cta.dt-button-secondary[disabled][_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #ccc
+    }
+    
+    .dt-color-cta.dt-button-secondary[disabled][_nghost-c2] {
+      background: #fff;
+      border-color: #ccc;
+      color: #ccc
+    }
+    
+    .dt-theme-dark .dt-button-primary[_nghost-c2] {
+      background: #00b9cc;
+      border-color: #00b9cc;
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-button-primary[_nghost-c2]:hover:not([disabled]) {
+      background: #4fd5e0;
+      border-color: #4fd5e0;
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-button-primary[_nghost-c2]:active:not([disabled]) {
+      background: #74dee6;
+      border-color: #74dee6;
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-button-primary[_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #fff
+    }
+    
+    .dt-theme-dark .dt-button-primary[_nghost-c2],
+    .dt-theme-dark .dt-button-primary[_nghost-c2]:active:not([disabled]),
+    .dt-theme-dark .dt-button-primary[_nghost-c2]:hover:not([disabled]) {
+      border-color: #fff
+    }
+    
+    .dt-theme-dark .dt-button-primary[disabled][_nghost-c2] {
+      background: rgba(255, 255, 255, .2);
+      border-color: rgba(255, 255, 255, .2);
+      color: rgba(255, 255, 255, .6)
+    }
+    
+    .dt-theme-dark .dt-button-primary[disabled][_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: rgba(255, 255, 255, .6)
+    }
+    
+    .dt-theme-dark .dt-button-secondary[_nghost-c2] {
+      background: 0 0;
+      border-color: #00b9cc;
+      color: #00b9cc
+    }
+    
+    .dt-theme-dark .dt-button-secondary[_nghost-c2]:hover:not([disabled]) {
+      border-color: #4fd5e0;
+      background: rgba(255, 255, 255, .2);
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-button-secondary[_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #00b9cc;
+      fill: #fff
+    }
+    
+    .dt-theme-dark .dt-button-secondary[_nghost-c2]:hover:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #4fd5e0
+    }
+    
+    .dt-theme-dark .dt-button-secondary[_nghost-c2]:active:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #74dee6
+    }
+    
+    .dt-theme-dark .dt-button-secondary[disabled][_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #ccc
+    }
+    
+    .dt-theme-dark .dt-button-secondary[_nghost-c2],
+    .dt-theme-dark .dt-button-secondary[disabled][_nghost-c2] {
+      background: 0 0;
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-button-secondary[disabled][_nghost-c2] {
+      border-color: rgba(255, 255, 255, .2);
+      color: rgba(255, 255, 255, .6)
+    }
+    
+    .dt-theme-dark .dt-button-secondary[_nghost-c2]:hover:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #fff
+    }
+    
+    .dt-theme-dark .dt-button-secondary[_nghost-c2],
+    .dt-theme-dark .dt-button-secondary[_nghost-c2]:hover:not([disabled]) {
+      border-color: #fff;
+      color: #f8f8f8
+    }
+    
+    .dt-theme-dark .dt-button-secondary[_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2],
+    .dt-theme-dark .dt-button-secondary[_nghost-c2]:hover:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #f8f8f8
+    }
+    
+    .dt-theme-dark .dt-button-secondary[_nghost-c2]:active:not([disabled]) {
+      background: rgba(255, 255, 255, .3);
+      border-color: #fff;
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-button-secondary[_nghost-c2]:active:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #fff
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-primary[_nghost-c2] {
+      background: #e6be00;
+      border-color: #e6be00;
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-primary[_nghost-c2]:hover:not([disabled]) {
+      background: #f5d30f;
+      border-color: #f5d30f;
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-primary[_nghost-c2]:active:not([disabled]) {
+      background: #ffe11c;
+      border-color: #ffe11c;
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-primary[_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #fff
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-primary[_nghost-c2],
+    .dt-theme-dark .dt-color-warning.dt-button-primary[_nghost-c2]:active:not([disabled]),
+    .dt-theme-dark .dt-color-warning.dt-button-primary[_nghost-c2]:hover:not([disabled]) {
+      border-color: #fff
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-primary[disabled][_nghost-c2] {
+      background: rgba(255, 255, 255, .2);
+      border-color: rgba(255, 255, 255, .2);
+      color: rgba(255, 255, 255, .6)
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-primary[disabled][_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: rgba(255, 255, 255, .6)
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-secondary[_nghost-c2] {
+      background: 0 0;
+      border-color: #e6be00;
+      color: #e6be00
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-secondary[_nghost-c2]:hover:not([disabled]) {
+      border-color: #f5d30f;
+      background: rgba(255, 255, 255, .2);
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-secondary[_nghost-c2]:active:not([disabled]) {
+      border-color: #ffe11c;
+      background: rgba(255, 255, 255, .3);
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-secondary[_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #e6be00;
+      fill: #fff
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-secondary[_nghost-c2]:hover:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #f5d30f
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-secondary[_nghost-c2]:active:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #ffe11c;
+      fill: #fff
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-secondary[disabled][_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #ccc
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-secondary[_nghost-c2],
+    .dt-theme-dark .dt-color-warning.dt-button-secondary[disabled][_nghost-c2] {
+      background: 0 0;
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-secondary[disabled][_nghost-c2] {
+      border-color: rgba(255, 255, 255, .2);
+      color: rgba(255, 255, 255, .6)
+    }
+    
+    .dt-theme-dark .dt-color-warning.dt-button-secondary[_nghost-c2]:hover:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #fff
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-primary[_nghost-c2] {
+      background: #7dc540;
+      border-color: #7dc540;
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-primary[_nghost-c2]:hover:not([disabled]) {
+      background: #9cd575;
+      border-color: #9cd575;
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-primary[_nghost-c2]:active:not([disabled]) {
+      background: #bee5a3;
+      border-color: #bee5a3;
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-primary[_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #fff
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-primary[_nghost-c2],
+    .dt-theme-dark .dt-color-cta.dt-button-primary[_nghost-c2]:active:not([disabled]),
+    .dt-theme-dark .dt-color-cta.dt-button-primary[_nghost-c2]:hover:not([disabled]) {
+      border-color: #fff
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-primary[disabled][_nghost-c2] {
+      background: rgba(255, 255, 255, .2);
+      border-color: rgba(255, 255, 255, .2);
+      color: rgba(255, 255, 255, .6)
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-primary[disabled][_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: rgba(255, 255, 255, .6)
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-secondary[_nghost-c2] {
+      background: 0 0;
+      border-color: #7dc540;
+      color: #7dc540
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-secondary[_nghost-c2]:hover:not([disabled]) {
+      border-color: #9cd575;
+      background: rgba(255, 255, 255, .2);
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-secondary[_nghost-c2]:active:not([disabled]) {
+      border-color: #bee5a3;
+      background: rgba(255, 255, 255, .3);
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-secondary[_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #7dc540;
+      fill: #fff
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-secondary[_nghost-c2]:hover:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #9cd575
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-secondary[_nghost-c2]:active:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #bee5a3;
+      fill: #fff
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-secondary[disabled][_nghost-c2] .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #ccc
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-secondary[_nghost-c2],
+    .dt-theme-dark .dt-color-cta.dt-button-secondary[disabled][_nghost-c2] {
+      background: 0 0;
+      color: #fff
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-secondary[disabled][_nghost-c2] {
+      border-color: rgba(255, 255, 255, .2);
+      color: rgba(255, 255, 255, .6)
+    }
+    
+    .dt-theme-dark .dt-color-cta.dt-button-secondary[_nghost-c2]:hover:not([disabled]) .dt-icon[_ngcontent-c2] svg[_ngcontent-c2] {
+      fill: #fff
+    }
+    
+    </style></h
+  </style>
 </head>
 <body data-gr-c-s-loaded="true">
   <app-root _nghost-c0="" ng-version="6.0.0">

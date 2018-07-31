@@ -1,4 +1,4 @@
-import { IBase } from '../../sketch-draw/interfaces/base.interface';
+import { IBase } from '@sketch-draw/interfaces';
 
 export interface IShapeGroup extends IBase {
   hasClickThrough: boolean;

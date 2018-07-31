@@ -1,18 +1,16 @@
-import { Base } from './base';
-import { IBase, IBounding } from '../interfaces/base.interface';
-import { IBitmap, IImage } from '../interfaces/bitmap.interface';
-import { Style } from './style';
+import { Base } from '@sketch-draw/models/base';
+import { IBase, IBounding, IBitmap, IImage } from '@sketch-draw/interfaces';
+import { Style } from '@sketch-draw/models/style';
 
 export class Bitmap extends Base {
 
   private static _class = 'bitmap';
   private static DPI = 72;
   private _imageSrc: string;
-  private _id: string;
 
   constructor(bounding: IBounding) {
     super();
-    this.class = Bitmap._class;
+    this.className = Bitmap._class;
     this.bounding = bounding;
   }
 

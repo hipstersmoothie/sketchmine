@@ -1,4 +1,4 @@
-import { ISvgPoint } from '../interfaces/svg.interface';
+import { ISvgPoint } from '@sketch-svg-parser/interfaces';
 
 /**
  * Checks if the provided point is an Action Point like close Path or start drawing with a moveto

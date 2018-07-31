@@ -1,9 +1,9 @@
-import { Page } from './sketch-draw/models/page';
-import { IBounding } from './sketch-draw/interfaces/base.interface';
-import { SymbolMaster } from './sketch-draw/models/symbol-master';
-import { ITraversedDom, ITraversedDomElement } from './traversed-dom.interface';
-import { boundingClientRectToBounding } from './sketch-draw/helpers/util';
-import { ElementNode } from './element-node';
+import { Page } from '@sketch-draw/models/page';
+import { IBounding } from '@sketch-draw/interfaces';
+import { SymbolMaster } from '@sketch-draw/models/symbol-master';
+import { ITraversedDom, ITraversedDomElement } from './traversed-dom';
+import { boundingClientRectToBounding } from '@sketch-draw/helpers/util';
+import { ElementDrawer } from './element-drawer';
 import chalk from 'chalk';
 
 export class Drawer {
@@ -30,7 +30,7 @@ export class Drawer {
   }
 
   private drawElements(element: ITraversedDomElement) {
-    const node = new ElementNode(element);
+    const node = new ElementDrawer(element);
     return [...node.layers];
   }
 

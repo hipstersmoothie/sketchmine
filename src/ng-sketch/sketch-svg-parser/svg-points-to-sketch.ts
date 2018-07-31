@@ -1,12 +1,12 @@
-import { MoveTo } from './models/move-to';
-import { ISvgPoint, ISvgShape } from './interfaces/svg.interface';
-import { LineTo } from './models/line-to';
-import { CurveTo } from './models/curve-to';
-import { ShapePath } from './models/shape-path';
-import { IBounding } from '../sketch-draw/interfaces/base.interface';
-import { QuadraticCurveTo } from './models/quadratic-curve-to';
+import { MoveTo } from '@sketch-svg-parser/models/move-to';
+import { ISvgPoint, ISvgShape } from '@sketch-svg-parser/interfaces';
+import { LineTo } from '@sketch-svg-parser/models/line-to';
+import { CurveTo } from '@sketch-svg-parser/models/curve-to';
+import { ShapePath } from '@sketch-svg-parser/models/shape-path';
+import { IBounding } from '@sketch-draw/interfaces';
+import { QuadraticCurveTo } from '@sketch-svg-parser/models/quadratic-curve-to';
 import chalk from 'chalk';
-import { isActionPoint } from './util/point';
+import { isActionPoint } from '@sketch-svg-parser/util/point';
 
 export class SvgPointsToSketch {
   static parse(shape: ISvgShape, size: IBounding) {

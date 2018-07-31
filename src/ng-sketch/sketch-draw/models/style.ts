@@ -1,5 +1,5 @@
-import { cssToRGBA } from '../helpers/util';
-import { IBorder, IFill, IColor, IStyle } from '../interfaces/style.interface';
+import { cssToRGBA } from '@sketch-draw/helpers/util';
+import { IBorder, IFill, IColor, IStyle } from '@sketch-draw/interfaces';
 
 export class Style {
   private _borders: IBorder[] = [];

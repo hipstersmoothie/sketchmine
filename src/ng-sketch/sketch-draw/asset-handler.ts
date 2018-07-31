@@ -1,8 +1,8 @@
-import { delDir, createDir } from '../../utils';
+import { delDir, createDir } from '@utils';
 import * as fs from 'fs';
 import * as path from 'path';
 import axios from 'axios';
-import { IAsset } from '../traversed-dom.interface';
+import { IAsset } from '../traversed-dom';
 import chalk from 'chalk';
 
 export class AssetHandler {

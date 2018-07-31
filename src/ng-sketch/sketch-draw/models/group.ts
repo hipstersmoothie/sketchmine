@@ -1,7 +1,6 @@
-import { Base } from './base';
-import { IBase, IBounding } from '../interfaces/base.interface';
-import { IGroup } from '../interfaces/group.interface';
-import { UUID } from '../helpers/uuid';
+import { Base } from '@sketch-draw/models/base';
+import { IBase, IBounding, IGroup } from '@sketch-draw/interfaces';
+import { UUID } from '@sketch-draw/helpers/uuid';
 
 export class Group extends Base {
 
@@ -9,7 +8,7 @@ export class Group extends Base {
 
   constructor(bounding: IBounding) {
     super();
-    super.class = Group._class;
+    super.className = Group._class;
     super.bounding = bounding;
     super.style = super.addStyle();
   }

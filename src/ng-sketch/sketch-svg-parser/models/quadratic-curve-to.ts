@@ -1,6 +1,6 @@
-import { CurvePoint } from './curve-point';
-import { ICurvePoint } from '../interfaces/curve-point.interface';
-import { CurvePointMode } from '../../sketch-draw/helpers/sketch-constants';
+import { CurvePoint } from '@sketch-svg-parser/models/curve-point';
+import { ICurvePoint } from '@sketch-svg-parser/interfaces';
+import { CurvePointMode } from '@sketch-draw/helpers/sketch-constants';
 
 export class QuadraticCurveTo extends CurvePoint {
 

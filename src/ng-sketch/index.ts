@@ -1,4 +1,4 @@
-import { ElementFetcher } from './ng-sketch/element-fetcher';
+import { ElementFetcher } from './element-fetcher';
 import { exec } from 'child_process';
 
 const pages = [
@@ -24,5 +24,6 @@ try {
   elementFetcher.host = 'http://localhost:4200';
   elementFetcher.generateSketchFile(pages);
 } catch (error) {
+  process.exit(1);
   throw error;
 }
