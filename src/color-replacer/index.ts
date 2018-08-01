@@ -1,10 +1,8 @@
 import { argv } from 'yargs';
-import { generateSketchFile } from '../utils/generate-sketch-file';
-import { readFile } from '../utils/read-file';
-import { zipToBuffer as unzip } from '../utils/zip-to-buffer';
+import { generateSketchFile, readFile, zipToBuffer as unzip  } from '@utils';
 import * as path from 'path';
 import chalk from 'chalk';
-import { ColorReplacer } from './color-replacer';
+import { ColorReplacer } from '@color-replacer/color-replacer';
 import { exec } from 'child_process';
 
 process.env.SKETCH = 'open-close';

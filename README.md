@@ -3,17 +3,15 @@
 
 # Dynatrace .sketch plugins and tooling
 
+[![Build Status](https://webkins.lab.dynatrace.org/job/barista/job/sketch-generator/job/master/badge/icon)](https://webkins.lab.dynatrace.org/job/barista/job/sketch-generator/job/master/)
+
 This tooling set is for the dynatrace barista designsystem.
 
-<hr>
-<details>
-<summary>1) Generator: generating .sketch files from HTML</summary>
-
-# Angular to Sketch App Generator
+## Angular to Sketch App Generator
 
 Generates a Sketch App Symbol library out of the *Dynatrace Angular Components Library*.
 
-## How to get running
+### How to get running
 
 The generator needs a list of pages (urls) to crawl and draw.
 Each page is drawn as own Symbol.
@@ -60,7 +58,12 @@ process.env.SKETCH = 'open-close';
 
 ### Testing the SVG generator
 
+Tests are done with **JEST**
+
+The files have to contain the pattern `**/*.test.ts` in the folder `src` and `tests`
+
 Just run `npm run test`
+for test-coverage analysis run `npm run test:coverage`
 
 ### Useful bash scripts
 
@@ -89,17 +92,12 @@ unzip ${filename}.zip -d ./${filename}
 rm -rf ${filename}.zip
 ```
 
-</details>
-
-<details>
-<summary>2) Validator: Validating sketch files</summary>
-
-# Validator
+## Validator
 
 This tool is found in `src/validate`
-run `node dist/validate --file=path/to/file.sketch`
+run `node dist/sketch-validate --file=path/to/file.sketch`
 
-## Configuration
+### Configuration
 
 the selector can be `'document' | 'page' | 'symbolMaster' | 'group' | 'path' | 'shapeGroup' | 'rectangle'`
 
@@ -115,7 +113,7 @@ export const rules: IValidationRule[] = [
 ];
 ```
 
-## Debugging
+### Debugging
 
 The following Debug variables are specified for enhanced logging.
 
@@ -124,13 +122,7 @@ process.env.DEBUG = 'true';
 process.env.VERBOSE = 'true';
 ```
 
-</details>
-
-
-<details>
-<summary>3) Color Replacer</summary>
-
-# Color Replacer to change a set of unused legacy colors
+## Color Replacer to change a set of unused legacy colors
 
 run `node dist/color-replacer --file=path/to/file.sketch --colors=path/to/colors.json`
 The script creates a `./_tmp`dir in the current workdir with the canged file.
@@ -138,7 +130,7 @@ The script creates a `./_tmp`dir in the current workdir with the canged file.
 All colors have to be provided as **HEX** colors
 The **colors.json** file follows following convention:
 
-## Debugging 
+### Debugging 
 
 The environment Variable of `process.env.SKETCH = 'open-close'` opens and closes the Sketch app automatically on a MacOS machine.
 
@@ -156,8 +148,59 @@ process.env.SKETCH = 'open-close';
 }
 ```
 
-</details>
+## Data Structure
+
+```json
+[
+  {
+    className: 'DtButton',
+    selector: 'dt-button',
+    ...
+    variants: [
+      {
+        name: 'button-primary-main',
+        changes: [
+          {
+            type: 'property',
+            name: 'color',
+            value: 'main'
+          }
+        ]
+      },
+      {
+        name: 'button-primary-main-active',
+        changes: [
+          {
+            type: 'property',
+            name: 'color',
+            value: 'main'
+          }, {
+            type: 'method',
+            name: 'handleClick',
+            arguments: []
+          }
+        ]
+      },
+      {
+        name: 'button-cta',
+        changes: [
+          {
+            type: 'property',
+            name: 'color',
+            values: 'cta'
+          }
+        ]
+      }
+    ]
+  }
+]
+```
 
 #### Maintainer
 
-[Lukas Holzer](lukas.holzer@dynatrace.com)
+<table>
+  <tr>
+    <td style="width: 50px; height: 50px;"><img src="https://dev-jira.dynatrace.org/secure/useravatar?&ownerId=lukas.holzer" style="border-radius: 50%; width: 100%;"></td>
+    <td style="line-height: 50px;"><a href="mailto:lukas.holzer@dynatrace.com">Lukas Holzer</a></td>
+  </tr>
+</table>

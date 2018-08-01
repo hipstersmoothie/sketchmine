@@ -1,12 +1,11 @@
-import { IPage } from '../interfaces/page.interface';
-import { Base } from './base';
-import { IBounding, IBase } from '../interfaces/base.interface';
+import { Base } from '@sketch-draw/models/base';
+import { IBounding, IBase, IPage } from '@sketch-draw/interfaces';
 
 export class Page extends Base {
 
   constructor(bounding: IBounding) {
     super();
-    super.class = 'page';
+    super.className = 'page';
     super.name = 'Symbols';
     super.style = super.addStyle();
     super.bounding = bounding;

@@ -1,5 +1,5 @@
-import * as normalizeColor from 'normalize-css-color';
-import { IBounding } from '../interfaces/base.interface';
+import { IBounding } from '@sketch-draw/interfaces';
+const normalizeCssColor = require('normalize-css-color');
 
 export interface IRGBA { r: number; g: number; b: number; a: number; }
 
@@ -44,10 +44,10 @@ export function boundingClientRectToBounding(bcr: ClientRect | DOMRect): IBoundi
 }
 
 export function cssToRGBA(input: string | any): IRGBA {
-  const nullableColor = normalizeColor(safeToLower(input));
+  const nullableColor = normalizeCssColor(safeToLower(input));
   const colorInt = nullableColor === null ? 0x00000000 : nullableColor;
 
-  return normalizeColor.rgba(colorInt);
+  return normalizeCssColor.rgba(colorInt);
 }
 
 export function parseBorderRadius(borderRadius, width, height) {

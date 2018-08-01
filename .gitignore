@@ -1,6 +1,8 @@
 node_modules
 dist
-assets
+lib
 dt-asset-lib
 dt-asset-lib.sketch
 _tmp
+.rpt2_cache
+coverage

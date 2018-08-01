@@ -1,5 +1,5 @@
-import { IMeta, IMetaPagesAndArtboards, IMetaArtboard } from '../interfaces/meta.interface';
-import { Page } from './page';
+import { IMeta, IMetaPagesAndArtboards, IMetaArtboard } from '@sketch-draw/interfaces';
+import { Page } from '@sketch-draw/models/page';
 
 export class Meta {
   private static _instance: Meta;

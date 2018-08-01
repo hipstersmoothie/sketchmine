@@ -1,5 +1,5 @@
-import { ISvgPoint, IPoint } from '../interfaces/svg.interface';
-import { round } from '../../sketch-draw/helpers/util';
+import { ISvgPoint, IPoint } from '@sketch-svg-parser/interfaces';
+import { round } from '@sketch-draw/helpers/util';
 
 export class CurvePoint {
 

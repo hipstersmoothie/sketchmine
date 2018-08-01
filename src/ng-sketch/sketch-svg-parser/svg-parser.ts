@@ -1,11 +1,18 @@
 import chalk from 'chalk';
 import { DOMParser } from 'xmldom';
-import { parseSVG, makeAbsolute } from 'svg-path-parser';
-import { ISvgPoint, ISvgPointGroup, ISvgView, ISvg, ISvgShape, SvgStyle } from './interfaces/svg.interface';
-import { BooleanOperation } from '../sketch-draw/helpers/sketch-constants';
-import { Circle } from './models/circle';
-import { Rect } from './models/rect';
-import { addStyle } from './util/styles';
+import {
+  ISvgPoint,
+  ISvgPointGroup,
+  ISvgView,
+  ISvg,
+  ISvgShape,
+  SvgStyle,
+} from '@sketch-svg-parser/interfaces';
+import { BooleanOperation } from '@sketch-draw/helpers/sketch-constants';
+import { Circle } from '@sketch-svg-parser/models/circle';
+import { Rect } from '@sketch-svg-parser/models/rect';
+import { addStyle } from '@sketch-svg-parser/util/styles';
+const { parseSVG, makeAbsolute } = require('svg-path-parser');
 
 export class SvgParser {
   static parse(svg: string, width: number, height: number): ISvg {
@@ -27,7 +34,9 @@ export class SvgParser {
    */
   private getPaths() {
     try {
-      const svg = new DOMParser().parseFromString(this._svg.trim(), 'application/xml').childNodes[0] as SVGElement;
+      const svg = new DOMParser()
+        .parseFromString(this._svg.trim(), 'application/xml')
+        .childNodes[0] as SVGElement;
       if (svg.tagName !== 'svg') {
         throw new Error(chalk`No SVG element provided for parsing!\nyou provided:{grey \n${this._svg}\n\n}`);
       }

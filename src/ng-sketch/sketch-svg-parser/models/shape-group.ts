@@ -1,12 +1,12 @@
-import { Base } from '../../sketch-draw/models/base';
-import { IShapeGroup } from '../interfaces/shape-group.interface';
-import { IBounding, IBase } from '../../sketch-draw/interfaces/base.interface';
+import { Base } from '@sketch-draw/models/base';
+import { IShapeGroup } from '@sketch-svg-parser/interfaces';
+import { IBounding, IBase } from '@sketch-draw/interfaces';
 
 export class ShapeGroup extends Base {
 
   constructor(bounding: IBounding) {
     super();
-    super.class = 'shapeGroup';
+    super.className = 'shapeGroup';
     super.bounding = bounding;
     super.style = super.addStyle();
   }

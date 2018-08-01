@@ -1,4 +1,4 @@
-import { IStyle } from './style.interface';
+import { IStyle } from '@sketch-draw/interfaces';
 
 export interface IBase {
   _class: string;

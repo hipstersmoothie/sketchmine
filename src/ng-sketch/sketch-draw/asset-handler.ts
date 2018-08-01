@@ -1,9 +1,8 @@
-import { delDir } from '../../utils/del-folder';
-import { createDir } from '../../utils/create-dir';
+import { delDir, createDir } from '@utils';
 import * as fs from 'fs';
 import * as path from 'path';
 import axios from 'axios';
-import { IAsset } from '../traversed-dom.interface';
+import { IAsset } from '../traversed-dom';
 import chalk from 'chalk';
 
 export class AssetHandler {
@@ -48,11 +47,6 @@ export class AssetHandler {
       });
     });
 
-  }
-
-  private createTmp() {
-    delDir(AssetHandler.ASSET_TMP);
-    createDir(AssetHandler.ASSET_TMP);
   }
 
   clean() {

@@ -1,25 +1,22 @@
-import { Style } from './sketch-draw/models/style';
-import { IStyle } from './sketch-draw/interfaces/style.interface';
-import { Rectangle } from './sketch-draw/models/rectangle';
-import { boundingClientRectToBounding, calcPadding } from './sketch-draw/helpers/util';
-import { IRectangle, IRectangleOptions } from './sketch-draw/interfaces/rectangle.interface';
-import { Group } from './sketch-draw/models/group';
-import { IGroup } from './sketch-draw/interfaces/group.interface';
+import { Style } from '@sketch-draw/models/style';
+import { Rectangle } from '@sketch-draw/models/rectangle';
+import { boundingClientRectToBounding, calcPadding } from '@sketch-draw/helpers/util';
+import { IRectangle, IRectangleOptions, IStyle, IGroup, IBounding } from '@sketch-draw/interfaces';
+import { Group } from '@sketch-draw/models/group';
 import {
   ITraversedDomElement,
   ITraversedDomTextNode,
   ITraversedDomSvgNode,
   ITraversedDomImageNode,
-} from './traversed-dom.interface';
-import { Text } from './sketch-draw/models/text';
+} from './traversed-dom';
+import { Text } from '@sketch-draw/models/text';
 import chalk from 'chalk';
-import { IBounding } from './sketch-draw/interfaces/base.interface';
-import { ShapeGroup } from './sketch-svg-parser/models/shape-group';
-import { SvgParser } from './sketch-svg-parser/svg-parser';
-import { SvgToSketch } from './sketch-svg-parser/svg-to-sketch';
-import { Bitmap } from './sketch-draw/models/bitmap';
+import { ShapeGroup } from '@sketch-svg-parser/models/shape-group';
+import { SvgParser } from '@sketch-svg-parser/svg-parser';
+import { SvgToSketch } from '@sketch-svg-parser/svg-to-sketch';
+import { Bitmap } from '@sketch-draw/models/bitmap';
 
-export class ElementNode {
+export class ElementDrawer {
   private _layers = [];
 
   get layers(): IGroup[] { return this._layers; }
@@ -69,7 +66,14 @@ export class ElementNode {
     this._layers.push(...svg.generateObject());
   }
 
+  /**
+   * Creates text layer for sketch but skips empty Text nodes
+   * @param {ITraversedDomTextNode} element Text node from the traversed dom
+   */
   private generateText(element: ITraversedDomTextNode) {
+    if (element.text.trim().length === 0) {
+      return;
+    }
     const bcr = boundingClientRectToBounding(element.parentRect);
     const paddedBCR = calcPadding(element.styles.padding, bcr);
     if (process.env.DEBUG) {
@@ -97,7 +101,7 @@ export class ElementNode {
 
     if (element.children && element.children.length > 0) {
       element.children.reverse().forEach((child) => {
-        const childNode = new ElementNode(child);
+        const childNode = new ElementDrawer(child);
         const layers = childNode.layers;
         if (layers.length > 0) {
           group.addLayer(layers);

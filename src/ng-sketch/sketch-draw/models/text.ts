@@ -1,15 +1,16 @@
-import { Base } from './base';
-import { IBounding, IBase } from '../interfaces/base.interface';
+import { Base } from '@sketch-draw/models/base';
 import {
+  IBounding,
+  IBase,
   IText,
   IAttributedString,
   IMSAttributedStringFontAttribute,
   IParagraphStyle,
   IEncodedAttributes,
-} from '../interfaces/text.interface';
-import { Style } from './style';
-import { IStyle } from '../interfaces/style.interface';
-import { fixWhiteSpace, fontMapping, fontStyle } from '../helpers/font';
+} from '@sketch-draw/interfaces';
+import { Style } from '@sketch-draw/models/style';
+import { IStyle } from '@sketch-draw/interfaces/style.interface';
+import { fixWhiteSpace, fontMapping, fontStyle } from '@sketch-draw/helpers/font';
 
 // TODO: multiline text attribute
 export class Text extends Base {
@@ -22,7 +23,7 @@ export class Text extends Base {
   constructor(bounding: IBounding, styles) {
     super();
     this.bounding = bounding;
-    this.class = 'text';
+    this.className = 'text';
     this._styles = styles;
     this._styleClass = new Style();
     // call setter
@@ -45,8 +46,9 @@ export class Text extends Base {
   }
 
   private attributes(): IEncodedAttributes {
-    const sp = this._styles.letterSpacing;
-    const spacing = (sp !== 'normal') ? parseFloat(sp) : undefined;
+    // NOT USED in the moment
+    // const sp = this._styles.letterSpacing;
+    // const spacing = (sp !== 'normal') ? parseFloat(sp) : undefined;
     return {
       MSAttributedStringFontAttribute: this.fontAttributes(),
       MSAttributedStringColorAttribute: this._styleClass.convertColor(this._styles.color),
@@ -56,7 +58,8 @@ export class Text extends Base {
   }
 
   private paragraphStyle(): IParagraphStyle {
-    const lh = this._styles.lineHeight;
+    // TODO: use linheight for multiline text
+    // const lh = this._styles.lineHeight;
     // Disable lineheight (only needed for multi line text – otherwise conflicts with padding)
     const lineHeight = parseInt(this._styles.fontSize, 10); // (lh !== 'normal') ? parseInt(lh, 10) : undefined;
     return {

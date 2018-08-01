@@ -1,10 +1,10 @@
 import * as path from 'path';
 import chalk from 'chalk';
 import * as puppeteer from 'puppeteer';
-import { Sketch } from './sketch-draw/sketch';
+import { Sketch } from '@sketch-draw/sketch';
 import { Drawer } from './drawer';
-import { ITraversedDom } from './traversed-dom.interface';
-import { AssetHandler } from './sketch-draw/asset-handler';
+import { ITraversedDom } from './traversed-dom';
+import { AssetHandler } from '@sketch-draw/asset-handler';
 import { exec } from 'child_process';
 
 export class ElementFetcher {
@@ -13,14 +13,14 @@ export class ElementFetcher {
   private static SELECTOR = 'app-root > * > *';
   private _assetHandler: AssetHandler = new AssetHandler();
   private _symbols: ITraversedDom[] = [];
-  private _injectedDomTraverser = path.resolve(__dirname, 'injectedTraverser.js');
+  private _injectedDomTraverser = path.resolve(__dirname, 'injected-traverser.js');
 
   set host(host: string) { ElementFetcher.HOST = host; }
   set selector(sel: string) { ElementFetcher.SELECTOR = sel; }
 
-  async generateSketchFile(pages: string[]) {
+  async generateSketchFile(pages: string[], outDir?: string): Promise<boolean> {
     const drawer = new Drawer();
-    const sketch = new Sketch();
+    const sketch = new Sketch(outDir);
     await this.collectElements(pages);
     if (this.assets()) {
       sketch.prepareFolders();
@@ -33,6 +33,7 @@ export class ElementFetcher {
     if (process.env.SKETCH === 'open-close') {
       exec('open dt-asset-lib.sketch');
     }
+    return Promise.resolve(true);
   }
 
   /**

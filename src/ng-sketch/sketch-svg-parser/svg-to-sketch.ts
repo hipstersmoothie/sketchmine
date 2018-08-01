@@ -1,11 +1,10 @@
-import { ISvgPointGroup, ISvg } from './interfaces/svg.interface';
-import { ShapeGroup } from './models/shape-group';
-import { IBounding } from '../sketch-draw/interfaces/base.interface';
-import { SvgPointsToSketch } from './svg-points-to-sketch';
-import { Style } from '../sketch-draw/models/style';
-import { IStyle } from '../sketch-draw/interfaces/style.interface';
+import { ISvgPointGroup, ISvg } from '@sketch-svg-parser/interfaces';
+import { ShapeGroup } from '@sketch-svg-parser/models/shape-group';
+import { IBounding, IStyle } from '@sketch-draw/interfaces';
+import { SvgPointsToSketch } from '@sketch-svg-parser/svg-points-to-sketch';
+import { Style } from '@sketch-draw/models/style';
 import chalk from 'chalk';
-import { addCssStyleToSvg } from './util/styles';
+import { addCssStyleToSvg } from '@sketch-svg-parser/util/styles';
 
 export class SvgToSketch {
 

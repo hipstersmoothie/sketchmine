@@ -1,10 +1,10 @@
-import { bytesToSize } from '../ng-sketch/sketch-draw/helpers/util';
-import { createDir } from '../utils/create-dir';
-import { fileBuffer } from './zip-to-buffer';
-import * as archiver from 'archiver';
+import { bytesToSize } from '@sketch-draw/helpers/util';
+import { createDir } from '@utils/create-dir';
+import { fileBuffer } from '@utils/zip-to-buffer';
 import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
+const archiver = require('archiver');
 
 /**
  * Generate a .sketch file from a local folder or an array of fileBuffers
@@ -20,14 +20,19 @@ export function generateSketchFile(
 ): Promise<void | Error> {
   return new Promise((resolve, reject) => {
     createDir(outDir);
-    const output = fs.createWriteStream(path.resolve(outDir, `${fileName}.sketch`));
+    const file = path.resolve(outDir, `${fileName}.sketch`);
+    const output = fs.createWriteStream(file);
     const archive = archiver('zip');
+
+    if (process.env.DEBUG) {
+      console.log(chalk`\tCreated Write Stream for {grey ${file}}`);
+    }
 
     output.on('close',  () => {
       console.log(
         chalk`\n✅ \t{greenBright Sketch file}: {magenta ${fileName}.sketch} – `,
         chalk`was successfully generated with: {cyan ${bytesToSize(archive.pointer())}}\n`,
-        chalk`\tIn the folder: {grey ${path.resolve(outDir)}/}`,
+        chalk`\tIn the folder: {grey ${path.resolve(outDir)}/}\n\n`,
       );
       resolve();
     });

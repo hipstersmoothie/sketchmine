@@ -1,4 +1,4 @@
-import { ITextStyle } from './text.interface';
+import { ITextStyle } from '@sketch-draw/interfaces';
 
 export interface IStyle {
   _class: string;

@@ -1,4 +1,4 @@
-import { IPoint, ISvgPoint } from '../interfaces/svg.interface';
+import { IPoint, ISvgPoint } from '@sketch-svg-parser/interfaces';
 
 export class Point {
 

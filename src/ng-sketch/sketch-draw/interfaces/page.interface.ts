@@ -1,4 +1,4 @@
-import { IBase } from './base.interface';
+import { IBase } from '@sketch-draw/interfaces';
 
 export interface IPage extends IBase{
   horizontalRulerData: IRulerData;
