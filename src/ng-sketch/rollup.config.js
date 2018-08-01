@@ -1,4 +1,4 @@
-
+import fs from 'fs';
 import path from 'path';
 import typescript from 'rollup-plugin-typescript';
 import commonjs from 'rollup-plugin-commonjs';
@@ -6,14 +6,25 @@ import { terser } from "rollup-plugin-terser";
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-const copyPlugin = function (options) {
+/**
+ * 
+ * @param {{[key: string]: string}} options Key Value list of files to copy
+ */
+function copyPlugin(options) {
   return {
     ongenerate() {
-      const targDir = path.dirname(options.targ);
-      if (!fs.existsSync(targDir)){
-          fs.mkdirSync(targDir);
-      }
-      fs.writeFileSync(options.targ, fs.readFileSync(options.src));
+      console.log(options);
+
+      Object.keys(options).forEach(option => {
+        const src = option;
+        const dest = options[option];
+
+        const targDir = path.dirname(dest);
+        if (!fs.existsSync(targDir)){
+            fs.mkdirSync(targDir);
+        }
+        fs.writeFileSync(dest, fs.readFileSync(src));
+      });
     }
   };
 };
@@ -26,6 +37,10 @@ export default {
     format: 'umd'
   }], 
   plugins: [  
+    copyPlugin({
+      'src/ng-sketch/injected-traverser.js' : 'dist/injected-traverser.js',
+      'src/assets/preview.png' : 'dist/assets/preview.png',
+    }),
     commonjs({ include: './node_modules/**' }),
     typescript({
       typescript: require('typescript')

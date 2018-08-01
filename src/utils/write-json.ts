@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import chalk from 'chalk';
-const log = console.log;
 
 /**
  * Safely writes Object or string as JSON file
@@ -18,7 +17,7 @@ export function writeJSON(filename: string, content: Object | string): Promise<a
         reject(Error(chalk(`{red Error writing Object to ${filename}.json}\n${error.message}`)));
       }
       if (process.env.DEBUG === 'true') {
-        log(chalk`\tSuccessfully written Object to {grey ${filename}.json}`);
+        console.log(chalk`\tSuccessfully written Object to {grey ${filename}.json}`);
       }
       resolve();
     });

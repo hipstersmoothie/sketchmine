@@ -5,7 +5,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
 const archiver = require('archiver');
-const log = console.log;
 
 /**
  * Generate a .sketch file from a local folder or an array of fileBuffers
@@ -26,11 +25,11 @@ export function generateSketchFile(
     const archive = archiver('zip');
 
     if (process.env.DEBUG) {
-      log(chalk`\tCreated Write Stream for {grey ${file}}`);
+      console.log(chalk`\tCreated Write Stream for {grey ${file}}`);
     }
 
     output.on('close',  () => {
-      log(
+      console.log(
         chalk`\n✅ \t{greenBright Sketch file}: {magenta ${fileName}.sketch} – `,
         chalk`was successfully generated with: {cyan ${bytesToSize(archive.pointer())}}\n`,
         chalk`\tIn the folder: {grey ${path.resolve(outDir)}/}\n\n`,
@@ -41,7 +40,7 @@ export function generateSketchFile(
     archive.on('warning', (err) => {
       if (err.code === 'ENOENT') {
         if (process.env.DEBUG) {
-          log('Sketch-File could not be written: ENOENT', err);
+          console.log('Sketch-File could not be written: ENOENT', err);
         }
       } else {
         reject(err);

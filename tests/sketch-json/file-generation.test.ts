@@ -46,7 +46,7 @@ describe('➡ Sketch File generation 💎', () => {
   });
 
   afterAll(() => {
-    // delDir(testTmp);
+    delDir(testTmp);
   });
 
 });
