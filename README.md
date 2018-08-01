@@ -3,6 +3,8 @@
 
 # Dynatrace .sketch plugins and tooling
 
+[![Build Status](https://webkins.lab.dynatrace.org/job/barista/job/sketch-generator/job/master/badge/icon)](https://webkins.lab.dynatrace.org/job/barista/job/sketch-generator/job/master/)
+
 This tooling set is for the dynatrace barista designsystem.
 
 ## Angular to Sketch App Generator
@@ -55,9 +57,13 @@ process.env.SKETCH = 'open-close';
 ```
 
 ### Testing the SVG generator
+
 Tests are done with **JEST**
 
+The files have to contain the pattern `**/*.test.ts` in the folder `src` and `tests`
+
 Just run `npm run test`
+for test-coverage analysis run `npm run test:coverage`
 
 ### Useful bash scripts
 

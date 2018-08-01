@@ -14,7 +14,7 @@
     "run:validate": "node dist/sketch-validator --file=tests/fixtures/name-validation-test.sketch",
     "run:color-replacer": "node dist/color-replacer --file=tests/fixtures/name-validation-test.sketch --colors=src/color-replacer/legacy-colors.json",
     "lint": "tslint -p tsconfig.json",
-    "test": "jest",
+    "test": "jest --detectOpenHandles --verbose --forceExit",
     "test:watch": "jest --watch",
     "test:coverage": "jest --collectCoverageFrom=src/**/*.ts --coverage src"
   },

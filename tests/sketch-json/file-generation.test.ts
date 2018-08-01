@@ -26,14 +26,14 @@ describe('➡ Sketch File generation 💎', () => {
   describe('File structure:', () => {
 
     it('Generating .sketch file.', () => {
-      expect(fs.existsSync(sketchFile)).toBeTruthy();
+      expect(fileExists(sketchFile)).toBeTruthy();
     });
 
     it('Filestructure contain all files', () => {
-      expect(fs.existsSync(path.resolve(testTmp, fileName, 'user.json'))).toBeTruthy();
-      expect(fs.existsSync(path.resolve(testTmp, fileName, 'meta.json'))).toBeTruthy();
-      expect(fs.existsSync(path.resolve(testTmp, fileName, 'document.json'))).toBeTruthy();
-      expect(fs.existsSync(path.resolve(testTmp, fileName, 'previews', 'preview.png'))).toBeTruthy();
+      expect(fileExists(path.resolve(testTmp, fileName, 'user.json'))).toBeTruthy();
+      expect(fileExists(path.resolve(testTmp, fileName, 'meta.json'))).toBeTruthy();
+      expect(fileExists(path.resolve(testTmp, fileName, 'document.json'))).toBeTruthy();
+      expect(fileExists(path.resolve(testTmp, fileName, 'previews', 'preview.png'))).toBeTruthy();
     });
   });
 
@@ -46,7 +46,12 @@ describe('➡ Sketch File generation 💎', () => {
   });
 
   afterAll(() => {
-    delDir(testTmp);
+    // delDir(testTmp);
   });
 
 });
+
+function fileExists(file: string): boolean {
+  const result = fs.statSync(file);
+  return result && result.size > 0;
+}
