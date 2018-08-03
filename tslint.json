@@ -1,5 +1,11 @@
 {
   "extends": "tslint-config-airbnb",
+  "linterOptions": {
+    "exclude": [
+        "src/angular-meta-parser/fixtures",
+        "tests/fixtures"
+    ]
+  },
   "rules": {
     "no-unused-expression": true,
     "object-shorthand-properties-first": false,

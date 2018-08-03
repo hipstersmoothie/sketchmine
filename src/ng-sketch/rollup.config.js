@@ -3,6 +3,7 @@ import path from 'path';
 import typescript from 'rollup-plugin-typescript';
 import commonjs from 'rollup-plugin-commonjs';
 import { terser } from "rollup-plugin-terser";
+import chokidar from 'chokidar';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -35,7 +36,11 @@ export default {
   output: [{
     file: `dist/sketch-generator.${isProduction ? 'min.js' : 'js'}`,
     format: 'umd'
-  }], 
+  }],  
+  watch: {
+    chokidar,
+    include: 'src/**'
+  },
   plugins: [  
     copyPlugin({
       'src/ng-sketch/injected-traverser.js' : 'dist/injected-traverser.js',

@@ -28,6 +28,9 @@ export function fileValidations() {
       const pages = path.resolve(TEST_TMP, FOLDER_NAME, 'pages');
       fs.readdir(pages, (err, files) => {
         pagesFiles = files;
+        if (err) {
+          throw Error(err.message);
+        }
         done();
       });
     });

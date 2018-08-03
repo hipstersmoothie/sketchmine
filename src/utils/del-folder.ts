@@ -7,7 +7,7 @@ import * as path from 'path';
  */
 export function delDir(dir: string) {
   if (fs.existsSync(dir)) {
-    fs.readdirSync(dir).forEach((file, index) => {
+    fs.readdirSync(dir).forEach((file) => {
       const curPath = path.join(dir, file);
       if (fs.lstatSync(curPath).isDirectory()) { // recurse
         delDir(curPath);

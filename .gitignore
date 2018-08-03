@@ -1,5 +1,6 @@
 node_modules
 dist
+dest
 lib
 dt-asset-lib
 dt-asset-lib.sketch
