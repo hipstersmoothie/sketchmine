@@ -1,0 +1,6 @@
+{
+  "library": {
+    "path": "fixtures/",
+    "pattern": "$foldername.ts"
+  }
+}

@@ -3,7 +3,7 @@ import * as ts from 'typescript';
 import * as path from 'path';
 
 import { delDir, readFile } from '@utils';
-import { Transformer } from './transformer';
+import { Visitor } from './visitor';
 
 const COMPONENTS = [
   path.join(__dirname, 'fixtures/button.ts'),
@@ -11,7 +11,6 @@ const COMPONENTS = [
 
 describe('➡ Angular AST Transformer', () => {
   const sourceFiles: ts.SourceFile[] = [];
-  const transformer = new Transformer();
 
   beforeAll((done) => {
     COMPONENTS.forEach(async (fileName: string) => {
@@ -32,7 +31,8 @@ describe('➡ Angular AST Transformer', () => {
     it('shoud generate ts.SourceFile[] form components', () => {
       expect(sourceFiles.length).toBe(COMPONENTS.length);
       sourceFiles.forEach((file) => {
-        transformer.visitNode(file);
+        const visitor = new Visitor(file.fileName);
+        visitor.visit(file);
         expect(file).not.toBeUndefined();
       });
     });
