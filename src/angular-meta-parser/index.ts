@@ -5,16 +5,16 @@ import { readFile } from '@utils';
 import * as ts from 'typescript';
 import { tsVisitorFactory } from './visitor';
 import chalk from 'chalk';
-import { ParseDependency, ParseNode } from './ast';
+import { ParseDependency, ParseResult } from './ast';
+const LOG = require('debug')('angular-meta-parser:index.ts');
 
 const PATHS = new Map<string, string>([
   ['@dynatrace/angular-components/', 'fixtures/lib'],
   ['@dynatrace/angular-components/*', 'fixtures/lib/*'],
 ]);
 
-const ast = new Map<string, ParseNode[]>();
-
 export function main(args: string[]): number {
+  const parseResults = new Map<string, ParseResult>();
   // tslint:disable-next-line:prefer-const
   let { rootDir, inFile, outFile } = parseArgs(args);
   const absoluteRootDir = path.resolve(rootDir);
@@ -23,16 +23,18 @@ export function main(args: string[]): number {
 
   const paths = adjustPaths(PATHS, absoluteRootDir);
 
-  const result = parseFile(inFile, paths);
-  console.log(ast);
+  parseFile(inFile, paths, parseResults);
+
+  // console.log(result.dependencyPaths);
   return 0;
 }
 
-function parseFile(fileName: string, paths: Map<string, string>): ParseNode[] {
-  let parseResult = ast.get(fileName);
+function parseFile(fileName: string, paths: Map<string, string>, result: Map<string, ParseResult>) {
+  const resolvedFileName = resolveFilename(fileName);
+  let parseResult = result.get(resolvedFileName);
   // If the file was not parsed we have to parse it
   if (!parseResult) {
-    const resolvedFileName = resolveFilename(fileName);
+    LOG(chalk`parse file: {grey ${resolvedFileName}}`);
     const source = fs.readFileSync(resolvedFileName, { encoding: 'utf8' }).toString();
     const sourceFile = ts.createSourceFile(
       resolvedFileName,
@@ -41,11 +43,14 @@ function parseFile(fileName: string, paths: Map<string, string>): ParseNode[] {
       true,
     );
 
-    const visitor = tsVisitorFactory(paths, parseFile);
+    const visitor = tsVisitorFactory(paths);
     parseResult = visitor(sourceFile);
-    ast.set(resolvedFileName, parseResult);
+    result.set(resolvedFileName, parseResult);
+
+    parseResult.dependencyPaths.forEach((depPath) => {
+      parseFile(depPath, paths, result);
+    });
   }
-  return parseResult;
 }
 
 function resolveFilename(fileName: string) {
