@@ -1,77 +1,116 @@
 import * as ts from 'typescript';
-import {
-  fileInformations,
-  parseParameter,
-  parseComponentDecoratorSelector,
-} from './utils';
-import { AngularComponent } from './storage/angular-component';
-import { TypeInformation } from './storage/type-information';
-import chalk from 'chalk';
-import { acmp } from './typings/angular-component';
-const debug = require('debug')('angular-meta-parser:visitor');
+import path from 'path';
+import minimatch from 'minimatch';
+import { readFile } from '@utils';
+import { ParseNode, ParseDependency, ParseLocation, ParseInterface, ParseFunction, ParseVariable } from './ast';
 
-export class Visitor {
+export function tsVisitorFactory(
+  paths: Map<string, string>,
+  parseFile: (fileName: string, paths: Map<string, string>) => ParseNode[],
+) {
+  // These variables contain state that changes as we descend into the tree.
+  let currentLocation: ParseLocation | undefined;
+  let nodes: ParseNode[] = [];
 
-  private _meta: AngularComponent;
-  private _typeInfo: TypeInformation = new TypeInformation();
-  private _sourceFile: ts.SourceFile;
+  return visitSourceFile;
 
-  get meta(): acmp.Component { return this._meta.generate(); }
+  function visitSourceFile(sourceFile: ts.SourceFile): ParseNode[] {
 
-  constructor(fileName: string) {
-    this._meta = new AngularComponent(fileInformations(fileName));
+    if (currentLocation) {
+      throw new Error(`Visitor for ${currentLocation.path} is already in use`);
+    }
+
+    currentLocation = new ParseLocation(sourceFile.fileName);
+    sourceFile.forEachChild(visitor);
+
+    const result = nodes;
+
+    nodes = [];
+    currentLocation = undefined;
+
+    return result;
   }
 
-  instrument(sourceCode: string) {
-    this._sourceFile = ts.createSourceFile(
-      this._meta.filename,
-      sourceCode,
-      ts.ScriptTarget.Latest,
-      true,
-    );
-
-    this.visit(this._sourceFile);
+  function visitor(node: ts.Node) {
+    switch (node.kind) {
+      case ts.SyntaxKind.ExportDeclaration:
+      case ts.SyntaxKind.ImportDeclaration:
+        visitExportOrExportDeclaration(node as ts.ImportDeclaration | ts.ExportDeclaration);
+        break;
+      case ts.SyntaxKind.InterfaceDeclaration:
+        visitInterfaceDeclaration(node as ts.InterfaceDeclaration);
+        break;
+    }
   }
 
-  visit(node: ts.Node) {
-    if (!node) {
+  function visitInterfaceDeclaration(node: ts.InterfaceDeclaration) {
+    if (!hasExportModifier(node)) {
       return;
     }
-    // debug(chalk`{grey visiting Node: }{yellow ${ts.SyntaxKind[node.kind]}}`);
+    const props: ParseVariable[] = [];
+    const methods: ParseFunction[] = [];
 
-    switch (node.kind) {
-      case ts.SyntaxKind.Decorator:
-        this.parseDecorator(node as ts.Decorator);
-        break;
-      case ts.SyntaxKind.TypeAliasDeclaration:
-        this._typeInfo.addType(node as ts.TypeAliasDeclaration);
-        break;
-      case ts.SyntaxKind.SetAccessor:
-        this.parseSetAccessor(node as ts.SetAccessorDeclaration);
-        break;
+    if (node.members) {
+      node.members.forEach((member: ts.PropertySignature | ts.MethodSignature) => {
+        if (member.kind === ts.SyntaxKind.PropertySignature && ts.isIdentifier(member.name)) {
+          if (member.type.kind === ts.SyntaxKind.TypeReference) {
+            // TODO parse type
+            props.push(new ParseVariable(member.name.text, currentLocation, ''));
+          } else if (member.type.kind === ts.SyntaxKind.FunctionType) {
+            methods.push(visitMethod(member.type as ts.FunctionTypeNode));
+          }
+        } else if (member.kind === ts.SyntaxKind.MethodSignature && ts.isIdentifier(member.name)) {
+          methods.push(visitMethod(member));
+        }
+      });
     }
-    node.forEachChild(this.visit.bind(this));
+    nodes.push(new ParseInterface(node.name.text, currentLocation, props, methods));
   }
 
-  private parseDecorator(node: ts.Decorator) {
-    const identifier = (node.expression as any).expression;
-    const name = identifier.getText() as string;
-
-    switch (name) {
-      case 'Component':
-        this._meta.name = name;
-        this._meta.addMeta(parseComponentDecoratorSelector(node));
-        break;
+  function visitMethod(node: ts.SignatureDeclarationBase): ParseFunction {
+    let args: ParseVariable[] = [];
+    if (node.parameters) {
+      args = node.parameters.map((param: ts.ParameterDeclaration) =>
+        // TODO: type
+        new ParseVariable((param.name as ts.Identifier).text, currentLocation, ''));
     }
+    // TODO: type
+    return new ParseFunction((node.name as ts.Identifier).text, currentLocation, args, '');
   }
 
-  private parseSetAccessor(node: ts.SetAccessorDeclaration) {
-    const variant = {
-      type: 'SetAccessor',
-      name: node.name.getText(),
-      params: parseParameter(node.parameters as ts.NodeArray<ts.ParameterDeclaration>),
-    };
-
-    this._meta.addVariant(variant);
+  function visitExportOrExportDeclaration(node: ts.ExportDeclaration | ts.ImportDeclaration) {
+    let relativePath: string;
+    if (ts.isStringLiteral(node.moduleSpecifier)) {
+      relativePath = node.moduleSpecifier.text;
+    }
+    if (relativePath) {
+      const absolutePath = parseAbsoluteModulePath(path.dirname(currentLocation.path), relativePath, paths);
+      if (absolutePath !== null) {
+        parseFile(absolutePath, paths);
+      }
+    }
   }
 }
+
+function parseAbsoluteModulePath(dirName: string, relativePath: string, paths: Map<string, string>): string | null {
+  if (paths) {
+    for (const glob of paths.keys()) {
+      if (minimatch(relativePath, glob)) {
+        return relativePath.replace(
+          glob.replace('*', ''),
+          paths.get(glob).replace('*', ''),
+        );
+      }
+    }
+  }
+  if (relativePath.startsWith('.')) {
+    return path.join(dirName, relativePath);
+  }
+  return null;
+}
+
+function hasExportModifier(node: ts.Node): boolean {
+  return node.modifiers && !!node.modifiers.find(
+    modifier => modifier.kind === ts.SyntaxKind.ExportKeyword);
+}
+

@@ -7,3 +7,4 @@ dt-asset-lib.sketch
 _tmp
 .rpt2_cache
 coverage
+src/angular-meta-parser/fixtures

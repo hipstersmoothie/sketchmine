@@ -13,9 +13,9 @@ export const config = {
     path: path.join(SRC_DIR, 'angular-meta-parser'),
     entry: 'index.ts',
     copy: {
-      "src/angular-meta-parser/fixtures/button.ts": "dist/fixtures/button.ts",
-      "src/angular-meta-parser/fixtures/tsconfig.json": "dist/fixtures/tsconfig.json",
-      "src/angular-meta-parser/fixtures/package.json": "dist/fixtures/package.json",
+      // "src/angular-meta-parser/fixtures/button.ts": "dist/fixtures/button.ts",
+      // "src/angular-meta-parser/fixtures/tsconfig.json": "dist/fixtures/tsconfig.json",
+      // "src/angular-meta-parser/fixtures/package.json": "dist/fixtures/package.json",
     }
   },
   colorReplacer: {

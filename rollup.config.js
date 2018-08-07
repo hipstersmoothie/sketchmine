@@ -21,7 +21,7 @@ export default [
     }],  
     external: [
       ...dependencies,
-      'path', 'fs', 'os', 'buffer', 'crypto', 'util',
+      'path', 'fs', 'os', 'buffer', 'crypto', 'util', 'child_process', 'perf_hooks',
     ],
     watch: {
       chokidar: true,
