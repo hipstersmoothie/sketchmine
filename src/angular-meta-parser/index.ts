@@ -5,7 +5,7 @@ import { readFile } from '@utils';
 import * as ts from 'typescript';
 import { tsVisitorFactory } from './visitor';
 import chalk from 'chalk';
-import { ParseDependency, ParseResult } from './ast';
+import { ParseDependency, ParseResult, JSONVisitor } from './ast';
 const LOG = require('debug')('angular-meta-parser:index.ts');
 
 const PATHS = new Map<string, string>([
@@ -25,7 +25,13 @@ export function main(args: string[]): number {
 
   parseFile(inFile, paths, parseResults);
 
-  // console.log(result.dependencyPaths);
+  const jsonVisitor = new JSONVisitor();
+  const jsonResult = [];
+  for (const result of parseResults.values()) {
+    jsonResult.push(...result.visit(jsonVisitor));
+  }
+  // console.dir(jsonResult);
+  console.log(JSON.stringify(jsonResult, null, 2));
   return 0;
 }
 
@@ -99,7 +105,7 @@ if (require.main === module) {
     process.exit(code);
 
   } catch (err) {
-    console.error(chalk.redBright(`\n🚨 ${err}\n`));
+    console.error(err);
     process.exit(1);
   }
 }

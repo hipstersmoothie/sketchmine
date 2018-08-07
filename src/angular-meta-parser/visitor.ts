@@ -7,7 +7,6 @@ import {
   ParseLocation,
   ParseInterface,
   ParseProperty,
-  ParseEmpty,
   ParseResult,
   ParseType,
   ParsePrimitiveType,
@@ -43,6 +42,10 @@ export function tsVisitorFactory(paths: Map<string, string>) {
     return result;
   }
 
+  /**
+   * 
+   * @param {ts.Node} node 
+   */
   function visitor(node: ts.Node) {
     switch (node.kind) {
       case ts.SyntaxKind.ExportDeclaration:
