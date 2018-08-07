@@ -95,7 +95,7 @@ rm -rf ${filename}.zip
 ## Validator
 
 This tool is found in `src/validate`
-run `node dist/sketch-validate --file=path/to/file.sketch`
+run `npm run run:validate -- --file=path/to/file.sketch`
 
 ### Configuration
 
@@ -124,7 +124,7 @@ process.env.VERBOSE = 'true';
 
 ## Color Replacer to change a set of unused legacy colors
 
-run `node dist/color-replacer --file=path/to/file.sketch --colors=path/to/colors.json`
+run `run:color-replacer -- --file=path/to/file.sketch --colors=path/to/colors.json`
 The script creates a `./_tmp`dir in the current workdir with the canged file.
 
 All colors have to be provided as **HEX** colors
