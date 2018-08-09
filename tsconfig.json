@@ -28,7 +28,7 @@
   ],
   "exclude": [
     "node_modules/",
-    "src/angular-meta-parser/fixtures/",
+    "_tmp",
     "tests/fixtures"
   ],
 }

@@ -10,11 +10,12 @@ import { config, copyPlugin } from './config/build';
 const pkg = require('./package.json');
 const dependencies = Object.keys(pkg.dependencies);
 const isProduction = process.env.NODE_ENV === 'production';
+
 export default [
   {
-    input: 'src/angular-meta-parser/index.ts',
+    input: path.join(config.angularMetaParser.path, config.angularMetaParser.entry),
     output: [{
-      file: `dist/angular-meta-parser.${isProduction ? 'min.js' : 'js'}`,
+      file: config.angularMetaParser.outFile('angular-meta-parser', isProduction),
       name: config.angularMetaParser.name,
       banner: config.general.banner(config.angularMetaParser.name, pkg.version, ''),
       format: 'cjs'
@@ -28,11 +29,8 @@ export default [
       include: `src/**`,
     },
     plugins: [
-      // Allow json resolution
       json(),
-      typescript({
-        tsconfig: "tsconfig.json",
-      }),
+      typescript({ tsconfig: "tsconfig.json" }),
       commonjs(),
       nodeResolve(),
       sourceMaps(),

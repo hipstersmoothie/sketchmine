@@ -12,7 +12,7 @@
     "build:watch": "NODE_ENV=watch ./node_modules/.bin/tsc --watch -p .",
     "serve": "npm run serve:angularMetaParser",
     "serve:angularMetaParser": "npm-run-all --parallel build:dev watch:angularMetaParser",
-    "watch:angularMetaParser": "nodemon dist/angular-meta-parser --watch dist --rootDir=src/angular-meta-parser/fixtures/lib --inFile=index.ts --outFile=dist/fixtures/metadata.json",
+    "watch:angularMetaParser": "nodemon dist/angular-meta-parser --watch dist --rootDir=src/angular-meta-parser/_tmp/src/lib",
     "run:generator": "node dist/sketch-generator",
     "run:validate": "node dist/sketch-validator --file=tests/fixtures/name-validation-test.sketch",
     "run:color-replacer": "node dist/color-replacer --file=tests/fixtures/name-validation-test.sketch --colors=src/color-replacer/legacy-colors.json",

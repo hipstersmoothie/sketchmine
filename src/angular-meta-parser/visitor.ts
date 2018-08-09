@@ -1,6 +1,5 @@
 import * as ts from 'typescript';
 import path from 'path';
-import minimatch from 'minimatch';
 import {
   ParseNode,
   ParseDependency,
@@ -12,9 +11,21 @@ import {
   ParsePrimitiveType,
   ParseReferenceType,
   ParseFunctionType,
+  ParseUnionType,
+  ParseSimpleType,
+  ParseValueType,
+  AstVisitor,
+  ParseArrayType,
 } from './ast';
 import chalk from 'chalk';
-const LOG = require('debug')('angular-meta-parser:visitor.ts');
+import { ParseTypeAliasDeclaration } from './ast/parse-type-alias-declaration';
+import { Logger, parseAbsoluteModulePath, hasExportModifier } from './utils';
+import { tsquery }from '@phenomnomnominal/tsquery';
+const log = new Logger();
+
+class ParseEmpty {
+  visit(visitor: AstVisitor): any { return null; }
+}
 
 export function tsVisitorFactory(paths: Map<string, string>) {
   // These variables contain state that changes as we descend into the tree.
@@ -32,7 +43,6 @@ export function tsVisitorFactory(paths: Map<string, string>) {
 
     currentLocation = new ParseLocation(sourceFile.fileName);
     sourceFile.forEachChild(visitor);
-
     const result = new ParseResult(currentLocation, nodes, dependencyPaths);
 
     nodes = [];
@@ -43,8 +53,8 @@ export function tsVisitorFactory(paths: Map<string, string>) {
   }
 
   /**
-   * 
-   * @param {ts.Node} node 
+   * Visit the typescript nodes in the root
+   * @param {ts.Node} node Node to be visited
    */
   function visitor(node: ts.Node) {
     switch (node.kind) {
@@ -60,10 +70,11 @@ export function tsVisitorFactory(paths: Map<string, string>) {
     }
   }
 
-  function visitTypeAliasDeclaration(node: ts.TypeAliasDeclaration) {
+  function visitTypeAliasDeclaration(node: ts.TypeAliasDeclaration): void {
     if (!hasExportModifier(node)) {
       return;
     }
+    nodes.push(new ParseTypeAliasDeclaration(node.name.text, currentLocation, visitType(node.type)));
   }
 
   function visitInterfaceDeclaration(node: ts.InterfaceDeclaration) {
@@ -96,9 +107,16 @@ export function tsVisitorFactory(paths: Map<string, string>) {
     );
   }
 
-  function visitType(node: ts.TypeNode): ParseType | null {
+  /**
+   * Visit property and value types
+   * @param {ts.TypeNode} node A Node that holds the Type information
+   * @returns {ParseType | null}
+   */
+  function visitType(node: ts.TypeNode): ParseType | any {
     if (node) {
       switch (node.kind) {
+        case ts.SyntaxKind.AnyKeyword:
+          return new ParseValueType(currentLocation, 'any');
         case ts.SyntaxKind.NumberKeyword:
           return new ParsePrimitiveType(currentLocation, 'number');
         case ts.SyntaxKind.StringKeyword:
@@ -115,11 +133,41 @@ export function tsVisitorFactory(paths: Map<string, string>) {
           return new ParseReferenceType(
             currentLocation,
             ((node as ts.TypeReferenceNode).typeName as ts.Identifier).text);
+        case ts.SyntaxKind.ArrayType:
+          return new ParseArrayType(currentLocation, node.getText());
+        case ts.SyntaxKind.UnionType:
+          return visitUnionType(node as ts.UnionTypeNode);
+        case ts.SyntaxKind.LiteralType:
+          return visitLiteralType(node as ts.LiteralTypeNode);
         case ts.SyntaxKind.FunctionType:
           return visitFunctionType(node as ts.FunctionTypeNode);
       }
+      log.warning(
+        chalk`Node Type {bgBlue {magenta  <ts.${ts.SyntaxKind[node.kind]}> }}` +
+        chalk` not handled yet! {grey – visitType(node: ts.TypeNode)}\n` +
+        chalk`{grey ${currentLocation.path}}`,
+      );
+      return new ParseEmpty();
     }
     return null;
+  }
+
+  /**
+   * Visits a Literal Type node
+   *  - StringLiteral
+   * @param {ts.LiteralTypeNode} node Node to visit
+   * @returns {ParseValueType} store the value (string)
+   */
+  function visitLiteralType(node: ts.LiteralTypeNode): ParseValueType {
+    switch (node.literal.kind) {
+      case ts.SyntaxKind.StringLiteral:
+        return new ParseValueType(currentLocation, node.literal.text);
+    }
+  }
+
+  function visitUnionType(node: ts.UnionTypeNode): ParseUnionType {
+    const values = node.types.map(type => visitType(type));
+    return new ParseUnionType(currentLocation, values as ParseSimpleType[]);
   }
 
   function visitFunctionType(node: ts.FunctionTypeNode): ParseFunctionType {
@@ -144,26 +192,4 @@ export function tsVisitorFactory(paths: Map<string, string>) {
       }
     }
   }
-}
-
-function parseAbsoluteModulePath(dirName: string, relativePath: string, paths: Map<string, string>): string | null {
-  if (paths) {
-    for (const glob of paths.keys()) {
-      if (minimatch(relativePath, glob)) {
-        return relativePath.replace(
-          glob.replace('*', ''),
-          paths.get(glob).replace('*', ''),
-        );
-      }
-    }
-  }
-  if (relativePath.startsWith('.')) {
-    return path.join(dirName, relativePath);
-  }
-  return null;
-}
-
-function hasExportModifier(node: ts.Node): boolean {
-  return node.modifiers && !!node.modifiers.find(
-    modifier => modifier.kind === ts.SyntaxKind.ExportKeyword);
 }

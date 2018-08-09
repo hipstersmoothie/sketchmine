@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 
 const SRC_DIR = path.resolve(__dirname, 'src');
+const DIST_DIR = path.resolve(__dirname, 'dist');
 
 export const config = {
   general: {
@@ -9,13 +10,12 @@ export const config = {
     banner: banner,
   },
   angularMetaParser: {
-    name: 'AngularMetaParser',
+    name: 'angular-meta-parser',
     path: path.join(SRC_DIR, 'angular-meta-parser'),
+    outFile: outFile,
     entry: 'index.ts',
     copy: {
-      // "src/angular-meta-parser/fixtures/button.ts": "dist/fixtures/button.ts",
-      // "src/angular-meta-parser/fixtures/tsconfig.json": "dist/fixtures/tsconfig.json",
-      // "src/angular-meta-parser/fixtures/package.json": "dist/fixtures/package.json",
+      "src/angular-meta-parser/config.json": "dist/config.json",
     }
   },
   colorReplacer: {
@@ -29,8 +29,12 @@ export const config = {
   },
 }
 
+function outFile(name, isProduction) {
+  return path.join(DIST_DIR, `${name}.${isProduction ? 'min.js' : 'js'}`);
+}
 
-export function banner(name, version, description) {
+
+function banner(name, version, description) {
   return `/**
   * ${name} - ${version}
   * Description: ${description}

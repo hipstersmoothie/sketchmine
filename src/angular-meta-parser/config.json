@@ -1,6 +1,8 @@
 {
-  "library": {
-    "path": "fixtures/",
-    "pattern": "$foldername.ts"
+  "args": {
+    "rootDir": "src/angular-meta-parser/_tmp/src/lib/",
+    "inFile": "index.ts",
+    "outFile": "meta-information.json",
+    "config": "src/angular-meta-parser/_tmp/tsconfig.json"
   }
 }
