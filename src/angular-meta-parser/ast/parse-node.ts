@@ -1,5 +1,5 @@
 import { ParseLocation } from './parse-location';
-import { AstVisitor } from './json-visitor';
+import { AstVisitor } from './ast-visitor';
 
 export class ParseNode {
   constructor(public location: ParseLocation) { }

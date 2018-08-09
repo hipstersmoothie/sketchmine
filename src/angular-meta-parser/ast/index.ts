@@ -12,6 +12,8 @@ export * from './parse-union-type';
 export * from './parse-property';
 export * from './parse-interface';
 export * from './parse-type-alias-declaration';
+export * from './parse-component';
 export * from './parse-result';
 
+export * from './ast-visitor';
 export * from './json-visitor';

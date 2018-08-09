@@ -1,6 +1,6 @@
 import { ParseNode } from './parse-node';
 import { ParseLocation } from './parse-location';
-import { AstVisitor } from './json-visitor';
+import { AstVisitor } from './ast-visitor';
 import { ParseSimpleType } from './parse-type';
 
 export class ParseUnionType extends ParseNode {

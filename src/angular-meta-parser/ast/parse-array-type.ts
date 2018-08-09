@@ -1,5 +1,5 @@
 import { ParseLocation } from './parse-location';
-import { AstVisitor } from './json-visitor';
+import { AstVisitor } from './ast-visitor';
 import { ParseReferenceType } from './parse-reference-type';
 
 export class ParseArrayType extends ParseReferenceType {

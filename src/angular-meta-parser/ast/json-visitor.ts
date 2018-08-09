@@ -13,24 +13,9 @@ import {
   ParseResult,
   ParseTypeAliasDeclaration,
   ParseArrayType,
+  ParseComponent,
+  AstVisitor,
 } from './index';
-
-export interface AstVisitor {
-  visitNode(node: ParseNode): any;
-  visitDependency(node: ParseDependency): any;
-  visitDefinition(node: ParseDefinition): any;
-  visitValueType(node: ParseValueType): any;
-  visitPrimitiveType(node: ParsePrimitiveType): any;
-  visitReferenceType(node: ParseReferenceType): any;
-  visitArrayType(node: ParseArrayType): any;
-  visitFunctionType(node: ParseFunctionType): any;
-  visitSimpleType(node: ParseSimpleType): any;
-  visitUnionType(node: ParseUnionType): any;
-  visitProperty(node: ParseProperty): any;
-  visitInterface(node: ParseInterface): any;
-  visitTypeAliasDeclaration(node: ParseTypeAliasDeclaration): any;
-  visitResult(node: ParseResult): any;
-}
 
 export class JSONVisitor implements AstVisitor {
   visitNode(node: ParseNode): any { return null; }
@@ -41,7 +26,7 @@ export class JSONVisitor implements AstVisitor {
     return node.type;
   }
   visitReferenceType(node: ParseReferenceType): string { return node.name; }
-  visitArrayType(node: ParseArrayType): string { return `${node.name}[]`; }
+  visitArrayType(node: ParseArrayType): string { return node.name; }
   visitFunctionType(node: ParseFunctionType): any {
     return {
       args: this.visitAll(node.args),
@@ -66,8 +51,16 @@ export class JSONVisitor implements AstVisitor {
   }
   visitInterface(node: ParseInterface): any {
     return {
-      location: node.location.path,
       name: node.name,
+      members: this.visitAll(node.members),
+    };
+  }
+  visitComponent(node: ParseComponent): any {
+    return {
+      location: node.location,
+      name: node.name,
+      selector: node.selector,
+      heritage: node.heritageClauses,
       members: this.visitAll(node.members),
     };
   }

@@ -1,5 +1,6 @@
 import * as ts from 'typescript';
 import path from 'path';
+import chalk from 'chalk';
 import {
   ParseNode,
   ParseDependency,
@@ -8,6 +9,7 @@ import {
   ParseProperty,
   ParseResult,
   ParseType,
+  ParseTypeAliasDeclaration,
   ParsePrimitiveType,
   ParseReferenceType,
   ParseFunctionType,
@@ -16,11 +18,18 @@ import {
   ParseValueType,
   AstVisitor,
   ParseArrayType,
+  ParseComponent,
 } from './ast';
-import chalk from 'chalk';
-import { ParseTypeAliasDeclaration } from './ast/parse-type-alias-declaration';
-import { Logger, parseAbsoluteModulePath, hasExportModifier } from './utils';
-import { tsquery }from '@phenomnomnominal/tsquery';
+import {
+  Logger,
+  parseAbsoluteModulePath,
+  hasExportModifier,
+  getComponentDecorator,
+  getInitializer,
+  getSymbolName,
+  getClassHeritageClause,
+} from './utils';
+
 const log = new Logger();
 
 class ParseEmpty {
@@ -31,7 +40,7 @@ export function tsVisitorFactory(paths: Map<string, string>) {
   // These variables contain state that changes as we descend into the tree.
   let currentLocation: ParseLocation | undefined;
   let nodes: ParseNode[] = [];
-  let dependencyPaths = new Set<string>();
+  let dependencyPaths: ParseDependency[] = [];
 
   return visitSourceFile;
 
@@ -46,7 +55,7 @@ export function tsVisitorFactory(paths: Map<string, string>) {
     const result = new ParseResult(currentLocation, nodes, dependencyPaths);
 
     nodes = [];
-    dependencyPaths = new Set<string>();
+    dependencyPaths = [];
     currentLocation = undefined;
 
     return result;
@@ -67,14 +76,49 @@ export function tsVisitorFactory(paths: Map<string, string>) {
         break;
       case ts.SyntaxKind.TypeAliasDeclaration:
         visitTypeAliasDeclaration(node as ts.TypeAliasDeclaration);
+      case ts.SyntaxKind.ClassDeclaration:
+        visitClassDeclaration(node as ts.ClassDeclaration);
+        break;
     }
+  }
+
+  function visitClassDeclaration(node: ts.ClassDeclaration): void {
+    const decorator = getComponentDecorator(node);
+    if (!hasExportModifier(node) || !decorator) {
+      return;
+    }
+
+    const name = getSymbolName(node);
+    const members = [];
+    let selector: string[];
+    // consume information from @Component decorator
+    decorator.properties.forEach((prop) => {
+      if (!ts.isPropertyAssignment(prop)) {
+        return;
+      }
+      const name = getSymbolName(prop);
+
+      switch (name) {
+        case 'selector':
+          const ini = getInitializer(prop) as string;
+          selector = ini.split(',').map(s => s.trim());
+          break;
+        case 'inputs':
+          const inputs = getInitializer(prop) as string[];
+          members.push(...inputs.map(input => new ParseProperty(input, currentLocation, undefined)));
+          break;
+      }
+    });
+
+    const heritageClauses = getClassHeritageClause(node);
+    nodes.push(new ParseComponent(currentLocation, name, members, selector, heritageClauses));
   }
 
   function visitTypeAliasDeclaration(node: ts.TypeAliasDeclaration): void {
     if (!hasExportModifier(node)) {
       return;
     }
-    nodes.push(new ParseTypeAliasDeclaration(node.name.text, currentLocation, visitType(node.type)));
+    nodes.push(new ParseTypeAliasDeclaration(getSymbolName(node), currentLocation, visitType(node.type)));
   }
 
   function visitInterfaceDeclaration(node: ts.InterfaceDeclaration) {
@@ -87,7 +131,7 @@ export function tsVisitorFactory(paths: Map<string, string>) {
       node.members.forEach((member: ts.PropertySignature | ts.MethodSignature) => {
         if (member.kind === ts.SyntaxKind.PropertySignature && ts.isIdentifier(member.name)) {
           if (member.type.kind === ts.SyntaxKind.TypeReference) {
-            members.push(new ParseProperty(member.name.text, currentLocation, visitType(member.type)));
+            members.push(new ParseProperty(getSymbolName(member), currentLocation, visitType(member.type)));
           } else if (member.type.kind === ts.SyntaxKind.FunctionType) {
             members.push(visitMethod(member.type as ts.FunctionTypeNode));
           }
@@ -96,12 +140,12 @@ export function tsVisitorFactory(paths: Map<string, string>) {
         }
       });
     }
-    nodes.push(new ParseInterface(node.name.text, currentLocation, members));
+    nodes.push(new ParseInterface(getSymbolName(node), currentLocation, members));
   }
 
   function visitMethod(node: ts.SignatureDeclarationBase): ParseProperty {
     return new ParseProperty(
-      (node.name as ts.Identifier).text,
+      getSymbolName(node),
       currentLocation,
       visitFunctionType(node.type as ts.FunctionTypeNode),
     );
@@ -130,9 +174,7 @@ export function tsVisitorFactory(paths: Map<string, string>) {
         case ts.SyntaxKind.UndefinedKeyword:
           return new ParsePrimitiveType(currentLocation, 'undefined');
         case ts.SyntaxKind.TypeReference:
-          return new ParseReferenceType(
-            currentLocation,
-            ((node as ts.TypeReferenceNode).typeName as ts.Identifier).text);
+          return new ParseReferenceType(currentLocation, getSymbolName(node));
         case ts.SyntaxKind.ArrayType:
           return new ParseArrayType(currentLocation, node.getText());
         case ts.SyntaxKind.UnionType:
@@ -143,8 +185,8 @@ export function tsVisitorFactory(paths: Map<string, string>) {
           return visitFunctionType(node as ts.FunctionTypeNode);
       }
       log.warning(
-        chalk`Node Type {bgBlue {magenta  <ts.${ts.SyntaxKind[node.kind]}> }}` +
-        chalk` not handled yet! {grey – visitType(node: ts.TypeNode)}\n` +
+        chalk`Node Type {bgBlue {magenta  <ts.${ts.SyntaxKind[node.kind]}> }} ` +
+        chalk`not handled yet! {grey – visitType(node: ts.TypeNode)}\n   ` +
         chalk`{grey ${currentLocation.path}}`,
       );
       return new ParseEmpty();
@@ -161,7 +203,7 @@ export function tsVisitorFactory(paths: Map<string, string>) {
   function visitLiteralType(node: ts.LiteralTypeNode): ParseValueType {
     switch (node.literal.kind) {
       case ts.SyntaxKind.StringLiteral:
-        return new ParseValueType(currentLocation, node.literal.text);
+        return new ParseValueType(currentLocation, getSymbolName(node));
     }
   }
 
@@ -175,20 +217,30 @@ export function tsVisitorFactory(paths: Map<string, string>) {
 
     if (node.parameters) {
       args = node.parameters.map((param: ts.ParameterDeclaration) =>
-        new ParseProperty((param.name as ts.Identifier).text, currentLocation, visitType(param.type)));
+        new ParseProperty(getSymbolName(param), currentLocation, visitType(param.type)));
     }
     return new ParseFunctionType(currentLocation, args, visitType(node.type));
   }
 
-  function visitExportOrExportDeclaration(node: ts.ExportDeclaration | ts.ImportDeclaration) {
-    let relativePath: string;
-    if (ts.isStringLiteral(node.moduleSpecifier)) {
-      relativePath = node.moduleSpecifier.text;
-    }
+  function visitExportOrExportDeclaration(node: ts.ExportDeclaration | ts.ImportDeclaration): void {
+    const relativePath = getSymbolName(node.moduleSpecifier);
     if (relativePath) {
       const absolutePath = parseAbsoluteModulePath(path.dirname(currentLocation.path), relativePath, paths);
+      // if absolutePath is null then it is a node_module so we can skip it!
       if (absolutePath !== null) {
-        dependencyPaths.add(absolutePath);
+        const values = new Set<string>();
+        if (
+          node.kind === ts.SyntaxKind.ImportDeclaration &&
+          node.importClause &&
+          node.importClause.namedBindings &&
+          (node.importClause.namedBindings as ts.NamedImports).elements &&
+          (node.importClause.namedBindings as ts.NamedImports).elements.length
+        ) {
+          const elements = (node.importClause.namedBindings as ts.NamedImports).elements;
+          elements.forEach(el => values.add(getSymbolName(el.name)));
+        }
+
+        dependencyPaths.push(new ParseDependency(currentLocation, absolutePath, values));
       }
     }
   }
