@@ -2,39 +2,35 @@ import * as ts from 'typescript';
 import path from 'path';
 import chalk from 'chalk';
 import {
-  ParseNode,
-  ParseDependency,
-  ParseLocation,
-  ParseInterface,
-  ParseProperty,
-  ParseResult,
-  ParseType,
-  ParseTypeAliasDeclaration,
-  ParsePrimitiveType,
-  ParseReferenceType,
-  ParseFunctionType,
-  ParseUnionType,
-  ParseSimpleType,
-  ParseValueType,
-  AstVisitor,
   ParseArrayType,
   ParseComponent,
+  ParseDependency,
+  ParseEmpty,
+  ParseFunctionType,
+  ParseInterface,
+  ParseLocation,
+  ParseNode,
+  ParsePrimitiveType,
+  ParseProperty,
+  ParseReferenceType,
+  ParseResult,
+  ParseSimpleType,
+  ParseType,
+  ParseTypeAliasDeclaration,
+  ParseUnionType,
+  ParseValueType,
 } from './ast';
 import {
-  Logger,
-  parseAbsoluteModulePath,
-  hasExportModifier,
+  getClassHeritageClause,
   getComponentDecorator,
   getInitializer,
   getSymbolName,
-  getClassHeritageClause,
+  hasExportModifier,
+  Logger,
+  parseAbsoluteModulePath,
 } from './utils';
 
 const log = new Logger();
-
-class ParseEmpty {
-  visit(visitor: AstVisitor): any { return null; }
-}
 
 export function tsVisitorFactory(paths: Map<string, string>) {
   // These variables contain state that changes as we descend into the tree.
@@ -109,9 +105,29 @@ export function tsVisitorFactory(paths: Map<string, string>) {
           break;
       }
     });
-
     const heritageClauses = getClassHeritageClause(node);
+    members.push(...visitClassMembers(node));
     nodes.push(new ParseComponent(currentLocation, name, members, selector, heritageClauses));
+  }
+
+  function visitClassMembers(node: ts.ClassDeclaration): ParseProperty[] {
+    const properties: ParseProperty[] = [];
+
+    if (node.members && node.members.length) {
+      node.members.forEach((member) => {
+        if (member.kind === ts.SyntaxKind.SetAccessor) {
+          properties.push(visitSetAccessor(member as ts.SetAccessorDeclaration));
+        }
+      });
+    }
+
+    return properties;
+  }
+
+  function visitSetAccessor(node: ts.SetAccessorDeclaration): ParseProperty {
+    const name = getSymbolName(node);
+    const type =  visitType(node.parameters[0].type);
+    return new ParseProperty(name, currentLocation, type);
   }
 
   function visitTypeAliasDeclaration(node: ts.TypeAliasDeclaration): void {
@@ -154,11 +170,13 @@ export function tsVisitorFactory(paths: Map<string, string>) {
   /**
    * Visit property and value types
    * @param {ts.TypeNode} node A Node that holds the Type information
-   * @returns {ParseType | null}
+   * @returns {ParseType | ParseEmpty}
    */
-  function visitType(node: ts.TypeNode): ParseType | any {
+  function visitType(node: ts.TypeNode): ParseType | ParseEmpty {
     if (node) {
       switch (node.kind) {
+        case ts.SyntaxKind.VoidKeyword:
+          return new ParseValueType(currentLocation, 'void');
         case ts.SyntaxKind.AnyKeyword:
           return new ParseValueType(currentLocation, 'any');
         case ts.SyntaxKind.NumberKeyword:
@@ -174,7 +192,11 @@ export function tsVisitorFactory(paths: Map<string, string>) {
         case ts.SyntaxKind.UndefinedKeyword:
           return new ParsePrimitiveType(currentLocation, 'undefined');
         case ts.SyntaxKind.TypeReference:
-          return new ParseReferenceType(currentLocation, getSymbolName(node));
+          const name = getSymbolName(node);
+          if (name === 'Partial') {
+            return (node as any).typeArguments.map(arg => visitType(arg))[0];
+          }
+          return new ParseReferenceType(currentLocation, name);
         case ts.SyntaxKind.ArrayType:
           return new ParseArrayType(currentLocation, node.getText());
         case ts.SyntaxKind.UnionType:
@@ -189,9 +211,8 @@ export function tsVisitorFactory(paths: Map<string, string>) {
         chalk`not handled yet! {grey – visitType(node: ts.TypeNode)}\n   ` +
         chalk`{grey ${currentLocation.path}}`,
       );
-      return new ParseEmpty();
     }
-    return null;
+    return new ParseEmpty();
   }
 
   /**
@@ -214,7 +235,6 @@ export function tsVisitorFactory(paths: Map<string, string>) {
 
   function visitFunctionType(node: ts.FunctionTypeNode): ParseFunctionType {
     let args: ParseProperty[] = [];
-
     if (node.parameters) {
       args = node.parameters.map((param: ts.ParameterDeclaration) =>
         new ParseProperty(getSymbolName(param), currentLocation, visitType(param.type)));

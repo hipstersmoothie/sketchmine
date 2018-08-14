@@ -5,35 +5,38 @@ import * as ts from 'typescript';
 import { tsVisitorFactory } from './visitor';
 import chalk from 'chalk';
 import {
-  ParseResult,
   JSONVisitor,
-  ParseNode,
-  ParseDefinition,
   ParseComponent,
+  ParseDefinition,
   ParseInterface,
+  ParseNode,
+  ParseResult,
+  ParseProperty,
 } from './ast';
 import {
-  resolveModuleFilename,
-  parseCommandlineArgs,
+  Logger,
   adjustPathAliases,
+  parseCommandlineArgs,
+  resolveModuleFilename,
 } from './utils';
+
+const log = new Logger();
 
 export class ImplementsResolver {
 
-  private _interfaces: Set<ParseInterface> = new Set();
+  private _interfaces: Set<ParseInterface | ParseComponent> = new Set();
 
   transform(ast: Map<string, ParseResult>): Map<string, ParseResult> {
     for (const result of ast.values()) {
       if (result.nodes) {
         result.nodes.forEach((node) => {
-          if (node instanceof ParseInterface) {
+          if (node instanceof ParseInterface || node instanceof ParseComponent) {
             this._interfaces.add(node);
           }
         });
       }
     }
 
-    const transformed = new Map<string, ParseResult>();
     for (const result of ast.values()) {
       this.visitAll(result.nodes);
     }
@@ -41,15 +44,25 @@ export class ImplementsResolver {
   }
 
   visit(node: ParseDefinition) {
-    if (node instanceof ParseComponent) {
-      node.heritageClauses.implements.forEach((i: string) => {
-        const match = [...this._interfaces]
-          .filter((iface: ParseInterface) => iface.name === i);
-        if (match.length) {
-          node.members.push(...match[0].members);
-        }
-      });
+    if (node instanceof ParseComponent && node.heritageClauses) {
+      node.members.push(...this.extendMembers(node));
     }
+  }
+
+  extendMembers(node: ParseComponent): ParseProperty[] {
+    const members: ParseProperty[] = [];
+    node.heritageClauses.implements.forEach((impl: string) => {
+      log.debug(
+        chalk`Resolve implements: {bgBlue  ${impl} } @Component: {grey ${node.name}}`,
+        'implements-resolver',
+      );
+      const match = [...this._interfaces]
+        .filter((iface: ParseInterface | ParseComponent) => iface.name === impl);
+      if (match.length) {
+        members.push(...match[0].members);
+      }
+    });
+    return members;
   }
 
   visitAll(nodes: ParseNode[])  {
@@ -77,7 +90,7 @@ export function main(args: string[]): number {
     jsonResult.push(...result.visit(jsonVisitor));
   }
   // console.dir(jsonResult);
-  console.log(JSON.stringify(jsonResult, null, 2));
+  // console.log(JSON.stringify(jsonResult, null, 2));
   return 0;
 }
 
