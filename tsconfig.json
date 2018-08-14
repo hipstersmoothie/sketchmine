@@ -29,6 +29,7 @@
   "exclude": [
     "node_modules/",
     "_tmp",
+    "src/angular-meta-parser/_tmp",
     "tests/fixtures"
   ],
 }

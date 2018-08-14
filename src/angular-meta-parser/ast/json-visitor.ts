@@ -104,7 +104,6 @@ export class JSONVisitor implements AstVisitor {
       'json-visitor',
     );
 
-
     return {
       location: node.location,
       name: node.name,

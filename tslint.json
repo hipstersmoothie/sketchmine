@@ -2,7 +2,7 @@
   "extends": "tslint-config-airbnb",
   "linterOptions": {
     "exclude": [
-        "src/angular-meta-parser/fixtures",
+        "src/angular-meta-parser/_tmp",
         "tests/fixtures"
     ]
   },
