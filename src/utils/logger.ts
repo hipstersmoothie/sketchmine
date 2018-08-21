@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
-import { createDir } from '@utils';
+import { createDir } from './create-dir';
 
 export type LogTypes = 'ERROR' | 'WARNING' | 'NOTICE' | 'INFO' | 'DEBUG';
 

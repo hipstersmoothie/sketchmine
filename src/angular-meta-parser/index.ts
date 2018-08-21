@@ -6,29 +6,27 @@ import { tsVisitorFactory } from './visitor';
 import { JSONVisitor, ParseResult, AstVisitor } from './ast';
 import { adjustPathAliases, parseCommandlineArgs, resolveModuleFilename } from './utils';
 import { ReferenceResolver } from './reference-resolver';
-const util = require('util')
+import { writeJSON } from '@utils';
 
-function renderASTtoJSON(ast: Map<string, ParseResult>) {
+function renderASTtoJSON(ast: Map<string, ParseResult>): any {
   const jsonVisitor = new JSONVisitor();
   const jsonResult = [];
   for (const result of ast.values()) {
     jsonResult.push(...result.visit(jsonVisitor));
   }
-  // console.dir(jsonResult);
-  console.log(JSON.stringify(jsonResult, null, 2));
+  return {
+    version: '0.0.1',
+    components: jsonResult,
+  };
 }
 
-
-
-// alternative shortcut
-
-export function main(args: string[]): number {
+export async function main(args: string[]): Promise<number> {
   let parseResults = new Map<string, ParseResult>();
   // tslint:disable-next-line:prefer-const
   let { rootDir, inFile, outFile, config } = parseCommandlineArgs(args);
   const absoluteRootDir = path.resolve(rootDir);
   inFile = path.join(absoluteRootDir, inFile);
-  outFile = path.join(absoluteRootDir, outFile);
+  // outFile = path.join(absoluteRootDir, outFile);
 
   parseFile(inFile, adjustPathAliases(config, absoluteRootDir), parseResults);
 
@@ -44,11 +42,12 @@ export function main(args: string[]): number {
     parseResults = transformedResults;
   }
 
-  // console.log(util.inspect(parseResults, false, null))
-  renderASTtoJSON(parseResults);
+  const json = renderASTtoJSON(parseResults);
+
+  await writeJSON(outFile, json, true);
 
   // return exit code
-  return 0;
+  return Promise.resolve(0);
 }
 
 function parseFile(fileName: string, paths: Map<string, string>, result: Map<string, ParseResult>) {
@@ -80,12 +79,10 @@ function parseFile(fileName: string, paths: Map<string, string>, result: Map<str
 
 if (require.main === module) {
   const args = process.argv.slice(2);
-  try {
-    const code = main(args);
+  main(args).then((code: number) => {
     process.exit(code);
-
-  } catch (err) {
+  }).then((err) => {
     console.error(err);
     process.exit(1);
-  }
+  });
 }

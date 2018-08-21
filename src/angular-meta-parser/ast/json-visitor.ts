@@ -18,6 +18,38 @@ import {
 } from './index';
 import { arrayFlatten } from '@utils';
 
+/**
+ * Merge members from implement or extend with the original members of a component
+ * @param originalMembers Array of Object with {key: any, value: any}
+ * @param toBeMerged
+ * @returns
+ */
+export function mergeClassMembers(originalMembers: any[], toBeMerged: any[]): any[] {
+  if (!toBeMerged.length) {
+    return originalMembers;
+  }
+  const result = originalMembers;
+  toBeMerged.forEach((member) => {
+    const index = result.findIndex(m => m.key === member.key);
+    // property exists in original Members
+    if (index > -1) {
+      // value is null and can be replaced with new results
+      if (result[index].value === null) {
+        result[index].value = member.value;
+      } else { // value exists so make an array and merege them
+        result[index].value = [result[index].value, ...member.value];
+      }
+    } else { // if the property does not exist in the original object just add it.
+      result.push(member);
+    }
+  });
+  return result;
+}
+
+/**
+ * Generates the final JSON that is written to a file from the
+ * generated AST.
+ */
 export class JSONVisitor implements AstVisitor {
   // We don't care about dependencies, interfaces and type declarations
   // in case we resolved them earlier with our transformer
@@ -42,22 +74,20 @@ export class JSONVisitor implements AstVisitor {
     const returnType = node.returnType ? node.returnType.visit(this) : null;
     return {
       type: 'method',
-      name: 'handleClick',
+      name: '',
       arguments: args,
       returnType,
     };
   }
   visitUnionType(node: ParseUnionType): any[] {
-    return  arrayFlatten(this.visitAll(node.types));
+    return arrayFlatten(this.visitAll(node.types));
   }
   visitProperty(node: ParseProperty): any {
     const value = node.type ? node.type.visit(this) : null;
-
     if (value && value.type === 'method') {
       value.name = node.name;
       return value;
     }
-
     return {
       key: node.name,
       value,
@@ -74,23 +104,15 @@ export class JSONVisitor implements AstVisitor {
     };
   }
   visitComponent(node: ParseComponent): any {
-    const componentMembers: any[] = this.visitAll(node.members);
+    const extending = this.visitAll(node.extending)
+      .map(ext => ext.variants);
     const implementing = this.visitAll(node.implementing)
       .filter(impl => impl.members.length)
       .map(impl => impl.members);
 
-    arrayFlatten(implementing).forEach((impl) => {
-      for (let i = 0, max = componentMembers.length; i < max; i += 1) {
-        if (componentMembers[i].key !== impl.key) {
-          continue;
-        }
-        if (componentMembers[i].value === null) {
-          componentMembers[i].value = impl.value;
-        } else {
-          componentMembers[i].value = [componentMembers[i].value, ...impl.value];
-        }
-      }
-    });
+    let componentMembers = mergeClassMembers(this.visitAll(node.members), arrayFlatten(implementing));
+    // merge the extends from the heritageClause
+    componentMembers = mergeClassMembers(componentMembers, arrayFlatten(extending));
 
     return {
       className: node.name,

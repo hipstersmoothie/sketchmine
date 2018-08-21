@@ -25,9 +25,9 @@ import {
   getInitializer,
   getSymbolName,
   hasExportModifier,
-  Logger,
   parseAbsoluteModulePath,
 } from './utils';
+import { Logger } from '@utils';
 
 const log = new Logger();
 
@@ -163,15 +163,9 @@ export function tsVisitorFactory(paths: Map<string, string>) {
     }
     const members: ParseProperty[] = [];
 
-    // if (getSymbolName(node.name) === 'CanDisable') {
-    //   const member = node.members[0];
-    //   console.log(ts.isIdentifier(].name))
-    // }
-
     if (node.members) {
       node.members.forEach((member: ts.PropertySignature | ts.MethodSignature) => {
         if (member.kind === ts.SyntaxKind.PropertySignature && ts.isIdentifier(member.name)) {
-
           switch (member.type.kind) {
             case ts.SyntaxKind.TypeReference:
             case ts.SyntaxKind.BooleanKeyword:
@@ -182,11 +176,8 @@ export function tsVisitorFactory(paths: Map<string, string>) {
               break;
             case ts.SyntaxKind.FunctionType:
               members.push(visitMethod(member.type as ts.FunctionTypeNode));
-
+              break;
           }
-          // if (member.type.kind === ts.SyntaxKind.TypeReference) {
-          // } else if (member.type.kind === ts.SyntaxKind.FunctionType) {
-          // }
         } else if (member.kind === ts.SyntaxKind.MethodSignature && ts.isIdentifier(member.name)) {
           members.push(visitMethod(member));
         }

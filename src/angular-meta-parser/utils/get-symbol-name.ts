@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import chalk from 'chalk';
-import { Logger } from './logger';
+import { Logger } from '@utils';
 
 const log = new Logger();
 
