@@ -163,14 +163,30 @@ export function tsVisitorFactory(paths: Map<string, string>) {
     }
     const members: ParseProperty[] = [];
 
+    // if (getSymbolName(node.name) === 'CanDisable') {
+    //   const member = node.members[0];
+    //   console.log(ts.isIdentifier(].name))
+    // }
+
     if (node.members) {
       node.members.forEach((member: ts.PropertySignature | ts.MethodSignature) => {
         if (member.kind === ts.SyntaxKind.PropertySignature && ts.isIdentifier(member.name)) {
-          if (member.type.kind === ts.SyntaxKind.TypeReference) {
-            members.push(new ParseProperty(getSymbolName(member), currentLocation, visitType(member.type)));
-          } else if (member.type.kind === ts.SyntaxKind.FunctionType) {
-            members.push(visitMethod(member.type as ts.FunctionTypeNode));
+
+          switch (member.type.kind) {
+            case ts.SyntaxKind.TypeReference:
+            case ts.SyntaxKind.BooleanKeyword:
+            case ts.SyntaxKind.NumberKeyword:
+            case ts.SyntaxKind.StringKeyword:
+            case ts.SyntaxKind.ArrayType:
+              members.push(new ParseProperty(getSymbolName(member), currentLocation, visitType(member.type)));
+              break;
+            case ts.SyntaxKind.FunctionType:
+              members.push(visitMethod(member.type as ts.FunctionTypeNode));
+
           }
+          // if (member.type.kind === ts.SyntaxKind.TypeReference) {
+          // } else if (member.type.kind === ts.SyntaxKind.FunctionType) {
+          // }
         } else if (member.kind === ts.SyntaxKind.MethodSignature && ts.isIdentifier(member.name)) {
           members.push(visitMethod(member));
         }

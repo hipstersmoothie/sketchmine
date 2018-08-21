@@ -6,6 +6,7 @@ import { tsVisitorFactory } from './visitor';
 import { JSONVisitor, ParseResult, AstVisitor } from './ast';
 import { adjustPathAliases, parseCommandlineArgs, resolveModuleFilename } from './utils';
 import { ReferenceResolver } from './reference-resolver';
+const util = require('util')
 
 function renderASTtoJSON(ast: Map<string, ParseResult>) {
   const jsonVisitor = new JSONVisitor();
@@ -16,6 +17,10 @@ function renderASTtoJSON(ast: Map<string, ParseResult>) {
   // console.dir(jsonResult);
   console.log(JSON.stringify(jsonResult, null, 2));
 }
+
+
+
+// alternative shortcut
 
 export function main(args: string[]): number {
   let parseResults = new Map<string, ParseResult>();
@@ -39,6 +44,7 @@ export function main(args: string[]): number {
     parseResults = transformedResults;
   }
 
+  // console.log(util.inspect(parseResults, false, null))
   renderASTtoJSON(parseResults);
 
   // return exit code
