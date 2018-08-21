@@ -2,7 +2,7 @@ import { ParseLocation } from './parse-location';
 import { AstVisitor } from './ast-visitor';
 import { ParseInterface } from './parse-interface';
 import { ParseProperty } from './parse-property';
-import { HeritageClauses } from '../utils';
+import { ParseReferenceType } from './parse-reference-type';
 
 export class ParseComponent extends ParseInterface {
   constructor(
@@ -10,7 +10,8 @@ export class ParseComponent extends ParseInterface {
     name: string,
     members: ParseProperty[],
     public selector: string[],
-    public heritageClauses: HeritageClauses,
+    public extending: ParseReferenceType[],
+    public implementing: ParseReferenceType[],
   ) {
     super(name, location, members);
   }

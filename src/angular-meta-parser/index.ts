@@ -3,73 +3,18 @@ import path from 'path';
 import fs from 'fs';
 import * as ts from 'typescript';
 import { tsVisitorFactory } from './visitor';
-import chalk from 'chalk';
-import {
-  JSONVisitor,
-  ParseComponent,
-  ParseDefinition,
-  ParseInterface,
-  ParseNode,
-  ParseResult,
-  ParseProperty,
-} from './ast';
-import {
-  Logger,
-  adjustPathAliases,
-  parseCommandlineArgs,
-  resolveModuleFilename,
-} from './utils';
+import { JSONVisitor, ParseResult, AstVisitor } from './ast';
+import { adjustPathAliases, parseCommandlineArgs, resolveModuleFilename } from './utils';
+import { ReferenceResolver } from './reference-resolver';
 
-const log = new Logger();
-
-export class ImplementsResolver {
-
-  private _interfaces: Set<ParseInterface | ParseComponent> = new Set();
-
-  transform(ast: Map<string, ParseResult>): Map<string, ParseResult> {
-    for (const result of ast.values()) {
-      if (result.nodes) {
-        result.nodes.forEach((node) => {
-          if (node instanceof ParseInterface || node instanceof ParseComponent) {
-            this._interfaces.add(node);
-          }
-        });
-      }
-    }
-
-    for (const result of ast.values()) {
-      this.visitAll(result.nodes);
-    }
-    return ast;
+function renderASTtoJSON(ast: Map<string, ParseResult>) {
+  const jsonVisitor = new JSONVisitor();
+  const jsonResult = [];
+  for (const result of ast.values()) {
+    jsonResult.push(...result.visit(jsonVisitor));
   }
-
-  visit(node: ParseDefinition) {
-    if (node instanceof ParseComponent && node.heritageClauses) {
-      node.members.push(...this.extendMembers(node));
-    }
-  }
-
-  extendMembers(node: ParseComponent): ParseProperty[] {
-    const members: ParseProperty[] = [];
-    node.heritageClauses.implements.forEach((impl: string) => {
-      log.debug(
-        chalk`Resolve implements: {bgBlue  ${impl} } @Component: {grey ${node.name}}`,
-        'implements-resolver',
-      );
-      const match = [...this._interfaces]
-        .filter((iface: ParseInterface | ParseComponent) => iface.name === impl);
-      if (match.length) {
-        members.push(...match[0].members);
-      }
-    });
-    return members;
-  }
-
-  visitAll(nodes: ParseNode[])  {
-    if (nodes && nodes.length) {
-      nodes.forEach(node => this.visit(node as ParseDefinition));
-    }
-  }
+  // console.dir(jsonResult);
+  console.log(JSON.stringify(jsonResult, null, 2));
 }
 
 export function main(args: string[]): number {
@@ -82,15 +27,21 @@ export function main(args: string[]): number {
 
   parseFile(inFile, adjustPathAliases(config, absoluteRootDir), parseResults);
 
-  parseResults = new ImplementsResolver().transform(parseResults);
-
-  const jsonVisitor = new JSONVisitor();
-  const jsonResult = [];
-  for (const result of parseResults.values()) {
-    jsonResult.push(...result.visit(jsonVisitor));
+  const results = Array.from(parseResults.values());
+  const transformers: AstVisitor[] = [
+    new ReferenceResolver(results),
+  ];
+  for (const transfomer of transformers) {
+    const transformedResults = new Map<string, ParseResult>();
+    parseResults.forEach((result, fileName) => {
+      transformedResults.set(fileName, result.visit(transfomer));
+    });
+    parseResults = transformedResults;
   }
-  // console.dir(jsonResult);
-  // console.log(JSON.stringify(jsonResult, null, 2));
+
+  renderASTtoJSON(parseResults);
+
+  // return exit code
   return 0;
 }
 

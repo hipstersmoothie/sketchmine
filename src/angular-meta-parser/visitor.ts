@@ -21,7 +21,6 @@ import {
   ParseValueType,
 } from './ast';
 import {
-  getClassHeritageClause,
   getComponentDecorator,
   getInitializer,
   getSymbolName,
@@ -105,9 +104,30 @@ export function tsVisitorFactory(paths: Map<string, string>) {
           break;
       }
     });
-    const heritageClauses = getClassHeritageClause(node);
     members.push(...visitClassMembers(node));
-    nodes.push(new ParseComponent(currentLocation, name, members, selector, heritageClauses));
+
+    const implementsHeritageClauses: ParseReferenceType[] = [];
+    const extendsHeritageClauses: ParseReferenceType[] = [];
+
+    if (node.heritageClauses && node.heritageClauses.length) {
+      node.heritageClauses.forEach((clause: ts.HeritageClause) => {
+        const expressions = clause.types.map((expr: ts.ExpressionWithTypeArguments) =>
+          new ParseReferenceType(currentLocation, getSymbolName(expr.expression)));
+
+        switch (clause.token) {
+          case ts.SyntaxKind.ImplementsKeyword:
+            implementsHeritageClauses.push(...expressions);
+            break;
+          case ts.SyntaxKind.ExtendsKeyword:
+            extendsHeritageClauses.push(...expressions);
+            break;
+        }
+      });
+    }
+
+    nodes.push(
+      new ParseComponent(currentLocation, name, members, selector, extendsHeritageClauses, implementsHeritageClauses),
+    );
   }
 
   function visitClassMembers(node: ts.ClassDeclaration): ParseProperty[] {
@@ -126,7 +146,7 @@ export function tsVisitorFactory(paths: Map<string, string>) {
 
   function visitSetAccessor(node: ts.SetAccessorDeclaration): ParseProperty {
     const name = getSymbolName(node);
-    const type =  visitType(node.parameters[0].type);
+    const type = visitType(node.parameters[0].type);
     return new ParseProperty(name, currentLocation, type);
   }
 

@@ -1,5 +1,4 @@
 export * from './adjust-path-aliases';
-export * from './get-class-heritage-clause';
 export * from './get-component-decorator';
 export * from './get-decorator-of-type';
 export * from './get-initializer';

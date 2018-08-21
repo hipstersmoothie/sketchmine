@@ -1,3 +1,4 @@
+export * from './array-flatten';
 export * from '@utils/copy-file';
 export * from '@utils/create-dir';
 export * from '@utils/del-folder';

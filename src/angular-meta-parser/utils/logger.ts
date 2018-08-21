@@ -77,7 +77,8 @@ ${envs.join('\n')}
   }
 
   public checkDebug(debugSpace: string): boolean {
-    return this._debugEnvs.includes(debugSpace);
+
+    return this._debugEnvs && this._debugEnvs.includes(debugSpace);
   }
 
   private message(message: string, level: number): void {
