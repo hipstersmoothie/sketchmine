@@ -16,7 +16,7 @@ import {
   ParseComponent,
   AstVisitor,
 } from './index';
-import { arrayFlatten } from '@utils';
+import { arrayFlatten, camelCaseToKebabCase } from '@utils';
 
 /**
  * Merge members from implement or extend with the original members of a component
@@ -37,12 +37,61 @@ export function mergeClassMembers(originalMembers: any[], toBeMerged: any[]): an
       if (result[index].value === null) {
         result[index].value = member.value;
       } else { // value exists so make an array and merege them
-        result[index].value = [result[index].value, ...member.value];
+        const value = Array.isArray(member.value) ? 
+          [result[index].value, ...member.value] :  [result[index].value, member.value];
+        // make set to delete duplicates
+        result[index].value = Array.from(new Set(value));
       }
     } else { // if the property does not exist in the original object just add it.
       result.push(member);
     }
   });
+  return result;
+}
+
+export interface Varient {
+  name: string;
+  changes: (VarientMethod | VarientProperty)[];
+}
+
+export interface VarientMethod {
+  type: 'method';
+  key: string;
+  arguments: any[];
+  returnType: any;
+}
+
+export interface VarientProperty {
+  type: 'property';
+  key: string;
+  value: string[] | string;
+}
+
+export function generateVariants(variants: any, className: string): Varient[] {
+  const result: Varient[] = [];
+  const baseName = camelCaseToKebabCase(className);
+
+  variants.forEach((varient) => {
+    if (!Array.isArray(varient.value)) {
+      const val = `${varient.value}`;
+      result.push({
+        name: `${baseName}-${varient.key}-${val.replace(/\"/g, '')}`,
+        changes: [varient],
+      });
+    } else {
+      varient.value.forEach((val: string) => {
+        result.push({
+          name: `${baseName}-${varient.key}-${val.replace(/\"/g, '')}`,
+          changes: [{
+            type: varient.type,
+            key: varient.key,
+            value: val,
+          }],
+        });
+      });
+    }
+  });
+
   return result;
 }
 
@@ -89,6 +138,7 @@ export class JSONVisitor implements AstVisitor {
       return value;
     }
     return {
+      type: 'property',
       key: node.name,
       value,
     };
@@ -121,8 +171,12 @@ export class JSONVisitor implements AstVisitor {
     };
   }
   visitResult(node: ParseResult): any {
-    const nodes = this.visitAll(node.nodes);
-    return nodes.filter(node => node.className);
+    const nodes = this.visitAll(node.nodes)
+      .filter(node => node.className);
+
+    // modify varients and split every value as own variety
+    // nodes.forEach(node => node.variants = generateVariants(node.variants, node.className));
+    return nodes;
   }
 
   visitAll(nodes: ParseNode[]): any[] {

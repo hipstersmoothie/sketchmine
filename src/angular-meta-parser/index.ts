@@ -26,7 +26,6 @@ export async function main(args: string[]): Promise<number> {
   let { rootDir, inFile, outFile, config } = parseCommandlineArgs(args);
   const absoluteRootDir = path.resolve(rootDir);
   inFile = path.join(absoluteRootDir, inFile);
-  // outFile = path.join(absoluteRootDir, outFile);
 
   parseFile(inFile, adjustPathAliases(config, absoluteRootDir), parseResults);
 
@@ -42,9 +41,7 @@ export async function main(args: string[]): Promise<number> {
     parseResults = transformedResults;
   }
 
-  const json = renderASTtoJSON(parseResults);
-
-  await writeJSON(outFile, json, true);
+  await writeJSON(outFile, renderASTtoJSON(parseResults), true);
 
   // return exit code
   return Promise.resolve(0);
