@@ -6,7 +6,8 @@ export interface ConfigArguments {
   rootDir: string;
   inFile: string;
   outFile: string;
-  config: string;
+  config: string; /** Path to tsconfig.json */
+  pkg: string; /** Path to package.json */
 }
 
 /**

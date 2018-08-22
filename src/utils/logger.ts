@@ -54,6 +54,12 @@ ${envs.join('\n')}
     }
   }
 
+  logTime(): string {
+    const d = new Date();
+    return `${d.getFullYear()}-${d.getMonth() +1}-${d.getDate()} ` +
+    `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
+  }
+
   writeLogStream(file: string): void {
     if (this._logStream) {
       return;
@@ -111,7 +117,7 @@ ${envs.join('\n')}
 
   private logEntry(message: string, level: number): LogEntry {
     return {
-      date: new Date().toDateString(),
+      date: this.logTime(),
       level,
       levelString: this.getLevelString(level),
       message,

@@ -8,14 +8,15 @@ import { adjustPathAliases, parseCommandlineArgs, resolveModuleFilename } from '
 import { ReferenceResolver } from './reference-resolver';
 import { writeJSON } from '@utils';
 
-function renderASTtoJSON(ast: Map<string, ParseResult>): any {
+function renderASTtoJSON(ast: Map<string, ParseResult>, pkg: string): any {
   const jsonVisitor = new JSONVisitor();
   const jsonResult = [];
+  const pkgJSON = require(pkg);
   for (const result of ast.values()) {
     jsonResult.push(...result.visit(jsonVisitor));
   }
   return {
-    version: '0.0.1',
+    version: pkgJSON.version,
     components: jsonResult,
   };
 }
@@ -23,9 +24,10 @@ function renderASTtoJSON(ast: Map<string, ParseResult>): any {
 export async function main(args: string[]): Promise<number> {
   let parseResults = new Map<string, ParseResult>();
   // tslint:disable-next-line:prefer-const
-  let { rootDir, inFile, outFile, config } = parseCommandlineArgs(args);
+  let { rootDir, inFile, outFile, config, pkg } = parseCommandlineArgs(args);
   const absoluteRootDir = path.resolve(rootDir);
   inFile = path.join(absoluteRootDir, inFile);
+  pkg = path.resolve(pkg);
 
   parseFile(inFile, adjustPathAliases(config, absoluteRootDir), parseResults);
 
@@ -41,7 +43,7 @@ export async function main(args: string[]): Promise<number> {
     parseResults = transformedResults;
   }
 
-  await writeJSON(outFile, renderASTtoJSON(parseResults), true);
+  await writeJSON(outFile, renderASTtoJSON(parseResults, pkg), true);
 
   // return exit code
   return Promise.resolve(0);
@@ -55,7 +57,6 @@ function parseFile(fileName: string, paths: Map<string, string>, result: Map<str
   let parseResult = result.get(resolvedFileName);
   // If the file was not parsed we have to parse it
   if (!parseResult) {
-    // LOG(chalk`parse file: {grey ${resolvedFileName}}`);
     const source = fs.readFileSync(resolvedFileName, { encoding: 'utf8' }).toString();
     const sourceFile = ts.createSourceFile(
       resolvedFileName,

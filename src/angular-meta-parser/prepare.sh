@@ -9,4 +9,5 @@ git clone --no-checkout --depth=1 -b $BRANCH $REPO $TMP
 cd $TMP
 git fetch origin $BRANCH
 git checkout origin/$BRANCH -- tsconfig.json
+git checkout origin/$BRANCH -- package.json
 git checkout origin/$BRANCH -- src/lib

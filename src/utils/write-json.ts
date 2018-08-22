@@ -28,9 +28,7 @@ export function writeJSON(filename: string, content: Object | string, pretty = f
         log.error(msg);
         reject(Error(msg));
       }
-      if (process.env.DEBUG === 'true') {
-        log.debug(chalk`\tSuccessfully written Object to {grey ${f}}`);
-      }
+      log.debug(chalk`✅ {green Successfully written Object to} {grey ${f}}`);
       resolve();
     });
   });

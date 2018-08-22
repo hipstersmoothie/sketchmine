@@ -3,6 +3,7 @@
     "rootDir": "src/angular-meta-parser/_tmp/src/lib/",
     "inFile": "index.ts",
     "outFile": "src/angular-meta-parser/_tmp/meta-information.json",
-    "config": "src/angular-meta-parser/_tmp/tsconfig.json"
+    "config": "src/angular-meta-parser/_tmp/tsconfig.json",
+    "pkg": "src/angular-meta-parser/_tmp/package.json"
   }
 }

@@ -17,6 +17,7 @@ import {
   AstVisitor,
 } from './index';
 import { arrayFlatten, camelCaseToKebabCase } from '@utils';
+import { MetaInformation } from '../meta-information';
 
 /**
  * Merge members from implement or extend with the original members of a component
@@ -31,57 +32,39 @@ export function mergeClassMembers(originalMembers: any[], toBeMerged: any[]): an
   const result = originalMembers;
   toBeMerged.forEach((member) => {
     const index = result.findIndex(m => m.key === member.key);
-    // property exists in original Members
+    /** property exists in original Members */
     if (index > -1) {
-      // value is null and can be replaced with new results
+      /** value is null and can be replaced with new results */
       if (result[index].value === null) {
         result[index].value = member.value;
-      } else { // value exists so make an array and merege them
+      } else { /** value exists so make an array and merege them */
         const value = Array.isArray(member.value) ? 
           [result[index].value, ...member.value] :  [result[index].value, member.value];
-        // make set to delete duplicates
+        /** make set to delete duplicates */
         result[index].value = Array.from(new Set(value));
       }
-    } else { // if the property does not exist in the original object just add it.
+    } else { /** if the property does not exist in the original object just add it. */
       result.push(member);
     }
   });
   return result;
 }
 
-export interface Varient {
-  name: string;
-  changes: (VarientMethod | VarientProperty)[];
-}
-
-export interface VarientMethod {
-  type: 'method';
-  key: string;
-  arguments: any[];
-  returnType: any;
-}
-
-export interface VarientProperty {
-  type: 'property';
-  key: string;
-  value: string[] | string;
-}
-
-export function generateVariants(variants: any, className: string): Varient[] {
-  const result: Varient[] = [];
+export function generateVariants(variants: any, className: string): MetaInformation.Varient[] {
+  const result: MetaInformation.Varient[] = [];
   const baseName = camelCaseToKebabCase(className);
 
   variants.forEach((varient) => {
     if (!Array.isArray(varient.value)) {
       const val = `${varient.value}`;
       result.push({
-        name: `${baseName}-${varient.key}-${val.replace(/\"/g, '')}`,
+        name: `${baseName}-${varient.key}-${val.toString().replace(/\"/g, '')}`,
         changes: [varient],
       });
     } else {
       varient.value.forEach((val: string) => {
         result.push({
-          name: `${baseName}-${varient.key}-${val.replace(/\"/g, '')}`,
+          name: `${baseName}-${varient.key}-${val.toString().replace(/\"/g, '')}`,
           changes: [{
             type: varient.type,
             key: varient.key,
@@ -100,8 +83,10 @@ export function generateVariants(variants: any, className: string): Varient[] {
  * generated AST.
  */
 export class JSONVisitor implements AstVisitor {
-  // We don't care about dependencies, interfaces and type declarations
-  // in case we resolved them earlier with our transformer
+  /**
+   * We don't care about dependencies, interfaces and type declarations
+   * in case we resolved them earlier with our transformer
+   */
   visitNode(node: ParseNode): null { return null; }
   visitDependency(node: ParseDependency): null { return null; }
   visitDefinition(node: ParseDefinition): null { return null; }
@@ -132,7 +117,25 @@ export class JSONVisitor implements AstVisitor {
     return arrayFlatten(this.visitAll(node.types));
   }
   visitProperty(node: ParseProperty): any {
-    const value = node.type ? node.type.visit(this) : null;
+    let value = null;
+
+    /** check if @design-prop-value was set */
+    if (node.values.length) {
+      value = node.values;
+    /** else parse type */
+    } else if (node.type) {
+      value = node.type.visit(this);
+    }
+
+    /**
+     * Ignore properties that could not be resolved or start with a low dash
+     * so they are private and not important for the generation
+     */
+    if (value === null || node.name.startsWith('_')) {
+      return;
+    }
+
+    /** if the value is a function just return the parsed function */
     if (value && value.type === 'method') {
       value.name = node.name;
       return value;
@@ -161,30 +164,38 @@ export class JSONVisitor implements AstVisitor {
       .map(impl => impl.members);
 
     let componentMembers = mergeClassMembers(this.visitAll(node.members), arrayFlatten(implementing));
-    // merge the extends from the heritageClause
+    /** merge the extends from the heritageClause */
     componentMembers = mergeClassMembers(componentMembers, arrayFlatten(extending));
 
     return {
       className: node.name,
       selector: node.selector,
+      clickable: node.clickable,
+      hoverable: node.hoverable,
       variants: componentMembers,
     };
   }
-  visitResult(node: ParseResult): any {
+  visitResult(node: ParseResult): MetaInformation.Component[] {
     const nodes = this.visitAll(node.nodes)
       .filter(node => node.className);
 
-    // modify varients and split every value as own variety
-    // nodes.forEach(node => node.variants = generateVariants(node.variants, node.className));
+    /** modify varients and split every value as own variety */
+    nodes.forEach(node => node.variants = generateVariants(node.variants, node.className));
     return nodes;
   }
 
   visitAll(nodes: ParseNode[]): any[] {
     const result = [];
-    nodes.forEach((node: ParseNode) => {
+    nodes.forEach((node: any) => {
+
       if (node) {
-        const n = node.visit(this);
-        if (n) { result.push(n); }
+        /** Do not print internal or design-unrelated nodes */
+        if (!node.internal && !node.unrelated) {
+          const n = node.visit(this);
+          if (n) {
+            result.push(n);
+          }
+        }
       }
     });
     return result;

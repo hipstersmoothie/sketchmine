@@ -9,7 +9,7 @@ export class ParseTypeAliasDeclaration extends ParseProperty {
     location: ParseLocation,
     type: ParseType,
   ) {
-    super(name, location, type);
+    super(location, name, type);
   }
 
   visit(visitor: AstVisitor): any {
