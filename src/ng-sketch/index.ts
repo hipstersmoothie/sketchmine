@@ -21,7 +21,7 @@ try {
   }
 
   const elementFetcher = new ElementFetcher();
-  elementFetcher.host = 'http://www.google.com';
+  elementFetcher.host = 'http://localhost:4200';
   elementFetcher.generateSketchFile(pages);
 } catch (error) {
   process.exit(1);
