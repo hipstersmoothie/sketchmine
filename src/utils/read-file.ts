@@ -1,7 +1,7 @@
 import * as util from 'util';
 import * as fs from 'fs';
 import chalk from 'chalk';
-import { Logger } from '@utils/logger';
+import { Logger } from './logger';
 const log = new Logger;
 
 const read = util.promisify(fs.readFile);
