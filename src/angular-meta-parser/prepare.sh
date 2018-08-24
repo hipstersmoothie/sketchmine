@@ -1,3 +1,4 @@
+#!/bin/bash
 declare TMP=src/angular-meta-parser/_tmp
 declare REPO=https://bitbucket.lab.dynatrace.org/scm/rx/angular-components.git
 declare BRANCH=master
