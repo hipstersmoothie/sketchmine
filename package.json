@@ -75,14 +75,12 @@
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-ts-paths": "^1.0.1",
-    "rollup-plugin-typescript": "^0.8.1",
     "rollup-plugin-typescript2": "^0.16.1",
     "ts-jest": "^23.0.1",
     "tslint": "^5.10.0",
     "tslint-config-airbnb": "^5.9.2"
   },
   "dependencies": {
-    "@phenomnomnominal/tsquery": "^2.0.0-beta.7",
     "archiver": "^2.1.1",
     "axios": "^0.18.0",
     "chalk": "^2.4.1",
