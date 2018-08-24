@@ -147,54 +147,6 @@ process.env.SKETCH = 'open-close';
 }
 ```
 
-## Data Structure
-
-```json
-[
-  {
-    className: 'DtButton',
-    selector: 'dt-button',
-    ...
-    variants: [
-      {
-        name: 'button-primary-main',
-        changes: [
-          {
-            type: 'property',
-            name: 'color',
-            value: 'main'
-          }
-        ]
-      },
-      {
-        name: 'button-primary-main-active',
-        changes: [
-          {
-            type: 'property',
-            name: 'color',
-            value: 'main'
-          }, {
-            type: 'method',
-            name: 'handleClick',
-            arguments: []
-          }
-        ]
-      },
-      {
-        name: 'button-cta',
-        changes: [
-          {
-            type: 'property',
-            name: 'color',
-            values: 'cta'
-          }
-        ]
-      }
-    ]
-  }
-]
-```
-
 #### Maintainer
 
 <table>
