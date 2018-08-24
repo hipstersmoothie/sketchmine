@@ -2,6 +2,9 @@ import minimist from 'minimist';
 
 const config = require('./config.json');
 
+/**
+ * Configuration arguments for the command line args
+ */
 export interface ConfigArguments {
   rootDir: string;
   inFile: string;

@@ -1,9 +1,6 @@
 import {
   TreeVisitor,
   AstVisitor,
-  ParseResult,
-  ParseReferenceType,
-  ParseDefinition,
   ParseValueType,
   ParseProperty,
   ParseUnionType,
@@ -14,12 +11,22 @@ import {
 } from './ast';
 import { arrayFlatten } from '@utils';
 
+/**
+ * @class
+ * @classdesc the Value resolver resolves all the values from the annotations and the types
+ * furthermore it resolves some primitives like *boolean* to true, because properties can only be
+ * applied (false would be without property).
+ */
 export class ValuesResolver extends TreeVisitor implements AstVisitor {
   visitProperty(node: ParseProperty) {
     return resolveTypeValues(node);
   }
 }
 
+/**
+ * resolves the node in the value resolver
+ * @param node Node to be resolved
+ */
 function resolveTypeValues(node: ParseProperty) {
   const values = new Set(node.values);
   if (node.type) {
@@ -30,6 +37,10 @@ function resolveTypeValues(node: ParseProperty) {
   return node;
 }
 
+/**
+ * Resolve types to values recursivly
+ * @param nodeType Type to be resolved
+ */
 function resolveType(nodeType: ParseType): (string | null)[] {
   switch (nodeType.constructor) {
     case ParseValueType:
@@ -47,6 +58,10 @@ function resolveType(nodeType: ParseType): (string | null)[] {
   }
 }
 
+/**
+ * Resolve primitives
+ * @param nodeType Primitve Type to be resolved
+ */
 function resolvePrimitiveType(nodeType: ParsePrimitiveType): string | null {
   switch (nodeType.type) {
     case Primitives.Boolean:

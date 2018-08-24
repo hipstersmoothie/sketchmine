@@ -1,6 +1,10 @@
 import * as ts from 'typescript';
 import { getDecoratorOfType } from './get-decorator-of-type';
 
+/**
+ * Get the content of the Component decorator
+ * @param node classDeclaration Node
+ */
 export function getComponentDecorator(node: ts.ClassDeclaration): ts.ObjectLiteralExpression | null {
   const decorator = getDecoratorOfType(node, 'Component');
   if (!decorator) {

@@ -35,7 +35,12 @@ import { Logger } from '@utils';
 
 const log = new Logger();
 
-export function tsVisitorFactory(paths: Map<string, string>) {
+/**
+ * The factory that visits the source Files
+ * @param paths used to parse the absolute module paths in import or export declarations
+ * @returns {ParseResult} returns a function that returns the result for a file
+ */
+export function tsVisitorFactory(paths: Map<string, string>): (sourceFile: ts.SourceFile) => ParseResult {
   /** These variables contain state that changes as we descend into the tree. */
   let currentLocation: ParseLocation | undefined;
   let nodes: ParseNode[] = [];
@@ -348,14 +353,18 @@ export function tsVisitorFactory(paths: Map<string, string>) {
 
 }
 
+/**
+ * resolves values from the node.
+ * @param {ts.Node} node ndoe to check the jsDoc for design prop or param value
+ */
 function resolveDesignPropValues(node: ts.Node): any[] {
   const comment = visitJsDoc(node);
   const values = [];
   if (!comment) {
     return values;
   }
-  // const regex = /@design-param-value\s(.+?)\s(.+)\n/g;
-  // matches property values https://regex101.com/r/SWxdIh/4
+  /** regex for param value: const regex = /@design-param-value\s(.+?)\s(.+)\n/g; */
+  /** matches property values https://regex101.com/r/SWxdIh/4 */
   const regex = /@design-prop-value\s(.+?)(\s?\*\/)?$/gm;
   let match = regex.exec(comment);
   while (match !== null) {

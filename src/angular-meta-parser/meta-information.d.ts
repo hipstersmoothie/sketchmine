@@ -1,5 +1,8 @@
+/**
+ * The outFile structure follows this interface
+ */
 export namespace MetaInformation {
-  
+
   export interface Varient {
     name: string;
     changes: (VarientMethod | VarientProperty)[];

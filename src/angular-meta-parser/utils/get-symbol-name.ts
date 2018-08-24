@@ -4,16 +4,20 @@ import { Logger } from '@utils';
 
 const log = new Logger();
 
+/**
+ * Get the name from any node
+ * @param node Any Node
+ */
 export function getSymbolName(node): string {
   if (!node) {
     return '';
   }
 
-  // node.name is an identifier
+  /** node.name is an identifier */
   if (node.name && node.name.kind === ts.SyntaxKind.Identifier) {
     return node.name.text;
   }
-  // node is a literalType
+  /** node is a literalType */
   if (node.literal && node.literal.kind === ts.SyntaxKind.StringLiteral) {
     return node.literal.text;
   }
