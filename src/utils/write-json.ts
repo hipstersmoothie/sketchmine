@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
 import { Logger } from './logger';
-import { createDir } from '@utils/create-dir';
+import { createDir } from './create-dir';
 
 const log = new Logger();
 
