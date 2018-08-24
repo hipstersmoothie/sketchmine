@@ -1,15 +1,16 @@
 import { ParseLocation } from './parse-location';
 import { AstVisitor } from './ast-visitor';
-import { ParseDefinition } from './parse-definition';
+import { ParseDefinition, NodeTags } from './parse-definition';
 import { ParseProperty } from './parse-property';
 
 export class ParseInterface extends ParseDefinition {
   constructor(
     name: string,
     location: ParseLocation,
+    tags: NodeTags[],
     public members: ParseProperty[] = [],
   ) {
-    super(name, location);
+    super(name, location, tags);
   }
 
   visit(visitor: AstVisitor): any {

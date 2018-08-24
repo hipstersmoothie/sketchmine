@@ -7,6 +7,7 @@ import { JSONVisitor, ParseResult, AstVisitor } from './ast';
 import { adjustPathAliases, parseCommandlineArgs, resolveModuleFilename } from './utils';
 import { ReferenceResolver } from './reference-resolver';
 import { writeJSON } from '@utils';
+import { ValuesResolver } from './values-resolver';
 
 function renderASTtoJSON(ast: Map<string, ParseResult>, pkg: string): any {
   const jsonVisitor = new JSONVisitor();
@@ -32,8 +33,10 @@ export async function main(args: string[]): Promise<number> {
   parseFile(inFile, adjustPathAliases(config, absoluteRootDir), parseResults);
 
   const results = Array.from(parseResults.values());
+
   const transformers: AstVisitor[] = [
     new ReferenceResolver(results),
+    new ValuesResolver(),
   ];
   for (const transfomer of transformers) {
     const transformedResults = new Map<string, ParseResult>();

@@ -15,6 +15,7 @@ import {
   ParseArrayType,
   ParseComponent,
 } from './index';
+import { ParseObjectType } from './parse-object-type';
 
 export interface AstVisitor {
   visitNode(node: ParseNode): any;
@@ -24,6 +25,7 @@ export interface AstVisitor {
   visitPrimitiveType(node: ParsePrimitiveType): any;
   visitReferenceType(node: ParseReferenceType): any;
   visitArrayType(node: ParseArrayType): any;
+  visitObjectType(node: ParseObjectType): any;
   visitFunctionType(node: ParseFunctionType): any;
   visitSimpleType(node: ParseSimpleType): any;
   visitUnionType(node: ParseUnionType): any;
@@ -34,22 +36,50 @@ export interface AstVisitor {
   visitResult(node: ParseResult): any;
 }
 
-export class NodeVisitor implements AstVisitor {
-  visitNode(node: ParseNode) { return node; }
-  visitDependency(node: ParseDependency) { return node; }
-  visitDefinition(node: ParseDefinition) { return node; }
-  visitValueType(node: ParseValueType) { return node; }
-  visitPrimitiveType(node: ParsePrimitiveType) { return node; }
-  visitReferenceType(node: ParseReferenceType) { return node; }
-  visitArrayType(node: ParseArrayType) { return node; }
-  visitFunctionType(node: ParseFunctionType) { return node; }
-  visitSimpleType(node: ParseSimpleType) { return node; }
-  visitUnionType(node: ParseUnionType) { return node; }
-  visitProperty(node: ParseProperty) { return node; }
-  visitInterface(node: ParseInterface) { return node; }
-  visitTypeAliasDeclaration(node: ParseTypeAliasDeclaration) { return node; }
-  visitComponent(node: ParseComponent) { return node; }
-  visitResult(node: ParseResult) { return node; }
+export class NullVisitor implements AstVisitor {
+  visitNode(node: ParseNode): any { return null; }
+  visitDependency(node: ParseDependency): any { return null; }
+  visitDefinition(node: ParseDefinition): any { return null; }
+  visitValueType(node: ParseValueType): any { return null; }
+  visitPrimitiveType(node: ParsePrimitiveType): any { return null; }
+  visitReferenceType(node: ParseReferenceType): any { return null; }
+  visitArrayType(node: ParseArrayType): any { return null; }
+  visitObjectType(node: ParseObjectType): any { return null; }
+  visitFunctionType(node: ParseFunctionType): any { return null; }
+  visitSimpleType(node: ParseSimpleType): any { return null; }
+  visitUnionType(node: ParseUnionType): any { return null; }
+  visitProperty(node: ParseProperty): any { return null; }
+  visitInterface(node: ParseInterface): any { return null; }
+  visitTypeAliasDeclaration(node: ParseTypeAliasDeclaration): any { return null; }
+  visitComponent(node: ParseComponent): any { return null; }
+  visitResult(node: ParseResult): any { return null; }
+
+  visit(node: ParseNode): any {
+    return node && node.visit ? node.visit(this) : node;
+  }
+
+  visitAll(nodes: ParseNode[]): any[]  {
+    return nodes.map(node => this.visit(node));
+  }
+}
+
+export class NodeVisitor extends NullVisitor implements AstVisitor {
+  visitNode(node: ParseNode): any { return node; }
+  visitDependency(node: ParseDependency): any { return node; }
+  visitDefinition(node: ParseDefinition): any { return node; }
+  visitValueType(node: ParseValueType): any { return node; }
+  visitPrimitiveType(node: ParsePrimitiveType): any { return node; }
+  visitReferenceType(node: ParseReferenceType): any { return node; }
+  visitArrayType(node: ParseArrayType): any { return node; }
+  visitObjectType(node: ParseObjectType): any { return node; }
+  visitFunctionType(node: ParseFunctionType): any { return node; }
+  visitSimpleType(node: ParseSimpleType): any { return node; }
+  visitUnionType(node: ParseUnionType): any { return node; }
+  visitProperty(node: ParseProperty): any { return node; }
+  visitInterface(node: ParseInterface): any { return node; }
+  visitTypeAliasDeclaration(node: ParseTypeAliasDeclaration): any { return node; }
+  visitComponent(node: ParseComponent): any { return node; }
+  visitResult(node: ParseResult): any { return node; }
 }
 
 export class TreeVisitor extends NodeVisitor implements AstVisitor {
@@ -59,15 +89,16 @@ export class TreeVisitor extends NodeVisitor implements AstVisitor {
     return node;
   }
 
-  visitComponent(node: ParseComponent) {
+  visitComponent(node: ParseComponent): any {
     node.implementing = this.visitAll(node.implementing);
     node.extending = this.visitAll(node.extending);
-    return this.visitInterface(node as ParseInterface);
+    node.members = this.visitAll(node.members);
+    return node;
   }
 
   visitFunctionType(node: ParseFunctionType): any {
     node.args = this.visitAll(node.args);
-    node.returnType = node.returnType && node.returnType.visit(this);
+    node.returnType = this.visit(node.returnType);
     return node;
   }
 
@@ -76,20 +107,17 @@ export class TreeVisitor extends NodeVisitor implements AstVisitor {
     return node;
   }
   visitProperty(node: ParseProperty): any {
-    node.type = node.type && node.type.visit(this);
+    node.type = this.visit(node.type);
     return node;
   }
 
   visitTypeAliasDeclaration(node: ParseTypeAliasDeclaration): any {
-    return this.visitProperty(node);
+    node.type = this.visit(node.type);
+    return node;
   }
 
   visitResult(node: ParseResult): any {
     node.nodes = this.visitAll(node.nodes);
     return node;
-  }
-
-  visitAll(nodes: ParseNode[])  {
-    return nodes.map(node => node.visit(this));
   }
 }

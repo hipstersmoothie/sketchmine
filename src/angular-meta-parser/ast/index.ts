@@ -9,6 +9,7 @@ export * from './parse-function-type';
 export * from './parse-interface';
 export * from './parse-location';
 export * from './parse-node';
+export * from './parse-object-type';
 export * from './parse-primitive-type';
 export * from './parse-property';
 export * from './parse-reference-type';

@@ -19,7 +19,9 @@ import {
   ParseTypeAliasDeclaration,
   ParseUnionType,
   ParseValueType,
-  ParseDefinition,
+  NodeTags,
+  Primitives,
+  ParseObjectType,
 } from './ast';
 import {
   getComponentDecorator,
@@ -27,6 +29,7 @@ import {
   getSymbolName,
   hasExportModifier,
   parseAbsoluteModulePath,
+  getDecoratorOfType,
 } from './utils';
 import { Logger } from '@utils';
 
@@ -101,7 +104,7 @@ export function tsVisitorFactory(paths: Map<string, string>) {
           break;
         case 'inputs':
           const inputs = getInitializer(prop) as string[];
-          members.push(...inputs.map(input => new ParseProperty(currentLocation, input, undefined)));
+          members.push(...inputs.map(input => new ParseProperty(currentLocation, input, [], undefined, [])));
           break;
       }
     });
@@ -127,18 +130,17 @@ export function tsVisitorFactory(paths: Map<string, string>) {
     }
 
     const comment = visitJsDoc(node);
-    const component = new ParseComponent(
+    nodes.push(new ParseComponent(
       currentLocation,
       name,
+      checkNodeTags(node),
       members,
       selector,
       extendsHeritageClauses,
       implementsHeritageClauses,
       !!comment && comment.indexOf('@design-clickable') > -1,
       !!comment && comment.indexOf('@design-hoverable') > -1,
-    );
-
-    nodes.push(checkInternalOrUnrelated(comment, component));
+    ));
   }
 
   function visitClassMembers(node: ts.ClassDeclaration): ParseProperty[] {
@@ -146,27 +148,45 @@ export function tsVisitorFactory(paths: Map<string, string>) {
 
     if (node.members && node.members.length) {
       node.members.forEach((member) => {
-        if (member.kind === ts.SyntaxKind.SetAccessor) {
-          properties.push(visitSetAccessor(member as ts.SetAccessorDeclaration));
+        if (getDecoratorOfType(member, 'Input')) {
+          properties.push(visitInputDecorator(member));
         }
       });
     }
-
     return properties;
   }
 
-  function visitSetAccessor(node: ts.SetAccessorDeclaration): ParseProperty {
-    const name = getSymbolName(node);
-    const type = visitType(node.parameters[0].type);
-    return checkInternalOrUnrelated(visitJsDoc(node), new ParseProperty(currentLocation, name, type)) as ParseProperty;
+  function visitInputDecorator(node: ts.Node): ParseProperty {
+    let type: ParseType;
+
+    switch (node.kind) {
+      case ts.SyntaxKind.PropertyDeclaration:
+      case ts.SyntaxKind.GetAccessor:
+        type = visitType((node as ts.GetAccessorDeclaration).type);
+        break;
+      case ts.SyntaxKind.SetAccessor:
+        type = visitType((node as ts.SetAccessorDeclaration).parameters[0].type);
+        break;
+    }
+    return new ParseProperty(
+      currentLocation,
+      getSymbolName(node),
+      checkNodeTags(node),
+      type,
+      resolveDesignPropValues(node),
+    );
   }
 
   function visitTypeAliasDeclaration(node: ts.TypeAliasDeclaration): void {
     if (!hasExportModifier(node)) {
       return;
     }
-    const astNode = new ParseTypeAliasDeclaration(getSymbolName(node), currentLocation, visitType(node.type));
-    nodes.push(checkInternalOrUnrelated(visitJsDoc(node), astNode));
+    nodes.push(new ParseTypeAliasDeclaration(
+      getSymbolName(node),
+      currentLocation,
+      checkNodeTags(node),
+      visitType(node.type),
+    ));
   }
 
   function visitInterfaceDeclaration(node: ts.InterfaceDeclaration) {
@@ -184,25 +204,16 @@ export function tsVisitorFactory(paths: Map<string, string>) {
             case ts.SyntaxKind.NumberKeyword:
             case ts.SyntaxKind.StringKeyword:
             case ts.SyntaxKind.ArrayType:
-              const prop = new ParseProperty(
+
+              const propertyType = visitType(member.type);
+
+              members.push(new ParseProperty(
                 currentLocation,
                 getSymbolName(member),
-                visitType(member.type),
-              );
-
-              const comment = visitJsDoc(member);
-              if (comment) {
-                // const regex = /@design-param-value\s(.+?)\s(.+)\n/g;
-                // matches property values https://regex101.com/r/SWxdIh/1
-                const regex = /@design-prop-value\s(.+)/gm;
-                let match = regex.exec(comment);
-                while (match !== null) {
-                  prop.addValue(match[1]);
-                  match = regex.exec(comment);
-                }
-              }
-
-              members.push(checkInternalOrUnrelated(comment, prop) as ParseProperty);
+                checkNodeTags(member),
+                propertyType,
+                resolveDesignPropValues(member),
+              ));
               break;
             case ts.SyntaxKind.FunctionType:
               members.push(visitMethod(member.type as ts.FunctionTypeNode));
@@ -213,23 +224,21 @@ export function tsVisitorFactory(paths: Map<string, string>) {
         }
       });
     }
-    nodes.push(
-      checkInternalOrUnrelated(
-        visitJsDoc(node),
-        new ParseInterface(getSymbolName(node), currentLocation, members),
-      ),
-    );
+    nodes.push(new ParseInterface(
+      getSymbolName(node),
+      currentLocation,
+      checkNodeTags(node),
+      members,
+    ));
   }
 
   function visitMethod(node: ts.SignatureDeclarationBase): ParseProperty {
-    return checkInternalOrUnrelated(
-      visitJsDoc(node),
-      new ParseProperty(
-        currentLocation,
-        getSymbolName(node),
-        visitFunctionType(node.type as ts.FunctionTypeNode),
-      ),
-    ) as ParseProperty;
+    return new ParseProperty(
+      currentLocation,
+      getSymbolName(node),
+      checkNodeTags(node),
+      visitFunctionType(node.type as ts.FunctionTypeNode),
+    );
   }
 
   /**
@@ -245,17 +254,17 @@ export function tsVisitorFactory(paths: Map<string, string>) {
         case ts.SyntaxKind.AnyKeyword:
           return new ParseValueType(currentLocation, 'any');
         case ts.SyntaxKind.NumberKeyword:
-          return new ParsePrimitiveType(currentLocation, 'number');
+          return new ParsePrimitiveType(currentLocation, Primitives.Number);
         case ts.SyntaxKind.StringKeyword:
-          return new ParsePrimitiveType(currentLocation, 'string');
+          return new ParsePrimitiveType(currentLocation, Primitives.String);
         case ts.SyntaxKind.BooleanKeyword:
-          return new ParsePrimitiveType(currentLocation, 'boolean');
+          return new ParsePrimitiveType(currentLocation, Primitives.Boolean);
         case ts.SyntaxKind.SymbolKeyword:
-          return new ParsePrimitiveType(currentLocation, 'symbol');
+          return new ParsePrimitiveType(currentLocation, Primitives.Symbol);
         case ts.SyntaxKind.NullKeyword:
-          return new ParsePrimitiveType(currentLocation, 'null');
+          return new ParsePrimitiveType(currentLocation, Primitives.Null);
         case ts.SyntaxKind.UndefinedKeyword:
-          return new ParsePrimitiveType(currentLocation, 'undefined');
+          return new ParsePrimitiveType(currentLocation, Primitives.Undefined);
         case ts.SyntaxKind.TypeReference:
           const name = getSymbolName(node);
           if (name === 'Partial') {
@@ -264,6 +273,8 @@ export function tsVisitorFactory(paths: Map<string, string>) {
           return new ParseReferenceType(currentLocation, name);
         case ts.SyntaxKind.ArrayType:
           return new ParseArrayType(currentLocation, node.getText());
+        case ts.SyntaxKind.TypeLiteral:
+          return new ParseObjectType(currentLocation, node.getText());
         case ts.SyntaxKind.UnionType:
           return visitUnionType(node as ts.UnionTypeNode);
         case ts.SyntaxKind.LiteralType:
@@ -305,6 +316,7 @@ export function tsVisitorFactory(paths: Map<string, string>) {
         new ParseProperty(
           currentLocation,
           getSymbolName(param),
+          checkNodeTags(node),
           visitType(param.type),
         ));
     }
@@ -336,23 +348,50 @@ export function tsVisitorFactory(paths: Map<string, string>) {
 
 }
 
+function resolveDesignPropValues(node: ts.Node): any[] {
+  const comment = visitJsDoc(node);
+  const values = [];
+  if (!comment) {
+    return values;
+  }
+  // const regex = /@design-param-value\s(.+?)\s(.+)\n/g;
+  // matches property values https://regex101.com/r/SWxdIh/4
+  const regex = /@design-prop-value\s(.+?)(\s?\*\/)?$/gm;
+  let match = regex.exec(comment);
+  while (match !== null) {
+    values.push(JSON.parse(match[1]));
+    match = regex.exec(comment);
+  }
+  return values;
+}
+
 /**
  * Check if a node has an **@internal** or **@design-unrelated** identifier in the jsDoc comment
  * basic blacklisting of components, properties, methods and so on.
  * @param comment string of the JsDoc comment
  * @param node The node where the information should be applied
  */
-function checkInternalOrUnrelated(comment: string, node: ParseDefinition): ParseDefinition {
-  if (!comment) {
-    return node;
+function checkNodeTags(node: ts.Node): NodeTags[] {
+  const comment = visitJsDoc(node);
+  const tags: NodeTags[] = [];
+
+  if (node.modifiers) {
+    if (node.modifiers.find(m => m.kind === ts.SyntaxKind.PrivateKeyword)) {
+      tags.push('private');
+    }
   }
-  if (comment.indexOf('@internal') > -1) {
-    node.internal = true;
+
+  if (getSymbolName(node).startsWith('_')) {
+    tags.push('hasUnderscore');
   }
-  if (comment.indexOf('@design-unrelated') > -1) {
-    node.unrelated = true;
+
+  if (comment && comment.indexOf('@internal') > -1) {
+    tags.push('internal');
   }
-  return node;
+  if (comment && comment.indexOf('@design-unrelated') > -1) {
+    tags.push('unrelated');
+  }
+  return tags;
 }
 
 /**
