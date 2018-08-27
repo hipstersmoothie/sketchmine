@@ -48,22 +48,22 @@ export function mergeClassMembers(originalMembers: any[], toBeMerged: any[]): an
  * @param variants Array of Variants
  * @param className needed for the variant name
  */
-export function generateVariants(variants: any, className: string): MetaInformation.Varient[] {
-  const result: MetaInformation.Varient[] = [];
+export function generateVariants(variants: any, className: string): MetaInformation.Variant[] {
+  const result: MetaInformation.Variant[] = [];
   const baseName = camelCaseToKebabCase(className);
 
-  variants.forEach((varient) => {
-    varient.value.forEach((val: string) => {
+  variants.forEach((variant) => {
+    variant.value.forEach((val: string) => {
       let nameValue = '';
       /** if the value is a boolean true then the key is enought and no value is needed */
       if (val !== 'true') {
         nameValue = `-${val.toString().replace(/\"/g, '')}`;
       }
       result.push({
-        name: `${baseName}-${varient.key}${nameValue}`,
+        name: `${baseName}-${variant.key}${nameValue}`,
         changes: [{
-          type: varient.type,
-          key: varient.key,
+          type: variant.type,
+          key: variant.key,
           value: val,
         }],
       });
@@ -126,7 +126,7 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
     const nodes = this.visitAll(node.nodes)
       .filter(node => node.className);
 
-    /** modify varients and split every value as own variety */
+    /** modify variants and split every value as own variety */
     nodes.forEach(node => node.variants = generateVariants(node.variants, node.className));
     return nodes;
   }
