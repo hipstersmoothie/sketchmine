@@ -2,11 +2,12 @@ import chalk from 'chalk';
 import * as fs from 'fs';
 import { ValidationError, ColorNotInPaletteError } from '../error/validation-error';
 import { round } from '@sketch-draw/helpers/util';
-import { rgbToHex } from '@utils';
+import { rgbToHex, Logger } from '@utils';
 import { IValidationContext } from '../interfaces/validation-rule.interface';
 import { IDynatraceColorPalette, IDynatraceColor } from '../interfaces/dynatrace-color.interface';
 import { IFill, IBorder } from '@sketch-draw/interfaces';
 
+const log = new Logger();
 const colorJSON = fs.readFileSync('tests/fixtures/colors.json').toString();
 const colors: string[] = removeUnusedColors(JSON.parse(colorJSON));
 
@@ -17,7 +18,7 @@ export function colorValidation(
 
   const task = homeworks[currentTask];
   if (!task) {
-    console.error(
+    log.error(
       chalk`{bgRed [color-validation.ts]} -> colorValdiation needs a valid task` +
       chalk`{cyan IValdiationContext[]} parameter with index!\n`,
     );

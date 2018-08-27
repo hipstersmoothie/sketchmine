@@ -2,6 +2,10 @@ import { ValidationError, ColorNotInPaletteError } from './validation-error';
 import chalk from 'chalk';
 import { IErrorHandler } from '../interfaces/error-handler.interface';
 import { IValidationRule } from '../interfaces/validation-rule.interface';
+import { Logger } from '@utils';
+
+const log = new Logger();
+
 export class ErrorHandler {
 
   private static instance: ErrorHandler;
@@ -14,7 +18,6 @@ export class ErrorHandler {
       return ErrorHandler.instance;
     }
     ErrorHandler.instance = this;
-
   }
 
   addError(rule: IValidationRule, error: ValidationError) {
@@ -71,17 +74,17 @@ export class ErrorHandler {
       }
     }
 
-    if (process.env.VERBOSE && throwingError) {
-      console.log(chalk`\n{red 🚨 ––––––––––––––––––––––––––––––––––––––––––––––––––––––– 🚨}\n`);
+    if (throwingError) {
+      log.debug(chalk`\n{red 🚨 ––––––––––––––––––––––––––––––––––––––––––––––––––––––– 🚨}\n`);
     }
 
-    console.log(stackedOutput);
+    log.info(stackedOutput);
 
     if (throwingError) {
 
-      console.log(
-        chalk`\n{redBright The Error occured int the Object with the id: ${throwingError.objectId}}\n`,
-        chalk` {red ${throwingError.name}}\n`,
+      log.error(
+        chalk`\n{redBright The Error occured int the Object with the id: ${throwingError.objectId}}\n` +
+        chalk` {red ${throwingError.name}}\n` +
         chalk` ${throwingError.message}\n\n`,
       );
 
@@ -103,9 +106,9 @@ export class ErrorHandler {
     for (let i = 1, max = failings.length; i <= max; i += 1) {
       const item = failings[i - 1];
       const trace = (item.parents.artboard) ? item.parents.artboard : item.parents.symbolMaster;
-      console.log(
-        chalk`{redBright ${i.toString()}) ${item.constructor.name}} → {grey ${item.parents.page} → ${trace}}\n`,
-        chalk`{red ${item.objectId}} — ${item.name}\n`,
+      log.error(
+        chalk`{redBright ${i.toString()}) ${item.constructor.name}} → {grey ${item.parents.page} → ${trace}}\n` +
+        chalk`{red ${item.objectId}} — ${item.name}\n` +
         chalk`${item.message}\n`,
       );
 

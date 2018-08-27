@@ -1,6 +1,9 @@
 import chalk from 'chalk';
 import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../error/validation-error';
 import { IValidationContext } from '../interfaces/validation-rule.interface';
+import { Logger } from '@utils';
+
+const log = new Logger();
 
 enum ThemeLess {
   icons = 'icons',
@@ -19,7 +22,7 @@ export function symbolNameValidation(
   ): (ValidationError | boolean)[] {
   const task = homeworks[currentTask];
   if (!task) {
-    console.error(
+    log.error(
       chalk`{bgRed [symbol-name-validation.ts]} -> symbolNameValidation needs a valid task` +
       chalk`{cyan IValdiationContext[]} parameter with index!\n`,
     );

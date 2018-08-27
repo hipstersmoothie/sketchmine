@@ -1,10 +1,11 @@
-import { zipToBuffer as unzip } from '@utils';
+import { zipToBuffer as unzip, Logger } from '@utils';
 import { rules } from './config';
 import { Validator } from './validator';
 import chalk from 'chalk';
 import { ErrorHandler } from './error/error-handler';
 import { argv } from 'yargs';
 
+const log = new Logger();
 const validator = new Validator(rules);
 const handler = new ErrorHandler();
 
@@ -16,13 +17,11 @@ if (!argv.file) {
   throw Error(`No File provided as argument! Please run script with --file flag!`);
 }
 
-console.log(chalk`\n💎💎💎  Start Validating Sketch File:  💎💎💎\n`);
+log.info(chalk`\n💎💎💎  Start Validating Sketch File:  💎💎💎\n`);
 
 unzip(argv.file, /pages\/.*?\.json/).then(async (result) => {
   try {
-    if (process.env.VERBOSE) {
-      console.log(chalk`\n⏱  Parsing and Validating ${result.length.toString()} Pages: \n\n`);
-    }
+    log.debug(chalk`\n⏱  Parsing and Validating ${result.length.toString()} Pages: \n\n`);
     await result.forEach((file) => {
       const content = file.buffer.toString();
       try {
@@ -34,10 +33,8 @@ unzip(argv.file, /pages\/.*?\.json/).then(async (result) => {
       }
     });
   } catch (error) {
-    if (process.env.DEBUG) {
-      console.log(chalk`{bgRed Error Parsing Files:\n}`);
-      console.log(error);
-    }
+    log.error(chalk`{bgRed Error Parsing Files:\n}`);
+    log.error(error);
   }
 
   validator.validate();

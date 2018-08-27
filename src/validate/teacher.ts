@@ -1,6 +1,9 @@
 import { IValidationContext, IValidationRule, SketchModel } from './interfaces/validation-rule.interface';
 import { ErrorHandler } from './error/error-handler';
 import { ValidationError } from './error/validation-error';
+import { Logger } from '@utils';
+
+const log = new Logger();
 
 export class Teacher {
   private _handler: ErrorHandler;
@@ -39,7 +42,7 @@ export class Teacher {
         });
       }
     } catch (error) {
-      console.log(error);
+      log.error(error);
     }
   }
 }
