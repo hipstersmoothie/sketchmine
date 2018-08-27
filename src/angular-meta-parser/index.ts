@@ -1,6 +1,6 @@
 
-import path from 'path';
-import fs from 'fs';
+import * as path from 'path';
+import * as fs from 'fs';
 import * as ts from 'typescript';
 import { tsVisitorFactory } from './visitor';
 import { JSONVisitor, ParseResult, AstVisitor } from './ast';
@@ -8,6 +8,8 @@ import { adjustPathAliases, parseCommandlineArgs, resolveModuleFilename } from '
 import { ReferenceResolver } from './reference-resolver';
 import { writeJSON } from '@utils';
 import { ValuesResolver } from './values-resolver';
+
+const DEFAULT_CONFIG = require('./config.json');
 
 /**
  * Uses the transformed AST and represent it in our final JSON format
@@ -36,7 +38,7 @@ function renderASTtoJSON(ast: Map<string, ParseResult>, pkg: string): any {
 export async function main(args: string[]): Promise<number> {
   let parseResults = new Map<string, ParseResult>();
   // tslint:disable-next-line:prefer-const
-  let { rootDir, inFile, outFile, config, pkg } = parseCommandlineArgs(args);
+  let { rootDir, inFile, outFile, config, pkg } = parseCommandlineArgs(args, DEFAULT_CONFIG);
   const absoluteRootDir = path.resolve(rootDir);
   inFile = path.join(absoluteRootDir, inFile);
   pkg = path.resolve(pkg);

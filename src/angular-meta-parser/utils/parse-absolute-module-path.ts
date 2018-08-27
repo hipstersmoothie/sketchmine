@@ -1,5 +1,5 @@
 import minimatch from 'minimatch';
-import path from 'path';
+import * as path from 'path';
 
 /**
  * Resolve the `export` and `import` paths to absolute paths and resolves path aliases from

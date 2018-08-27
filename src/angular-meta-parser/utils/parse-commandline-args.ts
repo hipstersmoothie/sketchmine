@@ -1,7 +1,5 @@
 import minimist from 'minimist';
 
-const config = require('./config.json');
-
 /**
  * Configuration arguments for the command line args
  */
@@ -16,8 +14,9 @@ export interface ConfigArguments {
 /**
  * Merges the default config arguments with the command line inputs
  * @param args Merged config arguments
+ * @param config default config args from .json
  * @return {ConfigArguments}
  */
-export function parseCommandlineArgs(args: string[]): ConfigArguments {
+export function parseCommandlineArgs(args: string[], config: any): ConfigArguments {
   return Object.assign(config.args, minimist(args));
 }

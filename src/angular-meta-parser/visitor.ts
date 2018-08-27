@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import path from 'path';
+import * as path from 'path';
 import chalk from 'chalk';
 import {
   ParseArrayType,
@@ -394,10 +394,10 @@ function checkNodeTags(node: ts.Node): NodeTags[] {
     tags.push('hasUnderscore');
   }
 
-  if (comment && comment.indexOf('@internal') > -1) {
+  if (comment !== null && comment.includes('@internal')) {
     tags.push('internal');
   }
-  if (comment && comment.indexOf('@design-unrelated') > -1) {
+  if (comment !== null && comment.includes('@design-unrelated')) {
     tags.push('unrelated');
   }
   return tags;

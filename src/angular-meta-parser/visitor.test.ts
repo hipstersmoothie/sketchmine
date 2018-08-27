@@ -1,41 +1,85 @@
-// import * as fs from 'fs';
-// import * as ts from 'typescript';
-// import * as path from 'path';
+import * as ts from 'typescript';
+import { ParseResult, ParseComponent, ParseProperty, ParseReferenceType, ParseDependency } from './ast';
+import { tsVisitorFactory } from './visitor';
+import { getSymbolName } from './utils';
 
-// import { delDir, readFile } from '@utils';
-// // import { Visitor } from './visitor';
+import * as fs from 'fs';
 
-// const COMPONENTS = [
-//   path.join(__dirname, 'fixtures/button.ts'),
-// ];
+const TEST_FILE_PATH = `${process.cwd()}/tests/fixtures/button.ts`;
 
-// describe('➡ Angular AST Transformer', () => {
-//   const sourceFiles: ts.SourceFile[] = [];
+describe('➡ AST Visitor', () => {
+  let sourceFile: ts.SourceFile;
 
-//   beforeAll((done) => {
-//     COMPONENTS.forEach(async (fileName: string) => {
-//       const sourceText = await readFile(fileName).toString();
-//       sourceFiles.push(
-//         ts.createSourceFile(
-//           fileName,
-//           sourceText,
-//           ts.ScriptTarget.ES2015,
-//           true, // setParentNodes
-//         ),
-//       );
-//       done();
-//     });
-//   });
+  beforeAll(() => {
+    const file = fs.readFileSync(TEST_FILE_PATH).toString();
+    sourceFile = ts.createSourceFile(
+      TEST_FILE_PATH,
+      file,
+      ts.ScriptTarget.Latest,
+      true,
+    );
+  });
 
-//   describe('Source File generation', () => {
-//     it('shoud generate ts.SourceFile[] form components', () => {
-//       expect(sourceFiles.length).toBe(COMPONENTS.length);
-//       sourceFiles.forEach((file) => {
-//         const visitor = new Visitor(file.fileName);
-//         visitor.visit(file);
-//         expect(file).not.toBeUndefined();
-//       });
-//     });
-//   });
+  it('should have generated a ts.Sourcefile from the testfile.', () => {
+    expect(sourceFile).not.toBeUndefined();
+    expect(sourceFile.fileName).toBe(TEST_FILE_PATH);
+    expect(sourceFile.statements.length).toBeGreaterThan(0);
+  });
 
-// });
+  describe('generate typescript visitorFactory', () => {
+    let result: ParseResult;
+
+    beforeAll(() => {
+      const paths = new Map<string, string>();
+      const visitor = tsVisitorFactory(paths);
+      result = visitor(sourceFile);
+    });
+
+    it('should generate the factory to visit the source file', () => {
+      expect(result).toBeInstanceOf(ParseResult);
+    });
+
+    it('should add one file to the dependency path', () => {
+      expect(result.dependencyPaths.length).toBe(1);
+      expect(result.dependencyPaths[0]).toBeInstanceOf(ParseDependency);
+    });
+
+    describe('sholud contain component', () => {
+      let component;
+      let comp: ParseComponent;
+      beforeAll(() => {
+        component = result.nodes.filter(node => node instanceof ParseComponent) as ParseComponent[];
+        comp = component[0];
+      });
+      it('exist is in AST', () => {
+        expect(component.length).toBe(1);
+        expect(comp).not.toBeUndefined();
+        expect(comp.location.path).toBe(TEST_FILE_PATH);
+      });
+      it('should have correct className', () => {
+        expect(comp.name).toBe('DtButton');
+      });
+      it('should have selector', () => {
+        expect(comp.selector).toBeInstanceOf(Array);
+        expect(comp.selector.length).toBe(2);
+      });
+      it('sholud contain JSDoc annotations in comment', () => {
+        expect(comp.tags).toContain('unrelated');
+        expect(comp.clickable).toBeTruthy();
+        expect(comp.hoverable).toBeTruthy();
+      });
+
+      it('should have three members', () => {
+        expect(comp.members).toBeInstanceOf(Array);
+        expect(comp.members.length).toBe(3);
+        comp.members.forEach((member) => {
+          expect(member).toBeInstanceOf(ParseProperty);
+        });
+      });
+      it('Expect third memeber to be a ButtonVariant', () => {
+        expect(comp.members[2].type).toBeInstanceOf(ParseReferenceType);
+        expect((comp.members[2].type as ParseReferenceType).name).toBe('ButtonVariant');
+      });
+    });
+  });
+});
