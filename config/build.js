@@ -46,7 +46,6 @@ export function banner(name, version, description) {
   * Description: ${description}
   * Company: Dynatrace
   * Author: Lukas Holzer <lukas.holzer@dynatrace.com>
-  * Licence: MIT
   **/
  
 `;

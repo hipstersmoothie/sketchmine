@@ -35,6 +35,11 @@ import { Logger } from '@utils';
 
 const log = new Logger();
 
+const JSDOC_ANNOTATION_INTERNAL = '@internal';
+const JSDOC_ANNOTATION_UNRELATED = '@design-unrelated';
+const JSDOC_ANNOTATION_CLICKABLE = '@design-clickable';
+const JSDOC_ANNOTATION_HOVERABLE = '@design-hoverable';
+
 /**
  * The factory that visits the source Files
  * @param paths used to parse the absolute module paths in import or export declarations
@@ -143,8 +148,8 @@ export function tsVisitorFactory(paths: Map<string, string>): (sourceFile: ts.So
       selector,
       extendsHeritageClauses,
       implementsHeritageClauses,
-      !!comment && comment.indexOf('@design-clickable') > -1,
-      !!comment && comment.indexOf('@design-hoverable') > -1,
+      !!comment && comment.includes(JSDOC_ANNOTATION_CLICKABLE),
+      !!comment && comment.includes(JSDOC_ANNOTATION_HOVERABLE),
     ));
   }
 
@@ -394,10 +399,10 @@ function checkNodeTags(node: ts.Node): NodeTags[] {
     tags.push('hasUnderscore');
   }
 
-  if (comment !== null && comment.includes('@internal')) {
+  if (comment !== null && comment.includes(JSDOC_ANNOTATION_INTERNAL)) {
     tags.push('internal');
   }
-  if (comment !== null && comment.includes('@design-unrelated')) {
+  if (comment !== null && comment.includes(JSDOC_ANNOTATION_UNRELATED)) {
     tags.push('unrelated');
   }
   return tags;
