@@ -2,12 +2,12 @@ import { ElementFetcher } from './element-fetcher';
 import { exec } from 'child_process';
 
 const pages = [
-  // '/icon/icon--agent',
-  // '/icon/icon--richface',
-  // '/button/button--icon',
+  '/icon/icon--agent',
+  '/icon/icon--richface',
+  '/button/button--icon',
   '/button/button--primary',
-  // '/button/button--secondary',
-  // '/tile/tile--default',
+  '/button/button--secondary',
+  '/tile/tile--default',
 ];
 
 process.env.SKETCH = 'open-close';

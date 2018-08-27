@@ -4,48 +4,21 @@
   "description": "Library for Sketch operations like generating .sketch files from angular components, followed by a Sketch validator and color replacer",
   "main": "index.js",
   "scripts": {
-    "clean": "rm -rf ./dist && mkdir dist",
+    "clean": "rm -rf ./dist && npm run prepare:dist",
+    "prepare:dist": "mkdir dist dist/angular-meta-parser dist/sketch-color-replacer dist/sketch-generator dist/sketch-validator",
     "prebuild": "npm run clean && npm run lint",
-    "build": "npm-run-all --parallel build:dev build:prod",
-    "build:dev": "NODE_ENV=development ./node_modules/.bin/rollup -c",
-    "build:prod": "NODE_ENV=production ./node_modules/.bin/rollup -c",
-    "build:watch": "NODE_ENV=watch ./node_modules/.bin/tsc --watch -p .",
+    "build": "./node_modules/.bin/rollup -c",
+    "build:dev": "npm run build -- -w",
+    "serve": "npm run serve:angularMetaParser",
+    "watch:angular-meta-parser": "nodemon dist/angular-meta-parser --watch dist --rootDir=src/angular-meta-parser/_tmp/src/lib",
     "run:generator": "node dist/sketch-generator",
     "run:validate": "node dist/sketch-validator",
     "run:color-replacer": "node dist/color-replacer",
+    "run:angular-meta-parser": "node dist/angular-meta-parser --rootDir=src/angular-meta-parser/_tmp/src/lib",
     "lint": "tslint -p tsconfig.json",
     "test": "jest --detectOpenHandles --verbose --forceExit",
-    "test:watch": "jest --watch",
+    "test:watch": "jest --watch --verbose",
     "test:coverage": "jest --collectCoverageFrom=src/**/*.ts --coverage src"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "transformIgnorePatterns": [
-      "node_modules/(?!shiva/)"
-    ],
-    "coveragePathIgnorePatterns": [
-      "\\.d\\.ts$"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "js",
-      "json"
-    ],
-    "moduleNameMapper": {
-      "@sketch-draw/(.*)": "<rootDir>/src/ng-sketch/sketch-draw/$1",
-      "@sketch-draw": "<rootDir>/src/ng-sketch/sketch-draw/index",
-      "@sketch-svg-parser/(.*)*": "<rootDir>/src/ng-sketch/sketch-svg-parser/$1",
-      "@color-replacer/(.*)": "<rootDir>/src/color-replacer/$1",
-      "@utils/(.*)": "<rootDir>/src/utils/$1",
-      "@utils": "<rootDir>/src/utils/index"
-    },
-    "testMatch": [
-      "<rootDir>/src/**/?(*.)test.ts",
-      "<rootDir>/tests/**/?(*.)test.ts"
-    ],
-    "transform": {
-      "\\.(ts)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    }
   },
   "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
   "license": "ISC",
@@ -55,29 +28,36 @@
   },
   "devDependencies": {
     "@types/archiver": "^2.1.1",
+    "@types/chokidar": "^1.7.5",
     "@types/jest": "^23.3.1",
     "@types/puppeteer": "^1.3.1",
     "@types/rimraf": "^2.0.2",
     "@types/unzipper": "^0.8.4",
     "@types/xmldom": "^0.1.29",
     "@types/yargs": "^11.0.0",
-    "axios": "^0.18.0",
+    "chokidar": "^2.0.4",
     "jest": "^23.4.2",
+    "nodemon": "^1.18.3",
     "npm-run-all": "^4.1.3",
     "rollup": "^0.63.4",
     "rollup-plugin-commonjs": "^9.1.4",
+    "rollup-plugin-json": "^3.0.0",
     "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-terser": "^1.0.1",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-ts-paths": "^1.0.1",
-    "rollup-plugin-typescript": "^0.8.1",
+    "rollup-plugin-typescript2": "^0.16.1",
     "ts-jest": "^23.0.1",
     "tslint": "^5.10.0",
     "tslint-config-airbnb": "^5.9.2"
   },
   "dependencies": {
     "archiver": "^2.1.1",
+    "axios": "^0.18.0",
     "chalk": "^2.4.1",
     "extract-zip": "^1.6.7",
+    "minimatch": "^3.0.4",
+    "minimist": "^1.2.0",
     "normalize-css-color": "^1.0.2",
     "puppeteer": "^1.3.0",
     "rimraf": "^2.6.2",

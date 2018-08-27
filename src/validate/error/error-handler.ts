@@ -61,7 +61,7 @@ export class ErrorHandler {
         }
 
         if (process.env.VERBOSE) {
-          this.tracedFailings(element.failing, rule);
+          this.tracedFailings(element.failing);
         }
 
         if (this._colors.size > 0) {
@@ -99,7 +99,7 @@ export class ErrorHandler {
     return output;
   }
 
-  private tracedFailings(failings: ValidationError[], rule: string) {
+  private tracedFailings(failings: ValidationError[]) {
     for (let i = 1, max = failings.length; i <= max; i += 1) {
       const item = failings[i - 1];
       const trace = (item.parents.artboard) ? item.parents.artboard : item.parents.symbolMaster;
