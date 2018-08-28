@@ -78,25 +78,23 @@ export class ErrorHandler {
       log.debug(chalk`\n{red 🚨 ––––––––––––––––––––––––––––––––––––––––––––––––––––––– 🚨}\n`);
     }
 
-    log.info(stackedOutput);
+    log.notice(stackedOutput);
 
     if (throwingError) {
 
-      log.error(
-        chalk`\n{redBright The Error occured int the Object with the id: ${throwingError.objectId}}\n` +
-        chalk` {red ${throwingError.name}}\n` +
-        chalk` ${throwingError.message}\n\n`,
-      );
+      log.error(chalk`{redBright The Error occured in the Object with the id: ${throwingError.objectId}} ` +
+        chalk`{red ${throwingError.name}}\n`);
 
       throw throwingError;
     }
   }
 
   private colorPaletteError(): string {
-    let output = chalk`{grey   There are {white ${this._colors.size.toString()} Colors} used, }` +
+    let output = chalk`{grey There are {white ${this._colors.size.toString()} Colors} used, }` +
     chalk`{grey that are not in the color palette:\n\n}`;
     if (process.env.VERBOSE) {
-      Array.from(this._colors).forEach(color => output += chalk`{hex('${color}') ███} ${color}\n`);
+      Array.from(this._colors).forEach(color => output += chalk`{hex('${color}') ███} ${color}  `);
+      output += '\n\n';
     }
     this._colors.clear();
     return output;
@@ -106,7 +104,7 @@ export class ErrorHandler {
     for (let i = 1, max = failings.length; i <= max; i += 1) {
       const item = failings[i - 1];
       const trace = (item.parents.artboard) ? item.parents.artboard : item.parents.symbolMaster;
-      log.error(
+      console.log(
         chalk`{redBright ${i.toString()}) ${item.constructor.name}} → {grey ${item.parents.page} → ${trace}}\n` +
         chalk`{red ${item.objectId}} — ${item.name}\n` +
         chalk`${item.message}\n`,

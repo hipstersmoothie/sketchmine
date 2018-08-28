@@ -11,6 +11,8 @@
     "moduleResolution": "node",
     "outDir": "dist/lib",
     "paths": {
+      "@angular-meta-parser/*": ["angular-meta-parser/*"],
+      "@angular-meta-parser": ["angular-meta-parser/index"],
       "@sketch-draw/*": ["ng-sketch/sketch-draw/*"],
       "@sketch-draw": ["ng-sketch/sketch-draw/index"],
       "@sketch-svg-parser/*": ["ng-sketch/sketch-svg-parser/*"],

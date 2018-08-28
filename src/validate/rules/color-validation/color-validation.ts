@@ -1,15 +1,13 @@
 import chalk from 'chalk';
-import * as fs from 'fs';
-import { ValidationError, ColorNotInPaletteError } from '../error/validation-error';
+import { ValidationError, ColorNotInPaletteError } from '../../error/validation-error';
 import { round } from '@sketch-draw/helpers/util';
 import { rgbToHex, Logger } from '@utils';
-import { IValidationContext } from '../interfaces/validation-rule.interface';
-import { IDynatraceColorPalette, IDynatraceColor } from '../interfaces/dynatrace-color.interface';
+import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import { IFill, IBorder } from '@sketch-draw/interfaces';
+import { generateMasterColors } from './generate-master-colors';
 
 const log = new Logger();
-const colorJSON = fs.readFileSync('tests/fixtures/colors.json').toString();
-const colors: string[] = removeUnusedColors(JSON.parse(colorJSON));
+const colors: string[] = generateMasterColors();
 
 export function colorValidation(
   homeworks: IValidationContext[],
@@ -44,8 +42,8 @@ export function colorValidation(
   return errors;
 }
 
-function colorInPalette(task: IValidationContext, fill: IFill | IBorder): ColorNotInPaletteError | boolean {
-  // only activated Fills should be validated
+export function colorInPalette(task: IValidationContext, fill: IFill | IBorder): ColorNotInPaletteError | boolean {
+  /** only activated Fills should be validated */
   if (fill.hasOwnProperty('isEnabled') && !fill.isEnabled) {
     return true;
   }
@@ -63,29 +61,9 @@ function colorInPalette(task: IValidationContext, fill: IFill | IBorder): ColorN
         objectId: task.do_objectID,
         name: task.name,
         message: chalk`The Color {bold {hex('${hex}') ███} ${hex}} is not in the Dynatrace Color Palette!\n` +
-        chalk`Take a look at {grey https://styles.lab.dynatrace.org/resources/colors}`,
+        chalk`Take a look at {grey https://styles.lab.dynatrace.org/resources/colors}\n`,
       },
     );
   }
   return true;
-}
-
-function removeUnusedColors(colors: IDynatraceColorPalette): string[] {
-
-  const _colors: string[] = [];
-
-  for (const key in colors) {
-    if (colors.hasOwnProperty(key)) {
-      const element: IDynatraceColor = colors[key];
-      if (
-        element.name.match(/★/) ||
-        element.name.match(/Complexion/) ||
-        element.name.match(/Steel gray/)
-      ) {
-        continue;
-      }
-      _colors.push(element.hex.toUpperCase());
-    }
-  }
-  return _colors;
 }

@@ -7,6 +7,8 @@ module.exports = {
   ],
   moduleFileExtensions: ['ts', 'js', 'json', 'node'],
   moduleNameMapper: {
+    "@angular-meta-parser/(.*)": '<rootDir>/src/angular-meta-parser/$1',
+    "@angular-meta-parser": '<rootDir>/src/angular-meta-parser/index',
     '@sketch-draw/(.*)': '<rootDir>/src/ng-sketch/sketch-draw/$1',
     '@sketch-draw': '<rootDir>/src/ng-sketch/sketch-draw/index',
     '@sketch-svg-parser/(.*)*': '<rootDir>/src/ng-sketch/sketch-svg-parser/$1',

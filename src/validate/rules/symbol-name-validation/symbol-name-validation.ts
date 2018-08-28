@@ -1,20 +1,23 @@
 import chalk from 'chalk';
-import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../error/validation-error';
-import { IValidationContext } from '../interfaces/validation-rule.interface';
+import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../../error/validation-error';
+import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import { Logger } from '@utils';
 
 const log = new Logger();
 
-enum ThemeLess {
+export enum ThemeLess {
   icons = 'icons',
   globalNavigations = 'global-navigation',
   menubar = 'menubar',
 }
 
-enum ThemeNames {
+export enum ThemeNames {
   dark = 'dark-bg',
   light = 'light-bg',
 }
+
+export const CONTAIN_THEME_NAME_ERROR =
+  chalk`The symbol name has to include a theme name: {grey ${Object.values(ThemeNames).join(', ')}}`;
 
 export function symbolNameValidation(
   homeworks: IValidationContext[],
@@ -66,7 +69,7 @@ export function symbolNameValidation(
  * @param name string[]
  * @returns boolean | string
  */
-function checkThemeInName(name: string[]): boolean | string {
+export function checkThemeInName(name: string[]): boolean | string {
   if (Object.values(ThemeLess).includes(name[0])) {
     return true;
   }
@@ -74,5 +77,5 @@ function checkThemeInName(name: string[]): boolean | string {
   if (themes.includes(name[1])) {
     return true;
   }
-  return chalk`The symbol name has to include a theme name: {grey ${themes.join(', ')} }`;
+  return CONTAIN_THEME_NAME_ERROR;
 }

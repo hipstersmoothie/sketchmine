@@ -1,5 +1,5 @@
 #!/bin/bash
-declare TMP=src/validate/_tmp
+declare TMP=src/validate/rules/color-validation/_tmp
 declare REPO=https://bitbucket.lab.dynatrace.org/scm/rx/angular-components.git
 declare BRANCH=master
 
