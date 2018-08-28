@@ -1,24 +1,29 @@
-import { argv } from 'yargs';
-import { generateSketchFile, readFile, zipToBuffer as unzip  } from '@utils';
+import { generateSketchFile, readFile, zipToBuffer as unzip, Logger  } from '@utils';
 import * as path from 'path';
-import chalk from 'chalk';
+import minimist from 'minimist';
 import { ColorReplacer } from '@color-replacer/color-replacer';
 import { exec } from 'child_process';
 
-process.env.SKETCH = 'open-close';
+const log = new Logger();
 
-if (!argv.file || !argv.colors) {
-  throw Error(`Please provide the path to the .sketch file and the legacy-colors.json`);
-}
+process.env.SKETCH = 'open-close';
 
 if (process.env.SKETCH === 'open-close') {
   exec(`osascript -e 'quit app "Sketch"'`);
 }
 
-unzip(argv.file).then(async (result) => {
-  try {
-    const colors = await readFile(argv.colors);
-    const replacer = new ColorReplacer(JSON.parse(colors));
+export async function main(args: string[]) {
+  const { colors, file } = minimist(args);
+
+  if (!file || !colors) {
+    throw Error(
+      `Please pass the --file flag with the path to the .sketch file ` +
+      `and the --colors flag for the legacy-colors.json`);
+  }
+
+  return unzip(file).then(async (result) => {
+    const colorsString = await readFile(colors);
+    const replacer = new ColorReplacer(JSON.parse(colorsString));
     await result.forEach((file) => {
       if (!file.path.match(/\.json/)) {
         return;
@@ -27,16 +32,21 @@ unzip(argv.file).then(async (result) => {
       const str = JSON.stringify(replacer.replace(content));
       file.buffer = new Buffer(str);
     });
-    await generateSketchFile('_tmp', path.basename(argv.file, '.sketch'), result);
+    await generateSketchFile('_tmp', path.basename(file, '.sketch'), result);
     if (process.env.SKETCH === 'open-close') {
-      exec(`open ${path.resolve('_tmp', path.basename(argv.file))}`);
+      exec(`open ${path.resolve('_tmp', path.basename(file))}`);
     }
-  } catch (error) {
-    if (process.env.DEBUG) {
-      console.log(chalk`{bgRed Error Parsing Files:\n}`);
-      console.log(error);
-    }
-  }
-}).catch((error) => {
-  throw error;
-});
+    return Promise.resolve(0);
+  });
+}
+/** Call the main function with command line args */
+if (require.main === module) {
+  const args = process.argv.slice(2);
+  main(args).catch((err) => {
+    log.error(err as any);
+    process.exit(1);
+  })
+  .then((code: number) => {
+    process.exit(code);
+  });
+}

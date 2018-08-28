@@ -3,7 +3,7 @@ import { rules } from './config';
 import { Validator } from './validator';
 import chalk from 'chalk';
 import { ErrorHandler } from './error/error-handler';
-import { argv } from 'yargs';
+import minimist from 'minimist';
 import * as path from 'path';
 
 const log = new Logger();
@@ -12,7 +12,9 @@ const handler = new ErrorHandler();
 
 const DEFAULT_TEST_FILE = path.join(process.cwd(), 'tests', 'fixtures', 'name-validation-test.sketch');
 
-export async function main(file: string) {
+export async function main(args: string[]) {
+
+  const file = minimist(args).file || DEFAULT_TEST_FILE;
 
   log.notice(chalk`💎💎💎  Start Validating Sketch File:  💎💎💎\n`);
   log.notice(`validate file: ${file}`);
@@ -35,8 +37,8 @@ export async function main(file: string) {
 
 /** Call the main function with command line args */
 if (require.main === module) {
-  const file = argv.file || DEFAULT_TEST_FILE;
-  main(file).catch((err) => {
+  const args = process.argv.slice(2);
+  main(args).catch((err) => {
     log.error(err as any);
     process.exit(1);
   })
