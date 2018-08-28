@@ -1,25 +1,42 @@
 import chalk from 'chalk';
-import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../error/validation-error';
-import { IValidationContext } from '../interfaces/validation-rule.interface';
+import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../../error/validation-error';
+import { IValidationContext } from '../../interfaces/validation-rule.interface';
+import { Logger } from '@utils';
 
-enum ThemeLess {
+const log = new Logger();
+
+/** Components that do not need a theme name */
+export enum ThemeLess {
   icons = 'icons',
   globalNavigations = 'global-navigation',
   menubar = 'menubar',
 }
 
-enum ThemeNames {
+/** Available Theme names */
+export enum ThemeNames {
   dark = 'dark-bg',
   light = 'light-bg',
 }
 
+export const CONTAIN_THEME_NAME_ERROR =
+  chalk`The symbol name has to include a theme name: {grey ${Object.values(ThemeNames).join(', ')}}`;
+
+/**
+ * Takes a homework and correct it like a teacher 👩🏼‍🏫
+ * check if the name matches following rules:
+ *  - at least two parts component/state or component/theme/state
+ *  - contains theme name
+ *  - is not duplicate in file
+ * @param homeworks List of Validation Rules
+ * @param currentTask number of the current task to validate
+ */
 export function symbolNameValidation(
   homeworks: IValidationContext[],
   currentTask: number,
   ): (ValidationError | boolean)[] {
   const task = homeworks[currentTask];
   if (!task) {
-    console.error(
+    log.error(
       chalk`{bgRed [symbol-name-validation.ts]} -> symbolNameValidation needs a valid task` +
       chalk`{cyan IValdiationContext[]} parameter with index!\n`,
     );
@@ -63,7 +80,7 @@ export function symbolNameValidation(
  * @param name string[]
  * @returns boolean | string
  */
-function checkThemeInName(name: string[]): boolean | string {
+export function checkThemeInName(name: string[]): boolean | string {
   if (Object.values(ThemeLess).includes(name[0])) {
     return true;
   }
@@ -71,5 +88,5 @@ function checkThemeInName(name: string[]): boolean | string {
   if (themes.includes(name[1])) {
     return true;
   }
-  return chalk`The symbol name has to include a theme name: {grey ${themes.join(', ')} }`;
+  return CONTAIN_THEME_NAME_ERROR;
 }

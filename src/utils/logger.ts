@@ -83,12 +83,12 @@ ${envs.join('\n')}
   }
 
   public checkDebug(debugSpace: string): boolean {
-
     return this._debugEnvs && this._debugEnvs.includes(debugSpace);
   }
 
   private message(message: string, level: number): void {
-    const msg = `${this.getEmoji(level)}${message}`;
+    /** replace linebreaks for perfect indentation */
+    const msg = `${this.getEmoji(level)}${message.replace('\n', `\n  ${Logger.EMOJI_SPACE}`)}`;
     console.log(msg);
     if (this._logStream) {
       this._logStream.write(JSON.stringify(this.logEntry(msg, level)));

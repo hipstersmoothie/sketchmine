@@ -1,15 +1,23 @@
 import chalk from 'chalk';
-import * as fs from 'fs';
-import { ValidationError, ColorNotInPaletteError } from '../error/validation-error';
+import { ValidationError, ColorNotInPaletteError } from '../../error/validation-error';
 import { round } from '@sketch-draw/helpers/util';
-import { rgbToHex } from '@utils';
-import { IValidationContext } from '../interfaces/validation-rule.interface';
-import { IDynatraceColorPalette, IDynatraceColor } from '../interfaces/dynatrace-color.interface';
+import { rgbToHex, Logger } from '@utils';
+import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import { IFill, IBorder } from '@sketch-draw/interfaces';
+import { generateMasterColors } from './generate-master-colors';
 
-const colorJSON = fs.readFileSync('tests/fixtures/colors.json').toString();
-const colors: string[] = removeUnusedColors(JSON.parse(colorJSON));
+const log = new Logger();
+const colors: string[] = generateMasterColors();
 
+/**
+ * Takes a homework and correct it like a teacher 👩🏼‍🏫
+ * check if the color is present in the dynatrace color palette and the fill/border is enabled
+ * validates:
+ *  - borders
+ *  - fills
+ * @param homeworks List of Validation Rules
+ * @param currentTask number of the current task to validate
+ */
 export function colorValidation(
   homeworks: IValidationContext[],
   currentTask: number,
@@ -17,7 +25,7 @@ export function colorValidation(
 
   const task = homeworks[currentTask];
   if (!task) {
-    console.error(
+    log.error(
       chalk`{bgRed [color-validation.ts]} -> colorValdiation needs a valid task` +
       chalk`{cyan IValdiationContext[]} parameter with index!\n`,
     );
@@ -43,8 +51,13 @@ export function colorValidation(
   return errors;
 }
 
-function colorInPalette(task: IValidationContext, fill: IFill | IBorder): ColorNotInPaletteError | boolean {
-  // only activated Fills should be validated
+/**
+ * validates a fill/border
+ * @param task current Task for validation (context object)
+ * @param fill the fill or border to validate
+ */
+export function colorInPalette(task: IValidationContext, fill: IFill | IBorder): ColorNotInPaletteError | boolean {
+  /** only activated Fills should be validated */
   if (fill.hasOwnProperty('isEnabled') && !fill.isEnabled) {
     return true;
   }
@@ -62,29 +75,9 @@ function colorInPalette(task: IValidationContext, fill: IFill | IBorder): ColorN
         objectId: task.do_objectID,
         name: task.name,
         message: chalk`The Color {bold {hex('${hex}') ███} ${hex}} is not in the Dynatrace Color Palette!\n` +
-        chalk`Take a look at {grey https://styles.lab.dynatrace.org/resources/colors}`,
+        chalk`Take a look at {grey https://styles.lab.dynatrace.org/resources/colors}\n`,
       },
     );
   }
   return true;
-}
-
-function removeUnusedColors(colors: IDynatraceColorPalette): string[] {
-
-  const _colors: string[] = [];
-
-  for (const key in colors) {
-    if (colors.hasOwnProperty(key)) {
-      const element: IDynatraceColor = colors[key];
-      if (
-        element.name.match(/★/) ||
-        element.name.match(/Complexion/) ||
-        element.name.match(/Steel gray/)
-      ) {
-        continue;
-      }
-      _colors.push(element.hex.toUpperCase());
-    }
-  }
-  return _colors;
 }

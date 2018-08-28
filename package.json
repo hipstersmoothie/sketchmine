@@ -1,6 +1,6 @@
 {
   "name": "sketch-library",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Library for Sketch operations like generating .sketch files from angular components, followed by a Sketch validator and color replacer",
   "main": "index.js",
   "scripts": {
@@ -65,7 +65,6 @@
     "svg-path-parser": "^1.1.0",
     "typescript": "^2.9.2",
     "unzipper": "^0.8.14",
-    "xmldom": "^0.1.27",
-    "yargs": "^11.0.0"
+    "xmldom": "^0.1.27"
   }
 }

@@ -1,7 +1,13 @@
 import { IValidationContext, IValidationRule, SketchModel } from './interfaces/validation-rule.interface';
 import { ErrorHandler } from './error/error-handler';
 import { ValidationError } from './error/validation-error';
+import { Logger } from '@utils';
 
+const log = new Logger();
+
+/**
+ * The teacher that applies the rules on the homeworks
+ */
 export class Teacher {
   private _handler: ErrorHandler;
 
@@ -23,23 +29,19 @@ export class Teacher {
       return;
     }
 
-    try {
-      const marks:(ValidationError | boolean)[] = specification.validation
-        .call(null, homework, currentTask);
+    const marks:(ValidationError | boolean)[] = specification.validation
+      .call(null, homework, currentTask);
 
-      if (marks instanceof Array) {
-        marks.forEach((mark) => {
-          if (mark === true) {
-            this._handler.addSuccess(specification);
-          } else if (mark instanceof ValidationError) {
-            mark.description = specification.description;
-            mark.parents = task.parents;
-            this._handler.addError(specification, mark);
-          }
-        });
-      }
-    } catch (error) {
-      console.log(error);
+    if (marks instanceof Array) {
+      marks.forEach((mark) => {
+        if (mark === true) {
+          this._handler.addSuccess(specification);
+        } else if (mark instanceof ValidationError) {
+          mark.description = specification.description;
+          mark.parents = task.parents;
+          this._handler.addError(specification, mark);
+        }
+      });
     }
   }
 }

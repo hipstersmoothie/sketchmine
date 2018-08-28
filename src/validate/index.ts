@@ -1,48 +1,48 @@
-import { zipToBuffer as unzip } from '@utils';
+import { zipToBuffer as unzip, Logger } from '@utils';
 import { rules } from './config';
 import { Validator } from './validator';
 import chalk from 'chalk';
 import { ErrorHandler } from './error/error-handler';
-import { argv } from 'yargs';
+import minimist from 'minimist';
+import * as path from 'path';
 
+const log = new Logger();
 const validator = new Validator(rules);
 const handler = new ErrorHandler();
 
-if (process.env.DEBUG) {
-  process.env.VERBOSE = 'true';
-}
+const DEFAULT_TEST_FILE = path.join(process.cwd(), 'tests', 'fixtures', 'name-validation-test.sketch');
 
-if (!argv.file) {
-  throw Error(`No File provided as argument! Please run script with --file flag!`);
-}
+export async function main(args: string[]) {
 
-console.log(chalk`\n💎💎💎  Start Validating Sketch File:  💎💎💎\n`);
+  const file = minimist(args).file || DEFAULT_TEST_FILE;
 
-unzip(argv.file, /pages\/.*?\.json/).then(async (result) => {
-  try {
-    if (process.env.VERBOSE) {
-      console.log(chalk`\n⏱  Parsing and Validating ${result.length.toString()} Pages: \n\n`);
-    }
+  log.notice(chalk`💎💎💎  Start Validating Sketch File:  💎💎💎\n`);
+  log.notice(`validate file: ${file}`);
+
+  /** unzip only the pages for the validation */
+  return unzip(file, /pages\/.*?\.json/).then(async (result) => {
+    log.debug(chalk`\n⏱  Parsing and Validating ${result.length.toString()} Pages: \n\n`);
     await result.forEach((file) => {
       const content = file.buffer.toString();
-      try {
-        const page = JSON.parse(content);
+      const page = JSON.parse(content);
 
-        validator.addFile(page);
-      } catch (error) {
-        throw Error(error);
-      }
+      validator.addFile(page);
     });
-  } catch (error) {
-    if (process.env.DEBUG) {
-      console.log(chalk`{bgRed Error Parsing Files:\n}`);
-      console.log(error);
-    }
-  }
 
-  validator.validate();
-  handler.emit();
-}).catch((error) => {
-  process.exit(1);
-  throw error;
-});
+    validator.validate();
+    handler.emit();
+    return Promise.resolve(0);
+  });
+}
+
+/** Call the main function with command line args */
+if (require.main === module) {
+  const args = process.argv.slice(2);
+  main(args).catch((err) => {
+    log.error(err as any);
+    process.exit(1);
+  })
+  .then((code: number) => {
+    process.exit(code);
+  });
+}
