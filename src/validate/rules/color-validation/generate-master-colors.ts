@@ -15,6 +15,12 @@ const DYNATRACE_LOGO_COLORS = [
 
 const COLORS_FILE = join(__dirname, '_tmp/', '_colors.scss');
 
+/**
+ * This function generates a list of all possible colors from the angular-components library
+ * _colors.scss file.
+ * Add the static Dynatrace logo colors in case they are not present in the angular-components
+ * @example https://regex101.com/r/nuKQ0X/1
+ */
 export function generateMasterColors(): string[] {
 
   if (!lstatSync(COLORS_FILE).isFile()) {

@@ -17,6 +17,7 @@ export async function main(file: string) {
   log.notice(chalk`💎💎💎  Start Validating Sketch File:  💎💎💎\n`);
   log.notice(`validate file: ${file}`);
 
+  /** unzip only the pages for the validation */
   return unzip(file, /pages\/.*?\.json/).then(async (result) => {
     log.debug(chalk`\n⏱  Parsing and Validating ${result.length.toString()} Pages: \n\n`);
     await result.forEach((file) => {

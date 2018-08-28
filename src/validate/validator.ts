@@ -13,7 +13,7 @@ export class Validator {
   private _files: IBase[] = [];
 
   constructor(private _rules: IValidationRule[]) {
-    // selector array is faster to check than always lookup in an object
+    /** selector array is faster to check than always lookup in an object */
     this._rules.forEach((rule: IValidationRule) => this._rulesSelectors.push(...rule.selector));
   }
 
@@ -30,9 +30,7 @@ export class Validator {
     this._files.push(content);
   }
 
-  /**
-   * Validates a sketch file with the given rules.
-   */
+  /** alidates a sketch file with the given rules. */
   async validate() {
     if (this._files.length === 0) {
       throw Error(chalk`{bgRed No files to validate!}`);
@@ -43,14 +41,12 @@ export class Validator {
     });
   }
 
-  /**
-   * 👩🏼‍🏫 The teacher applies the rules for you
-   */
+  /** 👩🏼‍🏫 The teacher applies the rules for you */
   private correct() {
     if (this._matchedRules.length === 0) {
       return;
     }
-    // We call her verena, because pinkys girlfriend is a teacher 💁🏻‍
+    /** We call her verena, because pinkys girlfriend is a teacher 💁🏻‍ */
     const verena = new Teacher(this._rules);
     verena.improve(this._matchedRules);
   }
@@ -74,7 +70,7 @@ export class Validator {
     if (!content.layers) {
       return;
     }
-    // check for childs and call recurse
+    /** check for childs and call recurse */
     content.layers.forEach((layer) => {
       this.collectModules(layer);
     });

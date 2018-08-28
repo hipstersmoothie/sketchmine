@@ -9,6 +9,15 @@ import { generateMasterColors } from './generate-master-colors';
 const log = new Logger();
 const colors: string[] = generateMasterColors();
 
+/**
+ * Takes a homework and correct it like a teacher 👩🏼‍🏫
+ * check if the color is present in the dynatrace color palette and the fill/border is enabled
+ * validates:
+ *  - borders
+ *  - fills
+ * @param homeworks List of Validation Rules
+ * @param currentTask number of the current task to validate
+ */
 export function colorValidation(
   homeworks: IValidationContext[],
   currentTask: number,
@@ -42,6 +51,11 @@ export function colorValidation(
   return errors;
 }
 
+/**
+ * validates a fill/border
+ * @param task current Task for validation (context object)
+ * @param fill the fill or border to validate
+ */
 export function colorInPalette(task: IValidationContext, fill: IFill | IBorder): ColorNotInPaletteError | boolean {
   /** only activated Fills should be validated */
   if (fill.hasOwnProperty('isEnabled') && !fill.isEnabled) {
