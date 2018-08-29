@@ -2,7 +2,7 @@ import { delDir, createDir } from '@utils';
 import * as fs from 'fs';
 import * as path from 'path';
 import axios from 'axios';
-import { IAsset } from '../traversed-dom';
+import { IAsset } from '../../dom-traverser/traversed-dom';
 import chalk from 'chalk';
 
 export class AssetHandler {

@@ -1,7 +1,7 @@
 import { Page } from '@sketch-draw/models/page';
 import { IBounding } from '@sketch-draw/interfaces';
 import { SymbolMaster } from '@sketch-draw/models/symbol-master';
-import { ITraversedDom, ITraversedDomElement } from './traversed-dom';
+import { ITraversedDom, ITraversedDomElement } from '../dom-traverser/traversed-dom';
 import { boundingClientRectToBounding } from '@sketch-draw/helpers/util';
 import { ElementDrawer } from './element-drawer';
 import chalk from 'chalk';

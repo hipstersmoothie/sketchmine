@@ -8,7 +8,7 @@ import {
   ITraversedDomTextNode,
   ITraversedDomSvgNode,
   ITraversedDomImageNode,
-} from './traversed-dom';
+} from '../dom-traverser/traversed-dom';
 import { Text } from '@sketch-draw/models/text';
 import chalk from 'chalk';
 import { ShapeGroup } from '@sketch-svg-parser/models/shape-group';

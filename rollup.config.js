@@ -17,7 +17,7 @@ function buildConfig() {
     if (config.hasOwnProperty(dependency) && config[dependency].hasOwnProperty('name')) {
       const el = config[dependency];
       const description = el.description || '';
-      conf.push({
+      const c = {
         input: path.join(el.path, 'index.ts'),
         output: [{
           file: outFile(el.name),
@@ -38,7 +38,14 @@ function buildConfig() {
           sourceMaps(),
           el.hasOwnProperty('copy') ? copyPlugin(el.copy) : {},
         ],
-      });
+      };
+
+      if (el.browser) {
+        c.external = [];
+        c.output.format = 'esm'
+      }
+    
+      conf.push(c);
     }
   }
   return conf;
