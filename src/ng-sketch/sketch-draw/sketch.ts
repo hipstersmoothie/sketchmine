@@ -66,7 +66,7 @@ export class Sketch {
         await writeJSON(path.join(Sketch.TMP_PATH, 'pages', page.objectID), page.generateObject());
       });
 
-      const preview = path.resolve(__dirname, '..', '..', 'assets', 'preview.png');
+      const preview = path.resolve(__dirname, '..', 'assets', 'preview.png');
       await copyFile(preview, path.join(Sketch.TMP_PATH, 'previews'));
     } catch (error) {
       console.error(error);
