@@ -31,7 +31,6 @@ export const config = {
     description: 'Generates .sketch files from an html website that is inspected with a headless chrome.',
     path: path.join(SRC_DIR, 'ng-sketch'),
     copy: {
-      'src/ng-sketch/injected-traverser.js' : 'dist/sketch-generator/injected-traverser.js',
       'src/assets/preview.png' : 'dist/sketch-generator/assets/preview.png',
     },
   },

@@ -19,7 +19,7 @@ export function fileValidations() {
           document = JSON.parse(data);
           done();
         } else {
-          console.log(chalk`{bgRed Failed reading document.json`, err);
+          console.log('Failed reading document.json', err);
         }
       });
     });
@@ -61,7 +61,7 @@ export function fileValidations() {
           meta = JSON.parse(data);
           done();
         } else {
-          console.log(chalk`{bgRed Failed reading document.json`, err);
+          console.log('Failed reading document.json', err);
         }
       });
     });

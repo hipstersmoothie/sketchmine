@@ -23,14 +23,11 @@ describe('SVG Parser', () => {
       });
     });
 
-    it(
-      `The more icon should have a width and height of ` +
-      chalk`{yellow ${width.toString()}x${height.toString()}px}.`,
-      () => {
-        expect(svgObject).toHaveProperty('size');
-        expect(svgObject.size.width).toBe(width);
-        expect(svgObject.size.height).toBe(height);
-      });
+    it(`The more icon should have a width and height of ${width}x${height}px.`, () => {
+      expect(svgObject).toHaveProperty('size');
+      expect(svgObject.size.width).toBe(width);
+      expect(svgObject.size.height).toBe(height);
+    });
 
     it('The more icon should have three shapes.', () => {
       expect(svgObject.shapes).toHaveLength(3);

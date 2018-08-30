@@ -1,33 +1,71 @@
+import { JSDOM } from 'jsdom';
+import { DomVisitor } from './dom-visitor';
+
+export enum NodeType {
+  Text = 'Text',
+  Element = 'Element',
+  Comment = 'Comment',
+}
+
+/**
+ * @description
+ * Traverser that runs through the DOM and visits every node with a visitor
+ */
 export class DomTraverser {
-  private _nodeCount = 0;
-  private _elementCount = 0;
-  private _attributeCount = 0;
-  private _textCount = 0;
-  private _commentCount = 0;
+  nodeCount = 0;
+  elementCount = 0;
+  attributeCount = 0;
+  textCount = 0;
+  commentCount = 0;
 
-  constructor() { }
+  /**
+   * this function is needed for the unit tests, in case we have to mock this part
+   * in case that jest does not know the Element, Text or Comment instance.
+   * @param node Node to be checked
+   */
+  checkNodeType(node: Node): NodeType {
+    if (node instanceof Element) {
+      return NodeType.Element;
+    }
+    if (node instanceof Text) {
+      return NodeType.Text;
+    }
+    if (node instanceof Comment) {
+      return NodeType.Comment;
+    }
+  }
 
-  traverse(node, visitor) {
-    this._nodeCount += 1;
+  traverse(node, visitor: DomVisitor) {
+    this.nodeCount += 1;
     let treeLevel;
 
-    if (node instanceof Element) {
-      this._elementCount += 1;
-      treeLevel = { ...visitor.visitElement(node) };
-    } else if (node instanceof Text) {
-      this._textCount += 1;
-      treeLevel = { ...visitor.visitText(node) };
-    } else if (node instanceof Comment) {
-      this._commentCount += 1;
+    switch (this.checkNodeType(node)) {
+      case NodeType.Element:
+        this.elementCount += 1;
+        treeLevel = visitor.visitElement(node);
+        break;
+      case NodeType.Text:
+        this.textCount += 1;
+        treeLevel = visitor.visitText(node);
+        break;
+      case NodeType.Comment:
+        this.commentCount += 1;
+        break;
     }
 
     // Start traversing the child nodes
     let childNode = node.firstChild;
     if (childNode) {
       treeLevel.children = [];
-      treeLevel.children.push(this.traverse(childNode, visitor));
+      const n = this.traverse(childNode, visitor);
+      if (n) {
+        treeLevel.children.push(n);
+      }
       while (childNode = childNode.nextSibling) {
-        treeLevel.children.push(this.traverse(childNode, visitor));
+        const cn = this.traverse(childNode, visitor);
+        if (cn) {
+          treeLevel.children.push(cn);
+        }
       }
     }
     return treeLevel;

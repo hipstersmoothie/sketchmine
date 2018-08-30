@@ -7,13 +7,15 @@ import { ITraversedDom } from '../dom-traverser/traversed-dom';
 import { AssetHandler } from '@sketch-draw/asset-handler';
 import { exec } from 'child_process';
 
+const config = require(`${process.cwd()}/config/app.json`);
+
 export class ElementFetcher {
 
   private static HOST = 'http://localhost:4200';
   private static SELECTOR = 'app-root > * > *';
   private _assetHandler: AssetHandler = new AssetHandler();
   private _symbols: ITraversedDom[] = [];
-  private _injectedDomTraverser = path.resolve(__dirname, '../dom-traverser/index.js');
+  private _injectedDomTraverser =  path.join(process.cwd(), config.sketchGenerator.traverser);
 
   set host(host: string) { ElementFetcher.HOST = host; }
   set selector(sel: string) { ElementFetcher.SELECTOR = sel; }

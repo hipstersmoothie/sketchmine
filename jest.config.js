@@ -1,6 +1,7 @@
 module.exports = {
   verbose: true,
   testEnvironment: 'node',
+  testURL: 'http://localhost/',
   testPathIgnorePatterns: ['/_tmp/', '/node_modules/'],
   coveragePathIgnorePatterns: [
     '\\.d\\.ts$',
