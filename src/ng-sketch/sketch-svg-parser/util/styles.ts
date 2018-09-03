@@ -1,6 +1,7 @@
 import { SvgStyle } from '@sketch-svg-parser/interfaces';
 import { Style } from '@sketch-draw/models/style';
 import { IStyle } from '@sketch-draw/interfaces';
+import { StyleDeclaration } from '../../../dom-traverser/dom-visitor';
 
 /**
  * add Style attributes to a map if it has a value, so that no undefined values are in the map
@@ -55,7 +56,7 @@ export function overrideSvgStyle(
  * @param cssStyle CSSStyleDeclaration
  * @returns IStyle
  */
-export function addCssStyleToSvg(cssStyle: CSSStyleDeclaration): IStyle {
+export function addCssStyleToSvg(cssStyle: StyleDeclaration): IStyle {
   const style = new Style();
 
   const fill = cssStyle.fill;

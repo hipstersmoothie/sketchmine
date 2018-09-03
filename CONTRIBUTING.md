@@ -30,6 +30,7 @@ for example: `UX-8220 feat(angular-meta-parser): Added new feature`
 * sketch-color-replacer
 * sketch-generator
 * sketch-validator
+* dom-traverser
 
 #### Available types
 

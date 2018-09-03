@@ -10,6 +10,7 @@ export const config = {
   },
   angularMetaParser: {
     name: 'angular-meta-parser',
+    description: 'The angular-meta-parser is a compiler, that generates an abstract syntax tree short AST from the\nAngular Components library and transforms the AST to a JSON format that represents all components,\nthat are related for the components library in sketch with all possible variants',
     path: path.join(SRC_DIR, 'angular-meta-parser'),
     copy: {
       "src/angular-meta-parser/config.json": "dist/angular-meta-parser/config.json",
@@ -19,12 +20,17 @@ export const config = {
     name: 'sketch-color-replacer',
     path: path.join(SRC_DIR, 'color-replacer'),
   },
+  domTraverser: {
+    name: 'dom-traverser',
+    description: 'The Dom Traverser collects the information from the DOM to\ndraw afterwards a .sketch file from the collected information in the tree.',
+    path: path.join(SRC_DIR, 'dom-traverser'),
+    browser: true,
+  },
   ngSketch: {
     name: 'sketch-generator',
     description: 'Generates .sketch files from an html website that is inspected with a headless chrome.',
     path: path.join(SRC_DIR, 'ng-sketch'),
     copy: {
-      'src/ng-sketch/injected-traverser.js' : 'dist/sketch-generator/injected-traverser.js',
       'src/assets/preview.png' : 'dist/sketch-generator/assets/preview.png',
     },
   },
@@ -46,7 +52,7 @@ export function outFile(dir, isProduction = false) {
 export function banner(name, version, description) {
   return `/**
   * ${name} - ${version}
-  * Description: ${description}
+  * Description: ${description.replace(/\\n/g, '\n  *              ')}
   * Company: Dynatrace
   * Author: Lukas Holzer <lukas.holzer@dynatrace.com>
   **/

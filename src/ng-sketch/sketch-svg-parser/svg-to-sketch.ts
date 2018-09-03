@@ -5,12 +5,13 @@ import { SvgPointsToSketch } from '@sketch-svg-parser/svg-points-to-sketch';
 import { Style } from '@sketch-draw/models/style';
 import chalk from 'chalk';
 import { addCssStyleToSvg } from '@sketch-svg-parser/util/styles';
+import { StyleDeclaration } from '../../dom-traverser/dom-visitor';
 
 export class SvgToSketch {
 
-  private _styles: CSSStyleDeclaration;
+  private _styles: StyleDeclaration;
 
-  set styles(styles: CSSStyleDeclaration) { this._styles = styles; }
+  set styles(styles: StyleDeclaration) { this._styles = styles; }
   constructor(private _svgObject: ISvg) { }
 
   generateObject(): any[] {

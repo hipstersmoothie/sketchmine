@@ -1,3 +1,5 @@
+import { StyleDeclaration } from './dom-visitor';
+
 export interface ITraversedDom {
   pageUrl: string;
   pageTitle: string;
@@ -9,14 +11,15 @@ export interface IAsset {
 }
 
 export interface ITraversedElement {
-  parentRect: DOMRect;
+  parentRect: DOMRect | null;
   tagName: string;
-  styles: CSSStyleDeclaration;
+  styles: StyleDeclaration;
+  isHidden?: boolean;
 }
 export interface ITraversedDomElement extends ITraversedElement {
   className: string;
   boundingClientRect: DOMRect;
-  children?: (ITraversedDomElement | ITraversedDomTextNode)[];
+  children?: ITraversedElement[];
 }
 export interface ITraversedDomTextNode extends ITraversedElement{
   text: string;

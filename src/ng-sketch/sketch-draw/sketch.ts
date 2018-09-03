@@ -5,6 +5,8 @@ import { Page } from '@sketch-draw/models/page';
 import * as path from 'path';
 import chalk from 'chalk';
 
+const config = require(`${process.cwd()}/config/app.json`);
+
 export class Sketch {
   private static FILE_NAME = 'dt-asset-lib';
   private static TMP_PATH = path.resolve('_tmp');
@@ -66,7 +68,7 @@ export class Sketch {
         await writeJSON(path.join(Sketch.TMP_PATH, 'pages', page.objectID), page.generateObject());
       });
 
-      const preview = path.resolve(__dirname, '..', '..', 'assets', 'preview.png');
+      const preview = path.join(process.cwd(), config.sketchGenerator.previewImage);
       await copyFile(preview, path.join(Sketch.TMP_PATH, 'previews'));
     } catch (error) {
       console.error(error);

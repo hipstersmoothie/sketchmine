@@ -2,11 +2,11 @@ import { ElementFetcher } from './element-fetcher';
 import { exec } from 'child_process';
 
 const pages = [
-  '/icon/icon--agent',
-  '/icon/icon--richface',
-  '/button/button--icon',
-  '/button/button--primary',
-  '/button/button--secondary',
+  // '/icon/icon--agent',
+  // '/icon/icon--richface',
+  // '/button/button--icon',
+  // '/button/button--primary',
+  // '/button/button--secondary',
   '/tile/tile--default',
 ];
 
@@ -22,7 +22,8 @@ try {
 
   const elementFetcher = new ElementFetcher();
   elementFetcher.host = 'http://localhost:4200';
-  elementFetcher.generateSketchFile(pages);
+  elementFetcher.generateSketchFile(pages)
+    .then(code => process.exit(code));
 } catch (error) {
   process.exit(1);
   throw error;

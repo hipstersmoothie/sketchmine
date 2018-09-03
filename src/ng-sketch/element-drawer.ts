@@ -8,7 +8,7 @@ import {
   ITraversedDomTextNode,
   ITraversedDomSvgNode,
   ITraversedDomImageNode,
-} from './traversed-dom';
+} from '../dom-traverser/traversed-dom';
 import { Text } from '@sketch-draw/models/text';
 import chalk from 'chalk';
 import { ShapeGroup } from '@sketch-svg-parser/models/shape-group';
@@ -90,7 +90,7 @@ export class ElementDrawer {
     group.name = element.className || element.tagName.toLowerCase();
 
     // add Background shape only if it has styling
-    if (!this.hasDefaultStyling(element.styles)) {
+    if (element.styles) {
       // shape Group in group always starts at x:0, y:0
       const shapeGroup = new ShapeGroup({ ...size, x:0, y:0 });
       shapeGroup.name = 'Background';
@@ -101,7 +101,7 @@ export class ElementDrawer {
 
     if (element.children && element.children.length > 0) {
       element.children.reverse().forEach((child) => {
-        const childNode = new ElementDrawer(child);
+        const childNode = new ElementDrawer(child as any);
         const layers = childNode.layers;
         if (layers.length > 0) {
           group.addLayer(layers);
@@ -109,22 +109,6 @@ export class ElementDrawer {
       });
     }
     this._layers.push(group.generateObject());
-  }
-
-  private hasDefaultStyling(styles: CSSStyleDeclaration) {
-    const DEFAULT_VALUES = {
-      backgroundColor: 'rgba(0, 0, 0, 0)',
-      backgroundImage: 'none',
-      borderWidth: '0px',
-      boxShadow: 'none',
-    };
-
-    return Object.keys(DEFAULT_VALUES).every((key) => {
-      const defaultValue = DEFAULT_VALUES[key];
-      const value = styles[key];
-
-      return defaultValue === value;
-    });
   }
 
   private addshape(element: ITraversedDomElement): IRectangle {
@@ -161,7 +145,8 @@ export class ElementDrawer {
       );
     }
 
-    if (Object.keys(parentBCR).length > 0) {
+    /** root elemenet has no parentBCR */
+    if (parentBCR && Object.keys(parentBCR).length > 0) {
       const x = bcr.x - parentBCR.x;
       const y = bcr.y - parentBCR.y;
       return {

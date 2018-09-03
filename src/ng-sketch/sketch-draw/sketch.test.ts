@@ -15,6 +15,7 @@ describe('Sketch file format generation', () => {
       await sketch.write([]);
       expect(sketch.write).toHaveBeenCalledTimes(1);
       expect(sketch.write).toHaveBeenCalledWith([]);
+      expect(sketch.write).toHaveReturned(); /** check that the function does not throw */
     });
   });
 

@@ -3,9 +3,11 @@ import chalk from 'chalk';
 import * as puppeteer from 'puppeteer';
 import { Sketch } from '@sketch-draw/sketch';
 import { Drawer } from './drawer';
-import { ITraversedDom } from './traversed-dom';
+import { ITraversedDom } from '../dom-traverser/traversed-dom';
 import { AssetHandler } from '@sketch-draw/asset-handler';
 import { exec } from 'child_process';
+
+const config = require(`${process.cwd()}/config/app.json`);
 
 export class ElementFetcher {
 
@@ -13,12 +15,12 @@ export class ElementFetcher {
   private static SELECTOR = 'app-root > * > *';
   private _assetHandler: AssetHandler = new AssetHandler();
   private _symbols: ITraversedDom[] = [];
-  private _injectedDomTraverser = path.resolve(__dirname, 'injected-traverser.js');
+  private _injectedDomTraverser =  path.join(process.cwd(), config.sketchGenerator.traverser);
 
   set host(host: string) { ElementFetcher.HOST = host; }
   set selector(sel: string) { ElementFetcher.SELECTOR = sel; }
 
-  async generateSketchFile(pages: string[], outDir?: string): Promise<boolean> {
+  async generateSketchFile(pages: string[], outDir?: string): Promise<number> {
     const drawer = new Drawer();
     const sketch = new Sketch(outDir);
     await this.collectElements(pages);
@@ -33,7 +35,7 @@ export class ElementFetcher {
     if (process.env.SKETCH === 'open-close') {
       exec('open dt-asset-lib.sketch');
     }
-    return Promise.resolve(true);
+    return Promise.resolve(0);
   }
 
   /**

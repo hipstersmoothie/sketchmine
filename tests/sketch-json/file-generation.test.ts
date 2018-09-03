@@ -40,9 +40,6 @@ describe('➡ Sketch File generation 💎', () => {
   describe('JSON validation: 🚧 \n', () => {
     // general File Validations
     fileValidations();
-
-    describe('Validating modules: 🛠 \n', () => {
-    });
   });
 
   afterAll(() => {
