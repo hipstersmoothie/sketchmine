@@ -18,7 +18,7 @@ function findObjects(o: Object, targetProp: string, targetValue: any, finalResul
           if (obj[prop] === targetValue) {
             finalResults.push(obj);
           }
-          if (obj[prop] instanceof Object || obj[prop] instanceof Array){
+          if (obj[prop] instanceof Object || obj[prop] instanceof Array) {
             getObject(obj[prop]);
           }
         }
