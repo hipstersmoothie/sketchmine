@@ -20,7 +20,7 @@ export class ElementFetcher {
   set host(host: string) { ElementFetcher.HOST = host; }
   set selector(sel: string) { ElementFetcher.SELECTOR = sel; }
 
-  async generateSketchFile(pages: string[], outDir?: string): Promise<boolean> {
+  async generateSketchFile(pages: string[], outDir?: string): Promise<number> {
     const drawer = new Drawer();
     const sketch = new Sketch(outDir);
     await this.collectElements(pages);
@@ -35,7 +35,7 @@ export class ElementFetcher {
     if (process.env.SKETCH === 'open-close') {
       exec('open dt-asset-lib.sketch');
     }
-    return Promise.resolve(true);
+    return Promise.resolve(0);
   }
 
   /**

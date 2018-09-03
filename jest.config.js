@@ -18,8 +18,8 @@ module.exports = {
     '@utils': '<rootDir>/src/utils/index',
   },
   testMatch: [
-    '<rootDir>/src/**/?(*.)test.ts',
-    '<rootDir>/tests/**/?(*.)test.ts',
+    '<rootDir>/src/**/?(*.)+(e2e|test).ts',
+    '<rootDir>/tests/**/?(*.)+(e2e|test).ts',
   ],
   transform: {
     '\\.(ts)$': '<rootDir>/node_modules/ts-jest/preprocessor.js',

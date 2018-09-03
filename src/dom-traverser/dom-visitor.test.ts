@@ -1,7 +1,7 @@
 import { JSDOM } from 'jsdom';
 import * as path from 'path';
 import { readFileSync } from 'fs';
-import { DomVisitor } from './dom-visitor';
+import { DomVisitor, StyleDeclaration } from './dom-visitor';
 import {
   ITraversedDomElement,
   ITraversedDomTextNode,
@@ -38,10 +38,10 @@ describe('DOM Visitor', () => {
      * in case that it is not available in jsdom.
      * For that we would need an e2e test.
      */
-    visitor.getStyle = jest.fn().mockImplementation(() => {
-      return {
-        backgroundColor: 'rgba(0, 0, 0, 0)',
-      };
+    visitor.getStyle = jest.fn().mockReturnValue({
+      styles: new StyleDeclaration(),
+      isHidden: false,
+      hasDefaultStyling: false,
     });
   });
 
@@ -49,7 +49,7 @@ describe('DOM Visitor', () => {
     const result = visitor.visitElement(hostElement) as ITraversedDomElement;
     expect(result.tagName).toMatch(ROOT_ELEMENT.toUpperCase());
     expect(result.className).toHaveLength(0);
-    expect(result.parentRect).toMatchObject({});
+    expect(result.parentRect).toBeNull();
     expect(result.boundingClientRect).toEqual(expect.objectContaining(rect));
     expect(result).toHaveProperty('styles');
   });
@@ -97,5 +97,17 @@ describe('DOM Visitor', () => {
     expect(result.parentRect).toEqual(expect.objectContaining(rect));
     expect(result.text).toMatch('Primary Button');
     expect(result).toHaveProperty('styles');
+  });
+
+  test('has default styling', () => {
+    visitor.getStyle = jest.fn().mockReturnValue({
+      styles: new StyleDeclaration(),
+      isHidden: false,
+      hasDefaultStyling: true,
+    });
+    const button = document.querySelector('button');
+    const result = visitor.visitElement(button) as ITraversedDomElement;
+    expect(result).toHaveProperty('styles');
+    expect(result.styles).toBe(null);
   });
 });

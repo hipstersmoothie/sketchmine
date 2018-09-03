@@ -5,7 +5,7 @@ import { readFileSync } from 'fs';
 import * as path from 'path';
 import { JSDOM } from 'jsdom';
 import { DomTraverser, NodeType } from './dom-traverser';
-import { DomVisitor } from './dom-visitor';
+import { DomVisitor, StyleDeclaration } from './dom-visitor';
 import { ITraversedElement } from './traversed-dom';
 
 const TEST_FILE = path.join(process.cwd(), 'tests', 'fixtures', 'test-page.html');
@@ -25,7 +25,7 @@ describe('DOM Traverser', () => {
      * in case that it is not available in jsdom.
      * For that we would need an e2e test.
      */
-    visitor.getStyle = jest.fn().mockImplementation(() => { return {}; });
+    visitor.getStyle = jest.fn().mockImplementation(() => { return new StyleDeclaration(); });
     /**
      * Mock the implementation of the checkNodeType
      * Jest does not know that the provided node is instance of Element,

@@ -1,5 +1,6 @@
 import { JSDOM } from 'jsdom';
 import { DomVisitor } from './dom-visitor';
+import { ITraversedElement, ITraversedDomElement } from './traversed-dom';
 
 export enum NodeType {
   Text = 'Text',
@@ -35,9 +36,9 @@ export class DomTraverser {
     }
   }
 
-  traverse(node, visitor: DomVisitor) {
+  traverse(node, visitor: DomVisitor): ITraversedElement {
     this.nodeCount += 1;
-    let treeLevel;
+    let treeLevel: ITraversedElement;
 
     switch (this.checkNodeType(node)) {
       case NodeType.Element:
@@ -56,15 +57,15 @@ export class DomTraverser {
     // Start traversing the child nodes
     let childNode = node.firstChild;
     if (childNode) {
-      treeLevel.children = [];
+      (treeLevel as ITraversedDomElement).children = [];
       const n = this.traverse(childNode, visitor);
       if (n) {
-        treeLevel.children.push(n);
+        (treeLevel as ITraversedDomElement).children.push(n);
       }
       while (childNode = childNode.nextSibling) {
         const cn = this.traverse(childNode, visitor);
         if (cn) {
-          treeLevel.children.push(cn);
+          (treeLevel as ITraversedDomElement).children.push(cn);
         }
       }
     }
