@@ -23,7 +23,7 @@ function buildConfig() {
           file: outFile(el.name),
           name: el.name,
           banner: banner(el.name, pkg.version, description),
-          format: 'cjs',
+          format: el.format || 'cjs',
         }],
         external: [
           ...dependencies,

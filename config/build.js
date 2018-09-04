@@ -15,6 +15,10 @@ export const config = {
       "src/angular-meta-parser/config.json": "dist/angular-meta-parser/config.json",
     }
   },
+  angularVariantGenerator: {
+    name: 'angular-variant-generator',
+    path: path.join(SRC_DIR, 'angular-variant-generator'),
+  },
   colorReplacer: {
     name: 'sketch-color-replacer',
     path: path.join(SRC_DIR, 'color-replacer'),
