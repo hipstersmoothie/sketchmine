@@ -34,7 +34,7 @@ export function generateMasterColors(): string[] {
   const regex = /\$(\w+?)\-(\d+?)\:\s*?(#[0-9a-f]+|rgba?\([0-9\s\,]+?\))/gm;
 
   /** @example https://regex101.com/r/xVkRwW/1 */
-  const threeDigitsHex = /#([a-fA-F0-9]{3})/gm;
+  const threeDigitsHex = /#([a-fA-F0-9]{3})$/;
 
   let match = regex.exec(allColors);
   while (match !== null) {
