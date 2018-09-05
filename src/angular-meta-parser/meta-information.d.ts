@@ -18,7 +18,7 @@ export namespace MetaInformation {
   export interface VariantProperty {
     type: 'property';
     key: string;
-    value: string[] | string;
+    value: string;
   }
 
   export interface Component {

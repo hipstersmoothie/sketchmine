@@ -12,6 +12,7 @@ export function getComponentDecorator(node: ts.ClassDeclaration): ts.ObjectLiter
   }
   const args = (decorator.expression as ts.CallExpression).arguments;
   if (args && args.length) {
+    /** TODO: implement handling of multiple decorators */
     return args[0] as ts.ObjectLiteralExpression;
   }
   return null;

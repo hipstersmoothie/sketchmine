@@ -5,7 +5,6 @@ import {
   ITraversedDomTextNode,
   ITraversedDomElement,
 } from './traversed-dom';
-import { isThisTypeNode } from 'typescript';
 
 /**
  * The property keys that are used to identify if the element

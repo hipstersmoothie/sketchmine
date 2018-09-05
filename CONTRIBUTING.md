@@ -28,10 +28,10 @@ for example: `UX-8220 feat(angular-meta-parser): Added new feature`
 * library *(if it affects every component)*
 * angular-meta-parser
 * angular-variant-generator
+* dom-traverser
 * sketch-color-replacer
 * sketch-generator
 * sketch-validator
-* dom-traverser
 
 #### Available types
 

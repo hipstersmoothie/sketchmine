@@ -10,3 +10,5 @@ export * from './rgb-to-hex';
 export * from './write-json';
 export * from './zip-to-buffer';
 export * from './camel-case-to-kebab-case';
+export * from './capitalize-first-letter';
+export * from './kebab-case-to-camel-case';

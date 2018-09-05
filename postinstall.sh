@@ -40,6 +40,8 @@ echo "create › dist/angular-meta-parser"
 mkdir dist/angular-meta-parser
 echo "create › dist/angular-variant-generator"
 mkdir dist/angular-variant-generator
+echo "create › dist/dom-traverser"
+mkdir dist/dom-traverser
 echo "create › dist/sketch-color-replacer"
 mkdir dist/sketch-color-replacer
 echo "create › dist/sketch-generator"
