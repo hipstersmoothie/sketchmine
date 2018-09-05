@@ -18,6 +18,14 @@ const WRONG_COLOR = {
   alpha: 1,
 };
 
+const SHORT_COLOR = {
+  _class: 'color',
+  red: 204 / 255,
+  green: 204 / 255,
+  blue: 204 / 255,
+  alpha: 1,
+};
+
 const TRUE_COLOR = {
   _class: 'color',
   red: 0.7058823529411764,
@@ -76,5 +84,16 @@ describe('Color Validation', () => {
     expect(check).not.toBeInstanceOf(ColorNotInPaletteError);
     expect(check).toBeTruthy();
   });
-
+  it(chalk`should check if the validation passes for 3 digit hex values {hex('#CCCCCC') ███} #CCC`, () => {
+    TRUE_FILL.color = SHORT_COLOR;
+    const check = colorInPalette(fakeTask, TRUE_FILL as IFill);
+    expect(check).not.toBeInstanceOf(ColorNotInPaletteError);
+    expect(check).toBeTruthy();
+  });
+  it(chalk`should not convert 6 digit hex values to 3 digit hex values {hex('#5ead35') ███} #5ead35`, () => {
+    TRUE_FILL.color = { _class: 'color', red: 94 / 255, green: 173 / 255, blue: 53 / 255, alpha: 1 };
+    const check = colorInPalette(fakeTask, TRUE_FILL as IFill);
+    expect(check).not.toBeInstanceOf(ColorNotInPaletteError);
+    expect(check).toBeTruthy();
+  });
 });
