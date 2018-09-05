@@ -8,6 +8,7 @@ export const rules: IValidationRule[] = [
     name: 'symbol-name-validation',
     description: `Validation if the symbol names matches the Dynatrace Sketch naming conventions.` +
     ``,
+    env: ['global'],
     validation: symbolNameValidation,
   },
   {
@@ -15,6 +16,7 @@ export const rules: IValidationRule[] = [
     name: 'color-palette-validation',
     description: 'Check if the used colors are in our color palette.',
     ignoreArtboards: ['full-color-palette'],
+    env: ['product'],
     validation: colorValidation,
-  },
+  }
 ];

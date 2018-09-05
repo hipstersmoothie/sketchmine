@@ -6,8 +6,9 @@ import { ErrorHandler } from './error/error-handler';
 import minimist from 'minimist';
 import * as path from 'path';
 
+const env = process.env.ENVIRONMENT || 'global';
 const log = new Logger();
-const validator = new Validator(rules);
+const validator = new Validator(rules, env);
 const handler = new ErrorHandler();
 
 const DEFAULT_TEST_FILE = path.join(process.cwd(), 'tests', 'fixtures', 'name-validation-test.sketch');

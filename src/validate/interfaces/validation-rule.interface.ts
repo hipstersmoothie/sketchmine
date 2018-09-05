@@ -17,6 +17,7 @@ export interface IValidationRule {
   validation: ValidationFunction;
   description?: string;
   ignoreArtboards?: string[];
+  env?: string[];
 }
 
 export interface IValidationContext {

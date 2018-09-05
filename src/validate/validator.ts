@@ -5,14 +5,14 @@ import chalk from 'chalk';
 import { Teacher } from './teacher';
 
 export class Validator {
+  matchedRules: IValidationContext[] = [];
   private _rulesSelectors: string[] = [];
-  private _matchedRules: IValidationContext[] = [];
   private _currentArtboard: string;
   private _currentSymbol: string;
   private _currentPage: string;
   private _files: IBase[] = [];
 
-  constructor(private _rules: IValidationRule[]) {
+  constructor(private _rules: IValidationRule[], public env: string) {
     /** selector array is faster to check than always lookup in an object */
     this._rules.forEach((rule: IValidationRule) => this._rulesSelectors.push(...rule.selector));
   }
@@ -43,12 +43,12 @@ export class Validator {
 
   /** 👩🏼‍🏫 The teacher applies the rules for you */
   private correct() {
-    if (this._matchedRules.length === 0) {
+    if (this.matchedRules.length === 0) {
       return;
     }
     /** We call her verena, because pinkys girlfriend is a teacher 💁🏻‍ */
     const verena = new Teacher(this._rules);
-    verena.improve(this._matchedRules);
+    verena.improve(this.matchedRules);
   }
 
   /**
@@ -61,10 +61,14 @@ export class Validator {
 
     if (this._rulesSelectors.includes(content._class)) {
       const rule = this._rules.find(rule => rule.selector.includes(content._class as SketchModel));
-      if (rule.ignoreArtboards && rule.ignoreArtboards.includes(this._currentArtboard)) {
+      if (
+        rule.ignoreArtboards &&
+        rule.ignoreArtboards.includes(this._currentArtboard) ||
+        rule.env && !rule.env.includes(this.env)
+      ) {
         return;
       }
-      this._matchedRules.push(this.getProperties(content));
+      this.matchedRules.push(this.getProperties(content));
     }
 
     if (!content.layers) {
