@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 import * as path from 'path';
 import { JSDOM } from 'jsdom';
-import { readFileSync } from 'fs';
+import { readFileSync, readdir, lstatSync } from 'fs';
 import { MetaInformation } from '../angular-meta-parser/meta-information';
 import {
   getComponentDecorator,
@@ -39,6 +39,7 @@ function generateComponentVariants(source: string, component: MetaInformation.Co
       const config = {
         variantName: variant.name,
         className: `${generateClassName(variant.name)}`,
+        /** TODO: handle all selectors in array not only the first */
         selector: component.selector[0],
         type: change.type,
         key: change.key,
@@ -81,3 +82,22 @@ const fileName = path.join(
 const source = readFileSync(fileName, { encoding: 'utf8' }).toString();
 
 generateComponents(source);
+
+const CONFIG = require('./config.json');
+const dir = path.join(path.resolve(CONFIG.args.rootDir), CONFIG.args.components);
+
+// readdir(dir, (err, list) => {
+//   if (err) {
+//     throw err;
+//   }
+//   list.filter(dirOrFile => lstatSync(path.join(dir, dirOrFile)).isDirectory())
+//       .forEach((subdir) => {
+//         readdir(path.join(dir, subdir), (err, sublist) => {
+//           console.log(sublist)
+//         });
+//       });
+//   // var regex = new RegExp(".*");
+//   // list.forEach( function(item) {
+//   // if( regex.test(item) ) 
+//   //     console.log(item);
+// });

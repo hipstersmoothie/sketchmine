@@ -23,6 +23,7 @@ export namespace MetaInformation {
 
   export interface Component {
     className: string;
+    location: string;
     selector: string[];
     variants: Variant[];
   }

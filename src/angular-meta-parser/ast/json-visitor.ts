@@ -115,6 +115,7 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
 
     return {
       className: node.name,
+      location: node.location.path,
       selector: node.selector,
       clickable: node.clickable,
       hoverable: node.hoverable,

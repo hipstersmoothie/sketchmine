@@ -19,6 +19,9 @@ export const config = {
   angularVariantGenerator: {
     name: 'angular-variant-generator',
     path: path.join(SRC_DIR, 'angular-variant-generator'),
+    copy: {
+      "src/angular-variant-generator/config.json": "dist/angular-variant-generator/config.json",
+    }
   },
   colorReplacer: {
     name: 'sketch-color-replacer',

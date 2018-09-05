@@ -48,8 +48,6 @@ function applyChangeOnTemplate(template: string, context: ts.TransformationConte
   const dom = new JSDOM(template);
   const document = dom.window.document;
 
-  console.log(selector, type, key, value);
-
   [].slice.call(document.querySelectorAll(selector as string))
     .forEach((el: HTMLElement) => {
       if (type === 'property') {
@@ -61,6 +59,11 @@ function applyChangeOnTemplate(template: string, context: ts.TransformationConte
 }
 
 function addProperty(element: HTMLElement, key: string, value: string): HTMLElement {
-  element.setAttribute(key, value);
+  /** JSON.parse cannot handle undefined */
+  if (value === 'undefined') {
+    element.setAttribute(key, undefined);
+  } else {
+    element.setAttribute(key, JSON.parse(value));
+  }
   return element;
 }

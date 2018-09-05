@@ -1,0 +1,7 @@
+{
+  "args": {
+    "rootDir": "src/angular-variant-generator/_tmp/",
+    "meta-information": "src/angular-meta-parser/_tmp/meta-information.json",
+    "components": "src/docs/components"
+  }
+}

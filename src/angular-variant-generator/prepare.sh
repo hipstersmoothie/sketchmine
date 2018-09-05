@@ -10,3 +10,4 @@ git clone --no-checkout --depth=1 -b $BRANCH $REPO $TMP
 cd $TMP
 git fetch origin $BRANCH
 git checkout origin/$BRANCH -- src/docs/components
+mkdir $TMP/components
