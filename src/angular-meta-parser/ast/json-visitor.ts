@@ -1,5 +1,5 @@
 import { arrayFlatten, camelCaseToKebabCase } from '@utils';
-import { MetaInformation } from '../meta-information';
+import { AMP } from '../meta-information';
 import { NullVisitor, AstVisitor } from './ast-visitor';
 import { NodeTags, ParseDefinition } from './parse-definition';
 import { ParseValueType } from './parse-value-type';
@@ -48,8 +48,8 @@ export function mergeClassMembers(originalMembers: any[], toBeMerged: any[]): an
  * @param variants Array of Variants
  * @param className needed for the variant name
  */
-export function generateVariants(variants: any, className: string): MetaInformation.Variant[] {
-  const result: MetaInformation.Variant[] = [];
+export function generateVariants(variants: any, className: string): AMP.Variant[] {
+  const result: AMP.Variant[] = [];
   const baseName = camelCaseToKebabCase(className);
 
   variants.forEach((variant) => {
@@ -102,7 +102,7 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
       value: node.values,
     };
   }
-  visitComponent(node: ParseComponent): any {
+  visitComponent(node: ParseComponent): AMP.Component {
     const extending = this.visitAll(node.extending)
       .map(ext => ext.variants);
     const implementing = this.visitAll(node.implementing)
@@ -115,6 +115,8 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
 
     return {
       className: node.name,
+      /** @example https://regex101.com/r/YduQlF/1 */
+      component: /.+?\/([^\/]+?).ts$/.exec(node.location.path)[1],
       location: node.location.path,
       selector: node.selector,
       clickable: node.clickable,
@@ -123,7 +125,7 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
     };
   }
 
-  visitResult(node: ParseResult): MetaInformation.Component[] {
+  visitResult(node: ParseResult): AMP.Component[] {
     const nodes = this.visitAll(node.nodes)
       .filter(node => node.className);
 

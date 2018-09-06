@@ -12,3 +12,4 @@ export * from './zip-to-buffer';
 export * from './camel-case-to-kebab-case';
 export * from './capitalize-first-letter';
 export * from './kebab-case-to-camel-case';
+export * from './read-dir-recursivly';

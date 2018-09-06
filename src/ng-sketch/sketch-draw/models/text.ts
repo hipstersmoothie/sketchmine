@@ -11,11 +11,12 @@ import {
 import { Style } from '@sketch-draw/models/style';
 import { IStyle } from '@sketch-draw/interfaces/style.interface';
 import { fixWhiteSpace, fontMapping, fontStyle } from '@sketch-draw/helpers/font';
+import { StyleDeclaration } from '../../../dom-traverser/dom-visitor';
 
 // TODO: multiline text attribute
 export class Text extends Base {
   private _text = '';
-  private _styles: CSSStyleDeclaration;
+  private _styles: StyleDeclaration;
   private _styleClass: Style;
 
   set text(text: string) { this._text = fixWhiteSpace(text, this._styles.whiteSpace); }
