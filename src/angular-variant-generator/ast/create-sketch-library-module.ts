@@ -4,9 +4,10 @@ import { createIdentifierArray } from './create-identifier-array';
 
 /**
  * creates the NgModule for all the variants
- * @param modules array of modules
+ * @param declarations array of modules
  */
-export function createSketchLibraryModule(modules: string[]): ts.ClassDeclaration {
+export function createSketchLibraryModule(declarations: string[], imports: string[]): ts.ClassDeclaration {
+  const libraryImports = imports.map(i => ts.createIdentifier(i));
   const angularImports = [
     ts.createIdentifier('BrowserModule'),
     ts.createIdentifier('HttpClientModule'),
@@ -25,9 +26,13 @@ export function createSketchLibraryModule(modules: string[]): ts.ClassDeclaratio
       undefined,
       [ts.createIdentifier('routes')],
     ),
+    ...libraryImports,
   ];
-  const imports = createPropertyAssignment('imports', ts.createArrayLiteral(angularImports, true));
-  const declarations = createPropertyAssignment('declarations', createIdentifierArray(modules));
+  const allImports = createPropertyAssignment('imports', ts.createArrayLiteral(angularImports, true));
+  const allDeclarations = createPropertyAssignment(
+    'declarations',
+    createIdentifierArray(['AppComponent', ...declarations],
+  ));
   const bootstrap = createPropertyAssignment('bootstrap', createIdentifierArray(['AppComponent'], false));
 
   const providers = createPropertyAssignment('providers', createIdentifierArray([]));
@@ -39,8 +44,8 @@ export function createSketchLibraryModule(modules: string[]): ts.ClassDeclaratio
         undefined,
         [ts.createObjectLiteral(
           [
-            imports,
-            declarations,
+            allImports,
+            allDeclarations,
             bootstrap,
             providers,
           ],

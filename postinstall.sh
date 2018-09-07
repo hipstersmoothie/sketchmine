@@ -61,8 +61,8 @@ cd $DIST/sketch-library
 echo "${LGRAY} install angular dependencies"
 npm i || exit 1
 echo "🔪  ${LGRAY}removing sample data from angular-app-shell"
-rm -rf src/app/examples
-rm -rf src/app/app.module.ts
+rm -rf $DIST/sketch-library/src/app/examples
+rm -rf $DIST/sketch-library/src/app/app.module.ts
 
 cd $DIR
 

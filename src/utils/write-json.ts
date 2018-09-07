@@ -3,6 +3,7 @@ import * as path from 'path';
 import chalk from 'chalk';
 import { Logger } from './logger';
 import { createDir } from './create-dir';
+import { writeFile } from './write-file';
 
 const log = new Logger();
 
@@ -11,27 +12,15 @@ const log = new Logger();
  *
  * @param {string} filename
  * @param {Object | string} content
- * @returns {Promise<any>}
+ * @returns {Promise<boolean | Error>}
  */
-export function writeJSON(filename: string, content: Object | string, pretty = false): Promise<any> {
-  return new Promise((resolve, reject) => {
-    const _content = (typeof content === 'string') ? content : createJSON(content, pretty);
+export function writeJSON(filename: string, content: Object | string, pretty = false): Promise<boolean | Error> {
+  const _content = (typeof content === 'string') ? content : createJSON(content, pretty);
+  const ext = path.extname(filename);
+  const dir = path.dirname(filename);
+  const f = ext.length > 0 ? filename : `${filename}.json`;
 
-    const ext = path.extname(filename);
-    const dir = path.dirname(filename);
-    const f = ext.length > 0 ? filename : `${filename}.json`;
-
-    createDir(dir);
-    fs.writeFile(f, _content, 'utf8', (error: NodeJS.ErrnoException) => {
-      if (error) {
-        const msg = chalk`{red Error writing Object to ${f}}\n${error.message}`;
-        log.error(msg);
-        reject(Error(msg));
-      }
-      log.debug(chalk`✅ {green Successfully written Object to} {grey ${f}}`);
-      resolve();
-    });
-  });
+  return writeFile(f, _content);
 }
 
 function createJSON(content: any, pretty: boolean) {

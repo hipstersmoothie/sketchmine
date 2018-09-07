@@ -1,8 +1,38 @@
 import * as ts from 'typescript';
 import * as path from 'path';
-import { findNodes, createRoutes, createSketchLibraryModule, createImportDeclaration } from './ast';
+import { findNode, createRoutes, createSketchLibraryModule, createImportDeclaration } from './ast';
 import { getSymbolName } from '@angular-meta-parser/utils';
-import { createDir } from '@utils';
+import { writeFile } from '@utils';
+
+const ANGULAR_COMPONENTS = [
+  'DtAlertModule',
+  'DtBreadcrumbsModule',
+  'DtButtonModule',
+  'DtButtonGroupModule',
+  'DtCardModule',
+  'DtChartModule',
+  'DtCheckboxModule',
+  'DtContextDialogModule',
+  'DtCopyToClipboardModule',
+  'DtExpandablePanelModule',
+  'DtExpandableSectionModule',
+  'DtFormFieldModule',
+  'DtIconModule',
+  'DtInlineEditorModule',
+  'DtInputModule',
+  'DtKeyValueListModule',
+  'DtLoadingDistractorModule',
+  'DtPaginationModule',
+  'DtProgressBarModule',
+  'DtProgressCircleModule',
+  'DtRadioModule',
+  'DtShowMoreModule',
+  'DtSwitchModule',
+  'DtTableModule',
+  'DtTagModule',
+  'DtThemingModule',
+  'DtTileModule',
+];
 
 /**
  * @class
@@ -38,7 +68,7 @@ export class MemoryCompiler {
     const moduleList = this.generateModuleList();
     const modules = [...moduleList.keys()];
     const blank = ts.createSourceFile(
-      'sketch-library.module.ts', '', ts.ScriptTarget.Latest, false, ts.ScriptKind.TS,
+      'app.module.ts', '', ts.ScriptTarget.Latest, false, ts.ScriptKind.TS,
     );
     const imports: ts.ImportDeclaration[] = [];
     moduleList.forEach((path, name) => {
@@ -48,29 +78,31 @@ export class MemoryCompiler {
     this.libraryModule = ts.updateSourceFileNode(blank, [
       createImportDeclaration(['NgModule'], '@angular/core'),
       createImportDeclaration(['RouterModule', 'Routes'], '@angular/router'),
-      createImportDeclaration(['HttpClientModule'], 'HttpClientModule'),
+      createImportDeclaration(['HttpClientModule'], '@angular/common/http'),
       createImportDeclaration(['BrowserModule'], '@angular/platform-browser'),
       createImportDeclaration(['AppComponent'], './app.component'),
+      createImportDeclaration(ANGULAR_COMPONENTS, '@dynatrace/angular-components'),
       ...imports,
       createRoutes(modules),
-      createSketchLibraryModule(modules),
+      createSketchLibraryModule(modules, ANGULAR_COMPONENTS),
     ]);
   }
 
   private generateModuleList(): Map<string, string> {
     const modules = new Map<string, string>();
     this._sourceFiles.forEach((sf) => {
-      const classDec = findNodes(sf, ts.SyntaxKind.ClassDeclaration, 1)[0] as ts.ClassDeclaration;
-      const modulePath = sf.fileName;
-      modules.set(getSymbolName(classDec), sf.fileName);
+      const classDec = findNode(sf, ts.SyntaxKind.ClassDeclaration) as ts.ClassDeclaration;
+      modules.set(getSymbolName(classDec), resolveImport(sf.fileName));
     });
     return modules;
   }
 
-  printFiles(writeToFile = false) {
+  async printFiles(writeToFile = true) {
 
-    const baseDir = path.join(process.cwd(), 'dist', 'sketch-library', 'app');
+    const baseDir = path.join(process.cwd(), 'dist', 'sketch-library', 'src', 'app');
     this.generateModule();
+
+    const filesToBeWritten = [];
 
     const files = [...this._sourceFiles, this.libraryModule];
     for (let i = 0, max = files.length; i < max; i += 1) {
@@ -79,13 +111,20 @@ export class MemoryCompiler {
       const resultFile = ts.createSourceFile(file.fileName, '', ts.ScriptTarget.Latest, false, ts.ScriptKind.TS);
       const result = printer.printNode(ts.EmitHint.Unspecified, file, resultFile);
       /** TODO: write the variant result to the filesystem */
-      console.log(result);
+      // console.log(result);
 
       if (writeToFile) {
-        const dir = path.dirname(file.fileName);
-        // console.log(dir);
-        createDir(path.join(baseDir, dir));
+        filesToBeWritten.push(writeFile(path.join(baseDir, file.fileName), result));
       }
     }
+
+    await Promise.all(filesToBeWritten);
   }
+}
+
+function resolveImport(moduleFile: string) {
+  if (moduleFile.startsWith('./')) {
+    return moduleFile.replace('.ts', '');
+  }
+  return `./${moduleFile.replace('.ts', '')}`;
 }

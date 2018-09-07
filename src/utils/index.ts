@@ -6,6 +6,7 @@ export * from './del-folder';
 export * from './generate-sketch-file';
 export * from './read-file';
 export * from './rgb-to-hex';
+export * from './write-file';
 export * from './write-json';
 export * from './zip-to-buffer';
 export * from './camel-case-to-kebab-case';

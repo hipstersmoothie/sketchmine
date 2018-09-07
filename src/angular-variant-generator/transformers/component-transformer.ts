@@ -3,12 +3,24 @@ import {
   getSymbolName,
   getInitializer,
   getComponentDecorator,
+  getDecoratorOfType,
 } from '@angular-meta-parser/utils';
 import { JSDOM } from 'jsdom';
 
 export function componentTransformer(context: ts.TransformationContext) {
   return (rootNode: ts.Node) => {
     function visit(node: ts.Node): ts.Node {
+
+      /** remove originalClassName Decorator */
+      if (ts.isDecorator(node)) {
+        const expr = node.expression as ts.CallExpression;
+        if (expr && expr.expression) {
+          if (getSymbolName(expr.expression) === 'OriginalClassName') {
+            return undefined;
+          }
+        }
+      }
+
       if (ts.isClassDeclaration(node)) {
         node.name = ts.createIdentifier(context.getCompilerOptions().className as string);
         /** transform the template tag with the variant */

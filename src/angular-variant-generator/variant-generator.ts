@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 import { AMP } from '@angular-meta-parser/meta-information';
 import { generateClassName } from './utils';
-import { componentTransformer } from './transformers';
+import { componentTransformer, importTransformer } from './transformers';
 
 export function generateComponentVariants(source: string, component: AMP.Component): ts.SourceFile[] {
   const combinations: ts.SourceFile[] = [];
@@ -39,7 +39,7 @@ function generateVariant(content: string, config: any): ts.SourceFile {
   );
   const transformedResult = ts.transform(
     sourceFile,
-    [componentTransformer],
+    [componentTransformer, importTransformer],
     config,
   ) as ts.TransformationResult<ts.SourceFile>;
 

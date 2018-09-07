@@ -1,4 +1,5 @@
 import * as ts from 'typescript';
+import { getSymbolName } from '@angular-meta-parser/utils';
 
 /**
  * Find all nodes from the AST in the subtree of node of SyntaxKind kind.
@@ -7,32 +8,25 @@ import * as ts from 'typescript';
  * @param maximum The maximum number of items to return.
  * @return all nodes of kind, or [] if none is found
  */
-export function findNodes(node: ts.Node, kind: ts.SyntaxKind, maximum = Infinity): ts.Node[] {
-  const arr: ts.Node[] = [];
-  let max = maximum;
-
-  if (!node || max === 0) {
-    return arr;
-  }
-
+export function findNode(node: ts.Node, kind: ts.SyntaxKind): ts.Node {
   if (node.kind === kind) {
-    arr.push(node);
-    max -= 1;
+    return node;
   }
-
-  if (max > 0) {
+  let match = null;
+  if (node.kind === ts.SyntaxKind.SourceFile) {
+    for (const child of (node as ts.SourceFile).statements) {
+      match = findNode(child, kind);
+      if (match !== null) {
+        break;
+      }
+    }
+  } else {
     for (const child of node.getChildren()) {
-      findNodes(child, kind, max).forEach((node) => {
-        if (max > 0) {
-          arr.push(node);
-        }
-        max -= 1;
-      });
-
-      if (max <= 0) {
+      match = findNode(child, kind);
+      if (match !== null) {
         break;
       }
     }
   }
-  return arr;
+  return match;
 }

@@ -28,7 +28,7 @@ export async function main(): Promise<number> {
       compiler.addSourceFiles(generateComponentVariants(source, cmp));
     }
   });
-  compiler.printFiles(true);
+  await compiler.printFiles(true);
   return Promise.resolve(0);
 }
 
