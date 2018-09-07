@@ -32,7 +32,7 @@ export function generateComponentVariants(source: string, component: AMP.Compone
  */
 function generateVariant(content: string, config: any): ts.SourceFile {
   const sourceFile = ts.createSourceFile(
-    `${config.variantName}.component.ts`,
+    `./examples/${config.variantName}.component.ts`,
     content,
     ts.ScriptTarget.Latest,
     true,

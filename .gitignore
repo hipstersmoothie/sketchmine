@@ -1,10 +1,46 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+# packages
 node_modules
-dist
-dest
-lib
+
+# generated files
 dt-asset-lib
 dt-asset-lib.sketch
+/config/meta-information.json
+
+# temp dirs
 _tmp
-.rpt2_cache
-coverage
-logs
+dist
+dest
+tmp
+out-tsc
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.rpt2_cache
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
