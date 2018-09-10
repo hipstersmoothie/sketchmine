@@ -2,7 +2,7 @@ import * as ts from 'typescript';
 import * as path from 'path';
 import { findNode, createRoutes, createSketchLibraryModule, createImportDeclaration } from './ast';
 import { getSymbolName } from '@angular-meta-parser/utils';
-import { writeFile } from '@utils';
+import { writeFile, writeJSON } from '@utils';
 
 const ANGULAR_COMPONENTS = [
   'DtAlertModule',
@@ -44,6 +44,7 @@ export class MemoryCompiler {
   private static _instance: MemoryCompiler;
   protected _sourceFiles: ts.SourceFile[] = [];
   libraryModule: ts.SourceFile;
+  moduleList: Map<string, string>;
 
   constructor() {
     if (MemoryCompiler._instance) {
@@ -65,13 +66,13 @@ export class MemoryCompiler {
   }
 
   generateModule() {
-    const moduleList = this.generateModuleList();
-    const modules = [...moduleList.keys()];
+    this.moduleList = this.generateModuleList();
+    const modules = [...this.moduleList.keys()];
     const blank = ts.createSourceFile(
       'app.module.ts', '', ts.ScriptTarget.Latest, false, ts.ScriptKind.TS,
     );
     const imports: ts.ImportDeclaration[] = [];
-    moduleList.forEach((path, name) => {
+    this.moduleList.forEach((path, name) => {
       imports.push(createImportDeclaration([name], path));
     });
 
@@ -117,6 +118,9 @@ export class MemoryCompiler {
         filesToBeWritten.push(writeFile(path.join(baseDir, file.fileName), result));
       }
     }
+    const navigation = { urls: [...this.moduleList.keys()] };
+    const filename = path.join(baseDir, '..', '..', 'navigation.json');
+    filesToBeWritten.push(writeJSON(filename, navigation, true));
 
     await Promise.all(filesToBeWritten);
   }

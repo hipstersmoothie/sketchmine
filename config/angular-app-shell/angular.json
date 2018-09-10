@@ -21,11 +21,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              {
-                "glob": "*.svg",
-                "input": "node_modules/@dynatrace/dt-iconpack",
-                "output": "/assets/icons"
-              }
+              { "input": "node_modules/@dynatrace/angular-components/assets", "glob": "**/*", "output": "assets" },
+              { "input": "node_modules/@dynatrace/dt-iconpack", "glob": "*.svg", "output": "/assets/icons" }
             ],
             "styles": [
               "src/styles.scss"

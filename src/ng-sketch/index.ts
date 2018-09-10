@@ -1,14 +1,8 @@
 import { ElementFetcher } from './element-fetcher';
 import { exec } from 'child_process';
+import * as path from 'path';
 
-const pages = [
-  '/icon/icon--agent',
-  '/icon/icon--richface',
-  '/button/button--icon',
-  '/button/button--primary',
-  '/button/button--secondary',
-  '/tile/tile--default',
-];
+const NAVIGATION = require(path.join(process.cwd(), 'dist', 'sketch-library', 'navigation.json'));
 
 process.env.SKETCH = 'open-close';
 process.env.DEBUG = 'true';
@@ -21,8 +15,8 @@ try {
   }
 
   const elementFetcher = new ElementFetcher();
-  elementFetcher.host = 'http://localhost:4200';
-  elementFetcher.generateSketchFile(pages)
+  elementFetcher.host = 'http://localhost:4200/';
+  elementFetcher.generateSketchFile(NAVIGATION.urls)
     .then(code => process.exit(code));
 } catch (error) {
   process.exit(1);
