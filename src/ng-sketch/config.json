@@ -1,0 +1,21 @@
+{
+  "args": {
+    "metaInformation": "src/angular-meta-parser/_tmp/meta-information.json",
+    "host": "http://localhost:4000",
+    "rootElement": "app-root > * > *",
+    "api": true
+  },
+  "pages": [
+    "/"
+  ],
+  "chrome": {
+    "defaultViewport": {
+      "width": 800,
+      "height": 600,
+      "deviceScaleFactor": 1,
+      "isMobile": false,
+      "hasTouch": false,
+      "isLandscape": false
+    }
+  }
+}

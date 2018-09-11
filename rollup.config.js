@@ -39,12 +39,10 @@ function buildConfig() {
           el.hasOwnProperty('copy') ? copyPlugin(el.copy) : {},
         ],
       };
-
       if (el.browser) {
         c.external = [];
-        c.output.format = 'esm'
+        c.output[0].format = 'esm'
       }
-    
       conf.push(c);
     }
   }

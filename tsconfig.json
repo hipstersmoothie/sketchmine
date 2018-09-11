@@ -23,6 +23,9 @@
     "sourceMap": true,
     "target": "es2017",
     "types": [ "jest" ],
+    "typeRoots": [
+      "src/**/*.d.ts"
+    ]
   },
   "include": [
     "tests/**/*.test.ts",

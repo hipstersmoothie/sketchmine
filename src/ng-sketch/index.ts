@@ -1,6 +1,8 @@
 import { ElementFetcher } from './element-fetcher';
+import { SG } from './index.d';
 import { exec } from 'child_process';
 import * as path from 'path';
+import * as puppeteer from 'puppeteer';
 
 const NAVIGATION = require(path.join(process.cwd(), 'dist', 'sketch-library', 'navigation.json'));
 
@@ -8,17 +10,32 @@ process.env.SKETCH = 'open-close';
 process.env.DEBUG = 'true';
 // process.env.DEBUG_BROWSER = 'true';
 
-try {
-  // close running sketch app
+const DEFAULT_CONFIG = require('./config.json') as SG.Config;
+
+export async function main(): Promise<number> {
+  /** close sketch */
   if (process.env.SKETCH === 'open-close') {
     exec(`osascript -e 'quit app "Sketch"'`);
   }
+  const elementFetcher = new ElementFetcher(DEFAULT_CONFIG);
+  const options: puppeteer.LaunchOptions = Object.assign(
+    { headless: false, devtools: true },
+    DEFAULT_CONFIG.chrome,
+  );
+  const browser = await puppeteer.launch(options);
+  const url = 'http://localhost:4200/DtButtonColorMainComponent';
 
-  const elementFetcher = new ElementFetcher();
-  elementFetcher.host = 'http://localhost:4200/';
-  elementFetcher.generateSketchFile(NAVIGATION.urls)
-    .then(code => process.exit(code));
-} catch (error) {
-  process.exit(1);
-  throw error;
+  await elementFetcher.getPage(browser, url);
+  await browser.close();
+
+  const code = 0;
+  return Promise.resolve(code);
 }
+
+/** Call the main function with command line args */
+main().then((code: number) => {
+  process.exit(code);
+}).then((err) => {
+  console.error(err);
+  process.exit(1);
+});
