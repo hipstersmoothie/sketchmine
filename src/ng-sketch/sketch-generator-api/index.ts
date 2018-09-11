@@ -12,6 +12,7 @@ export async function sketchGeneratorApi(
   url: string,
   rootSelector: string,
   traverser: string,
+  // metaJSON: 
   ): Promise<any> {
 
   const page = await browser.newPage();
