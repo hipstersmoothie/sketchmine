@@ -1,134 +1,19 @@
-import { Component, ComponentFactoryResolver, ApplicationRef, Injector, Type, ViewChild, ViewContainerRef, OnInit, ComponentRef } from '@angular/core';
+import { Component, Type, ViewChild, ViewContainerRef, OnInit, ComponentRef } from '@angular/core';
 import { DomPortalHost, CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
-import { forEach } from '@angular/router/src/utils/collection';
-import { IconOnlyButtonExampleComponent } from './examples/button-icon-only-example.component';
-import { take } from 'rxjs/operators';
+import { IconOnlyButtonExampleComponent } from './examples/button';
 import { ViewData } from '@angular/core/src/view';
-
+import { MetaService } from './meta.service';
+import { Meta } from './meta.interface';
+import { ExamplesRegistry } from './examples-registry';
+import { Observable } from 'rxjs';
 
 declare var window: any;
-const meta = {
-  button: {
-    className: 'DtButton',
-    component: 'button',
-    location: '/Users/lukas.holzer/Sites/test/ng-sketch/src/angular-meta-parser/_tmp/src/lib/button/button.ts',
-    selector: [
-      'button[dt-button]',
-      'button[dt-icon-button]',
-    ],
-    clickable: false,
-    hoverable: false,
-    variants: [
-      {
-        name: 'dt-button-disabled',
-        changes: [
-          {
-            type: 'property',
-            key: 'disabled',
-            value: 'true',
-          },
-        ],
-      },
-      {
-        name: 'dt-button-color-main',
-        changes: [
-          {
-            type: 'property',
-            key: 'color',
-            value: '"main"',
-          },
-        ],
-      },
-      {
-        name: 'dt-button-color-accent',
-        changes: [
-          {
-            type: 'property',
-            key: 'color',
-            value: '"accent"',
-          },
-        ],
-      },
-      {
-        name: 'dt-button-color-warning',
-        changes: [
-          {
-            type: 'property',
-            key: 'color',
-            value: '"warning"',
-          },
-        ],
-      },
-      {
-        name: 'dt-button-color-error',
-        changes: [
-          {
-            type: 'property',
-            key: 'color',
-            value: '"error"',
-          },
-        ],
-      },
-      {
-        name: 'dt-button-color-cta',
-        changes: [
-          {
-            type: 'property',
-            key: 'color',
-            value: '"cta"',
-          },
-        ],
-      },
-      {
-        name: 'dt-button-color-undefined',
-        changes: [
-          {
-            type: 'property',
-            key: 'color',
-            value: 'undefined',
-          },
-        ],
-      },
-      {
-        name: 'dt-button-variant-primary',
-        changes: [
-          {
-            type: 'property',
-            key: 'variant',
-            value: '"primary"',
-          },
-        ],
-      },
-      {
-        name: 'dt-button-variant-secondary',
-        changes: [
-          {
-            type: 'property',
-            key: 'variant',
-            value: '"secondary"',
-          },
-        ],
-      },
-      {
-        name: 'dt-button-variant-nested',
-        changes: [
-          {
-            type: 'property',
-            key: 'variant',
-            value: '"nested"',
-          },
-        ],
-      },
-    ],
-  },
-};
 
 async function asyncForEach(array, callback) {
   for (let i = 0, max = array.length; i < max; i += 1) {
     await callback(array[i], i, array)
   }
 }
-
 
 const timeout = ms => new Promise(res => setTimeout(res, ms))
 
@@ -140,21 +25,36 @@ const timeout = ms => new Promise(res => setTimeout(res, ms))
 export class AppComponent implements OnInit{
 
   @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
-  constructor( private _viewContainerRef: ViewContainerRef) {}
+  constructor(
+    private _viewContainerRef: ViewContainerRef,
+    private _metaService: MetaService, 
+    private _registry: ExamplesRegistry,
+  ) { }
 
   ngOnInit() {
-    asyncForEach(Object.values(meta), async (componentMeta) => {
-      await asyncForEach(componentMeta.variants, async (variant) => {
-        await this._applyChange(componentMeta, variant);
+    const $meta = this._metaService.getMeta();
+    $meta.subscribe(async (meta: Meta.Result) => {
+      await asyncForEach(Object.values(meta.components), async (componentMeta: Meta.Component) => {
+        await asyncForEach(componentMeta.variants, async (variant: Meta.Variant) => {
+          await this._applyChange(componentMeta, variant);
+        });
       });
+
+      if (window.sketchGenerator) {
+        await window.sketchGenerator.emitFinish();
+      }
     });
   }
 
-  private async _applyChange(componentMeta, variant) {
-    const exampleComponentRef = this._instanceComponent(IconOnlyButtonExampleComponent);
+  private async _applyChange(componentMeta: Meta.Component, variant: Meta.Variant) {
+    const exampleType = this._registry.getExampleByName(componentMeta.component);
+    if (!exampleType) {
+      return;
+    }
+    const exampleComponentRef = this._instanceComponent(exampleType);
     const componentInstances = this._getCompInstances(componentMeta, exampleComponentRef);
 
-    variant.changes.forEach(change => {
+    variant.changes.forEach((change: Meta.VariantMethod | Meta.VariantProperty) => {
       if (change.type === 'property') {
         componentInstances.forEach((instance) => {
           instance[change.key] = (change.value === 'undefined') ? undefined : JSON.parse(change.value);
@@ -165,13 +65,14 @@ export class AppComponent implements OnInit{
     exampleComponentRef.changeDetectorRef.detectChanges();
     // wait for browser draw
     await timeout(0);
-    // TODO
-    // await window.sketchGenerator.emitDraw(variant.name);
+    if (window.sketchGenerator) {
+      await window.sketchGenerator.emitDraw(variant.name);
+    }
   }
 
-  private _getCompInstances(componentMeta, exampleComponentRef) {
+  private _getCompInstances<C>(componentMeta: Meta.Component, exampleComponentRef: ComponentRef<C>) {
     const componentInstances = [];
-    componentMeta.selector.forEach((selector) => {
+    componentMeta.selector.forEach((selector: string) => {
       const exampleElement = exampleComponentRef.location.nativeElement.querySelector(selector);
       const compInstance = this._findComponentInstance(exampleComponentRef, exampleElement);
       if (compInstance) {

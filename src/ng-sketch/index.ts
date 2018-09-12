@@ -23,7 +23,7 @@ export async function main(): Promise<number> {
     DEFAULT_CONFIG.chrome,
   );
   const browser = await puppeteer.launch(options);
-  const url = 'http://localhost:4200/DtButtonColorMainComponent';
+  const url = DEFAULT_CONFIG.args.host;
 
   await elementFetcher.getPage(browser, url);
   await browser.close();

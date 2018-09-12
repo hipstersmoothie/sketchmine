@@ -85,7 +85,7 @@ export class ElementFetcher {
       await page.goto(url, { waitUntil: 'networkidle2' });
       result = await page.evaluate(() => window.variants) as ITraversedElement[];
     }
-    // console.log(result);
+    console.log(result);
     // TODO: write new Result from traversed DOM for sketch
     return Promise.resolve(null);
   }
