@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import * as path from 'path';
-import { findNode, createRoutes, createSketchLibraryModule, createImportDeclaration } from './ast';
+import { findNode, createExamplesMap, createSketchLibraryModule, createImportDeclaration } from './ast';
 import { getSymbolName } from '@angular-meta-parser/utils';
 import { writeFile, writeJSON } from '@utils';
 
@@ -78,13 +78,16 @@ export class MemoryCompiler {
 
     this.libraryModule = ts.updateSourceFileNode(blank, [
       createImportDeclaration(['NgModule'], '@angular/core'),
-      createImportDeclaration(['RouterModule', 'Routes'], '@angular/router'),
-      createImportDeclaration(['HttpClientModule'], '@angular/common/http'),
       createImportDeclaration(['BrowserModule'], '@angular/platform-browser'),
+      createImportDeclaration(['BrowserAnimationsModule'], '@angular/platform-browser/animations'),
+      createImportDeclaration(['HttpClientModule'], '@angular/common/http'),
+      createImportDeclaration(['PortalModule'], '@angular/cdk/portal'),
+      createImportDeclaration(['FormsModule', 'ReactiveFormsModule'], '@angular/forms'),
       createImportDeclaration(['AppComponent'], './app.component'),
+      createImportDeclaration(['EXAMPLES_MAP'], './examples-registry'),
       createImportDeclaration(ANGULAR_COMPONENTS, '@dynatrace/angular-components'),
       ...imports,
-      createRoutes(modules),
+      createExamplesMap(this.moduleList),
       createSketchLibraryModule(modules, ANGULAR_COMPONENTS),
     ]);
   }
@@ -99,7 +102,6 @@ export class MemoryCompiler {
   }
 
   async printFiles(writeToFile = true) {
-
     const baseDir = path.join(process.cwd(), 'dist', 'sketch-library', 'src', 'app');
     this.generateModule();
 
@@ -111,16 +113,10 @@ export class MemoryCompiler {
       const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
       const resultFile = ts.createSourceFile(file.fileName, '', ts.ScriptTarget.Latest, false, ts.ScriptKind.TS);
       const result = printer.printNode(ts.EmitHint.Unspecified, file, resultFile);
-      /** TODO: write the variant result to the filesystem */
-      // console.log(result);
-
       if (writeToFile) {
         filesToBeWritten.push(writeFile(path.join(baseDir, file.fileName), result));
       }
     }
-    const navigation = { urls: [...this.moduleList.keys()] };
-    const filename = path.join(baseDir, '..', '..', 'navigation.json');
-    filesToBeWritten.push(writeJSON(filename, navigation, true));
 
     await Promise.all(filesToBeWritten);
   }

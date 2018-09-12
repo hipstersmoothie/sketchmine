@@ -1,14 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { DtButtonModule, DtTileModule, DtIconModule, DtCardModule, DtThemingModule } from '@dynatrace/angular-components';
-
-import { AppComponent } from './app.component';
-
-
-import { IconOnlyButtonExampleComponent } from './examples/button';
 import { PortalModule } from '@angular/cdk/portal';
 import { EXAMPLES_MAP } from './examples-registry';
+import { AppComponent } from './app.component';
+import { DtButtonModule, DtTileModule, DtIconModule, DtCardModule, DtThemingModule } from '@dynatrace/angular-components';
+
+import { IconOnlyButtonExampleComponent } from './examples/button';
 
 
 export const EXAMPLES = new Map<string, any>([
@@ -22,9 +22,12 @@ export const EXAMPLES = new Map<string, any>([
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     DtButtonModule,
     PortalModule,
+    FormsModule,
+    ReactiveFormsModule,
     DtIconModule.forRoot({ svgIconLocation: `/assets/icons/{{name}}.svg` }),
     DtTileModule,
     DtCardModule,

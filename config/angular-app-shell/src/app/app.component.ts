@@ -1,6 +1,5 @@
 import { Component, Type, ViewChild, ViewContainerRef, OnInit, ComponentRef } from '@angular/core';
 import { DomPortalHost, CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
-import { IconOnlyButtonExampleComponent } from './examples/button';
 import { ViewData } from '@angular/core/src/view';
 import { MetaService } from './meta.service';
 import { Meta } from './meta.interface';
@@ -20,7 +19,6 @@ const timeout = ms => new Promise(res => setTimeout(res, ms))
 @Component({
   selector: 'app-root',
   template: '<div cdkPortalOutlet></div>',
-  styles: [''],
 })
 export class AppComponent implements OnInit{
 

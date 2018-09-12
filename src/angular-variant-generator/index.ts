@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { AMP } from '../angular-meta-parser/meta-information';
 import { readDirRecursively } from '@utils';
 import { MemoryCompiler } from './memory-compiler';
-import { generateComponentVariants } from './variant-generator';
+import { generateExample } from './generate-example';
 
 const CONFIG = require('./config.json');
 
@@ -25,10 +25,11 @@ export async function main(): Promise<number> {
     if (meta.components.hasOwnProperty(component)) {
       const cmp = meta.components[component];
       const source = readFileSync(file, { encoding: 'utf8' }).toString();
-      compiler.addSourceFiles(generateComponentVariants(source, cmp));
+      compiler.addSourceFiles(generateExample(source, cmp));
     }
   });
-  await compiler.printFiles(true);
+
+  await compiler.printFiles();
   return Promise.resolve(0);
 }
 
