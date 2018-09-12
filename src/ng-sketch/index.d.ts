@@ -9,7 +9,7 @@ export namespace SG {
     metaInformation: string;
     host: string;
     rootElement: string;
-    api: boolean;
+    library: boolean;
   }
 
   export interface DefaultViewport {

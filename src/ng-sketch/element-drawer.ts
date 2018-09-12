@@ -71,11 +71,15 @@ export class ElementDrawer {
    * @param {ITraversedDomTextNode} element Text node from the traversed dom
    */
   private generateText(element: ITraversedDomTextNode) {
-    if (element.text.trim().length === 0) {
+    if (!element || element.text.trim().length === 0) {
+      return;
+    }
+    if (!element.styles) {
       return;
     }
     const bcr = boundingClientRectToBounding(element.parentRect);
-    const paddedBCR = calcPadding(element.styles.padding, bcr);
+    const paddedBCR = element.styles ? calcPadding(element.styles.padding, bcr) : bcr;
+
     if (process.env.DEBUG) {
       console.log(chalk`\tAdd Text 📝  with Text: "{yellowBright ${element.text}}"`, paddedBCR);
     }

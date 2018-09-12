@@ -4,8 +4,6 @@ import { exec } from 'child_process';
 import * as path from 'path';
 import * as puppeteer from 'puppeteer';
 
-const NAVIGATION = require(path.join(process.cwd(), 'dist', 'sketch-library', 'navigation.json'));
-
 process.env.SKETCH = 'open-close';
 process.env.DEBUG = 'true';
 // process.env.DEBUG_BROWSER = 'true';
@@ -18,16 +16,7 @@ export async function main(): Promise<number> {
     exec(`osascript -e 'quit app "Sketch"'`);
   }
   const elementFetcher = new ElementFetcher(DEFAULT_CONFIG);
-  const options: puppeteer.LaunchOptions = Object.assign(
-    { headless: false, devtools: true },
-    DEFAULT_CONFIG.chrome,
-  );
-  const browser = await puppeteer.launch(options);
-  const url = DEFAULT_CONFIG.args.host;
-
-  await elementFetcher.getPage(browser, url);
-  await browser.close();
-
+  await elementFetcher.generateSketchFile();
   const code = 0;
   return Promise.resolve(code);
 }

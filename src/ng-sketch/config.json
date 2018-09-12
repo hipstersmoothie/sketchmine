@@ -3,7 +3,7 @@
     "metaInformation": "src/angular-meta-parser/_tmp/meta-information.json",
     "host": "http://localhost:4200",
     "rootElement": "ng-component > * ",
-    "api": true
+    "library": true
   },
   "pages": [
     "/"

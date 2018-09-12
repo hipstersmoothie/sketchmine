@@ -35,13 +35,13 @@ function buildConfig() {
           typescript({ tsconfig: 'tsconfig.json' }),
           commonjs(),
           nodeResolve(),
-          sourceMaps(),
+          el.browser? {} : sourceMaps(),
           el.hasOwnProperty('copy') ? copyPlugin(el.copy) : {},
         ],
       };
       if (el.browser) {
         c.external = [];
-        c.output[0].format = 'esm'
+        c.output[0].format = 'umd'
       }
       conf.push(c);
     }

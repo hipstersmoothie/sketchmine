@@ -1,12 +1,12 @@
 /// <reference path="index.d.ts" />
-import * as path from 'path';
 import * as puppeteer from 'puppeteer';
-import { readFile } from '@utils';
 import { AssetHelper } from 'dom-traverser/asset-helper';
 import { DomVisitor } from 'dom-traverser/dom-visitor';
 import { DomTraverser } from 'dom-traverser/dom-traverser';
-import { ITraversedElement } from 'dom-traverser/traversed-dom';
+import { ITraversedElement, TraversedSymbol } from 'dom-traverser/traversed-dom';
+import { Logger } from '@utils';
 
+const log = new Logger();
 export async function sketchGeneratorApi(
   browser: puppeteer.Browser,
   url: string,
@@ -23,37 +23,42 @@ export async function sketchGeneratorApi(
   }
 
   await page.exposeFunction('_handleFocus', async (cbID: number, selector: string) => {
+    log.debug(`Puppeteer › focus:${selector}`);
     await page.focus(selector);
     return resolvePending(cbID);
   });
 
   await page.exposeFunction('_handleClick', async (cbID: number, selector: string) => {
-    console.log('click');
+    log.debug(`Puppeteer › click:${selector}`);
     await page.click(selector);
     return resolvePending(cbID);
   });
 
   await page.exposeFunction('_handleHover', async (cbID: number, selector: string) => {
-    console.log('hover');
+    log.debug(`Puppeteer › hover:${selector}`);
     await page.hover(selector);
     return resolvePending(cbID);
   });
 
-  await page.exposeFunction('_draw', async (cbID: number) => {
-    console.log('draw');
+  await page.exposeFunction('_draw', async (cbID: number, symbolName: string) => {
+    log.debug(`Traverser › draw Symbol ${symbolName}`);
     await page.evaluate(
-      (rootSelector: string) => {
+      (rootSelector: string, symbolName: string) => {
         const hostElement = document.querySelector(rootSelector) as HTMLElement;
         const visitor = new DomVisitor(hostElement);
         const traverser = new DomTraverser();
-        window.variants.push(traverser.traverse(hostElement, visitor));
+        window.library.symbols.push({
+          name: symbolName,
+          symbol: traverser.traverse(hostElement, visitor),
+        } as TraversedSymbol);
       },
-      rootSelector);
+      rootSelector,
+      symbolName);
     return resolvePending(cbID);
   });
 
   await page.exposeFunction('_finish', async (cbID: number) => {
-    console.log('finish all!');
+    log.debug(`Traverser › finish with all actions`);
     resolveFinish();
     return resolvePending(cbID);
   });
@@ -62,7 +67,11 @@ export async function sketchGeneratorApi(
     const pending = new Map<number, () => void>();
     // TODO: Add asset helper
     // const images = new AssetHelper();
-    window.variants = [];
+    window.library = {
+      type: 'library',
+      assets: [],
+      symbols: [],
+    };
 
     /**
      * returns new Promise for pending user action.
@@ -94,8 +103,8 @@ export async function sketchGeneratorApi(
       emitClick: (selector: string) => emitAction(window._handleClick, selector),
       emitHover: (selector: string) => emitAction(window._handleHover, selector),
       emitFocus: (selector: string) => emitAction(window._handleFocus, selector),
+      emitDraw: (symbolName: string) => emitAction(window._draw, symbolName),
       emitFinish: () => emitAction(window._finish),
-      emitDraw: () => emitAction(window._draw),
     };
   });
 
@@ -104,5 +113,5 @@ export async function sketchGeneratorApi(
 
   await finished;
 
-  return await page.evaluate(() => window.variants) as ITraversedElement[];
+  return await page.evaluate(() => window.library) as ITraversedElement[];
 }
