@@ -43,7 +43,7 @@ const ANGULAR_COMPONENTS = [
  */
 export class MemoryCompiler {
   private static _instance: MemoryCompiler;
-  protected _sourceFiles: ts.SourceFile[] = [];
+  protected _examples: ts.SourceFile[] = [];
   protected _dependencies: ts.SourceFile[] = [];
   libraryModule: ts.SourceFile;
   moduleList: Map<string, string>;
@@ -61,9 +61,9 @@ export class MemoryCompiler {
    */
   addSourceFiles(sourceFiles: ts.SourceFile | ts.SourceFile[]) {
     if (Array.isArray(sourceFiles)) {
-      this._sourceFiles.push(...sourceFiles);
+      this._examples.push(...sourceFiles);
     } else {
-      this._sourceFiles.push(sourceFiles);
+      this._examples.push(sourceFiles);
     }
   }
 
@@ -100,7 +100,7 @@ export class MemoryCompiler {
 
   private generateModuleList(): Map<string, string> {
     const modules = new Map<string, string>();
-    this._sourceFiles.forEach((sf) => {
+    this._examples.forEach((sf) => {
       const classDec = findNode(sf, ts.SyntaxKind.ClassDeclaration) as ts.ClassDeclaration;
       modules.set(getSymbolName(classDec), resolveImport(sf.fileName));
     });
@@ -113,7 +113,7 @@ export class MemoryCompiler {
 
     const filesToBeWritten = [];
 
-    const files = [...this._sourceFiles, ...this._dependencies, this.libraryModule];
+    const files = [...this._examples, ...this._dependencies, this.libraryModule];
     for (let i = 0, max = files.length; i < max; i += 1) {
       const file = files[i];
       const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
