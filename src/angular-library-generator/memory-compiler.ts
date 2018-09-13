@@ -2,8 +2,9 @@ import * as ts from 'typescript';
 import * as path from 'path';
 import { findNode, createExamplesMap, createSketchLibraryModule, createImportDeclaration } from './ast';
 import { getSymbolName } from '@angular-meta-parser/utils';
-import { writeFile, writeJSON } from '@utils';
+import { writeFile, Logger } from '@utils';
 
+const log = new Logger();
 const ANGULAR_COMPONENTS = [
   'DtAlertModule',
   'DtBreadcrumbsModule',
@@ -43,6 +44,7 @@ const ANGULAR_COMPONENTS = [
 export class MemoryCompiler {
   private static _instance: MemoryCompiler;
   protected _sourceFiles: ts.SourceFile[] = [];
+  protected _dependencies: ts.SourceFile[] = [];
   libraryModule: ts.SourceFile;
   moduleList: Map<string, string>;
 
@@ -63,6 +65,10 @@ export class MemoryCompiler {
     } else {
       this._sourceFiles.push(sourceFiles);
     }
+  }
+
+  addDependency(sourceFile: ts.SourceFile) {
+    this._dependencies.push(sourceFile);
   }
 
   generateModule() {
@@ -107,7 +113,7 @@ export class MemoryCompiler {
 
     const filesToBeWritten = [];
 
-    const files = [...this._sourceFiles, this.libraryModule];
+    const files = [...this._sourceFiles, ...this._dependencies, this.libraryModule];
     for (let i = 0, max = files.length; i < max; i += 1) {
       const file = files[i];
       const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });

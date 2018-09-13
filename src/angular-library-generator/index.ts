@@ -1,5 +1,4 @@
 import * as path from 'path';
-import { readFileSync } from 'fs';
 import { AMP } from '../angular-meta-parser/meta-information';
 import { readDirRecursively } from '@utils';
 import { MemoryCompiler } from './memory-compiler';
@@ -24,8 +23,7 @@ export async function main(): Promise<number> {
     /** if we have an entry in our meta information JSON for the component */
     if (meta.components.hasOwnProperty(component)) {
       const cmp = meta.components[component];
-      const source = readFileSync(file, { encoding: 'utf8' }).toString();
-      compiler.addSourceFiles(generateExample(source, cmp));
+      compiler.addSourceFiles(generateExample(file, cmp));
     }
   });
 
