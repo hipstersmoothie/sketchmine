@@ -130,9 +130,27 @@ export class DomVisitor implements Visitor {
     };
   }
 
+  /**
+   * returns a DOMRect from an element
+   * @param element HTMLElement
+   */
   getRect(element: HTMLElement): DOMRect {
-    // BUG workaround is somehow an empty object without the json parse and stringify
-    return JSON.parse(JSON.stringify(element.getBoundingClientRect())) as DOMRect;
+    const bcr = element.getBoundingClientRect() as DOMRect;
+    /**
+     * In case of we return the result with `.evaluate` properties of DOM object
+     * are not enumerable and won't get serialized so we have to manual assign them.
+     * @example https://github.com/segmentio/nightmare/issues/723#issuecomment-232666629
+     * */
+    return {
+      x: bcr.x,
+      y: bcr.y,
+      width: bcr.width,
+      height: bcr.height,
+      top: bcr.top,
+      right: bcr.right,
+      bottom: bcr.bottom,
+      left: bcr.left,
+    } as DOMRect;
   }
 
   isHidden(style: StyleDeclaration) {
