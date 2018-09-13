@@ -1,11 +1,24 @@
 import { StyleDeclaration } from './dom-visitor';
 
-export interface ITraversedDom {
+export interface TraversedPage {
+  type: 'page';
   pageUrl: string;
   pageTitle: string;
-  element: ITraversedDomElement;
   assets: IAsset[];
+  element: ITraversedElement;
 }
+
+export interface TraversedLibrary {
+  type: 'library';
+  assets: IAsset[];
+  symbols: TraversedSymbol[];
+}
+
+export interface TraversedSymbol {
+  name: string;
+  symbol: ITraversedDomElement;
+}
+
 export interface IAsset {
   [id: string]: string;
 }

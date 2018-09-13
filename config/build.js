@@ -13,14 +13,14 @@ export const config = {
     description: 'The angular-meta-parser is a compiler, that generates an abstract syntax tree short AST from the\nAngular Components library and transforms the AST to a JSON format that represents all components,\nthat are related for the components library in sketch with all possible variants',
     path: path.join(SRC_DIR, 'angular-meta-parser'),
     copy: {
-      "src/angular-meta-parser/config.json": "dist/angular-meta-parser/config.json",
+      'src/angular-meta-parser/config.json': 'dist/angular-meta-parser/config.json',
     }
   },
   angularVariantGenerator: {
-    name: 'angular-variant-generator',
-    path: path.join(SRC_DIR, 'angular-variant-generator'),
+    name: 'angular-library-generator',
+    path: path.join(SRC_DIR, 'angular-library-generator'),
     copy: {
-      "src/angular-variant-generator/config.json": "dist/angular-variant-generator/config.json",
+      'src/angular-library-generator/config.json': 'dist/angular-library-generator/config.json',
     }
   },
   colorReplacer: {
@@ -38,6 +38,7 @@ export const config = {
     description: 'Generates .sketch files from an html website that is inspected with a headless chrome.',
     path: path.join(SRC_DIR, 'ng-sketch'),
     copy: {
+      'src/ng-sketch/config.json': 'dist/sketch-generator/config.json',
       'src/assets/preview.png' : 'dist/sketch-generator/assets/preview.png',
     },
   },

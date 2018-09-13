@@ -1,5 +1,7 @@
 import * as path from 'path';
 import * as puppeteer from 'puppeteer';
+import { ITraversedElement } from './traversed-dom';
+import { readFile } from '@utils';
 
 const config = require(`${process.cwd()}/config/app.json`);
 const TEST_FILE = `file:${path.join(process.cwd(), 'tests', 'fixtures', 'tile-default.html')}`;
@@ -34,14 +36,28 @@ describe('E2E Dom Traverser', () => {
 
   beforeAll(async () => {
     const options = { headless: true, devtools: false };
+    const traverser = await readFile(TRAVERSER);
     browser = await puppeteer.launch(options);
 
     const page = await browser.newPage();
-    await page.goto(TEST_FILE, { waitUntil: 'networkidle0' });
+    await page.goto(TEST_FILE, { waitUntil: 'networkidle2' });
+    // await page.evaluateOnNewDocument(traverser);
+    await page.addScriptTag({ content: traverser });
+    await page.addScriptTag({ content: `
+        const hostElement = document.querySelector('${ROOT_ELEMENT}');
+        const visitor = new DomVisitor(hostElement);
+        const traverser = new DomTraverser();
+        const images = new AssetHelper();
+        window.page = {
+          type: 'page',
+          pageUrl: window.location.pathname.substr(1),
+          pageTitle: document.title,
+          assets: images.assets,
+          element: traverser.traverse(hostElement, visitor),
+        };
+    ` });
 
-    await page.addScriptTag({ content: `window.TRAVERSER_SELECTOR = '${ROOT_ELEMENT}';` });
-    await page.addScriptTag({ path: TRAVERSER });
-    result = await page.evaluate(() => JSON.parse((window as any).TREE));
+    result = await page.evaluate(() => window.page) as ITraversedElement[];
   });
 
   test('traversed result has structure of traversed page', () => {

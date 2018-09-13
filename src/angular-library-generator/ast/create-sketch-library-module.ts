@@ -10,21 +10,20 @@ export function createSketchLibraryModule(declarations: string[], imports: strin
   const libraryImports = imports.map(i => ts.createIdentifier(i));
   const angularImports = [
     ts.createIdentifier('BrowserModule'),
+    ts.createIdentifier('BrowserAnimationsModule'),
     ts.createIdentifier('HttpClientModule'),
+    ts.createIdentifier('PortalModule'),
+    ts.createIdentifier('FormsModule'),
+    ts.createIdentifier('ReactiveFormsModule'),
     ts.createCall(
       ts.createPropertyAccess(ts.createIdentifier('DtIconModule'), ts.createIdentifier('forRoot')),
       undefined,
       [ts.createObjectLiteral([
-        ts.createPropertyAssignment(
-          ts.createIdentifier('svgIconLocation'),
+        createPropertyAssignment(
+          'svgIconLocation',
           ts.createNoSubstitutionTemplateLiteral('/assets/icons/{{name}}.svg'),
         ),
       ])],
-    ),
-    ts.createCall(
-      ts.createPropertyAccess(ts.createIdentifier('RouterModule'), ts.createIdentifier('forRoot')),
-      undefined,
-      [ts.createIdentifier('routes')],
     ),
     ...libraryImports,
   ];
@@ -33,9 +32,16 @@ export function createSketchLibraryModule(declarations: string[], imports: strin
     'declarations',
     createIdentifierArray(['AppComponent', ...declarations],
   ));
-  const bootstrap = createPropertyAssignment('bootstrap', createIdentifierArray(['AppComponent'], false));
-
-  const providers = createPropertyAssignment('providers', createIdentifierArray([]));
+  const bootstrap = createPropertyAssignment('bootstrap', createIdentifierArray(['AppComponent'], true));
+  const provider = ts.createObjectLiteral([
+    createPropertyAssignment('provide',  ts.createIdentifier('EXAMPLES_MAP')),
+    createPropertyAssignment('useValue', ts.createIdentifier('EXAMPLES')),
+  ]);
+  const providers = createPropertyAssignment('providers', ts.createArrayLiteral([provider]));
+  const entryComponents = ts.createPropertyAssignment(
+    'entryComponents',
+    createIdentifierArray([...declarations], true),
+  );
 
   return ts.createClassDeclaration(
     [ts.createDecorator(
@@ -44,10 +50,11 @@ export function createSketchLibraryModule(declarations: string[], imports: strin
         undefined,
         [ts.createObjectLiteral(
           [
-            allImports,
             allDeclarations,
-            bootstrap,
+            allImports,
             providers,
+            entryComponents,
+            bootstrap,
           ],
           true,
         )],

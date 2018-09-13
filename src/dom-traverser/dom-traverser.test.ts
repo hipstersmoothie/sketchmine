@@ -6,7 +6,6 @@ import * as path from 'path';
 import { JSDOM } from 'jsdom';
 import { DomTraverser, NodeType } from './dom-traverser';
 import { DomVisitor, StyleDeclaration } from './dom-visitor';
-import { ITraversedElement } from './traversed-dom';
 
 const TEST_FILE = path.join(process.cwd(), 'tests', 'fixtures', 'test-page.html');
 const ROOT_ELEMENT = 'app-root';

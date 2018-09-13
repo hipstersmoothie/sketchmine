@@ -28,8 +28,8 @@ echo "\ncurrently working in: $DIR"
 # sh ${DIR}/src/angular-meta-parser/prepare.sh
 
 
-# h2 "🔧  Install angular-variant-generator dependencies"
-# sh ${DIR}/src/angular-variant-generator/prepare.sh
+# h2 "🔧  Install angular-library-generator dependencies"
+# sh ${DIR}/src/angular-library-generator/prepare.sh
 
 
 # h2 "🔧  Install sketch-validator dependencies"
@@ -42,8 +42,8 @@ echo "${LBLUE}create${NC} › dist"
 mkdir $DIST 
 echo "${LBLUE}create${NC} › dist/angular-meta-parser"
 mkdir $DIST/angular-meta-parser
-echo "${LBLUE}create${NC} › dist/angular-variant-generator"
-mkdir $DIST/angular-variant-generator
+echo "${LBLUE}create${NC} › dist/angular-library-generator"
+mkdir $DIST/angular-library-generator
 echo "${LBLUE}create${NC} › dist/dom-traverser"
 mkdir $DIST/dom-traverser
 echo "${LBLUE}create${NC} › dist/sketch-color-replacer"

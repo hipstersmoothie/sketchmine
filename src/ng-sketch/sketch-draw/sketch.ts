@@ -17,15 +17,11 @@ export class Sketch {
   }
 
   async write(pages: Page[]): Promise<any> {
-    try {
-      const doc = new Document(pages);
-      const meta = new Meta(pages);
+    const doc = new Document(pages);
+    const meta = new Meta(pages);
 
-      await this.generateFolderStructure(pages, doc, meta);
-      return generateSketchFile(this._outDir, Sketch.FILE_NAME, Sketch.TMP_PATH);
-    } catch (error) {
-      console.error(error);
-    }
+    await this.generateFolderStructure(pages, doc, meta);
+    return generateSketchFile(this._outDir, Sketch.FILE_NAME, Sketch.TMP_PATH);
   }
 
   /**
@@ -55,23 +51,19 @@ export class Sketch {
    * @param meta Meta
    */
   private async generateFolderStructure (pages: Page[], doc: Document, meta: Meta) {
-    try {
-      if (process.env.DEBUG === 'true') {
-        console.log(chalk`\n\n\t{yellow ——— GENERATING FOLDER STRUCTURE ———}\n`);
-      }
-      this.prepareFolders();
-      await writeJSON(path.join(Sketch.TMP_PATH, 'document'), doc.generateObject());
-      await writeJSON(path.join(Sketch.TMP_PATH, 'meta'), meta.generateObject());
-      await writeJSON(path.join(Sketch.TMP_PATH, 'user'), {});
-
-      pages.forEach(async (page) => {
-        await writeJSON(path.join(Sketch.TMP_PATH, 'pages', page.objectID), page.generateObject());
-      });
-
-      const preview = path.join(process.cwd(), config.sketchGenerator.previewImage);
-      await copyFile(preview, path.join(Sketch.TMP_PATH, 'previews'));
-    } catch (error) {
-      console.error(error);
+    if (process.env.DEBUG === 'true') {
+      console.log(chalk`\n\n\t{yellow ——— GENERATING FOLDER STRUCTURE ———}\n`);
     }
+    this.prepareFolders();
+    await writeJSON(path.join(Sketch.TMP_PATH, 'document'), doc.generateObject());
+    await writeJSON(path.join(Sketch.TMP_PATH, 'meta'), meta.generateObject());
+    await writeJSON(path.join(Sketch.TMP_PATH, 'user'), {});
+
+    pages.forEach(async (page) => {
+      await writeJSON(path.join(Sketch.TMP_PATH, 'pages', page.objectID), page.generateObject());
+    });
+
+    const preview = path.join(process.cwd(), config.sketchGenerator.previewImage);
+    await copyFile(preview, path.join(Sketch.TMP_PATH, 'previews'));
   }
 }

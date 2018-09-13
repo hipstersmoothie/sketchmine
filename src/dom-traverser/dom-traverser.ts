@@ -1,4 +1,3 @@
-import { JSDOM } from 'jsdom';
 import { DomVisitor } from './dom-visitor';
 import { ITraversedElement, ITraversedDomElement } from './traversed-dom';
 
@@ -53,7 +52,6 @@ export class DomTraverser {
         this.commentCount += 1;
         break;
     }
-
     // Start traversing the child nodes
     let childNode = node.firstChild;
     if (childNode) {

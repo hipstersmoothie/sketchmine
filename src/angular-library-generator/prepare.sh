@@ -1,5 +1,5 @@
 #!/bin/bash
-declare TMP=src/angular-variant-generator/_tmp
+declare TMP=src/angular-library-generator/_tmp
 declare REPO=https://bitbucket.lab.dynatrace.org/scm/rx/angular-components.git
 declare BRANCH=master
 

@@ -1,9 +1,10 @@
 import * as ts from 'typescript';
 import * as path from 'path';
-import { findNode, createRoutes, createSketchLibraryModule, createImportDeclaration } from './ast';
+import { findNode, createExamplesMap, createSketchLibraryModule, createImportDeclaration } from './ast';
 import { getSymbolName } from '@angular-meta-parser/utils';
-import { writeFile, writeJSON } from '@utils';
+import { writeFile, Logger } from '@utils';
 
+const log = new Logger();
 const ANGULAR_COMPONENTS = [
   'DtAlertModule',
   'DtBreadcrumbsModule',
@@ -42,7 +43,8 @@ const ANGULAR_COMPONENTS = [
  */
 export class MemoryCompiler {
   private static _instance: MemoryCompiler;
-  protected _sourceFiles: ts.SourceFile[] = [];
+  protected _examples: ts.SourceFile[] = [];
+  protected _dependencies: ts.SourceFile[] = [];
   libraryModule: ts.SourceFile;
   moduleList: Map<string, string>;
 
@@ -59,10 +61,14 @@ export class MemoryCompiler {
    */
   addSourceFiles(sourceFiles: ts.SourceFile | ts.SourceFile[]) {
     if (Array.isArray(sourceFiles)) {
-      this._sourceFiles.push(...sourceFiles);
+      this._examples.push(...sourceFiles);
     } else {
-      this._sourceFiles.push(sourceFiles);
+      this._examples.push(sourceFiles);
     }
+  }
+
+  addDependency(sourceFile: ts.SourceFile) {
+    this._dependencies.push(sourceFile);
   }
 
   generateModule() {
@@ -78,20 +84,23 @@ export class MemoryCompiler {
 
     this.libraryModule = ts.updateSourceFileNode(blank, [
       createImportDeclaration(['NgModule'], '@angular/core'),
-      createImportDeclaration(['RouterModule', 'Routes'], '@angular/router'),
-      createImportDeclaration(['HttpClientModule'], '@angular/common/http'),
       createImportDeclaration(['BrowserModule'], '@angular/platform-browser'),
+      createImportDeclaration(['BrowserAnimationsModule'], '@angular/platform-browser/animations'),
+      createImportDeclaration(['HttpClientModule'], '@angular/common/http'),
+      createImportDeclaration(['PortalModule'], '@angular/cdk/portal'),
+      createImportDeclaration(['FormsModule', 'ReactiveFormsModule'], '@angular/forms'),
       createImportDeclaration(['AppComponent'], './app.component'),
+      createImportDeclaration(['EXAMPLES_MAP'], './examples-registry'),
       createImportDeclaration(ANGULAR_COMPONENTS, '@dynatrace/angular-components'),
       ...imports,
-      createRoutes(modules),
+      createExamplesMap(this.moduleList),
       createSketchLibraryModule(modules, ANGULAR_COMPONENTS),
     ]);
   }
 
   private generateModuleList(): Map<string, string> {
     const modules = new Map<string, string>();
-    this._sourceFiles.forEach((sf) => {
+    this._examples.forEach((sf) => {
       const classDec = findNode(sf, ts.SyntaxKind.ClassDeclaration) as ts.ClassDeclaration;
       modules.set(getSymbolName(classDec), resolveImport(sf.fileName));
     });
@@ -99,28 +108,21 @@ export class MemoryCompiler {
   }
 
   async printFiles(writeToFile = true) {
-
     const baseDir = path.join(process.cwd(), 'dist', 'sketch-library', 'src', 'app');
     this.generateModule();
 
     const filesToBeWritten = [];
 
-    const files = [...this._sourceFiles, this.libraryModule];
+    const files = [...this._examples, ...this._dependencies, this.libraryModule];
     for (let i = 0, max = files.length; i < max; i += 1) {
       const file = files[i];
       const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
       const resultFile = ts.createSourceFile(file.fileName, '', ts.ScriptTarget.Latest, false, ts.ScriptKind.TS);
       const result = printer.printNode(ts.EmitHint.Unspecified, file, resultFile);
-      /** TODO: write the variant result to the filesystem */
-      // console.log(result);
-
       if (writeToFile) {
         filesToBeWritten.push(writeFile(path.join(baseDir, file.fileName), result));
       }
     }
-    const navigation = { urls: [...this.moduleList.keys()] };
-    const filename = path.join(baseDir, '..', '..', 'navigation.json');
-    filesToBeWritten.push(writeJSON(filename, navigation, true));
 
     await Promise.all(filesToBeWritten);
   }

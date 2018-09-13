@@ -23,6 +23,9 @@
     "sourceMap": true,
     "target": "es2017",
     "types": [ "jest" ],
+    "typeRoots": [
+      "src/**/*.d.ts"
+    ]
   },
   "include": [
     "tests/**/*.test.ts",
@@ -30,7 +33,7 @@
   ],
   "exclude": [
     "node_modules/",
-    "src/angular-variant-generator/_tmp",
+    "src/angular-library-generator/_tmp",
     "src/angular-meta-parser/_tmp",
     "tests/fixtures"
   ],

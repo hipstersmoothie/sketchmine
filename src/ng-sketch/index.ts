@@ -1,24 +1,28 @@
 import { ElementFetcher } from './element-fetcher';
+import { SG } from './index.d';
 import { exec } from 'child_process';
-import * as path from 'path';
-
-const NAVIGATION = require(path.join(process.cwd(), 'dist', 'sketch-library', 'navigation.json'));
 
 process.env.SKETCH = 'open-close';
 process.env.DEBUG = 'true';
 // process.env.DEBUG_BROWSER = 'true';
 
-try {
-  // close running sketch app
+const DEFAULT_CONFIG = require('./config.json') as SG.Config;
+
+export async function main(): Promise<number> {
+  /** close sketch */
   if (process.env.SKETCH === 'open-close') {
     exec(`osascript -e 'quit app "Sketch"'`);
   }
-
-  const elementFetcher = new ElementFetcher();
-  elementFetcher.host = 'http://localhost:4200/';
-  elementFetcher.generateSketchFile(NAVIGATION.urls)
-    .then(code => process.exit(code));
-} catch (error) {
-  process.exit(1);
-  throw error;
+  const elementFetcher = new ElementFetcher(DEFAULT_CONFIG);
+  await elementFetcher.collectElements();
+  const code = await elementFetcher.generateSketchFile();
+  return Promise.resolve(code);
 }
+
+/** Call the main function with command line args */
+main().then((code: number) => {
+  process.exit(code);
+}).then((err) => {
+  console.error(err);
+  process.exit(1);
+});
