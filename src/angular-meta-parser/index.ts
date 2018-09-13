@@ -1,5 +1,5 @@
 
-import * as path from 'path';
+import { join, resolve } from 'path';
 import * as fs from 'fs';
 import * as ts from 'typescript';
 import { tsVisitorFactory } from './visitor';
@@ -8,6 +8,7 @@ import { adjustPathAliases, parseCommandlineArgs, resolveModuleFilename } from '
 import { ReferenceResolver } from './reference-resolver';
 import { writeJSON } from '@utils';
 import { ValuesResolver } from './values-resolver';
+import { AMP } from './meta-information';
 
 const DEFAULT_CONFIG = require('./config.json');
 
@@ -18,14 +19,18 @@ const DEFAULT_CONFIG = require('./config.json');
  */
 function renderASTtoJSON(ast: Map<string, ParseResult>, pkg: string): any {
   const jsonVisitor = new JSONVisitor();
-  const jsonResult = [];
+  const jsonResult: AMP.Component[] = [];
   const pkgJSON = require(pkg);
   for (const result of ast.values()) {
     jsonResult.push(...result.visit(jsonVisitor));
   }
+
+  const formatted = {};
+  jsonResult.forEach(result => formatted[result.component] = result);
+
   return {
     version: pkgJSON.version,
-    components: jsonResult,
+    components: formatted,
   };
 }
 
@@ -39,9 +44,9 @@ export async function main(args: string[]): Promise<number> {
   let parseResults = new Map<string, ParseResult>();
   // tslint:disable-next-line:prefer-const
   let { rootDir, inFile, outFile, config, pkg } = parseCommandlineArgs(args, DEFAULT_CONFIG);
-  const absoluteRootDir = path.resolve(rootDir);
-  inFile = path.join(absoluteRootDir, inFile);
-  pkg = path.resolve(pkg);
+  const absoluteRootDir = resolve(rootDir);
+  inFile = join(absoluteRootDir, inFile);
+  pkg = resolve(pkg);
 
   parseFile(inFile, adjustPathAliases(config, absoluteRootDir), parseResults);
 

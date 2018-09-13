@@ -395,7 +395,9 @@ function checkNodeTags(node: ts.Node): NodeTags[] {
     }
   }
 
-  if (getSymbolName(node).startsWith('_')) {
+  const name = getSymbolName(node);
+
+  if (name && name.startsWith('_')) {
     tags.push('hasUnderscore');
   }
 

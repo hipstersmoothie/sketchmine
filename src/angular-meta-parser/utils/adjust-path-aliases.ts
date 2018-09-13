@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { isFile } from './is-file';
+import { isFile } from '@utils';
 
 /**
  * Parse the tsconfig.json for `compilerOptions.paths` object

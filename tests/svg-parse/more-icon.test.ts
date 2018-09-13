@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import chalk from 'chalk';
 import { SvgParser } from '@sketch-svg-parser/svg-parser';
 import { ISvg } from '@sketch-svg-parser/interfaces';
 

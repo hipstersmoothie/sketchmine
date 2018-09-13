@@ -13,6 +13,8 @@ import * as ts from 'typescript';
  * @returns {booleand}
  */
 export function hasExportModifier(node: ts.Node): boolean {
-  return node.modifiers && !!node.modifiers.find(
-    modifier => modifier.kind === ts.SyntaxKind.ExportKeyword);
+  return (
+    (ts.getCombinedModifierFlags(node) & ts.ModifierFlags.Export) !== 0 ||
+    (!!node.parent && node.parent.kind === ts.SyntaxKind.SourceFile)
+  );
 }

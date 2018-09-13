@@ -23,7 +23,7 @@ function buildConfig() {
           file: outFile(el.name),
           name: el.name,
           banner: banner(el.name, pkg.version, description),
-          format: 'cjs',
+          format: el.format || 'cjs',
         }],
         external: [
           ...dependencies,
@@ -35,16 +35,14 @@ function buildConfig() {
           typescript({ tsconfig: 'tsconfig.json' }),
           commonjs(),
           nodeResolve(),
-          sourceMaps(),
+          el.browser? {} : sourceMaps(),
           el.hasOwnProperty('copy') ? copyPlugin(el.copy) : {},
         ],
       };
-
       if (el.browser) {
         c.external = [];
-        c.output.format = 'esm'
+        c.output[0].format = 'umd'
       }
-    
       conf.push(c);
     }
   }

@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { isFile } from './is-file';
+import { isFile } from '@utils';
 
 /**
  * Resolve a typescript Module to a file in the filesystem.

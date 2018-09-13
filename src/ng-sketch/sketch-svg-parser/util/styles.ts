@@ -32,12 +32,12 @@ export function addStyle(styles: Map<SvgStyle, string>, node: Element, attribute
  * gatherd by traversing the dom.
  *
  * @param svgStyle Map<SvgStyle, string>
- * @param cssStyle CSSStyleDeclaration
+ * @param cssStyle StyleDeclaration
  * @returns Map<SvgStyle, string>
  */
 export function overrideSvgStyle(
   svgStyle: Map<SvgStyle, string>,
-  cssStyle: CSSStyleDeclaration): Map<SvgStyle, string> {
+  cssStyle: StyleDeclaration): Map<SvgStyle, string> {
   if (cssStyle.fill) {
     svgStyle.set('fill', cssStyle.fill);
   }
@@ -51,9 +51,9 @@ export function overrideSvgStyle(
 }
 
 /**
- * create Style for SVG from CSSStyleDeclaration
+ * create Style for SVG from StyleDeclaration
  *
- * @param cssStyle CSSStyleDeclaration
+ * @param cssStyle StyleDeclaration
  * @returns IStyle
  */
 export function addCssStyleToSvg(cssStyle: StyleDeclaration): IStyle {

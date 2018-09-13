@@ -5,7 +5,6 @@ import {
   ITraversedDomTextNode,
   ITraversedDomElement,
 } from './traversed-dom';
-import { isThisTypeNode } from 'typescript';
 
 /**
  * The property keys that are used to identify if the element
@@ -17,6 +16,7 @@ const DEFAULT_STYLING_VALUES = [
   'backgroundImage',
   'borderWidth',
   'boxShadow',
+  'padding',
 ];
 
 /**
@@ -78,14 +78,14 @@ export class DomVisitor implements Visitor {
     const className = (typeof element.className === 'string') ? element.className.split(' ').join('\/') : '';
     const tagName = element.tagName.toUpperCase();
     const parent = element.parentElement;
-    const parentRect: DOMRect | null = (parent && element !== this.hostElement) ?
-      parent.getBoundingClientRect() as DOMRect : null;
+    const parentRect: DOMRect | null =
+      (parent && element !== this.hostElement) ? this.getRect(parent as HTMLElement) : null;
     const options = this.getStyle(element);
     const el = {
       tagName,
       className,
       parentRect,
-      boundingClientRect: element.getBoundingClientRect(),
+      boundingClientRect: this.getRect(element as HTMLElement),
       styles: !options.hasDefaultStyling && !options.isHidden ? options.styles : null,
       isHidden: options.isHidden,
     } as ITraversedDomElement;
@@ -123,11 +123,34 @@ export class DomVisitor implements Visitor {
     const options = this.getStyle(text.parentNode as elementNode);
     return {
       tagName: 'TEXT',
-      parentRect: (text.parentNode as HTMLElement).getBoundingClientRect() as DOMRect,
+      parentRect: this.getRect(text.parentNode as HTMLElement),
       styles: !options.isHidden ? options.styles : null,
       isHidden: options.isHidden,
       text: text.textContent,
     };
+  }
+
+  /**
+   * returns a DOMRect from an element
+   * @param element HTMLElement
+   */
+  getRect(element: HTMLElement): DOMRect {
+    const bcr = element.getBoundingClientRect() as DOMRect;
+    /**
+     * In case of we return the result with `.evaluate` properties of DOM object
+     * are not enumerable and won't get serialized so we have to manual assign them.
+     * @example https://github.com/segmentio/nightmare/issues/723#issuecomment-232666629
+     * */
+    return {
+      x: bcr.x,
+      y: bcr.y,
+      width: bcr.width,
+      height: bcr.height,
+      top: bcr.top,
+      right: bcr.right,
+      bottom: bcr.bottom,
+      left: bcr.left,
+    } as DOMRect;
   }
 
   isHidden(style: StyleDeclaration) {

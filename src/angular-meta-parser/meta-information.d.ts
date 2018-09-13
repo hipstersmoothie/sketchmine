@@ -1,12 +1,7 @@
 /**
  * The outFile structure follows this interface
  */
-export namespace MetaInformation {
-
-  export interface Variant {
-    name: string;
-    changes: (VariantMethod | VariantProperty)[];
-  }
+export namespace AMP {
 
   export interface VariantMethod {
     type: 'method';
@@ -18,13 +13,26 @@ export namespace MetaInformation {
   export interface VariantProperty {
     type: 'property';
     key: string;
-    value: string[] | string;
+    value: string;
+  } 
+  
+  export interface Variant {
+    name: string;
+    changes: (VariantMethod | VariantProperty)[];
   }
 
   export interface Component {
     className: string;
+    component: string;
+    location: string;
+    clickable: boolean;
+    hoverable: boolean;
     selector: string[];
     variants: Variant[];
   }
 
+  export interface Result {
+    version: string;
+    components: { [key: string]: Component };
+  }
 }

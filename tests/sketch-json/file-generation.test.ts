@@ -7,6 +7,28 @@ import { delDir, createDir } from '@utils';
 import { fileValidations } from './file-validations';
 import { ElementFetcher } from '../../src/ng-sketch/element-fetcher';
 
+const config = {
+  args: {
+    metaInformation: 'src/angular-meta-parser/_tmp/meta-information.json',
+    host: `file:${path.join(process.cwd(), 'tests', 'fixtures', 'tile-default.html')}`,
+    rootElement: 'app-root > * > *',
+    library: false,
+  },
+  pages: [
+    '',
+  ],
+  chrome: {
+    defaultViewport: {
+      width: 800,
+      height: 600,
+      deviceScaleFactor: 1,
+      isMobile: false,
+      hasTouch: false,
+      isLandscape: false,
+    },
+  },
+};
+
 const extract = promisify(extractZip);
 
 describe('➡ Sketch File generation 💎', () => {
@@ -17,9 +39,9 @@ describe('➡ Sketch File generation 💎', () => {
   beforeAll(async () => {
     delDir(testTmp);
     createDir(testTmp);
-    const elementFetcher = new ElementFetcher();
-    elementFetcher.host = `file://${path.resolve(__dirname, '..', 'fixtures', 'test-page.html')}`;
-    await elementFetcher.generateSketchFile([''], testTmp);
+    const elementFetcher = new ElementFetcher(config);
+    await elementFetcher.collectElements();
+    await elementFetcher.generateSketchFile(testTmp);
     await extract(sketchFile, { dir: path.join(testTmp, fileName) });
   });
 
