@@ -17,10 +17,10 @@ export const config = {
     }
   },
   angularVariantGenerator: {
-    name: 'angular-variant-generator',
-    path: path.join(SRC_DIR, 'angular-variant-generator'),
+    name: 'angular-library-generator',
+    path: path.join(SRC_DIR, 'angular-library-generator'),
     copy: {
-      'src/angular-variant-generator/config.json': 'dist/angular-variant-generator/config.json',
+      'src/angular-library-generator/config.json': 'dist/angular-library-generator/config.json',
     }
   },
   colorReplacer: {

@@ -33,7 +33,7 @@
   ],
   "exclude": [
     "node_modules/",
-    "src/angular-variant-generator/_tmp",
+    "src/angular-library-generator/_tmp",
     "src/angular-meta-parser/_tmp",
     "tests/fixtures"
   ],
