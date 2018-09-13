@@ -42,7 +42,3 @@ export function createExamplesMap(moduleList: Map<string, string>): ts.VariableS
     ),
   );
 }
-
-
-
-// ts.createTypeReferenceNode(ts.createIdentifier('Routes'), undefined),

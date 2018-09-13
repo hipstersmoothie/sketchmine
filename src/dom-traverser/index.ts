@@ -7,4 +7,3 @@ declare const window: any;
 window.AssetHelper = AssetHelper;
 window.DomTraverser = DomTraverser;
 window.DomVisitor = DomVisitor;
-

@@ -75,7 +75,7 @@ export class ElementFetcher {
     const traverser = await readFile(TRAVERSER);
     let result: any;
 
-    if (this.conf.args.library === true) {
+    if (this.conf.args.library) {
       result = await sketchGeneratorApi(browser, url, this.conf.args.rootElement, traverser);
     } else {
       const page = await browser.newPage();

@@ -2,7 +2,6 @@ import * as ts from 'typescript';
 import { createPropertyAssignment } from './create-property-assignment';
 import { createIdentifierArray } from './create-identifier-array';
 
-
 /**
  * creates the NgModule for all the variants
  * @param declarations array of modules
