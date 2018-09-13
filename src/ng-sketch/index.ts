@@ -1,8 +1,6 @@
 import { ElementFetcher } from './element-fetcher';
 import { SG } from './index.d';
 import { exec } from 'child_process';
-import * as path from 'path';
-import * as puppeteer from 'puppeteer';
 
 process.env.SKETCH = 'open-close';
 process.env.DEBUG = 'true';
@@ -16,8 +14,8 @@ export async function main(): Promise<number> {
     exec(`osascript -e 'quit app "Sketch"'`);
   }
   const elementFetcher = new ElementFetcher(DEFAULT_CONFIG);
-  await elementFetcher.generateSketchFile();
-  const code = 0;
+  await elementFetcher.collectElements();
+  const code = await elementFetcher.generateSketchFile();
   return Promise.resolve(code);
 }
 

@@ -1,7 +1,7 @@
-import { TraversedLibrary, TraversedPage } from 'dom-traverser/traversed-dom';
-import { AssetHelper } from 'dom-traverser/asset-helper';
-import { DomTraverser } from 'dom-traverser/dom-traverser';
-import { DomVisitor } from 'dom-traverser/dom-visitor';
+import { TraversedLibrary, TraversedPage } from '../../dom-traverser/traversed-dom';
+import { AssetHelper } from '../../dom-traverser/asset-helper';
+import { DomTraverser } from '../../dom-traverser/dom-traverser';
+import { DomVisitor } from '../../dom-traverser/dom-visitor';
 
 // Type definitions for sketch-library
 // Project: sketch-generator-api

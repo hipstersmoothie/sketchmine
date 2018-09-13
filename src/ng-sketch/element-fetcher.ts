@@ -4,7 +4,6 @@ import * as puppeteer from 'puppeteer';
 import { Sketch } from '@sketch-draw/sketch';
 import { Drawer } from './drawer';
 import { ITraversedElement, TraversedLibrary, TraversedPage } from '../dom-traverser/traversed-dom';
-import { AssetHandler } from '@sketch-draw/asset-handler';
 import { exec } from 'child_process';
 import { SG } from './index.d';
 import { readFile, Logger } from '@utils';
@@ -26,12 +25,13 @@ export class ElementFetcher {
     const drawer = new Drawer();
     const sketch = new Sketch(outDir);
     const pages = [];
-    let symbolsMaster;
-    await this.collectElements();
+    let symbolsMaster = drawer.drawSymbols({ symbols: [] } as any);
 
-    console.log(JSON.stringify((this._result[0] as TraversedLibrary).symbols[0], null, 2));
-
-    if (this._result.length === 1 && this._result[0].type === 'library') {
+    if (
+      this._result.length === 1 &&
+      this._result[0] !== undefined &&
+      this._result[0].type === 'library'
+    ) {
       symbolsMaster = drawer.drawSymbols(this._result[0] as TraversedLibrary);
     } else if (this._result.length > 0) {
       // TODO: implement function to write pages;
@@ -75,7 +75,7 @@ export class ElementFetcher {
     const traverser = await readFile(TRAVERSER);
     let result: any;
 
-    if (this.conf.args.library) {
+    if (this.conf.args.library === true) {
       result = await sketchGeneratorApi(browser, url, this.conf.args.rootElement, traverser);
     } else {
       const page = await browser.newPage();
@@ -110,7 +110,6 @@ export class ElementFetcher {
       this.conf.chrome,
     );
     const browser = await puppeteer.launch(options);
-    const url = this.conf.args.host;
     const confPages = this.conf.pages || [''];
 
     for (let i = 0, max = confPages.length; i < max; i += 1) {

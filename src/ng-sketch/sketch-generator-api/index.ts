@@ -1,9 +1,9 @@
 /// <reference path="index.d.ts" />
 import * as puppeteer from 'puppeteer';
-import { AssetHelper } from 'dom-traverser/asset-helper';
-import { DomVisitor } from 'dom-traverser/dom-visitor';
-import { DomTraverser } from 'dom-traverser/dom-traverser';
-import { ITraversedElement, TraversedSymbol } from 'dom-traverser/traversed-dom';
+import { AssetHelper } from '../../dom-traverser/asset-helper';
+import { DomVisitor } from '../../dom-traverser/dom-visitor';
+import { DomTraverser } from '../../dom-traverser/dom-traverser';
+import { ITraversedElement, TraversedSymbol } from '../../dom-traverser/traversed-dom';
 import { Logger } from '@utils';
 
 const log = new Logger();
