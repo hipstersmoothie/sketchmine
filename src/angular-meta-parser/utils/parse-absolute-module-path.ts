@@ -14,7 +14,12 @@ export function parseAbsoluteModulePath(
   dirName: string,
   relativePath: string,
   paths: Map<string, string>,
+  nodeModulesPath: string,
 ): string | null {
+  if (relativePath.startsWith('@dynatrace/dt-iconpack')) {
+    return path.resolve(nodeModulesPath, '@dynatrace/dt-iconpack/index.d');
+  }
+
   if (paths) {
     for (const glob of paths.keys()) {
       if (minimatch(relativePath, glob)) {

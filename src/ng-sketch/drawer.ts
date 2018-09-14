@@ -6,18 +6,25 @@ import { boundingClientRectToBounding } from '@sketch-draw/helpers/util';
 import { ElementDrawer } from './element-drawer';
 import chalk from 'chalk';
 
+interface LastSymbol extends IBounding {
+  name: string;
+}
+
 export class Drawer {
   private static MARGIN = 40;
-  private _lastSymbol: IBounding;
+  private _lastSymbol: LastSymbol = { name: '/', x: 0, y: 0, height: 0, width: 0 };
 
   drawSymbols(library: TraversedLibrary): Page {
     const symbols = library.symbols as TraversedSymbol[];
     const page = new Page(this.getPageSize(symbols));
-    symbols.forEach((symbol) => {
+    for (let i = 0, max = symbols.length; i < max; i += 1) {
+      const symbol = symbols[i];
+
       if (process.env.DEBUG) {
         console.log(chalk`\n💎\t{greenBright Draw new Symbol in library}: ${symbol.name}`);
       }
-      const symbolSize = this.getSymbolSize(symbol);
+
+      const symbolSize = this.getSymbolSize(symbols, i);
       const symbolMaster = new SymbolMaster(symbolSize);
       symbolMaster.name = symbol.name;
 
@@ -26,7 +33,7 @@ export class Drawer {
       }
 
       page.addLayer(symbolMaster.generateObject());
-    });
+    }
     return page;
   }
 
@@ -35,23 +42,32 @@ export class Drawer {
     return [...node.layers];
   }
 
-  private getSymbolSize(symbol: TraversedSymbol): IBounding {
+  private getSymbolSize(symbols: TraversedSymbol[], index: number): IBounding {
+    const symbol = symbols[index];
     const element = symbol.symbol;
     const bcr = boundingClientRectToBounding(element.boundingClientRect);
-    if (!this._lastSymbol) {
-      this._lastSymbol = bcr;
-      return bcr;
+    /**
+     * get the first part of the symbol name button/bg-light/color-main
+     * to group them vertically by component
+     */
+    if (index === 0) {
+      bcr.x = 0;
+      bcr.y = 0;
+    } else if (symbol.name.split('/')[0] === this._lastSymbol.name.split('/')[0]) {
+      bcr.y += Drawer.MARGIN + this._lastSymbol.y + this._lastSymbol.height;
+      bcr.x = this._lastSymbol.x;
+    } else {
+      bcr.x += Drawer.MARGIN + this._lastSymbol.x + this._lastSymbol.width;
     }
-    bcr.x += Drawer.MARGIN + this._lastSymbol.x + this._lastSymbol.width;
-    this._lastSymbol = bcr;
+    this._lastSymbol = { name: symbol.name, ...bcr };
     return bcr;
   }
 
-  private getPageSize(pages: TraversedSymbol[]): IBounding {
+  private getPageSize(symbols: TraversedSymbol[]): IBounding {
     const size: IBounding = { height: 0, width: 0, x: 0, y: 0 };
-    for (let i = 0, max = pages.length; i < max; i += 1) {
+    for (let i = 0, max = symbols.length; i < max; i += 1) {
       const margin = (i > 0) ? Drawer.MARGIN : 0;
-      const bcr = boundingClientRectToBounding(pages[i].symbol.boundingClientRect);
+      const bcr = boundingClientRectToBounding(symbols[i].symbol.boundingClientRect);
       size.height += bcr.height + margin;
       size.width += bcr.width;
     }

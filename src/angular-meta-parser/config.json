@@ -2,7 +2,7 @@
   "args": {
     "rootDir": "src/angular-meta-parser/_tmp/src/lib/",
     "inFile": "index.ts",
-    "outFile": "config/meta-information.json",
+    "outFile": "config/angular-app-shell/src/assets/meta-information.json",
     "config": "src/angular-meta-parser/_tmp/tsconfig.json",
     "pkg": "src/angular-meta-parser/_tmp/package.json"
   }

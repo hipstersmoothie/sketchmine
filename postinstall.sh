@@ -24,16 +24,16 @@ failure() {
 printf "$(<./config/ascii-header.rtf)"
 echo "\ncurrently working in: $DIR"
 
-# h2 "🔧  Install angular-meta-parser dependencies"
-# sh ${DIR}/src/angular-meta-parser/prepare.sh
+h2 "🔧  Install angular-meta-parser dependencies"
+sh ${DIR}/src/angular-meta-parser/prepare.sh
 
 
-# h2 "🔧  Install angular-library-generator dependencies"
-# sh ${DIR}/src/angular-library-generator/prepare.sh
+h2 "🔧  Install angular-library-generator dependencies"
+sh ${DIR}/src/angular-library-generator/prepare.sh
 
 
-# h2 "🔧  Install sketch-validator dependencies"
-# sh ${DIR}/src/validate/prepare.sh
+h2 "🔧  Install sketch-validator dependencies"
+sh ${DIR}/src/validate/prepare.sh
 
 h2 "🗑  cleanup dist"
 rm -rf $DIST

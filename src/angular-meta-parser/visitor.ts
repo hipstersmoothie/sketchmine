@@ -43,9 +43,13 @@ const JSDOC_ANNOTATION_HOVERABLE = '@design-hoverable';
 /**
  * The factory that visits the source Files
  * @param paths used to parse the absolute module paths in import or export declarations
+ * @param nodeModulesPath path to node_modules
  * @returns {ParseResult} returns a function that returns the result for a file
  */
-export function tsVisitorFactory(paths: Map<string, string>): (sourceFile: ts.SourceFile) => ParseResult {
+export function tsVisitorFactory(
+  paths: Map<string, string>,
+  nodeModulesPath: string,
+): (sourceFile: ts.SourceFile) => ParseResult {
   /** These variables contain state that changes as we descend into the tree. */
   let currentLocation: ParseLocation | undefined;
   let nodes: ParseNode[] = [];
@@ -336,7 +340,8 @@ export function tsVisitorFactory(paths: Map<string, string>): (sourceFile: ts.So
   function visitExportOrImportDeclaration(node: ts.ExportDeclaration | ts.ImportDeclaration): void {
     const relativePath = getSymbolName(node.moduleSpecifier);
     if (relativePath) {
-      const absolutePath = parseAbsoluteModulePath(path.dirname(currentLocation.path), relativePath, paths);
+      const absolutePath = parseAbsoluteModulePath(
+        path.dirname(currentLocation.path), relativePath, paths, nodeModulesPath);
       /** if absolutePath is null then it is a node_module so we can skip it! */
       if (absolutePath !== null) {
         const values = new Set<string>();
