@@ -54,15 +54,7 @@ echo "${LBLUE}create${NC} › dist/sketch-validator"
 mkdir $DIST/sketch-validator
 
 # Angular App shell instanciating
-
-echo "${LBLUE}generate${NC} › angular-app-shell ${LGRAY}for the angular variants generator"
-cp -R $APPSHELL $DIST/sketch-library
-cd $DIST/sketch-library
-echo "${LGRAY} install angular dependencies"
-npm i || exit 1
-echo "🔪  ${LGRAY}removing sample data from angular-app-shell"
-rm -rf $DIST/sketch-library/src/app/examples
-rm -rf $DIST/sketch-library/src/app/app.module.ts
+sh ${DIR}/src/angular-library-generator/prepare-library.sh
 
 cd $DIR
 
