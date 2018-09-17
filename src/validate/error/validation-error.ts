@@ -31,6 +31,9 @@ export class ValidationError extends Error {
 
 export class DuplicatedSymbolError extends ValidationError { }
 export class WrongSymbolNamingError extends ValidationError { }
+export class ArtboardNamingError extends ValidationError { }
+export class ArtboardSizeError extends ValidationError { }
+export class PageNamingError extends ValidationError { }
 export class ColorNotInPaletteError extends ValidationError {
   constructor(public color: string, _validationError: IValidationErrorContext) {
     super(_validationError);

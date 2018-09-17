@@ -14,8 +14,9 @@ const handler = new ErrorHandler();
 const DEFAULT_TEST_FILE = path.join(process.cwd(), 'tests', 'fixtures', 'name-validation-test.sketch');
 
 export async function main(args: string[]) {
-
   const file = minimist(args).file || DEFAULT_TEST_FILE;
+
+  // validate the file name --> needs to fit folder
 
   log.notice(chalk`💎💎💎  Start Validating Sketch File:  💎💎💎\n`);
   log.notice(`validate file: ${file}`);
@@ -29,7 +30,6 @@ export async function main(args: string[]) {
 
       validator.addFile(page);
     });
-
     validator.validate();
     handler.emit();
     return 0;

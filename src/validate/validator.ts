@@ -30,15 +30,15 @@ export class Validator {
     this._files.push(content);
   }
 
-  /** alidates a sketch file with the given rules. */
-  async validate() {
+  /** validates a sketch file with the given rules. */
+  validate() {
     if (this._files.length === 0) {
       throw Error(chalk`{bgRed No files to validate!}`);
     }
     this._files.forEach((content) => {
       this.collectModules(content);
-      this.correct();
     });
+    this.correct();
   }
 
   /** 👩🏼‍🏫 The teacher applies the rules for you */
@@ -58,7 +58,6 @@ export class Validator {
    */
   private collectModules(content: IBase) {
     this.setCurrentParents(content);
-
     if (this._rulesSelectors.includes(content._class)) {
       const rule = this._rules.find(rule => rule.selector.includes(content._class as SketchModel));
       if (
@@ -117,6 +116,9 @@ export class Validator {
 
     if (layer.style) {
       obj.style = layer.style as IStyle;
+    }
+    if (layer.frame) {
+      obj.frame = layer.frame;
     }
 
     return obj;
