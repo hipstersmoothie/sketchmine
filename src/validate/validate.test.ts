@@ -38,9 +38,8 @@ describe('Sketch Validation', () => {
     expect(productValidator.matchedRules).toHaveLength(10);
   });
 
-
   test('if no rules are applied if environment doesn\'t match', async () => {
-    RULE_FIXTURE.env = ['product', 'global']
+    RULE_FIXTURE.env = ['product', 'global'];
     const productValidator = new Validator([RULE_FIXTURE], 'blubber');
     await productValidator.addFile(fixture);
     await productValidator.validate();
@@ -50,7 +49,7 @@ describe('Sketch Validation', () => {
   });
 
   test('if all rules are applied if multiple environments are set', async () => {
-    RULE_FIXTURE.env = ['product', 'global']
+    RULE_FIXTURE.env = ['product', 'global'];
     const productValidator = new Validator([RULE_FIXTURE], 'product');
     await productValidator.addFile(fixture);
     await productValidator.validate();
@@ -58,6 +57,4 @@ describe('Sketch Validation', () => {
     expect(Teacher.prototype.improve).toHaveBeenCalled();
     expect(productValidator.matchedRules).toHaveLength(10);
   });
-
-
 });

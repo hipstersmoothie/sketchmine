@@ -18,5 +18,5 @@ export const rules: IValidationRule[] = [
     ignoreArtboards: ['full-color-palette'],
     env: ['product'],
     validation: colorValidation,
-  }
+  },
 ];
