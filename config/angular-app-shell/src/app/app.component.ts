@@ -31,8 +31,8 @@ export class AppComponent implements OnInit{
 
   ngOnInit() {
     const $meta = this._metaService.getMeta();
-    $meta.subscribe(async (meta: Meta.Result) => {
-      await asyncForEach(Object.values(meta.components), async (componentMeta: Meta.Component) => {
+    $meta.subscribe(async (components: Meta.Component[]) => {
+      await asyncForEach(components, async (componentMeta: Meta.Component) => {
         await asyncForEach(componentMeta.variants, async (variant: Meta.Variant) => {
           await this._applyChange(componentMeta, variant);
         });
@@ -64,7 +64,7 @@ export class AppComponent implements OnInit{
     // wait for browser draw
     await timeout(0);
     if (window.sketchGenerator) {
-      await window.sketchGenerator.emitDraw(variant.name);
+      await window.sketchGenerator.emitDraw(`${componentMeta.component}/${variant.name}`);
     }
   }
 

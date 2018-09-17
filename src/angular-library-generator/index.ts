@@ -11,7 +11,7 @@ export async function main(): Promise<number> {
   const meta = require(path.join(process.cwd(), CONFIG.args.metaInformation)) as AMP.Result;
   const dir = path.join(path.resolve(CONFIG.args.rootDir), CONFIG.args.components);
   /** RegEx for detecting the pure default examples */
-  const files = await readDirRecursively(dir, /.*?examples\/.+?default.*?.ts$/);
+  const files = await readDirRecursively(dir, /.*?examples\/.*?pure-example.*?\.ts$/);
   const compiler = new MemoryCompiler();
 
   files.forEach((file: string) => {

@@ -1,5 +1,5 @@
 
-import { join, resolve } from 'path';
+import { join, resolve, dirname } from 'path';
 import * as fs from 'fs';
 import * as ts from 'typescript';
 import { tsVisitorFactory } from './visitor';
@@ -45,10 +45,11 @@ export async function main(args: string[]): Promise<number> {
   // tslint:disable-next-line:prefer-const
   let { rootDir, inFile, outFile, config, pkg } = parseCommandlineArgs(args, DEFAULT_CONFIG);
   const absoluteRootDir = resolve(rootDir);
+  const nodeModules = join(dirname(pkg), 'node_modules');
   inFile = join(absoluteRootDir, inFile);
   pkg = resolve(pkg);
 
-  parseFile(inFile, adjustPathAliases(config, absoluteRootDir), parseResults);
+  parseFile(inFile, adjustPathAliases(config, absoluteRootDir), parseResults, nodeModules);
 
   const results = Array.from(parseResults.values());
 
@@ -78,8 +79,9 @@ export async function main(args: string[]): Promise<number> {
  * @param fileName inFile where to start building the AST, should be the index.ts from the components library
  * @param paths a Map with the adjusted path aliases.
  * @param result The Object that holds the AST
+ * @param modules path to the node_modules
  */
-function parseFile(fileName: string, paths: Map<string, string>, result: Map<string, ParseResult>) {
+function parseFile(fileName: string, paths: Map<string, string>, result: Map<string, ParseResult>, modules: string) {
   const resolvedFileName = resolveModuleFilename(fileName);
   if (!resolvedFileName) {
     return;
@@ -96,13 +98,13 @@ function parseFile(fileName: string, paths: Map<string, string>, result: Map<str
     );
 
     /** visit the created Source file with our typescript ast visitor */
-    const visitor = tsVisitorFactory(paths);
+    const visitor = tsVisitorFactory(paths, modules);
     parseResult = visitor(sourceFile);
     result.set(resolvedFileName, parseResult);
 
     /** parse all dependencies from the file */
     parseResult.dependencyPaths.forEach((depPath) => {
-      parseFile(depPath.path, paths, result);
+      parseFile(depPath.path, paths, result, modules);
     });
   }
 }
