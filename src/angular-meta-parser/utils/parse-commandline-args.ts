@@ -5,10 +5,9 @@ import minimist from 'minimist';
  */
 export interface ConfigArguments {
   rootDir: string;
+  library: string; /** path to library realitve fromm rootDir */
   inFile: string;
   outFile: string;
-  config: string; /** Path to tsconfig.json */
-  pkg: string; /** Path to package.json */
 }
 
 /**
@@ -18,5 +17,5 @@ export interface ConfigArguments {
  * @return {ConfigArguments}
  */
 export function parseCommandlineArgs(args: string[], config: any): ConfigArguments {
-  return Object.assign(config.args, minimist(args));
+  return Object.assign(config, minimist(args));
 }
