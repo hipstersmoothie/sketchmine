@@ -5,7 +5,7 @@ import * as extractZip from 'extract-zip';
 
 import { delDir, createDir } from '@utils';
 import { fileValidations } from './file-validations';
-import { ElementFetcher } from '../../src/ng-sketch/element-fetcher';
+import { ElementFetcher } from '../../src/sketch-generator/element-fetcher';
 
 const config = {
   args: {

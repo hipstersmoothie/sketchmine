@@ -41,9 +41,9 @@ export const config = {
   ngSketch: {
     name: 'sketch-generator',
     description: 'Generates .sketch files from an html website that is inspected with a headless chrome.',
-    path: path.join(SRC_DIR, 'ng-sketch'),
+    path: path.join(SRC_DIR, 'sketch-generator'),
     copy: {
-      'src/ng-sketch/config.json': 'dist/sketch-generator/config.json',
+      'src/sketch-generator/config.json': 'dist/sketch-generator/config.json',
       'src/assets/preview.png' : 'dist/sketch-generator/assets/preview.png',
     },
   },
