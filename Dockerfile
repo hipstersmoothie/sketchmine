@@ -5,7 +5,7 @@
 FROM alpine/git as angular-components
 ARG GIT_PASS
 ARG GIT_USER=lukas.holzer
-ARG GIT_BRANCH=master
+ARG GIT_BRANCH=feat/poc-sketch
 ARG GIT_REPO=https://${GIT_USER}:${GIT_PASS}@bitbucket.lab.dynatrace.org/scm/rx/angular-components.git
 
 WORKDIR /ac
@@ -41,6 +41,14 @@ COPY src ./src
 
 RUN ls -lah ./
 RUN node_modules/.bin/rollup -c
+
+WORKDIR /dist/sketch-library/
+COPY /config/angular-app-shell/.npmrc \ 
+     /config/angular-app-shell/package.json \
+     ./
+RUN npm install
+COPY /config/angular-app-shell/ ./
+WORKDIR /
 
 CMD []
 
