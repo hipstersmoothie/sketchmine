@@ -50,9 +50,6 @@ export const config = {
   validate: {
     name: 'sketch-validator',
     path: path.join(SRC_DIR, 'validate'),
-    copy: {
-      'src/validate/rules/color-validation/_tmp/_colors.scss' : 'dist/sketch-validator/_tmp/_colors.scss',
-    },
   },
 }
 

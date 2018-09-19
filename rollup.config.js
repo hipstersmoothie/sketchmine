@@ -25,7 +25,8 @@ function buildConfig() {
 
   const conf = [];
   for (const dependency in config) {
-    conf.push(buildDependency(dependency))
+    const c = buildDependency(dependency);
+    if (c) { conf.push(c); }
   }
   return conf;
 }
