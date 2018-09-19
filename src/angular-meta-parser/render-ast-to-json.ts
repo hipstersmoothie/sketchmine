@@ -6,7 +6,7 @@ import { AMP } from './meta-information';
  * @param {Map<string, ParseResult>} ast Abstract Syntax Tree that was generated from the components and transformed
  * @param {string} pkg path to the package.json from the angular components
  */
-export function renderASTtoJSON(ast: Map<string, ParseResult>, pkg: string): any {
+export function renderASTtoJSON(ast: Map<string, ParseResult>, pkg: string): AMP.Result {
   const jsonVisitor = new JSONVisitor();
   const jsonResult: AMP.Component[] = [];
   const pkgJSON = require(pkg);

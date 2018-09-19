@@ -6,6 +6,7 @@ import { writeJSON } from '@utils';
 import { ValuesResolver } from './values-resolver';
 import { parseFile } from './parse-file';
 import { renderASTtoJSON } from './render-ast-to-json';
+import { AMP } from './meta-information';
 /**
  * The Main function that takes command line args build the AST and transforms the AST,
  * generate a JSON representation from it and write it to the outFile.
@@ -17,8 +18,8 @@ export async function main(
   library: string,
   outFile: string = 'meta-information.json',
   inFile: string = 'index.ts',
-  inMem: boolean = false,
-): Promise<number> {
+  inMemory: boolean = false,
+): Promise<number | AMP.Result> {
   let parseResults = new Map<string, ParseResult>();
 
   if (!rootDir || !library) {
@@ -47,9 +48,13 @@ export async function main(
     });
     parseResults = transformedResults;
   }
+  const metaInformation = renderASTtoJSON(parseResults, pkg);
 
+  if (inMemory) {
+    return metaInformation;
+  }
   /** write the JSON structure to the outFile */
-  await writeJSON(outFile, renderASTtoJSON(parseResults, pkg), true);
+  await writeJSON(outFile, metaInformation, true);
 
   // return exit code
   return Promise.resolve(0);

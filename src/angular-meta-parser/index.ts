@@ -11,7 +11,7 @@ export async function commandLineExecutor(): Promise<number> {
   }
   const args = process.argv.slice(2);
   const { rootDir, library, inFile, outFile } = parseCommandlineArgs(args, JSON.parse(config));
-  return await main(rootDir, library, outFile, inFile);
+  return await main(rootDir, library, outFile, inFile, false) as number;
 }
 
 commandLineExecutor().then((code: number) => {

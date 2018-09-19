@@ -3,6 +3,7 @@ import * as path from 'path';
 import { findNode, createExamplesMap, createSketchLibraryModule, createImportDeclaration } from './ast';
 import { getSymbolName } from '@angular-meta-parser/utils';
 import { writeFile, Logger } from '@utils';
+import chalk from 'chalk';
 
 const log = new Logger();
 const ANGULAR_COMPONENTS = [
@@ -107,8 +108,13 @@ export class MemoryCompiler {
     return modules;
   }
 
-  async printFiles(writeToFile = true) {
-    const baseDir = path.join(process.cwd(), 'dist', 'sketch-library', 'src', 'app');
+  /**
+   * write all typescript source files to memory
+   * @param angularApp path to the angular Appshell clone
+   * @param writeToFileSystem if it should write the changes to fs
+   */
+  async printFiles(angularApp: string, writeToFileSystem = true) {
+    const baseDir = path.join(angularApp, 'src', 'app');
     this.generateModule();
 
     const filesToBeWritten = [];
@@ -119,8 +125,10 @@ export class MemoryCompiler {
       const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
       const resultFile = ts.createSourceFile(file.fileName, '', ts.ScriptTarget.Latest, false, ts.ScriptKind.TS);
       const result = printer.printNode(ts.EmitHint.Unspecified, file, resultFile);
-      if (writeToFile) {
+      if (writeToFileSystem) {
         filesToBeWritten.push(writeFile(path.join(baseDir, file.fileName), result));
+      } else {
+        log.debug(chalk`Queue file for writing: {cyanBright ${path.join(baseDir, file.fileName)}}`);
       }
     }
 
