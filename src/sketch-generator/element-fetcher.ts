@@ -5,7 +5,7 @@ import { Sketch } from '@sketch-draw/sketch';
 import { Drawer } from './drawer';
 import { ITraversedElement, TraversedLibrary, TraversedPage } from '../dom-traverser/traversed-dom';
 import { exec } from 'child_process';
-import { SG } from './index.d';
+import { SketchGenerator } from './sketch-generator';
 import { readFile, Logger } from '@utils';
 import { sketchGeneratorApi } from './sketch-generator-api';
 import { AssetHelper } from '../dom-traverser/asset-helper';
@@ -19,11 +19,11 @@ const TRAVERSER = path.join(process.cwd(), config.sketchGenerator.traverser);
 export class ElementFetcher {
   // private _assetHsandler: AssetHandler = new AssetHandler();
   private _result: (TraversedPage | TraversedLibrary)[] = [];
-  constructor(public conf: SG.Config) { }
+  constructor(public conf: SketchGenerator.Config) { }
 
-  async generateSketchFile(outDir?: string): Promise<number> {
+  async generateSketchFile(): Promise<number> {
     const drawer = new Drawer();
-    const sketch = new Sketch(outDir);
+    const sketch = new Sketch(this.conf.outFile);
     const pages = [];
     let symbolsMaster = drawer.drawSymbols({ symbols: [] } as any);
 
@@ -46,7 +46,7 @@ export class ElementFetcher {
     sketch.cleanup();
 
     if (process.env.SKETCH === 'open-close') {
-      exec('open dt-asset-lib.sketch');
+      exec(`open ${this.conf.outFile}`);
     }
     return Promise.resolve(0);
   }
@@ -75,8 +75,8 @@ export class ElementFetcher {
     const traverser = await readFile(TRAVERSER);
     let result: any;
 
-    if (this.conf.args.library) {
-      result = await sketchGeneratorApi(browser, url, this.conf.args.rootElement, traverser);
+    if (this.conf.library) {
+      result = await sketchGeneratorApi(browser, url, this.conf.rootElement, traverser);
     } else {
       const page = await browser.newPage();
       await page.evaluateOnNewDocument(traverser);
@@ -95,7 +95,7 @@ export class ElementFetcher {
           const traverser = new DomTraverser();
           window.page.element = traverser.traverse(hostElement, visitor);
         },
-        this.conf.args.rootElement);
+        this.conf.rootElement);
 
       await page.goto(url, { waitUntil: 'networkidle2' });
       result = await page.evaluate(() => window.page) as ITraversedElement[];
@@ -114,10 +114,10 @@ export class ElementFetcher {
 
     for (let i = 0, max = confPages.length; i < max; i += 1) {
       const page = confPages[i];
-      const url = `${this.conf.args.host}${page}`;
 
-      log.debug(chalk`🛬\t{cyanBright Fetching Page}: ${url}`);
-      this._result.push(await this.getPage(browser, url));
+      const url = new URL(page, `${this.conf.host.protocol}://${this.conf.host.name}:${this.conf.host.port}`);
+      log.debug(chalk`🛬\t{cyanBright Fetching Page}: ${url.href}`);
+      this._result.push(await this.getPage(browser, url.href));
     }
 
     await browser.close();

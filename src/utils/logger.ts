@@ -73,22 +73,26 @@ ${envs.join('\n')}
 
   error(message: string): void { this.message(chalk.redBright(message), 1); }
   warning(message: string): void { this.message(chalk.yellow(message), 2); }
-  notice(message: string): void { this.message(chalk.cyan(message), 3); }
+  notice(message: string, emoji?: string): void { this.message(chalk.cyan(message), 3, emoji); }
   info(message: string): void { this.message(message, 4); }
-  debug(message: string, debugSpace?: string): void {
-    if (!process.env.DEBUG || debugSpace && !this._debugEnvs.includes(debugSpace)) {
+  debug(message: string, debugSpace?: string, emoji?: string): void {
+    if (
+      !process.env.DEBUG || debugSpace &&
+      !this._debugEnvs.includes(debugSpace)
+    ) {
       return;
     }
-    this.message(chalk.white(` ${message} `), 5);
+    this.message(chalk.white(message.trim()), 5, emoji);
   }
 
   public checkDebug(debugSpace: string): boolean {
     return this._debugEnvs && this._debugEnvs.includes(debugSpace);
   }
 
-  private message(message: string, level: number): void {
+  private message(message: string, level: number, emoji?: string): void {
     /** replace linebreaks for perfect indentation */
-    const msg = `${this.getEmoji(level)}${message.replace('\n', `\n  ${Logger.EMOJI_SPACE}`)}`;
+    const e = emoji ? `${emoji}${Logger.EMOJI_SPACE}` : this.getEmoji(level);
+    const msg = `${e}${message.replace('\n', `\n  ${Logger.EMOJI_SPACE}`)}`;
     console.log(msg);
     if (this._logStream) {
       this._logStream.write(JSON.stringify(this.logEntry(msg, level)));

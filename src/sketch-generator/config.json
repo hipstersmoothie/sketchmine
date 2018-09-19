@@ -1,10 +1,8 @@
 {
-  "args": {
-    "metaInformation": "src/angular-meta-parser/_tmp/meta-information.json",
-    "host": "http://localhost:4200",
-    "rootElement": "ng-component > * ",
-    "library": true
-  },
+  "metaInformation": "src/angular-meta-parser/_tmp/meta-information.json",
+  "host": "http://localhost:4200",
+  "rootElement": "ng-component > * ",
+  "library": true,
   "pages": [
     "/"
   ],

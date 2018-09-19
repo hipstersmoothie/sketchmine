@@ -21,7 +21,7 @@ export async function writeFile(filename: string, content: string, encoding = 'u
   createDir(dir);
   try {
     await writeFileAsync(filename, content, encoding);
-    log.debug(chalk`✅ {green Successfully written Object to} {grey ${filename}}`);
+    log.debug(chalk`{green Successfully written Object to} {grey ${filename}}`, undefined, '✅');
   } catch (error) {
     throw Error(chalk`{red Error writing Object to ${filename}}`);
   }

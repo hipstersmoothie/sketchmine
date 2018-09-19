@@ -4,7 +4,10 @@ import { fileBuffer } from '@utils/zip-to-buffer';
 import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
+import { Logger } from '@utils/logger';
+
 const archiver = require('archiver');
+const log = new Logger();
 
 /**
  * Generate a .sketch file from a local folder or an array of fileBuffers
@@ -24,14 +27,12 @@ export function generateSketchFile(
     const output = fs.createWriteStream(file);
     const archive = archiver('zip');
 
-    if (process.env.DEBUG) {
-      console.log(chalk`\tCreated Write Stream for {grey ${file}}`);
-    }
+    log.debug(chalk`Created Write Stream for {grey ${file}}`);
 
     output.on('close',  () => {
-      console.log(
-        chalk`\n✅ \t{greenBright Sketch file}: {magenta ${fileName}.sketch} – `,
-        chalk`was successfully generated with: {cyan ${bytesToSize(archive.pointer())}}\n`,
+      log.notice(
+        chalk`\n✅ \t{greenBright Sketch file}: {magenta ${fileName}.sketch} – ` +
+        chalk`was successfully generated with: {cyan ${bytesToSize(archive.pointer())}}\n` +
         chalk`\tIn the folder: {grey ${path.resolve(outDir)}/}\n\n`,
       );
       resolve();
@@ -39,9 +40,7 @@ export function generateSketchFile(
 
     archive.on('warning', (err) => {
       if (err.code === 'ENOENT') {
-        if (process.env.DEBUG) {
-          console.log('Sketch-File could not be written: ENOENT', err);
-        }
+        log.debug('Sketch-File could not be written: ENOENT', err);
       } else {
         reject(err);
       }
