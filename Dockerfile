@@ -28,7 +28,8 @@ FROM node:10-alpine as library-base
 WORKDIR /_tmp
 COPY --from=angular-components /ac/package.json /ac/.npmrc ./
 RUN yarn install --ignore-scripts
-COPY --from=angular-components /ac/tsconfig.json /ac/src ./
+COPY --from=angular-components /ac/tsconfig.json ./
+COPY --from=angular-components /ac/src ./src
 
 WORKDIR /
 COPY package.json /
@@ -42,3 +43,17 @@ RUN ls -lah ./
 RUN node_modules/.bin/rollup -c
 
 CMD []
+
+
+FROM library-base as library-production
+
+# cleanup image
+RUN rm -rf .rpt2_cache \
+    package.json \
+    package-lock.json \
+    src \
+    rollup.config.js \
+    tsconfig.json \
+    tslint.json
+
+CMD ["node", "dist/library"]

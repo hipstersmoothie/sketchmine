@@ -1,0 +1,18 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  library:
+    build: 
+      context: .
+      args:
+        GIT_PASS: awd1syshlnoglNoob3!
+        GIT_USER: lukas.holzer
+        GIT_BRANCH: master
+    volumes:
+      - ./src:/src
+      - ./config:/config
+
+volumes:
+  src:
+  config:
