@@ -14,6 +14,9 @@ dest
 tmp
 out-tsc
 
+# credentials
+.env
+
 # IDEs and editors
 /.idea
 .project

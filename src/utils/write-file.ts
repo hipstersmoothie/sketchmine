@@ -23,7 +23,7 @@ export async function writeFile(filename: string, content: string, encoding = 'u
     await writeFileAsync(filename, content, encoding);
     log.debug(chalk`{green Successfully written Object to} {grey ${filename}}`, undefined, '✅');
   } catch (error) {
-    throw Error(chalk`{red Error writing Object to ${filename}}`);
+    throw Error(chalk`{red Error writing content to ${filename}}\n${error.message}`);
   }
   return true;
 }

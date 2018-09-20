@@ -49,6 +49,9 @@ export class Logger {
 {yellow * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 *  🚧 DEBUG actived for enviornments:
 ${envs.join('\n')}
+*
+* ☛ current working in directory:
+* ${process.cwd()}
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *}
       `);
     }

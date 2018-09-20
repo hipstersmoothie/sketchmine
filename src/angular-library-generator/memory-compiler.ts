@@ -126,9 +126,9 @@ export class MemoryCompiler {
       const resultFile = ts.createSourceFile(file.fileName, '', ts.ScriptTarget.Latest, false, ts.ScriptKind.TS);
       const result = printer.printNode(ts.EmitHint.Unspecified, file, resultFile);
       if (writeToFileSystem) {
-        filesToBeWritten.push(writeFile(path.join(baseDir, file.fileName), result));
+        filesToBeWritten.push(writeFile(path.resolve(baseDir, file.fileName), result));
       } else {
-        log.debug(chalk`Queue file for writing: {cyanBright ${path.join(baseDir, file.fileName)}}`);
+        log.debug(chalk`Queue file for writing: {cyanBright ${path.resolve(baseDir, file.fileName)}}`);
       }
     }
 

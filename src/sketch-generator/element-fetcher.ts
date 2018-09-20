@@ -104,11 +104,29 @@ export class ElementFetcher {
   }
 
   async collectElements() {
+    const options = process.env.DOCKER ?  {
+      /**
+       * shared memory space 64MB. Cause chrome to crash when rendiring large pages
+       * @example https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#tips
+       */
+      // ...this.conf.chrome,
+      args: ['--disable-dev-shm-usage', '--no-sandbox'],
+      executablePath: '/usr/bin/chromium-browser',
+    } : {
+      // ...this.conf.chrome,
+      headless: false,
+      devtools: true,
+    };
 
-    const options: puppeteer.LaunchOptions = Object.assign(
-      process.env.DEBUG ? { headless: false, devtools: true } : {},
-      this.conf.chrome,
-    );
+    // options.
+    // const options: puppeteer.LaunchOptions = Object.assign(
+    //   process.env.DEBUG ? { headless: false, devtools: true } : {},
+    //   {
+    //     ...this.conf.chrome,
+    //     args: ['--disable-dev-shm-usage', '--no-sandbox', '--headless', '--disable-gpu'],
+    //     executablePath: '/usr/bin/chromium-browser',
+    //   },
+    // );
     const browser = await puppeteer.launch(options);
     const confPages = this.conf.pages || [''];
 
