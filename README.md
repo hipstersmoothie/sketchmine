@@ -24,35 +24,34 @@
 * **SCR** sketch-color-replacer
 * **SV** sketch-validator
 
-
 ## Sketch Generator
 
 Generates a Sketch App Symbol library out of the *Dynatrace Angular Components Library*.
 
 ### How to get running
 
-The generator needs a list of pages (urls) to crawl and draw.
-Each page is drawn as own Symbol.
-To modify the host of the page you can use the setter function.
+#### Run with docker-compose
 
-``` typescript
-const elementFetcher = new ElementFetcher();
-elementFetcher.host = 'http://localhost:4200';
+To get started with docker-compose please create following file:
+
+```bash
+touch .env
+echo 'GIT_PASS=yourpass!\nGIT_USER=git.user' > .env
 ```
 
-Just start the angular app on port **4200**, and pass the pages for the symbols in the index.ts
-then hit in the terminal `npm start` and your sketch file is generated!
+then just run `docker-compose up`
 
-```typescript
-const pages = [
-  '/button/button--icon',
-  '/button/button--primary',
-  '/button/button--secondary',
-  '/tile/tile--default',
-];
+to run without docker in a local development environment run first
 
-new ElementFetcher().generateSketchFile(pages);
+```bash
+sh postinstall.sh
 ```
+
+It will prepare everything for you so you can start developing.
+The angular components will be checked out into `_tmp` and the library app shell will be moved in the correct place.
+
+If you want to run the library `node dist/library` and the **.sketch** file will be generated 🤘🏻
+
 
 ### Debugging
 
@@ -78,7 +77,8 @@ process.env.SKETCH = 'open-close';
 
 Tests are done with **JEST**
 
-The files have to contain the pattern `**/*.test.ts` in the folder `src` and `tests`
+The files have to contain the pattern `**/*.test.ts` in the folder `src` and `tests` for unit tests and 
+for end 2 end testing `**/*.e2e.ts`
 
 Just run `npm run test`
 for test-coverage analysis run `npm run test:coverage`
@@ -131,15 +131,6 @@ export const rules: IValidationRule[] = [
 ];
 ```
 
-### Debugging
-
-The following Debug variables are specified for enhanced logging.
-
-``` javascript
-process.env.DEBUG = 'true';
-process.env.VERBOSE = 'true';
-```
-
 ## Color Replacer to change a set of unused legacy colors
 
 run `run:color-replacer -- --file=path/to/file.sketch --colors=path/to/colors.json`
@@ -147,16 +138,6 @@ The script creates a `./_tmp`dir in the current workdir with the canged file.
 
 All colors have to be provided as **HEX** colors
 The **colors.json** file follows following convention:
-
-### Debugging 
-
-The environment Variable of `process.env.SKETCH = 'open-close'` opens and closes the Sketch app automatically on a MacOS machine.
-
-``` javascript
-process.env.DEBUG = 'true';
-process.env.VERBOSE = 'true';
-process.env.SKETCH = 'open-close';
-```
 
 ```json
 {
@@ -166,7 +147,7 @@ process.env.SKETCH = 'open-close';
 }
 ```
 
-#### Maintainer
+## Maintainer
 
 <table>
   <tr>
