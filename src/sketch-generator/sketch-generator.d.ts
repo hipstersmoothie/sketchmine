@@ -17,7 +17,7 @@ export namespace SketchGenerator {
   export interface Host {
     protocol: string;
     name: string;
-    port: number;
+    port?: number;
   }
 
   export interface DefaultViewport {

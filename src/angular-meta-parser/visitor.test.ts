@@ -31,7 +31,7 @@ describe('➡ AST Visitor', () => {
 
     beforeAll(() => {
       const paths = new Map<string, string>();
-      const visitor = tsVisitorFactory(paths);
+      const visitor = tsVisitorFactory(paths, '');
       result = visitor(sourceFile);
     });
 

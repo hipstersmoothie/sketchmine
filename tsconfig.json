@@ -10,6 +10,7 @@
     "noUnusedParameters": false,
     "moduleResolution": "node",
     "outDir": "dist/lib",
+    "esModuleInterop": true,
     "paths": {
       "@angular-meta-parser/*": ["angular-meta-parser/*"],
       "@angular-meta-parser": ["angular-meta-parser/index"],

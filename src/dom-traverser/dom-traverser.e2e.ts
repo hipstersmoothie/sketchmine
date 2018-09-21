@@ -1,5 +1,5 @@
 import * as path from 'path';
-import * as puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer';
 import { ITraversedElement } from './traversed-dom';
 import { readFile } from '@utils';
 

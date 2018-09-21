@@ -1,6 +1,6 @@
 import * as path from 'path';
 import chalk from 'chalk';
-import * as puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer';
 import { Sketch } from '@sketch-draw/sketch';
 import { Drawer } from './drawer';
 import { ITraversedElement, TraversedLibrary, TraversedPage } from '../dom-traverser/traversed-dom';
@@ -105,37 +105,33 @@ export class ElementFetcher {
 
   async collectElements() {
     const options = process.env.DOCKER ?  {
+      ...this.conf.chrome,
       /**
        * shared memory space 64MB. Cause chrome to crash when rendiring large pages
        * @example https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#tips
        */
-      // ...this.conf.chrome,
       args: ['--disable-dev-shm-usage', '--no-sandbox'],
       executablePath: '/usr/bin/chromium-browser',
     } : {
-      // ...this.conf.chrome,
-      headless: false,
-      devtools: true,
+      ...this.conf.chrome,
+      headless: process.env.DEBUG ? false : true,
+      devtools: process.env.DEBUG ? true : false,
     };
-
-    // options.
-    // const options: puppeteer.LaunchOptions = Object.assign(
-    //   process.env.DEBUG ? { headless: false, devtools: true } : {},
-    //   {
-    //     ...this.conf.chrome,
-    //     args: ['--disable-dev-shm-usage', '--no-sandbox', '--headless', '--disable-gpu'],
-    //     executablePath: '/usr/bin/chromium-browser',
-    //   },
-    // );
     const browser = await puppeteer.launch(options);
     const confPages = this.conf.pages || [''];
 
     for (let i = 0, max = confPages.length; i < max; i += 1) {
       const page = confPages[i];
 
-      const url = new URL(page, `${this.conf.host.protocol}://${this.conf.host.name}:${this.conf.host.port}`);
-      log.debug(chalk`🛬\t{cyanBright Fetching Page}: ${url.href}`);
-      this._result.push(await this.getPage(browser, url.href));
+      const host = this.conf.host;
+
+      const port = (host.port && host.protocol.match(/^https?/)) ?
+        `:${host.port}` : '';
+
+      const url = `${host.protocol}://${host.name}${port}/${page}`;
+
+      log.debug(chalk`🛬\t{cyanBright Fetching Page}: ${url}`);
+      this._result.push(await this.getPage(browser, url));
     }
 
     await browser.close();

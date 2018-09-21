@@ -1,22 +1,22 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { promisify } from 'util';
-import * as extractZip from 'extract-zip';
+import extractZip from 'extract-zip';
 
 import { delDir, createDir } from '@utils';
 import { fileValidations } from './file-validations';
 import { ElementFetcher } from '../../src/sketch-generator/element-fetcher';
 
 const config = {
-  args: {
-    metaInformation: 'src/angular-meta-parser/_tmp/meta-information.json',
-    host: `file:${path.join(process.cwd(), 'tests', 'fixtures', 'tile-default.html')}`,
-    rootElement: 'app-root > * > *',
-    library: false,
+  metaInformation: 'dist/sketch-library/src/assets/meta-information.json',
+  host: {
+    protocol: 'file',
+    name: `${path.join(process.cwd(), 'tests', 'fixtures')}`,
+    port: null,
   },
-  pages: [
-    '',
-  ],
+  rootElement: 'app-root > * > *',
+  pages: ['tile-default.html'],
+  outFile: path.resolve('./tests/_tmp/dt-asset-lib.sketch'),
   chrome: {
     defaultViewport: {
       width: 800,
@@ -33,15 +33,15 @@ const extract = promisify(extractZip);
 
 describe('➡ Sketch File generation 💎', () => {
   const fileName = 'dt-asset-lib';
-  const testTmp = path.resolve('./tests/_tmp');
-  const sketchFile = path.join(testTmp, `${fileName}.sketch`);
+  const testTmp = path.dirname(config.outFile);
+  const sketchFile = path.basename(config.outFile);
 
   beforeAll(async () => {
     delDir(testTmp);
     createDir(testTmp);
     const elementFetcher = new ElementFetcher(config);
     await elementFetcher.collectElements();
-    await elementFetcher.generateSketchFile(testTmp);
+    await elementFetcher.generateSketchFile();
     await extract(sketchFile, { dir: path.join(testTmp, fileName) });
   });
 
@@ -60,7 +60,7 @@ describe('➡ Sketch File generation 💎', () => {
   });
 
   describe('JSON validation: 🚧 \n', () => {
-    // general File Validations
+    /** general File Validations */
     fileValidations();
   });
 
