@@ -4,7 +4,7 @@ version: '3.4'
 services:
   library:
     build: 
-      target: library-base
+      target: library-base-production
       context: .
       args:
         GIT_PASS: ${GIT_PASS}

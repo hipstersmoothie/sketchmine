@@ -101,4 +101,4 @@ RUN rm -rf .rpt2_cache \
     tsconfig.json \
     tslint.json
 
-# CMD ["node", "dist/library"]
+CMD ["node", "dist/library"]
