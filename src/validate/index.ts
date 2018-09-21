@@ -31,7 +31,7 @@ export async function main(args: string[]) {
 
     validator.validate();
     handler.emit();
-    return Promise.resolve(0);
+    return 0;
   });
 }
 

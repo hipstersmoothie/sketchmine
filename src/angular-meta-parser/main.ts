@@ -57,5 +57,5 @@ export async function main(
   await writeJSON(outFile, metaInformation, true);
 
   // return exit code
-  return Promise.resolve(0);
+  return 0;
 }

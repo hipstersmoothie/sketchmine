@@ -48,7 +48,7 @@ export class ElementFetcher {
     if (process.env.SKETCH === 'open-close') {
       exec(`open ${this.conf.outFile}`);
     }
-    return Promise.resolve(0);
+    return 0;
   }
 
   /**
@@ -100,15 +100,15 @@ export class ElementFetcher {
       await page.goto(url, { waitUntil: 'networkidle2' });
       result = await page.evaluate(() => window.page) as ITraversedElement[];
     }
-    return Promise.resolve(result);
+    return result;
   }
 
   async collectElements() {
     const options = process.env.DOCKER ?  {
       ...this.conf.chrome,
       /**
-       * shared memory space 64MB. Cause chrome to crash when rendiring large pages
-       * @example https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#tips
+       * shared memory space 64MB. Cause chrome to crash when rendering large pages
+       * @see https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#tips
        */
       args: ['--disable-dev-shm-usage', '--no-sandbox'],
       executablePath: '/usr/bin/chromium-browser',

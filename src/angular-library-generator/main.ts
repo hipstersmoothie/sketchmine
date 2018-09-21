@@ -29,5 +29,5 @@ export async function main(meta: AMP.Result, dir: string, appShell: string): Pro
   });
 
   await compiler.printFiles(appShell);
-  return Promise.resolve(0);
+  return 0;
 }

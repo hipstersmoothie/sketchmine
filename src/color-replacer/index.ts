@@ -36,7 +36,7 @@ export async function main(args: string[]) {
     if (process.env.SKETCH === 'open-close') {
       exec(`open ${path.resolve('_tmp', path.basename(file))}`);
     }
-    return Promise.resolve(0);
+    return 0;
   });
 }
 /** Call the main function with command line args */
