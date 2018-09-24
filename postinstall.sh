@@ -8,6 +8,9 @@ declare NC='\033[0m' # No Color
 declare DIR=$(pwd)
 declare DIST=${DIR}/dist
 declare APPSHELL=${DIR}/config/angular-app-shell
+declare TMP=_tmp
+declare REPO=https://bitbucket.lab.dynatrace.org/scm/rx/angular-components.git
+declare BRANCH=feat/poc-sketch
 
 h2() {
 	printf '\n\e[1;33m==>\e[37;1m %s\e[0m\n' "$*"
@@ -24,16 +27,24 @@ failure() {
 printf "$(<./config/ascii-header.rtf)"
 echo "\ncurrently working in: $DIR"
 
-h2 "🔧  Install angular-meta-parser dependencies"
-sh ${DIR}/src/angular-meta-parser/prepare.sh
+h2 "🔧  checkout angular components from .git"
+rm -rf $TMP
+echo "${LBLUE}create${NC} › ${TMP}"
+mkdir $TMP
+git clone --no-checkout --depth=1 -b $BRANCH $REPO $TMP
 
+cd $TMP
+git fetch origin $BRANCH
+git checkout origin/$BRANCH -- tsconfig.json
+git checkout origin/$BRANCH -- package.json
+git checkout origin/$BRANCH -- .npmrc
+git checkout origin/$BRANCH -- src/lib
+git checkout origin/$BRANCH -- src/docs/components
 
-h2 "🔧  Install angular-library-generator dependencies"
-sh ${DIR}/src/angular-library-generator/prepare.sh
+# install dependencies for @dynatrace/dt-icontype
+h2 "⚙️  Install angular components dependencies"
+npm install --ignore-scripts
 
-
-h2 "🔧  Install sketch-validator dependencies"
-sh ${DIR}/src/validate/prepare.sh
 
 h2 "🗑  cleanup dist"
 rm -rf $DIST
@@ -54,7 +65,16 @@ echo "${LBLUE}create${NC} › dist/sketch-validator"
 mkdir $DIST/sketch-validator
 
 # Angular App shell instanciating
-sh ${DIR}/src/angular-library-generator/prepare-library.sh
+echo "${LBLUE}generate${NC} › angular-app-shell ${LGRAY}for the angular variants generator"
+rm -rf $DIST/sketch-library
+cp -R $APPSHELL $DIST/sketch-library
+cd $DIST/sketch-library
+echo "${LGRAY} install angular dependencies"
+npm i || exit 1
+echo "🔪  ${LGRAY}removing sample data from angular-app-shell"
+rm -rf $DIST/sketch-library/src/app/examples
+rm -rf $DIST/sketch-library/src/app/app.module.ts
+
 
 cd $DIR
 

@@ -1,15 +1,23 @@
-export namespace SG {
+export namespace SketchGenerator {
 
   export interface Config {
-    args: Args;
+    metaInformation: string;
+    host: Host;
+    rootElement: string;
+    library?: Library;
     pages: string[];
+    outFile: string;
     chrome: Chrome;
   }
-  export interface Args {
-    metaInformation: string;
-    host: string;
-    rootElement: string;
-    library: boolean;
+
+  export interface Library {
+    app: string;
+  }
+
+  export interface Host {
+    protocol: string;
+    name: string;
+    port?: number;
   }
 
   export interface DefaultViewport {

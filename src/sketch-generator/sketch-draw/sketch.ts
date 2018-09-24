@@ -2,18 +2,19 @@ import { copyFile, createDir, delDir, generateSketchFile, writeJSON } from '@uti
 import { Document } from '@sketch-draw/models/document';
 import { Meta } from '@sketch-draw/models/meta';
 import { Page } from '@sketch-draw/models/page';
-import * as path from 'path';
+import { dirname, resolve, basename, join } from 'path';
 import chalk from 'chalk';
 
 const config = require(`${process.cwd()}/config/app.json`);
 
 export class Sketch {
-  private static FILE_NAME = 'dt-asset-lib';
-  private static TMP_PATH = path.resolve('_tmp');
+  private static TMP_PATH = resolve('_sketch_tmp');
   private _outDir: string;
+  private _fileName: string;
 
-  constructor(outDir?: string) {
-    this._outDir = outDir || './';
+  constructor(outFile?: string) {
+    this._outDir = dirname(outFile) || './';
+    this._fileName = basename(outFile, '.sketch') || 'dt-asset-lib';
   }
 
   async write(pages: Page[]): Promise<any> {
@@ -21,7 +22,7 @@ export class Sketch {
     const meta = new Meta(pages);
 
     await this.generateFolderStructure(pages, doc, meta);
-    return generateSketchFile(this._outDir, Sketch.FILE_NAME, Sketch.TMP_PATH);
+    return generateSketchFile(this._outDir, this._fileName, Sketch.TMP_PATH);
   }
 
   /**
@@ -37,9 +38,9 @@ export class Sketch {
   prepareFolders() {
     delDir(Sketch.TMP_PATH);
     createDir(Sketch.TMP_PATH);
-    createDir(path.join(Sketch.TMP_PATH, 'pages'));
-    createDir(path.join(Sketch.TMP_PATH, 'previews'));
-    createDir(path.join(Sketch.TMP_PATH, 'images'));
+    createDir(join(Sketch.TMP_PATH, 'pages'));
+    createDir(join(Sketch.TMP_PATH, 'previews'));
+    createDir(join(Sketch.TMP_PATH, 'images'));
   }
 
   /**
@@ -55,15 +56,15 @@ export class Sketch {
       console.log(chalk`\n\n\t{yellow ——— GENERATING FOLDER STRUCTURE ———}\n`);
     }
     this.prepareFolders();
-    await writeJSON(path.join(Sketch.TMP_PATH, 'document'), doc.generateObject());
-    await writeJSON(path.join(Sketch.TMP_PATH, 'meta'), meta.generateObject());
-    await writeJSON(path.join(Sketch.TMP_PATH, 'user'), {});
+    await writeJSON(join(Sketch.TMP_PATH, 'document'), doc.generateObject());
+    await writeJSON(join(Sketch.TMP_PATH, 'meta'), meta.generateObject());
+    await writeJSON(join(Sketch.TMP_PATH, 'user'), {});
 
     pages.forEach(async (page) => {
-      await writeJSON(path.join(Sketch.TMP_PATH, 'pages', page.objectID), page.generateObject());
+      await writeJSON(join(Sketch.TMP_PATH, 'pages', page.objectID), page.generateObject());
     });
 
-    const preview = path.join(process.cwd(), config.sketchGenerator.previewImage);
-    await copyFile(preview, path.join(Sketch.TMP_PATH, 'previews'));
+    const preview = join(process.cwd(), config.sketchGenerator.previewImage);
+    await copyFile(preview, join(Sketch.TMP_PATH, 'previews'));
   }
 }

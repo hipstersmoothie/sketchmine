@@ -1,5 +1,5 @@
 import { readFileSync, lstatSync } from 'fs';
-import { join } from 'path';
+import { resolve } from 'path';
 import { Logger } from '@utils';
 import chalk from 'chalk';
 
@@ -13,7 +13,7 @@ const DYNATRACE_LOGO_COLORS = [
   '#1A1A1A', /** logo-dark-gray */
 ];
 
-const COLORS_FILE = join(__dirname, '_tmp/', '_colors.scss');
+const COLORS_FILE = resolve('_tmp/src/lib/core/style/_colors.scss');
 
 /**
  * This function generates a list of all possible colors from the angular-components library

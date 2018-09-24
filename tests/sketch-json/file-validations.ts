@@ -19,7 +19,7 @@ export function fileValidations() {
           document = JSON.parse(data);
           done();
         } else {
-          console.log('Failed reading document.json', err);
+          console.log('Failed reading document.json\n', err.message);
         }
       });
     });

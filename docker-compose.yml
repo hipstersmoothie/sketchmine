@@ -1,0 +1,26 @@
+# docker-compose.yml
+version: '3.4'
+
+services:
+  library:
+    build: 
+      target: library-production
+      context: .
+      args:
+        GIT_PASS: ${GIT_PASS}
+        GIT_USER: ${GIT_USER}
+        GIT_BRANCH: feat/poc-sketch
+    cap_add:
+      - ALL
+    volumes:
+      - ./src:/src
+      - ./config:/config
+    environment:
+      DEBUG: 'true'
+      # DEBUG: 'puppeteer:*' # puppeteer logging in browser
+      DOCKER: 'true'
+    command: ['node', './dist/library']
+
+volumes:
+  src:
+  config:

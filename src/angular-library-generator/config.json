@@ -1,7 +1,5 @@
 {
-  "args": {
-    "rootDir": "src/angular-library-generator/_tmp/",
-    "metaInformation": "dist/sketch-library/src/assets/meta-information.json",
-    "components": "src/docs/components"
-  }
+  "appShell": "dist/sketch-library",
+  "meta": "dist/sketch-library/src/assets/meta-information.json",
+  "examples": "_tmp/src/docs/components"
 }

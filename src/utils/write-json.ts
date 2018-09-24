@@ -1,8 +1,5 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import chalk from 'chalk';
+import { extname, dirname } from 'path';
 import { Logger } from './logger';
-import { createDir } from './create-dir';
 import { writeFile } from './write-file';
 
 const log = new Logger();
@@ -16,8 +13,8 @@ const log = new Logger();
  */
 export function writeJSON(filename: string, content: Object | string, pretty = false): Promise<boolean | Error> {
   const _content = (typeof content === 'string') ? content : createJSON(content, pretty);
-  const ext = path.extname(filename);
-  const dir = path.dirname(filename);
+  const ext = extname(filename);
+  const dir = dirname(filename);
   const f = ext.length > 0 ? filename : `${filename}.json`;
 
   return writeFile(f, _content);

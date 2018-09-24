@@ -1,0 +1,26 @@
+{
+  "metaInformation": "dist/sketch-library/src/assets/meta-information.json",
+  "host": {
+    "protocol": "http",
+    "name": "localhost",
+    "port": 4200
+  },
+  "rootElement": "ng-component > * ",
+  "library": {
+    "app": "dist/sketch-library"
+  },
+  "pages": [
+    ""
+  ],
+  "outFile": "dt-asset-lib.sketch",
+  "chrome": {
+    "defaultViewport": {
+      "width": 800,
+      "height": 600,
+      "deviceScaleFactor": 1,
+      "isMobile": false,
+      "hasTouch": false,
+      "isLandscape": false
+    }
+  }
+}

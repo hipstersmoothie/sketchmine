@@ -1,11 +1,11 @@
 import * as path from 'path';
 import chalk from 'chalk';
-import * as puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer';
 import { Sketch } from '@sketch-draw/sketch';
 import { Drawer } from './drawer';
 import { ITraversedElement, TraversedLibrary, TraversedPage } from '../dom-traverser/traversed-dom';
 import { exec } from 'child_process';
-import { SG } from './index.d';
+import { SketchGenerator } from './sketch-generator';
 import { readFile, Logger } from '@utils';
 import { sketchGeneratorApi } from './sketch-generator-api';
 import { AssetHelper } from '../dom-traverser/asset-helper';
@@ -19,11 +19,11 @@ const TRAVERSER = path.join(process.cwd(), config.sketchGenerator.traverser);
 export class ElementFetcher {
   // private _assetHsandler: AssetHandler = new AssetHandler();
   private _result: (TraversedPage | TraversedLibrary)[] = [];
-  constructor(public conf: SG.Config) { }
+  constructor(public conf: SketchGenerator.Config) { }
 
-  async generateSketchFile(outDir?: string): Promise<number> {
+  async generateSketchFile(): Promise<number> {
     const drawer = new Drawer();
-    const sketch = new Sketch(outDir);
+    const sketch = new Sketch(this.conf.outFile);
     const pages = [];
     let symbolsMaster = drawer.drawSymbols({ symbols: [] } as any);
 
@@ -46,9 +46,9 @@ export class ElementFetcher {
     sketch.cleanup();
 
     if (process.env.SKETCH === 'open-close') {
-      exec('open dt-asset-lib.sketch');
+      exec(`open ${this.conf.outFile}`);
     }
-    return Promise.resolve(0);
+    return 0;
   }
 
   /**
@@ -75,8 +75,8 @@ export class ElementFetcher {
     const traverser = await readFile(TRAVERSER);
     let result: any;
 
-    if (this.conf.args.library) {
-      result = await sketchGeneratorApi(browser, url, this.conf.args.rootElement, traverser);
+    if (this.conf.library) {
+      result = await sketchGeneratorApi(browser, url, this.conf.rootElement, traverser);
     } else {
       const page = await browser.newPage();
       await page.evaluateOnNewDocument(traverser);
@@ -95,26 +95,40 @@ export class ElementFetcher {
           const traverser = new DomTraverser();
           window.page.element = traverser.traverse(hostElement, visitor);
         },
-        this.conf.args.rootElement);
+        this.conf.rootElement);
 
       await page.goto(url, { waitUntil: 'networkidle2' });
       result = await page.evaluate(() => window.page) as ITraversedElement[];
     }
-    return Promise.resolve(result);
+    return result;
   }
 
   async collectElements() {
-
-    const options: puppeteer.LaunchOptions = Object.assign(
-      process.env.DEBUG ? { headless: false, devtools: true } : {},
-      this.conf.chrome,
-    );
+    const options = process.env.DOCKER ?  {
+      ...this.conf.chrome,
+      /**
+       * shared memory space 64MB. Cause chrome to crash when rendering large pages
+       * @see https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#tips
+       */
+      args: ['--disable-dev-shm-usage', '--no-sandbox'],
+      executablePath: '/usr/bin/chromium-browser',
+    } : {
+      ...this.conf.chrome,
+      headless: process.env.DEBUG ? false : true,
+      devtools: process.env.DEBUG ? true : false,
+    };
     const browser = await puppeteer.launch(options);
     const confPages = this.conf.pages || [''];
 
     for (let i = 0, max = confPages.length; i < max; i += 1) {
       const page = confPages[i];
-      const url = `${this.conf.args.host}${page}`;
+
+      const host = this.conf.host;
+
+      const port = (host.port && host.protocol.match(/^https?/)) ?
+        `:${host.port}` : '';
+
+      const url = `${host.protocol}://${host.name}${port}/${page}`;
 
       log.debug(chalk`🛬\t{cyanBright Fetching Page}: ${url}`);
       this._result.push(await this.getPage(browser, url));

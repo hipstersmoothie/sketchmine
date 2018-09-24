@@ -10,12 +10,13 @@
     "noUnusedParameters": false,
     "moduleResolution": "node",
     "outDir": "dist/lib",
+    "esModuleInterop": true,
     "paths": {
       "@angular-meta-parser/*": ["angular-meta-parser/*"],
       "@angular-meta-parser": ["angular-meta-parser/index"],
-      "@sketch-draw/*": ["ng-sketch/sketch-draw/*"],
-      "@sketch-draw": ["ng-sketch/sketch-draw/index"],
-      "@sketch-svg-parser/*": ["ng-sketch/sketch-svg-parser/*"],
+      "@sketch-draw/*": ["sketch-generator/sketch-draw/*"],
+      "@sketch-draw": ["sketch-generator/sketch-draw/index"],
+      "@sketch-svg-parser/*": ["sketch-generator/sketch-svg-parser/*"],
       "@color-replacer/*": ["color-replacer/*"],
       "@utils/*": ["utils/*"],
       "@utils": ["utils/index"]

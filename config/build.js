@@ -8,6 +8,11 @@ export const config = {
   general: {
     src: SRC_DIR,
   },
+  library: {
+    name: 'library',
+    description: 'Angular to sketch library',
+    path: SRC_DIR
+  },
   angularMetaParser: {
     name: 'angular-meta-parser',
     description: 'The angular-meta-parser is a compiler, that generates an abstract syntax tree short AST from the\nAngular Components library and transforms the AST to a JSON format that represents all components,\nthat are related for the components library in sketch with all possible variants',
@@ -36,18 +41,15 @@ export const config = {
   ngSketch: {
     name: 'sketch-generator',
     description: 'Generates .sketch files from an html website that is inspected with a headless chrome.',
-    path: path.join(SRC_DIR, 'ng-sketch'),
+    path: path.join(SRC_DIR, 'sketch-generator'),
     copy: {
-      'src/ng-sketch/config.json': 'dist/sketch-generator/config.json',
+      'src/sketch-generator/config.json': 'dist/sketch-generator/config.json',
       'src/assets/preview.png' : 'dist/sketch-generator/assets/preview.png',
     },
   },
   validate: {
     name: 'sketch-validator',
     path: path.join(SRC_DIR, 'validate'),
-    copy: {
-      'src/validate/rules/color-validation/_tmp/_colors.scss' : 'dist/sketch-validator/_tmp/_colors.scss',
-    },
   },
 }
 

@@ -4,10 +4,9 @@ import minimist from 'minimist';
  * Configuration arguments for the command line args
  */
 export interface ConfigArguments {
-  rootDir: string;
-  library: string; /** path to library realitve fromm rootDir */
-  inFile: string;
-  outFile: string;
+  meta: string;
+  appShell: string;
+  examples: string; /** path to examples folder */
 }
 
 /**
