@@ -15,6 +15,9 @@ import { ShapeGroup } from '@sketch-svg-parser/models/shape-group';
 import { SvgParser } from '@sketch-svg-parser/svg-parser';
 import { SvgToSketch } from '@sketch-svg-parser/svg-to-sketch';
 import { Bitmap } from '@sketch-draw/models/bitmap';
+import { Logger } from '@utils';
+
+const log = new Logger();
 
 export class ElementDrawer {
   private _layers = [];
@@ -41,9 +44,7 @@ export class ElementDrawer {
   }
 
   private generateIMG(element: ITraversedDomImageNode) {
-    if (process.env.DEBUG) {
-      console.log(chalk`\tAdd Image 🖼\t{grey ${element.src}}`);
-    }
+    log.debug(chalk`\tAdd Image 🖼\t{grey ${element.src}}`);
     const size = this.getSize(element);
     const image = new Bitmap(size);
     image.src = element.src;
@@ -52,9 +53,7 @@ export class ElementDrawer {
   }
 
   private generateSVG(element: ITraversedDomSvgNode) {
-    if (process.env.DEBUG) {
-      console.log(chalk`\tAdd SVG 🖼 ...`);
-    }
+    log.debug(chalk`\tAdd SVG 🖼 ...`);
     const size = this.getSize(element);
     const svgObject = SvgParser.parse(element.html, size.width, size.height);
     // svgObject.shapes.map(shape => overrideSvgStyle(shape.style, element.styles));
@@ -89,6 +88,16 @@ export class ElementDrawer {
   }
 
   private generate(element: ITraversedDomElement) {
+
+    if (
+      element.isHidden ||
+      !element.hasOwnProperty('children') &&
+      element.styles === null
+      ) {
+      log.debug(chalk`Element {cyan ${element.tagName}.${element.className}} has no visual state.`);
+      return;
+    }
+
     const size = this.getSize(element);
     const group = new Group(size);
     group.name = element.className || element.tagName.toLowerCase();
