@@ -41,7 +41,7 @@ describe('➡ Sketch File generation 💎', () => {
     const elementFetcher = new ElementFetcher(config);
     await elementFetcher.collectElements();
     await elementFetcher.generateSketchFile();
-    await extract(sketchFile, { dir: path.join(testTmp, fileName) });
+    await extract(config.outFile, { dir: path.join(testTmp, fileName) });
   });
 
   describe('File structure:', () => {
