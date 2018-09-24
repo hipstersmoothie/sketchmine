@@ -22,6 +22,6 @@ module.exports = {
     '<rootDir>/tests/**/?(*.)+(e2e|test).ts',
   ],
   transform: {
-    '\\.(ts)$': '<rootDir>/node_modules/ts-jest/preprocessor.js',
+    '\\.(ts)$': 'ts-jest',
   },
 }
