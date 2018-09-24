@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { promisify } from 'util';
-import extractZip from 'extract-zip';
 
 import { delDir, createDir } from '@utils';
 import { fileValidations } from './file-validations';
@@ -29,7 +28,7 @@ const config = {
   },
 };
 
-const extract = promisify(extractZip);
+const extract = promisify(require('extract-zip'));
 
 describe('➡ Sketch File generation 💎', () => {
   const fileName = 'dt-asset-lib';
