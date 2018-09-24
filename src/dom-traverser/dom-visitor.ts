@@ -44,6 +44,7 @@ export class StyleDeclaration {
   fontSize = '16px';
   fontStyle = 'normal';
   fontWeight = '400';
+  lineHeight = 'normal';
   opacity = '1';
   visibility = 'visible';
   whiteSpace = 'normal';
