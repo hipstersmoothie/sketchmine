@@ -47,7 +47,7 @@ describe('➡ Sketch File generation 💎', () => {
   describe('File structure:', () => {
 
     it('Generating .sketch file.', () => {
-      expect(fileExists(sketchFile)).toBeTruthy();
+      expect(fileExists(config.outFile)).toBeTruthy();
     });
 
     it('Filestructure contain all files', () => {
