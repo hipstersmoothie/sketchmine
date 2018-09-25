@@ -12,7 +12,10 @@ import { BooleanOperation } from '@sketch-draw/helpers/sketch-constants';
 import { Circle } from '@sketch-svg-parser/models/circle';
 import { Rect } from '@sketch-svg-parser/models/rect';
 import { addStyle } from '@sketch-svg-parser/util/styles';
+import { Logger } from '@utils';
+
 const { parseSVG, makeAbsolute } = require('svg-path-parser');
+const log = new Logger();
 
 export class SvgParser {
   static parse(svg: string, width: number, height: number): ISvg {
@@ -70,12 +73,10 @@ export class SvgParser {
             points: this.rectToPath(rect),
           };
         } else {
-          if (process.env.DEBUG_SVG) {
-            console.log(
-              chalk`{red The SVG element: "${child.nodeName}" is not implemented yet!} 😢 Sorry 🙁
-              Try to render without this Element...`,
-            );
-          }
+          log.debug(
+            chalk`{red The SVG element: "${child.nodeName}" is not implemented yet!} 😢 Sorry 🙁
+            Try to render without this Element...`,
+          );
         }
 
         if (element) {

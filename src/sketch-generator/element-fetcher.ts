@@ -100,6 +100,7 @@ export class ElementFetcher {
       await page.goto(url, { waitUntil: 'networkidle2' });
       result = await page.evaluate(() => window.page) as ITraversedElement[];
     }
+    log.debug(JSON.stringify(result, null, 2), 'dom-traverser');
     return result;
   }
 

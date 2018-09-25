@@ -58,7 +58,7 @@ export async function sketchGeneratorApi(
   });
 
   await page.exposeFunction('_finish', async (cbID: number) => {
-    log.debug(`Traverser › finish with all actions`);
+    log.debug('Traverser › finish with all actions');
     resolveFinish();
     return resolvePending(cbID);
   });
