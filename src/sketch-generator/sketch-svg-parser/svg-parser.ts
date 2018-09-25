@@ -11,7 +11,7 @@ import {
 import { BooleanOperation } from '@sketch-draw/helpers/sketch-constants';
 import { Circle } from '@sketch-svg-parser/models/circle';
 import { Rect } from '@sketch-svg-parser/models/rect';
-import { addStyle } from '@sketch-svg-parser/util/styles';
+import { addStyles } from '@sketch-svg-parser/util/styles';
 import { Logger } from '@utils';
 
 const { parseSVG, makeAbsolute } = require('svg-path-parser');
@@ -40,6 +40,7 @@ export class SvgParser {
       const svg = new DOMParser()
         .parseFromString(this._svg.trim(), 'application/xml')
         .childNodes[0] as SVGElement;
+
       if (svg.tagName !== 'svg') {
         throw new Error(chalk`No SVG element provided for parsing!\nyou provided:{grey \n${this._svg}\n\n}`);
       }
@@ -48,9 +49,7 @@ export class SvgParser {
 
       [].slice.call(svg.childNodes).forEach((child: Node) => {
         // if nodeType is not an ELEMENT_NODE return
-        if (child.nodeType !== 1) {
-          return;
-        }
+        if (child.nodeType !== 1) { return; }
 
         let element: ISvgShape;
 
@@ -58,20 +57,15 @@ export class SvgParser {
           const pathData = (child as SVGPathElement).getAttribute('d');
           const path = parseSVG(pathData) as ISvgPoint[];
           const resized = this.resizeCoordinates(path);
-          element = {
-            points: makeAbsolute(resized),
-          };
+
+          element = { points: makeAbsolute(resized) };
 
         } else if (child.nodeName === 'circle') {
           const circle = child as SVGCircleElement;
-          element = {
-            points: this.circleToPath(circle),
-          };
+          element = { points: this.circleToPath(circle) };
         } else if (child.nodeName === 'rect') {
           const rect = child as SVGRectElement;
-          element = {
-            points: this.rectToPath(rect),
-          };
+          element = { points: this.rectToPath(rect) };
         } else {
           log.debug(
             chalk`{red The SVG element: "${child.nodeName}" is not implemented yet!} 😢 Sorry 🙁
@@ -80,32 +74,13 @@ export class SvgParser {
         }
 
         if (element) {
-          this._paths.push(this.addStyles(child as Element, element));
+          this._paths.push(addStyles(child as Element, element, this._viewBox));
         }
       });
 
     } catch (error) {
       throw new Error(chalk`\n\n🚨 {bgRed Failed to parse the SVG DOM:} 🖼\n${error}`);
     }
-  }
-
-  /**
-   * Check if the svg Element has style attributes like fill or stroke
-   *
-   * @param node Element
-   * @param element ISvgShape
-   * @returns ISvgShape
-   */
-  private addStyles(node: Element, element: ISvgShape): ISvgShape {
-    const styles: Map<SvgStyle, string> = new Map();
-    addStyle(styles, node, 'fill');
-    addStyle(styles, node, 'stroke');
-    addStyle(styles, node, 'stroke-width', 'strokeWidth');
-    addStyle(styles, node, 'fill-opacity', 'fillOpacity');
-    addStyle(styles, node, 'stroke-opacity', 'strokeOpacity');
-
-    element.style = styles;
-    return element;
   }
 
   /**

@@ -1,8 +1,10 @@
-import { SvgStyle } from '@sketch-svg-parser/interfaces';
+import { SvgStyle, ISvgShape, ISvgView } from '@sketch-svg-parser/interfaces';
 import { Style } from '@sketch-draw/models/style';
 import { IStyle } from '@sketch-draw/interfaces';
 import { StyleDeclaration } from '../../../dom-traverser/dom-visitor';
+import { Logger } from '@utils';
 
+const log = new Logger();
 /**
  * add Style attributes to a map if it has a value, so that no undefined values are in the map
  *
@@ -11,7 +13,13 @@ import { StyleDeclaration } from '../../../dom-traverser/dom-visitor';
  * @param attributeName string
  * @param mapName SvgStyle
  */
-export function addStyle(styles: Map<SvgStyle, string>, node: Element, attributeName: string, mapName?: SvgStyle) {
+export function addStyle(
+  styles: Map<SvgStyle, string>,
+  node: Element,
+  viewBox: ISvgView,
+  attributeName: string,
+  mapName?: SvgStyle,
+) {
   enum NONE_VALUES {
     'inherit',
     'transparent',
@@ -19,11 +27,37 @@ export function addStyle(styles: Map<SvgStyle, string>, node: Element, attribute
     '0px',
   }
 
-  const value = node.getAttribute(attributeName);
+  let value: string | number = node.getAttribute(attributeName);
   if (value && !Object.values(NONE_VALUES).includes(value)) {
-    styles.set(mapName || attributeName as SvgStyle, value);
+
+    if (attributeName === 'stroke-width') {
+      value = Math.ceil((viewBox.width / parseInt(value, 10)) / viewBox.width * 16);
+    }
+
+    log.info(`Styles.ts => ${attributeName}: ${value}`);
+    styles.set(mapName || attributeName as SvgStyle, `${value}`);
   }
   return styles;
+}
+
+/**
+* Check if the svg Element has style attributes like fill or stroke
+*
+* @param node Element
+* @param element ISvgShape
+* @returns ISvgShape
+*/
+
+export function addStyles(node: Element, element: ISvgShape, viewBox: ISvgView): ISvgShape {
+  const styles: Map<SvgStyle, string> = new Map();
+  addStyle(styles, node, viewBox, 'fill');
+  addStyle(styles, node, viewBox, 'stroke');
+  addStyle(styles, node, viewBox, 'stroke-width', 'strokeWidth');
+  addStyle(styles, node, viewBox, 'fill-opacity', 'fillOpacity');
+  addStyle(styles, node, viewBox, 'stroke-opacity', 'strokeOpacity');
+
+  element.style = styles;
+  return element;
 }
 
 /**

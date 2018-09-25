@@ -46,6 +46,7 @@ export class StyleDeclaration {
   fontWeight = '400';
   lineHeight = 'normal';
   opacity = '1';
+  strokeWidth = '1px';
   visibility = 'visible';
   whiteSpace = 'normal';
 }
@@ -94,6 +95,9 @@ export class DomVisitor implements Visitor {
     switch (tagName) {
       case 'SVG':
         (el as ITraversedDomSvgNode).html = element.outerHTML;
+        el.styles = options.styles;
+        break;
+      case 'PATH':
         el.styles = options.styles;
         break;
       case 'IMG':

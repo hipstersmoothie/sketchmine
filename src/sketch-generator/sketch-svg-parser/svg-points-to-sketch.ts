@@ -7,6 +7,9 @@ import { IBounding } from '@sketch-draw/interfaces';
 import { QuadraticCurveTo } from '@sketch-svg-parser/models/quadratic-curve-to';
 import chalk from 'chalk';
 import { isActionPoint } from '@sketch-svg-parser/util/point';
+import { Logger } from '@utils';
+
+const log = new Logger();
 
 export class SvgPointsToSketch {
   static parse(shape: ISvgShape, size: IBounding) {
@@ -48,7 +51,7 @@ export class SvgPointsToSketch {
           shapePath.close();
           break;
         default:
-          console.log(
+          log.error(
             chalk`{red The SVG command: "${cur.code}" is not implemented yet!} 😢 Sorry 🙁
             Try to render without this Point...`,
           );
@@ -75,7 +78,16 @@ export class SvgPointsToSketch {
         }
         i -= 1;
       }
-      i = this._shape.points.length - 1;
+      if (this._shape.points.length === 2) {
+
+        if (!isActionPoint(this._shape.points[1])) {
+          prev = this._shape.points[1];
+        } else {
+          prev = undefined;
+        }
+      } else {
+        i = this._shape.points.length - 1;
+      }
     }
     return prev;
   }

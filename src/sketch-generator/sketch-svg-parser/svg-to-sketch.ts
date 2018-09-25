@@ -6,6 +6,9 @@ import { Style } from '@sketch-draw/models/style';
 import chalk from 'chalk';
 import { addCssStyleToSvg } from '@sketch-svg-parser/util/styles';
 import { StyleDeclaration } from '../../dom-traverser/dom-visitor';
+import { Logger } from '@utils';
+
+const log = new Logger();
 
 export class SvgToSketch {
 
@@ -20,24 +23,21 @@ export class SvgToSketch {
     const shapeGroupLayers = [];
     const groupLayers = [];
 
-    this._svgObject.shapes.forEach((shape) => {
+    for (let i = 0, max = this._svgObject.shapes.length; i < max; i += 1) {
+      const shape = this._svgObject.shapes[i];
       // if the paths/rects or Elements have different styles like varying fills
       // it is not possible to group them so we need a own shape group for each fill/style
-      if (process.env.DEBUG_SVG) {
-        if (!this.hasNoStyles()) {
-          console.log(chalk`   The SVG has inline styles: `, JSON.stringify(shape.style, null, 2));
-        }
-      }
       if (!this.hasNoStyles()) {
+        log.debug(chalk` The SVG has inline styles: `, JSON.stringify(shape.style, null, 2));
         const shapeGroup = new ShapeGroup(size);
         shapeGroup.addLayer(SvgPointsToSketch.parse(shape, size));
         shapeGroup.name = 'SVG';
         shapeGroup.style = addSvgShapeStyle(shape);
         groupLayers.push(shapeGroup.generateObject());
-        return;
+      } else {
+        shapeGroupLayers.push(SvgPointsToSketch.parse(shape, size));
       }
-      shapeGroupLayers.push(SvgPointsToSketch.parse(shape, size));
-    });
+    }
 
     if (this.hasNoStyles()) {
       const shapeGroup = new ShapeGroup(size);
