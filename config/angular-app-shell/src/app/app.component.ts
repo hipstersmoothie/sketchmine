@@ -60,9 +60,11 @@ export class AppComponent implements OnInit{
           const value = (change.value === 'undefined') ? undefined : JSON.parse(change.value);
           const oldvalue = instance[change.key];
           instance[change.key] = value;
-          instance.ngOnChanges({
-            [change.key]: new SimpleChange(oldvalue, value, false)
-          });
+          if (instance.hasOwnProperty('ngOnChanges')) {
+            instance.ngOnChanges({
+              [change.key]: new SimpleChange(oldvalue, value, false)
+            });
+          }
           // if (window.sketchGenerator) {
           //   const el = instance._elementRef.nativeElement as HTMLElement;
           //   const selector = `${el.tagName}[class="${el.getAttribute('class')}"]`;
