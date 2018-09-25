@@ -60,7 +60,7 @@ export class AppComponent implements OnInit{
           const value = (change.value === 'undefined') ? undefined : JSON.parse(change.value);
           const oldvalue = instance[change.key];
           instance[change.key] = value;
-          if (instance.hasOwnProperty('ngOnChanges')) {
+          if (instance.ngOnChanges) {
             instance.ngOnChanges({
               [change.key]: new SimpleChange(oldvalue, value, false)
             });
@@ -77,7 +77,8 @@ export class AppComponent implements OnInit{
     exampleComponentRef.changeDetectorRef.detectChanges();
     
     // wait for browser draw
-    await timeout(0);
+    // TODO: timout has to check if http requests in case of icons are triggered…
+    await timeout(100);
     if (window.sketchGenerator) {
       await window.sketchGenerator.emitDraw(`${componentMeta.component}/${variant.name}`);
     }
