@@ -3,7 +3,6 @@ import { symbolNameValidation } from './rules/symbol-name-validation';
 import { colorValidation } from './rules/color-validation';
 import { artboardValidation } from './rules/artboard-validation';
 import { pageValidation } from './rules/page-validation';
-import { pageContentValidation } from './rules/page-content-validation';
 
 export const rules: IValidationRule[] = [
   {
@@ -27,12 +26,6 @@ export const rules: IValidationRule[] = [
     name: 'arboard-validation',
     description: 'Check if the artboard names are valid.',
     validation: artboardValidation,
-  },
-  {
-    selector: ['page'],
-    name: 'page-content-validation',
-    description: 'Check if the artboards on the page are valid.',
-    validation: pageContentValidation,
   },
   {
     selector: ['page'],

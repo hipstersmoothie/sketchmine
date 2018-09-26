@@ -13,13 +13,12 @@ export enum PageNames {
 }
 
 export const MATCH_PAGE_SIZE_ERROR =
-  chalk`The page name has to match one of the valid sizes: {grey ${Object.values(PageNames).join(', ')}}`;
+  chalk`Every file needs to include pages with the following names: {grey ${Object.values(PageNames).join(', ')}}`;
 
 /**
  * Takes a homework and correct it like a teacher 👩🏼‍🏫
  * check if the name matches following rules:
  *  - is a valid size
- *  - contains at least one artboards of this size
  * @param homeworks List of Validation Rules
  * @param currentTask number of the current task to validate
  */

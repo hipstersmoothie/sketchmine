@@ -1,4 +1,4 @@
-import { ValidationError, ColorNotInPaletteError } from './validation-error';
+import { ValidationError, ColorNotInPaletteError, FileNameError } from './validation-error';
 import chalk from 'chalk';
 import { IErrorHandler } from '../interfaces/error-handler.interface';
 import { IValidationRule } from '../interfaces/validation-rule.interface';
@@ -63,7 +63,7 @@ export class ErrorHandler {
           stackedOutput += chalk`{grey   ${element.description}}\n`;
         }
 
-        if (process.env.VERBOSE) {
+        if (process.env.DEBUG) {
           this.tracedFailings(element.failing);
         }
 
@@ -103,6 +103,14 @@ export class ErrorHandler {
   private tracedFailings(failings: ValidationError[]) {
     for (let i = 1, max = failings.length; i <= max; i += 1) {
       const item = failings[i - 1];
+      if (item instanceof FileNameError) {
+        console.log(
+          chalk`{redBright ${i.toString()}) ${item.constructor.name}} → in Folder ${item.name} with filename: \n` +
+          chalk`{red ${item.objectId}}\n` +
+          chalk`${item.message}\n`,
+        );
+        continue;
+      }
       const trace = (item.parents.artboard) ? item.parents.artboard : item.parents.symbolMaster;
       console.log(
         chalk`{redBright ${i.toString()}) ${item.constructor.name}} → {grey ${item.parents.page} → ${trace}}\n` +

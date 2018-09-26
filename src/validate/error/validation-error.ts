@@ -29,6 +29,7 @@ export class ValidationError extends Error {
   }
 }
 
+export class FileNameError extends ValidationError {}
 export class DuplicatedSymbolError extends ValidationError { }
 export class WrongSymbolNamingError extends ValidationError { }
 export class ArtboardNamingError extends ValidationError { }
