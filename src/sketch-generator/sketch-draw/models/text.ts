@@ -109,6 +109,6 @@ export class Text extends Base {
       glyphBounds: '{{0, 0}, {103, 18}}',
       lineSpacingBehaviour: 2,
       textBehaviour: 0,
-    };
+    } as IText;
   }
 }

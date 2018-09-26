@@ -1,10 +1,11 @@
 import { Page } from '@sketch-draw/models/page';
 import { IBounding } from '@sketch-draw/interfaces';
 import { SymbolMaster } from '@sketch-draw/models/symbol-master';
-import { ITraversedDomElement, TraversedLibrary, TraversedSymbol } from '../dom-traverser/traversed-dom';
+import { ITraversedDomElement, TraversedLibrary, TraversedSymbol, TraversedPage } from '../dom-traverser/traversed-dom';
 import { boundingClientRectToBounding } from '@sketch-draw/helpers/util';
 import { ElementDrawer } from './element-drawer';
 import chalk from 'chalk';
+import { Artboard } from '@sketch-draw/models/artboard';
 
 interface LastSymbol extends IBounding {
   name: string;
@@ -34,6 +35,27 @@ export class Drawer {
 
       page.addLayer(symbolMaster.generateObject());
     }
+    return page;
+  }
+
+  drawPage(htmlPage: TraversedPage): Page {
+    const element = htmlPage.element as ITraversedDomElement;
+
+    console.log(element);
+    const { height, width, x, y } = element.boundingClientRect;
+    const bounding = { height, width, x, y } as IBounding;
+    const page = new Page(bounding);
+    const ab = new Artboard(bounding);
+    page.name = htmlPage.pageUrl;
+    ab.name = htmlPage.pageTitle;
+
+    if (element.children) {
+      for (let i = 0, max = element.children.length; i < max; i += 1) {
+        ab.layers.push(...this.drawElements(element.children[i] as ITraversedDomElement));
+      }
+    }
+
+    page.addLayer(ab.generateObject());
     return page;
   }
 

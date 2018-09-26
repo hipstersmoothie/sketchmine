@@ -1,4 +1,5 @@
-import { ITextStyle } from '@sketch-draw/interfaces';
+import { ITextStyle } from './text.interface';
+import { FillType, PatternFillType } from '../helpers/sketch-constants';
 
 export interface IStyle {
   _class: string;
@@ -39,9 +40,9 @@ export interface IFill {
   _class: string;
   isEnabled: boolean;
   color: IColor;
-  fillType: 0;
+  fillType: FillType;
   noiseIndex: 0;
   noiseIntensity: 0;
-  patternFillType: 1;
+  patternFillType: PatternFillType;
   patternTileScale: 1;
 }

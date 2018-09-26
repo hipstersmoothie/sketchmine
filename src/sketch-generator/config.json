@@ -3,14 +3,11 @@
   "host": {
     "protocol": "http",
     "name": "localhost",
-    "port": 4200
+    "port": 9000
   },
-  "rootElement": "ng-component > * ",
-  "library": {
-    "app": "dist/sketch-library"
-  },
+  "rootElement": "app-root > *",
   "pages": [
-    ""
+    "svg.html"
   ],
   "outFile": "dt-asset-lib.sketch",
   "chrome": {

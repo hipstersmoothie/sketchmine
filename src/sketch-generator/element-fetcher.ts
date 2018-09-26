@@ -27,16 +27,18 @@ export class ElementFetcher {
     const pages = [];
     let symbolsMaster = drawer.drawSymbols({ symbols: [] } as any);
 
-    if (
-      this._result.length === 1 &&
-      this._result[0] !== undefined &&
-      this._result[0].type === 'library'
-    ) {
-      symbolsMaster = drawer.drawSymbols(this._result[0] as TraversedLibrary);
-    } else if (this._result.length > 0) {
-      // TODO: implement function to write pages;
+    if (this._result.length > 0) {
+      this._result.forEach((result) => {
+        switch (result.type) {
+          case 'page':
+            pages.push(drawer.drawPage(result));
+            break;
+          case 'library':
+            symbolsMaster = drawer.drawSymbols(this._result[0] as TraversedLibrary);
+            break;
+        }
+      });
     }
-
     // TODO: add asset handler
     // if (this.hasAssets()) {
     //   sketch.prepareFolders();
@@ -79,9 +81,9 @@ export class ElementFetcher {
       result = await sketchGeneratorApi(browser, url, this.conf.rootElement, traverser);
     } else {
       const page = await browser.newPage();
-      await page.evaluateOnNewDocument(traverser);
-      await page.evaluateOnNewDocument(
-        (rootElement: string) => {
+      await page.goto(url, { waitUntil: 'networkidle0' });
+      await page.addScriptTag({ content: traverser });
+      await page.addScriptTag({ content: `
           const images = new AssetHelper();
           window.page = {
             type: 'page',
@@ -90,14 +92,13 @@ export class ElementFetcher {
             assets: images.assets,
             element: null,
           };
-          const hostElement = document.querySelector(rootElement) as HTMLElement;
+          const hostElement = document.querySelector('${this.conf.rootElement}');
+          if (!hostElement) {
+            throw new Error(\`Could not select hostElement with selector: ${this.conf.rootElement}\`);
+          }
           const visitor = new DomVisitor(hostElement);
           const traverser = new DomTraverser();
-          window.page.element = traverser.traverse(hostElement, visitor);
-        },
-        this.conf.rootElement);
-
-      await page.goto(url, { waitUntil: 'networkidle2' });
+          window.page.element = traverser.traverse(hostElement, visitor);` });
       result = await page.evaluate(() => window.page) as ITraversedElement[];
     }
     log.debug(JSON.stringify(result, null, 2), 'dom-traverser');

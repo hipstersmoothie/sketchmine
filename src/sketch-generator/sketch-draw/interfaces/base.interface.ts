@@ -1,4 +1,4 @@
-import { IStyle } from '@sketch-draw/interfaces';
+import { IStyle } from './style.interface';
 
 export interface IBase {
   _class: string;
@@ -17,9 +17,17 @@ export interface IBase {
   resizingType: number;
   rotation: number;
   shouldBreakMaskChain: boolean;
-  style: IStyle;
+  style: IStyle | SketchArtboardStyle;
   hasClickThrough?: boolean;
   layers?: any[];
+}
+
+export interface SketchArtboardStyle {
+  _class: 'style';
+  endMarkerType: number;
+  miterLimit: number;
+  startMarkerType: number;
+  windingRule: number;
 }
 
 export interface IFrame extends IBounding {
