@@ -6,7 +6,7 @@ import { readFile } from '@utils';
 const config = require(`${process.cwd()}/config/app.json`);
 const TEST_FILE = `file:${path.join(process.cwd(), 'tests', 'fixtures', 'tile-default.html')}`;
 const TRAVERSER = path.join(process.cwd(), config.sketchGenerator.traverser);
-const ROOT_ELEMENT = 'app-root > * > *';
+const ROOT_ELEMENT = 'app-root > * ';
 
 function findObjects(o: Object, targetProp: string, targetValue: any, finalResults) {
   function getObject(obj: Object) {

@@ -44,6 +44,14 @@ export interface ISvgPoint {
   y0?: number;
 }
 
+export interface ISvgArcPoint extends ISvgPoint{
+  rx: number;
+  ry: number;
+  xAxisRotation: number;
+  largeArc: boolean;
+  sweep: boolean;
+}
+
 export interface IPoint {
   x: number;
   y: number;

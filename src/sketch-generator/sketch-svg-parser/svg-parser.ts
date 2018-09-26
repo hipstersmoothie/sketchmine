@@ -6,12 +6,12 @@ import {
   ISvgView,
   ISvg,
   ISvgShape,
-  SvgStyle,
-} from '@sketch-svg-parser/interfaces';
+  ISvgArcPoint,
+} from './interfaces';
 import { BooleanOperation } from '@sketch-draw/helpers/sketch-constants';
-import { Circle } from '@sketch-svg-parser/models/circle';
-import { Rect } from '@sketch-svg-parser/models/rect';
-import { addStyles } from '@sketch-svg-parser/util/styles';
+import { Circle } from './models/circle';
+import { Rect } from './models/rect';
+import { addStyles, arcsToCurves } from './util';
 import { Logger } from '@utils';
 
 const { parseSVG, makeAbsolute } = require('svg-path-parser');
@@ -55,10 +55,12 @@ export class SvgParser {
 
         if (child.nodeName === 'path') {
           const pathData = (child as SVGPathElement).getAttribute('d');
-          const path = parseSVG(pathData) as ISvgPoint[];
+          const path = makeAbsolute(parseSVG(pathData)) as ISvgPoint[];
           const resized = this.resizeCoordinates(path);
 
-          element = { points: makeAbsolute(resized) };
+          // TODO: fix Arcs and convert arcs to curves
+          // element = { points: arcsToCurves(resized) };
+          element = { points: resized };
 
         } else if (child.nodeName === 'circle') {
           const circle = child as SVGCircleElement;
@@ -202,13 +204,14 @@ export class SvgParser {
    * Takes an Array of points and resizes the coordinates that the max width is 1 and the beginning is 0
    * Sketch SVGs reach from 0 to 1 (like percentage)
    *
-   * @returns ISvgPoint[]
+   * @returns ISvgPoint[]   
    * @param path ISvgPoint[] Array of Svg Points
    */
-  private resizeCoordinates(path: ISvgPoint[]): ISvgPoint[] {
+  private resizeCoordinates(path: (ISvgPoint | ISvgArcPoint)[]): ISvgPoint[] {
     const resized = [];
     const factor: ISvgView = { ...this._viewBox };
     path.forEach((point) => {
+      console.log('point-before: ', point, '\n\n');
       const p = {
         ...point,
         x: (!isNaN(point.x)) ? point.x / factor.width : null,
@@ -220,6 +223,11 @@ export class SvgParser {
       if (!isNaN(point.y0)) { p.y0 = point.y0 / factor.height; }
       if (!isNaN(point.y1)) { p.y1 = point.y1 / factor.height; }
       if (!isNaN(point.y2)) { p.y2 = point.y2 / factor.height; }
+
+      if (point.code === 'a' || point.code === 'A') {
+        if (!isNaN((point as ISvgArcPoint).rx)) { (p as ISvgArcPoint).rx = (point as ISvgArcPoint).rx / factor.height; }
+        if (!isNaN((point as ISvgArcPoint).ry)) { (p as ISvgArcPoint).ry = (point as ISvgArcPoint).ry / factor.height; }
+      }
 
       resized.push(p);
     });

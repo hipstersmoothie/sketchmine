@@ -33,8 +33,6 @@ export function addStyle(
     if (attributeName === 'stroke-width') {
       value = Math.ceil((viewBox.width / parseInt(value, 10)) / viewBox.width * 16);
     }
-
-    log.info(`Styles.ts => ${attributeName}: ${value}`);
     styles.set(mapName || attributeName as SvgStyle, `${value}`);
   }
   return styles;

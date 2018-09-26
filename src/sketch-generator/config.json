@@ -5,7 +5,7 @@
     "name": "localhost",
     "port": 9000
   },
-  "rootElement": "app-root > *",
+  "rootElement": "app-root",
   "pages": [
     "svg.html"
   ],
