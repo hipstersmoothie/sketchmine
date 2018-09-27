@@ -47,6 +47,7 @@ export class StyleDeclaration {
   lineHeight = 'normal';
   opacity = '1';
   strokeWidth = '1px';
+  transform = 'none';
   visibility = 'visible';
   whiteSpace = 'normal';
 }

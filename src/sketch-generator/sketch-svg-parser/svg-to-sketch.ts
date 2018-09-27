@@ -12,19 +12,18 @@ const log = new Logger();
 
 export class SvgToSketch {
 
-  private _styles: StyleDeclaration;
+  styles: StyleDeclaration;
 
-  set styles(styles: StyleDeclaration) { this._styles = styles; }
-  constructor(private _svgObject: ISvg) { }
+  constructor(public svgObject: ISvg) { }
 
   generateObject(): any[] {
 
-    const size: IBounding = { ...this._svgObject.size, x: 0, y: 0 };
+    const size: IBounding = { ...this.svgObject.size, x: 0, y: 0 };
     const shapeGroupLayers = [];
     const groupLayers = [];
 
-    for (let i = 0, max = this._svgObject.shapes.length; i < max; i += 1) {
-      const shape = this._svgObject.shapes[i];
+    for (let i = 0, max = this.svgObject.shapes.length; i < max; i += 1) {
+      const shape = this.svgObject.shapes[i];
       // if the paths/rects or Elements have different styles like varying fills
       // it is not possible to group them so we need a own shape group for each fill/style
       if (!this.hasNoStyles()) {
@@ -43,8 +42,9 @@ export class SvgToSketch {
       const shapeGroup = new ShapeGroup(size);
       shapeGroup.name = 'SVG';
       shapeGroup.layers = shapeGroupLayers;
-      if (this._styles) {
-        shapeGroup.style = addCssStyleToSvg(this._styles);
+      if (this.styles) {
+        shapeGroup.addRotation(this.styles.transform);
+        shapeGroup.style = addCssStyleToSvg(this.styles);
       }
       groupLayers.push(shapeGroup.generateObject());
     }
@@ -54,7 +54,7 @@ export class SvgToSketch {
    * Checks if some styles are set on the svg shapes
    */
   private hasNoStyles(): boolean {
-    return this._svgObject.shapes.every(shape => shape.style.size === 0);
+    return this.svgObject.shapes.every(shape => shape.style.size === 0);
   }
 }
 

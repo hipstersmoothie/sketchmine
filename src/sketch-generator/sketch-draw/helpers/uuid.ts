@@ -1,3 +1,4 @@
+//tslint:disable
 /**
  * Fast UUID generator, RFC4122 version 4 compliant.
  * @author Jeff Ward (jcward.com).

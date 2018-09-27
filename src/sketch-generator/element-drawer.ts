@@ -107,6 +107,8 @@ export class ElementDrawer {
       // shape Group in group always starts at x:0, y:0
       const shapeGroup = new ShapeGroup({ ...size, x:0, y:0 });
       shapeGroup.name = 'Background';
+
+      shapeGroup.addRotation(element.styles.transform);
       shapeGroup.style = this.addStyles(element);
       shapeGroup.addLayer(this.addshape(element));
       group.addLayer(shapeGroup.generateObject());

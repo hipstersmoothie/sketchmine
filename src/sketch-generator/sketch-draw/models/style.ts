@@ -1,5 +1,12 @@
 import { cssToRGBA } from '@sketch-draw/helpers/util';
 import { IBorder, IFill, IColor, IStyle } from '@sketch-draw/interfaces';
+import {
+  BorderPosition,
+  FillType,
+  PatternFillType,
+  NoiseFillType,
+  BlendingMode,
+} from '@sketch-draw/helpers/sketch-constants';
 
 export class Style {
   private _borders: IBorder[] = [];
@@ -17,8 +24,8 @@ export class Style {
       _class: 'border',
       isEnabled: true,
       color: this.convertColor(color),
-      fillType: 0,
-      position: 1,
+      fillType: FillType.Solid,
+      position: BorderPosition.Outside,
       thickness,
     });
   }
@@ -40,10 +47,10 @@ export class Style {
       _class: 'fill',
       isEnabled: true,
       color: this.convertColor(color, alpha),
-      fillType: 0,
-      noiseIndex: 0,
+      fillType: FillType.Solid,
+      noiseIndex: NoiseFillType.Original,
       noiseIntensity: 0,
-      patternFillType: 1,
+      patternFillType: PatternFillType.Fill,
       patternTileScale: 1,
     };
   }
@@ -62,7 +69,7 @@ export class Style {
     if (this._opacity) {
       style.contextSettings = {
         _class: 'graphicsContextSettings',
-        blendMode: 0,
+        blendMode: BlendingMode.Normal,
         opacity: this._opacity,
       };
     }
