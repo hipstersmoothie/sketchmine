@@ -28,24 +28,23 @@ export class SvgPointsToSketch {
 
     for (let i = 0, end = points.length - 1; i <= end; i += 1) {
       const cur = points[i];
-      const prev = this.getPrevCurvePoint(i);
       const next = this.getNextCurvePoint(i);
 
       switch (cur.code) {
         case 'M':
-          shapePath.addPoint(new MoveTo(prev, cur, next).generate());
+          shapePath.addPoint(new MoveTo(cur, next).generate());
           break;
         case 'S':
         case 'C':
-          shapePath.addPoint(new CurveTo(prev, cur, next).generate());
+          shapePath.addPoint(new CurveTo(cur, next).generate());
           break;
         case 'Q':
-          shapePath.addPoint(new QuadraticCurveTo(prev, cur, next).generate());
+          shapePath.addPoint(new QuadraticCurveTo(cur, next).generate());
           break;
         case 'H':
         case 'V':
         case 'L':
-          shapePath.addPoint(new LineTo(prev, cur, next).generate());
+          shapePath.addPoint(new LineTo(cur, next).generate());
           break;
         case 'Z':
           shapePath.close();
@@ -58,38 +57,6 @@ export class SvgPointsToSketch {
       }
     }
     return shapePath.generateObject();
-  }
-
-  /**
-   * getting the prev Point that is not an Action point, to know if it is a curve or something else.
-   *
-   * @param index number
-   * @returns ISvgPoint
-  */
-  private getPrevCurvePoint(index: number): ISvgPoint {
-    let prev: ISvgPoint;
-    let i = index;
-
-    while (!prev) {
-      const p = this._shape.points[i - 1];
-      if (p) {
-        if (!isActionPoint(p)) {
-          prev = p;
-        }
-        i -= 1;
-      }
-      if (this._shape.points.length === 2) {
-
-        if (!isActionPoint(this._shape.points[1])) {
-          prev = this._shape.points[1];
-        } else {
-          prev = undefined;
-        }
-      } else {
-        i = this._shape.points.length - 1;
-      }
-    }
-    return prev;
   }
 
   /**
