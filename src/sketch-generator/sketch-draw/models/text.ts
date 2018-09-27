@@ -12,10 +12,12 @@ import { Style } from '@sketch-draw/models/style';
 import { IStyle } from '@sketch-draw/interfaces/style.interface';
 import { fixWhiteSpace, fontMapping, fontStyle } from '@sketch-draw/helpers/font';
 import { StyleDeclaration } from '../../../dom-traverser/dom-visitor';
+import { TextBehaviour } from '@sketch-draw/helpers/sketch-constants';
 
 // TODO: multiline text attribute
 export class Text extends Base {
   private _text = '';
+  private _multiline = false;
   private _styles: StyleDeclaration;
   private _styleClass: Style;
 
@@ -99,16 +101,22 @@ export class Text extends Base {
 
   generateObject(): IText {
     const base: IBase = super.generateObject();
+    const frame = super.addFrame('rect');
+
+    if (frame.height > Math.round(parseInt(this._styles.lineHeight, 10))) {
+      this._multiline = true;
+    }
+
     return {
       ...base,
       nameIsFixed: true,
       attributedString: this.generateAttributedString(),
-      frame: super.addFrame('rect'),
+      frame,
       automaticallyDrawOnUnderlyingPath: false,
       dontSynchroniseWithSymbol: false,
-      glyphBounds: '{{0, 0}, {103, 18}}',
+      glyphBounds: `{{${frame.x}, ${frame.y}}, {${frame.width}, ${frame.height}}}`,
       lineSpacingBehaviour: 2,
-      textBehaviour: 0,
+      textBehaviour: this._multiline ? TextBehaviour.Fixed : TextBehaviour.Auto,
     } as IText;
   }
 }
