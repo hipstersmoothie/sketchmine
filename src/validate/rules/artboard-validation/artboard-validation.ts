@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { ValidationError, ArtboardNamingError, ArtboardSizeError } from '../../error/validation-error';
+import { ValidationError, ArtboardNamingError, ArtboardSizeError, ArtboardEmptyError } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import { Logger } from '@utils';
 
@@ -55,9 +55,13 @@ export function artboardValidation(
       homework._class === 'artboard' &&
       homework.parents.page === task.parents.page)
     .some(homework =>
-      homework.frame.width === parseInt(task.parents.page, 10) &&
-      homework.layerSize &&
-      homework.layerSize > 0);
+      homework.frame.width === parseInt(task.parents.page, 10))
+
+  const emptyArtboards = homeworks
+    .some(homework =>
+      homework._class === 'artboard' &&
+      !homework.layerSize ||
+      homework.layerSize < 1)
 
   const errors: (ValidationError | boolean)[] = [];
   const name = task.name.split('-');
@@ -72,7 +76,14 @@ export function artboardValidation(
       message:`Every page needs to have at least one artboard with a valid width (360, 1280, 1920), that is not empty.`,
       ...object,
     }));
-  } else if (name.length < 3) {
+  }
+  if (emptyArtboards) {
+    errors.push(new ArtboardEmptyError({
+      message:`Artboards should not be left empty.`,
+      ...object,
+    }));
+  }
+  if (name.length < 3) {
     errors.push(new ArtboardNamingError({
       message: `The artboard name should contain at least artboardsize, folder name and feature name.`,
       ...object,
