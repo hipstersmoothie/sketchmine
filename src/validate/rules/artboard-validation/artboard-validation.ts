@@ -54,7 +54,10 @@ export function artboardValidation(
     .filter(homework =>
       homework._class === 'artboard' &&
       homework.parents.page === task.parents.page)
-    .some(homework => homework.frame.width === parseInt(task.parents.page, 10));
+    .some(homework =>
+      homework.frame.width === parseInt(task.parents.page, 10) &&
+      homework.layerSize &&
+      homework.layerSize > 0);
 
   const errors: (ValidationError | boolean)[] = [];
   const name = task.name.split('-');
@@ -66,7 +69,7 @@ export function artboardValidation(
 
   if (!includeArtboardSize) {
     errors.push(new ArtboardSizeError({
-      message:`Every page needs to have at least one artboard with a valid width (360, 1280, 1920).`,
+      message:`Every page needs to have at least one artboard with a valid width (360, 1280, 1920), that is not empty.`,
       ...object,
     }));
   } else if (name.length < 3) {

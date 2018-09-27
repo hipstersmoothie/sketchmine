@@ -25,9 +25,10 @@ export interface IValidationContext {
   _class: string;
   do_objectID: string;
   name: string;
+  parents: IValidationContextParents;
   style?: IStyle;
   frame?: IFrame;
-  parents: IValidationContextParents;
+  layerSize?: number;
 }
 
 export interface IValidationContextParents {

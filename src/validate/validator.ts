@@ -120,7 +120,9 @@ export class Validator {
     if (layer.frame) {
       obj.frame = layer.frame;
     }
-
+    if (layer.layers) {
+      obj.layerSize = layer.layers.length;
+    }
     return obj;
   }
 }
