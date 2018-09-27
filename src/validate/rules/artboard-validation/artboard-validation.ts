@@ -69,15 +69,12 @@ export function artboardValidation(
       message:`Every page needs to have at least one artboard with a valid width (360, 1280, 1920).`,
       ...object,
     }));
-  }
-
-  if (name.length < 3) {
+  } else if (name.length < 3) {
     errors.push(new ArtboardNamingError({
       message: `The artboard name should contain at least artboardsize, folder name and feature name.`,
       ...object,
     }));
-  }
-  if (typeof artboardNameCheck !== 'boolean') {
+  } else if (typeof artboardNameCheck !== 'boolean') {
     errors.push(new ArtboardNamingError({
       message: `The artboard name should start with the artboard/pagesize (360, 1280, 1920).`,
       ...object,

@@ -20,6 +20,11 @@ export class ErrorHandler {
     ErrorHandler.instance = this;
   }
 
+  destroy() {
+    this._rulesStack = {};
+    this._colors = new Set();
+  }
+
   addError(rule: IValidationRule, error: ValidationError) {
     if (this._rulesStack.hasOwnProperty(rule.name)) {
       this._rulesStack[rule.name].failing.push(error);
