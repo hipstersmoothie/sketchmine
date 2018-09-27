@@ -91,6 +91,7 @@ export class MemoryCompiler {
       createImportDeclaration(['PortalModule'], '@angular/cdk/portal'),
       createImportDeclaration(['FormsModule', 'ReactiveFormsModule'], '@angular/forms'),
       createImportDeclaration(['AppComponent'], './app.component'),
+      createImportDeclaration(['DebugComponent'], './debug.component'),
       createImportDeclaration(['EXAMPLES_MAP'], './examples-registry'),
       createImportDeclaration(ANGULAR_COMPONENTS, '@dynatrace/angular-components'),
       ...imports,

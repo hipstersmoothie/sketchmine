@@ -204,14 +204,13 @@ export class SvgParser {
    * Takes an Array of points and resizes the coordinates that the max width is 1 and the beginning is 0
    * Sketch SVGs reach from 0 to 1 (like percentage)
    *
-   * @returns ISvgPoint[]   
+   * @returns ISvgPoint[]
    * @param path ISvgPoint[] Array of Svg Points
    */
   private resizeCoordinates(path: (ISvgPoint | ISvgArcPoint)[]): ISvgPoint[] {
     const resized = [];
     const factor: ISvgView = { ...this._viewBox };
     path.forEach((point) => {
-      console.log('point-before: ', point, '\n\n');
       const p = {
         ...point,
         x: (!isNaN(point.x)) ? point.x / factor.width : null,
