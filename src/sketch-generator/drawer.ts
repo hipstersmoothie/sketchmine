@@ -40,8 +40,6 @@ export class Drawer {
 
   drawPage(htmlPage: TraversedPage): Page {
     const element = htmlPage.element as ITraversedDomElement;
-
-    console.log(element);
     const { height, width, x, y } = element.boundingClientRect;
     const bounding = { height, width, x, y } as IBounding;
     const page = new Page(bounding);

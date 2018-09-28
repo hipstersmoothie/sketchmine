@@ -8,9 +8,12 @@ export interface TransformValues {
   translateY: number;
 }
 
-export function resolveTransform(transform: string): TransformValues {
-  const matrix = transform
-    .match(/matrix\((.*?)\)$/)[1]
+export function resolveTransform(transform: string): TransformValues | null {
+  const match = transform.match(/matrix\((.*?)\)$/);
+
+  if (!match) {  return null; }
+
+  const matrix = match[1]
     .split(',')
     .map(s => +s.trim()); // trim and to integer
 

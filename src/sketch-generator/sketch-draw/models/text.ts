@@ -14,20 +14,18 @@ import { fixWhiteSpace, fontMapping, fontStyle } from '@sketch-draw/helpers/font
 import { StyleDeclaration } from '../../../dom-traverser/dom-visitor';
 import { TextBehaviour } from '@sketch-draw/helpers/sketch-constants';
 
-// TODO: multiline text attribute
 export class Text extends Base {
   private _text = '';
   private _multiline = false;
-  private _styles: StyleDeclaration;
   private _styleClass: Style;
 
-  set text(text: string) { this._text = fixWhiteSpace(text, this._styles.whiteSpace); }
+  set text(text: string) { this._text = fixWhiteSpace(text, this.styles.whiteSpace); }
+  get text(): string { return this._text; }
 
-  constructor(bounding: IBounding, styles) {
+  constructor(bounding: IBounding, public styles) {
     super();
     this.bounding = bounding;
     this.className = 'text';
-    this._styles = styles;
     this._styleClass = new Style();
     // call setter
     this.style = this.generateStyle();
@@ -54,16 +52,16 @@ export class Text extends Base {
     // const spacing = (sp !== 'normal') ? parseFloat(sp) : undefined;
     return {
       MSAttributedStringFontAttribute: this.fontAttributes(),
-      MSAttributedStringColorAttribute: this._styleClass.convertColor(this._styles.color),
+      MSAttributedStringColorAttribute: this._styleClass.getColor(this.styles.color),
       paragraphStyle: this.paragraphStyle(),
       kerning: 0,
     };
   }
 
   private paragraphStyle(): IParagraphStyle {
-    const lh = this._styles.lineHeight;
+    const lh = this.styles.lineHeight;
     // Disable lineheight (only needed for multi line text – otherwise conflicts with padding)
-    const lineHeight = (lh !== 'normal') ? parseInt(lh, 10) : parseInt(this._styles.fontSize, 10);
+    const lineHeight = (lh !== 'normal') ? parseInt(lh, 10) : parseInt(this.styles.fontSize, 10);
     return {
       _class: 'paragraphStyle',
       alignment: 0,
@@ -75,15 +73,15 @@ export class Text extends Base {
   }
 
   private fontAttributes(): IMSAttributedStringFontAttribute {
-    const fontFamily = this._styles.fontFamily.split(',')[0];
-    const fontWeight = this._styles.fontWeight;
-    const fontVariant = this._styles.fontStyle as fontStyle;
+    const fontFamily = this.styles.fontFamily.split(',')[0];
+    const fontWeight = this.styles.fontWeight;
+    const fontVariant = this.styles.fontStyle as fontStyle;
 
     return {
       _class: 'fontDescriptor',
       attributes: {
         name: fontMapping(fontFamily, fontWeight, fontVariant),
-        size: parseInt(this._styles.fontSize, 10),
+        size: parseInt(this.styles.fontSize, 10),
       },
     };
   }
@@ -103,7 +101,7 @@ export class Text extends Base {
     const base: IBase = super.generateObject();
     const frame = super.addFrame('rect');
 
-    if (frame.height > Math.round(parseInt(this._styles.lineHeight, 10))) {
+    if (frame.height > Math.round(parseInt(this.styles.lineHeight, 10))) {
       this._multiline = true;
     }
 

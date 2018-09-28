@@ -16,6 +16,8 @@ import { SvgParser } from '@sketch-svg-parser/svg-parser';
 import { SvgToSketch } from '@sketch-svg-parser/svg-to-sketch';
 import { Bitmap } from '@sketch-draw/models/bitmap';
 import { Logger } from '@utils';
+import { StyleDeclaration } from 'dom-traverser/dom-visitor';
+import { createBorder } from '@sketch-draw/helpers/border';
 
 const log = new Logger();
 
@@ -140,11 +142,10 @@ export class ElementDrawer {
   private addStyles(element: ITraversedDomElement): IStyle {
     const style = new Style();
     const cs = element.styles;
-
     if (!cs) {  return; }
+    createBorder(style, cs);
     if (cs.backgroundColor) { style.addColorFill(cs.backgroundColor); }
-    if (cs.borderWidth) { style.addBorder(cs.borderColor, parseInt(cs.borderWidth, 10)); }
-    if (parseInt(cs.opacity, 10) < 1) { style.opacity = cs.opacity; }
+    if (cs.opacity) { style.opacity = parseInt(cs.opacity, 10); }
 
     return style.generateObject();
   }

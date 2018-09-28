@@ -32,6 +32,10 @@ const DEFAULT_STYLING_VALUES = [
 export class StyleDeclaration {
   backgroundColor = 'rgba(0, 0, 0, 0)';
   backgroundImage = 'none';
+  borderTop = '0px none rgb(0, 0, 0)';
+  borderLeft = '0px none rgb(0, 0, 0)';
+  borderBottom = '0px none rgb(0, 0, 0)';
+  borderRight = '0px none rgb(0, 0, 0)';
   borderColor = 'rgb(0, 0, 0)';
   borderRadius = '0px';
   borderWidth = '0px';

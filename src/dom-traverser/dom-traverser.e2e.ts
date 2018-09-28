@@ -71,8 +71,7 @@ describe('E2E Dom Traverser', () => {
   });
 
   test('first child to be dt-tile', () => {
-    expect(result.element.tagName).toBe('DT-TILE');
-    expect(result.element.className).toMatch('dt-tile');
+    expect(result.element.tagName).toBe('APP-TILE-DEFAULT');
     expect(result.element.parentRect).toBeNull();
     expect(result.element.boundingClientRect).toMatchObject(
       expect.objectContaining({

@@ -1,6 +1,6 @@
 import { convertTextAlign } from './font';
 
-describe('sketch-generator › helpers › fonts', () => {
+describe('[sketch-generator] › helpers › fonts', () => {
 
   it('should convert text-align numbers to correct numbers', () => {
     expect(convertTextAlign('left')).toBe(0);

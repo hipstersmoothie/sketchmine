@@ -22,7 +22,9 @@ export class Base {
   }
 
   addRotation(transformStyle: string) {
-    this.rotation = -resolveTransform(transformStyle).angle;
+    if (transformStyle !== 'none') {
+      this.rotation = -resolveTransform(transformStyle).angle;
+    }
   }
 
   addStyle(start: number = 0, mitter: number = 10, end: number = 0): IStyle {
