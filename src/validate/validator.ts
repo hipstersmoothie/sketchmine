@@ -67,7 +67,7 @@ export class Validator {
       ) {
         return;
       }
-      this.matchedRules.push(this.getProperties(content));
+      this.matchedRules.push(this.getProperties(content, rule.options || {}));
     }
 
     if (!content.layers) {
@@ -102,7 +102,7 @@ export class Validator {
    * @param layer IBase
    * @returns IValidationContext
    */
-  private getProperties(layer: IBase): IValidationContext {
+  private getProperties(layer: IBase, ruleOptions: { [key: string]: any }): IValidationContext {
     const obj =  {
       _class: layer._class,
       do_objectID: layer.do_objectID,
@@ -112,6 +112,7 @@ export class Validator {
         artboard: this._currentArtboard,
         symbolMaster: this._currentSymbol,
       },
+      ruleOptions,
     } as IValidationContext;
 
     if (layer.style) {

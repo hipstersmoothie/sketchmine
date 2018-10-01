@@ -1,4 +1,4 @@
-import { checkThemeInName, CONTAIN_THEME_NAME_ERROR, symbolNameValidation } from './symbol-name-validation';
+import { checkThemeInName, symbolNameValidation } from './symbol-name-validation';
 import { WrongSymbolNamingError, DuplicatedSymbolError } from '../../error/validation-error';
 
 describe('Symbol Name Validation', () => {
@@ -9,11 +9,11 @@ describe('Symbol Name Validation', () => {
   });
   it('should check if theme name is used', () => {
     const name = 'componenent-name\/action'.split('/');
-    expect(checkThemeInName(name)).toBe(CONTAIN_THEME_NAME_ERROR);
+    expect(checkThemeInName(name)).toBeFalsy();
   });
   it('should check if correct theme name like dark-bg or light-bg is used', () => {
     const nameWrongTheme = 'componenent-name\/dark-theme\/action'.split('/');
-    expect(checkThemeInName(nameWrongTheme)).toBe(CONTAIN_THEME_NAME_ERROR);
+    expect(checkThemeInName(nameWrongTheme)).toBeFalsy();
     const nameLight = 'componenent-name\/light-bg\/action'.split('/');
     expect(checkThemeInName(nameLight)).toBeTruthy();
     const nameDark = 'componenent-name\/dark-bg\/action'.split('/');

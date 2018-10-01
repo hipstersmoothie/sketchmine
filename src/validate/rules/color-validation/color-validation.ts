@@ -5,12 +5,13 @@ import { rgbToHex, Logger } from '@utils';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import { IFill, IBorder } from '@sketch-draw/interfaces';
 import { generateMasterColors } from './generate-master-colors';
+import { ColorErrorMessage } from '../../error/error-messages'
 
 const log = new Logger();
 const colors: string[] = generateMasterColors();
 
 /**
- * Takes a homework and correct it like a teacher 👩🏼‍🏫
+ * Takes a homework and corrects it like a teacher 👩🏼‍🏫
  * check if the color is present in the dynatrace color palette and the fill/border is enabled
  * validates:
  *  - borders
@@ -74,8 +75,7 @@ export function colorInPalette(task: IValidationContext, fill: IFill | IBorder):
       {
         objectId: task.do_objectID,
         name: task.name,
-        message: chalk`The Color {bold {hex('${hex}') ███} ${hex}} is not in the Dynatrace Color Palette!\n` +
-        chalk`Take a look at {grey https://styles.lab.dynatrace.org/resources/colors}\n`,
+        message: ColorErrorMessage(hex)
       },
     );
   }

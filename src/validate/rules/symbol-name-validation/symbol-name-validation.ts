@@ -2,6 +2,8 @@ import chalk from 'chalk';
 import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import { Logger } from '@utils';
+import { SymbolNameErrorMessage, ThemeNameErrorMessage, DuplicatedSymbolErrorMessage } from '../../error/error-messages';
+
 
 const log = new Logger();
 
@@ -18,11 +20,8 @@ export enum ThemeNames {
   light = 'light-bg',
 }
 
-export const CONTAIN_THEME_NAME_ERROR =
-  chalk`The symbol name has to include a theme name: {grey ${Object.values(ThemeNames).join(', ')}}`;
-
 /**
- * Takes a homework and correct it like a teacher 👩🏼‍🏫
+ * Takes a homework and corrects it like a teacher 👩🏼‍🏫
  * check if the name matches following rules:
  *  - at least two parts component/state or component/theme/state
  *  - contains theme name
@@ -54,17 +53,17 @@ export function symbolNameValidation(
 
   if (name.length < 2) {
     errors.push(new WrongSymbolNamingError({
-      message: `The symbolname should contain at least 1 backslash / so that it is correct grouped!`,
+      message: SymbolNameErrorMessage,
       ...object,
     }));
-  } else if (typeof themeName !== 'boolean') {
+  } else if (!themeName) {
     errors.push(new WrongSymbolNamingError({
-      message: themeName,
+      message: ThemeNameErrorMessage(ThemeNames),
       ...object,
     }));
   } else if (names.indexOf(task.name) !== names.lastIndexOf(task.name)) {
     errors.push(new DuplicatedSymbolError({
-      message: chalk`Duplycated Symbol!\nThe Symbol {grey ${task.name}} exists!`,
+      message: DuplicatedSymbolErrorMessage(task.name),
       ...object,
     }));
   } else {
@@ -76,11 +75,10 @@ export function symbolNameValidation(
 
 /**
  * Check if the thme name is in the name
- * if string is returned it is the error message
  * @param name string[]
- * @returns boolean | string
+ * @returns boolean
  */
-export function checkThemeInName(name: string[]): boolean | string {
+export function checkThemeInName(name: string[]): boolean {
   if (Object.values(ThemeLess).includes(name[0])) {
     return true;
   }
@@ -88,5 +86,5 @@ export function checkThemeInName(name: string[]): boolean | string {
   if (themes.includes(name[1])) {
     return true;
   }
-  return CONTAIN_THEME_NAME_ERROR;
+  return false;
 }

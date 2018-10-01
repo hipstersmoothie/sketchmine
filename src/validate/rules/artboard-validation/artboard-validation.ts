@@ -2,35 +2,16 @@ import chalk from 'chalk';
 import { ValidationError, ArtboardNamingError, ArtboardSizeError, ArtboardEmptyError } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import { Logger } from '@utils';
+import { ArtboardSizeErrorMessage, ArtboardEmptyErrorMessage, ArtboardNameErrorMessage } from '../../error/error-messages';
 
 const log = new Logger();
 
-/** Available arboard sizes */
-export enum ArtboardSize {
-  smallScreen = '360',
-  mediumScreen = '1280',
-  largeScreen = '1920',
-}
-
-const ARTBOARD_SIZES_INCLUDED = {
-  360: false,
-  1280: false,
-  1920: false,
-};
-
-export const CONTAIN_ARTBOARD_SIZE_ERROR =
-  chalk`The artboard name has to include the artboard size: {grey ${Object.values(ArtboardSize).join(', ')}}`;
-
-export const INVALID_ARTBOARD_NAME_ERROR =
-  chalk`The artboard size does not match the size, stated in the name.`;
-
 /**
- * Takes a homework and correct it like a teacher 👩🏼‍🏫
+ * Takes a homework and corrects it like a teacher 👩🏼‍🏫
  * check if the name matches following rules:
  *  - has at least three parts, separated with a -
  *  - contains the screensize
  *  - every page contains at least one artboard with a valid width
- *  - the size, stated in the artboard name meets the size stated in the page name
  * @param homeworks List of Validation Rules
  * @param currentTask number of the current task to validate
  */
@@ -47,6 +28,7 @@ export function artboardValidation(
     return;
   }
 
+
   /**
    * Check if the page contains at least one artboard with a valid size
    */
@@ -60,8 +42,8 @@ export function artboardValidation(
   const emptyArtboards = homeworks
     .some(homework =>
       homework._class === 'artboard' &&
-      !homework.layerSize ||
-      homework.layerSize < 1)
+      (!homework.layerSize ||
+      homework.layerSize < 1))
 
   const errors: (ValidationError | boolean)[] = [];
   const name = task.name.split('-');
@@ -73,24 +55,24 @@ export function artboardValidation(
 
   if (!includeArtboardSize) {
     errors.push(new ArtboardSizeError({
-      message:`Every page needs to have at least one artboard with a valid width (360, 1280, 1920), that is not empty.`,
+      message: ArtboardSizeErrorMessage,
       ...object,
     }));
   }
   if (emptyArtboards) {
     errors.push(new ArtboardEmptyError({
-      message:`Artboards should not be left empty.`,
+      message: ArtboardEmptyErrorMessage,
       ...object,
     }));
   }
   if (name.length < 3) {
     errors.push(new ArtboardNamingError({
-      message: `The artboard name should contain at least artboardsize, folder name and feature name.`,
+      message: ArtboardNameErrorMessage,
       ...object,
     }));
-  } else if (typeof artboardNameCheck !== 'boolean') {
+  } else if (!artboardNameCheck) {
     errors.push(new ArtboardNamingError({
-      message: `The artboard name should start with the artboard/pagesize (360, 1280, 1920).`,
+      message: ArtboardNameErrorMessage,
       ...object,
     }));
   } else {
@@ -101,14 +83,13 @@ export function artboardValidation(
 
 /**
  * Check if the artboard size is in the name
- * if string is returned it is the error message
+ * @param task IValidationContext
  * @param name string[]
- * @returns boolean | string
+ * @returns boolean
  */
-export function checkArboardName(task: IValidationContext, name: string[]): boolean | string {
-  const sizes = Object.values(ArtboardSize);
+export function checkArboardName(task: IValidationContext, name: string[]): boolean {
   if (name[0] === task.parents.page) {
     return true;
   }
-  return CONTAIN_ARTBOARD_SIZE_ERROR;
+  return false;
 }

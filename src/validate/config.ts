@@ -4,7 +4,15 @@ import { colorValidation } from './rules/color-validation';
 import { artboardValidation } from './rules/artboard-validation';
 import { pageValidation } from './rules/page-validation';
 
+/** Available sizes */
+const ArtboardSizes: String[] = [
+  '360',
+  '1280',
+  '1920',
+]
+
 export const rules: IValidationRule[] = [
+
   {
     selector: ['symbolMaster'],
     name: 'symbol-name-validation',
@@ -32,6 +40,9 @@ export const rules: IValidationRule[] = [
     name: 'page-validation',
     description: 'Check if the page names are valid.',
     validation: pageValidation,
+    options: {
+      artboardSizes: ArtboardSizes,
+    }
   },
 
 ];

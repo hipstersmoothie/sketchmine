@@ -19,6 +19,7 @@ export interface IValidationRule {
   description?: string;
   ignoreArtboards?: string[];
   env?: string[];
+  options?: { [key: string]: any }
 }
 
 export interface IValidationContext {
@@ -29,6 +30,7 @@ export interface IValidationContext {
   style?: IStyle;
   frame?: IFrame;
   layerSize?: number;
+  ruleOptions: { [key: string]: any }
 }
 
 export interface IValidationContextParents {
