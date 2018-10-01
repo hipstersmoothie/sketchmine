@@ -4,21 +4,24 @@ import { Validator } from './validator';
 import chalk from 'chalk';
 import { ErrorHandler } from './error/error-handler';
 import minimist from 'minimist';
-import * as path from 'path';
+import { join } from 'path';
+import { filenameValidation } from './rules/file-name-validation';
 
 const env = process.env.ENVIRONMENT || 'global';
 const log = new Logger();
 const validator = new Validator(rules, env);
 const handler = new ErrorHandler();
 
-const DEFAULT_TEST_FILE = path.join(process.cwd(), 'tests', 'fixtures', 'name-validation-test.sketch');
+const DEFAULT_TEST_FILE = join(process.cwd(), 'tests', 'fixtures', 'name-validation-test.sketch');
 
 export async function main(args: string[]) {
-
   const file = minimist(args).file || DEFAULT_TEST_FILE;
 
   log.notice(chalk`💎💎💎  Start Validating Sketch File:  💎💎💎\n`);
   log.notice(`validate file: ${file}`);
+
+  // validate the file name
+  filenameValidation(file);
 
   /** unzip only the pages for the validation */
   return unzip(file, /pages\/.*?\.json/).then(async (result) => {
@@ -29,7 +32,6 @@ export async function main(args: string[]) {
 
       validator.addFile(page);
     });
-
     validator.validate();
     handler.emit();
     return 0;

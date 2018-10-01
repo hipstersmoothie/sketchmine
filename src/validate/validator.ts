@@ -30,15 +30,15 @@ export class Validator {
     this._files.push(content);
   }
 
-  /** alidates a sketch file with the given rules. */
-  async validate() {
+  /** validates a sketch file with the given rules. */
+  validate() {
     if (this._files.length === 0) {
       throw Error(chalk`{bgRed No files to validate!}`);
     }
     this._files.forEach((content) => {
       this.collectModules(content);
-      this.correct();
     });
+    this.correct();
   }
 
   /** 👩🏼‍🏫 The teacher applies the rules for you */
@@ -58,7 +58,6 @@ export class Validator {
    */
   private collectModules(content: IBase) {
     this.setCurrentParents(content);
-
     if (this._rulesSelectors.includes(content._class)) {
       const rule = this._rules.find(rule => rule.selector.includes(content._class as SketchModel));
       if (
@@ -68,7 +67,7 @@ export class Validator {
       ) {
         return;
       }
-      this.matchedRules.push(this.getProperties(content));
+      this.matchedRules.push(this.getProperties(content, rule.options || {}));
     }
 
     if (!content.layers) {
@@ -103,7 +102,7 @@ export class Validator {
    * @param layer IBase
    * @returns IValidationContext
    */
-  private getProperties(layer: IBase): IValidationContext {
+  private getProperties(layer: IBase, ruleOptions: { [key: string]: any }): IValidationContext {
     const obj =  {
       _class: layer._class,
       do_objectID: layer.do_objectID,
@@ -113,12 +112,18 @@ export class Validator {
         artboard: this._currentArtboard,
         symbolMaster: this._currentSymbol,
       },
+      ruleOptions,
     } as IValidationContext;
 
     if (layer.style) {
       obj.style = layer.style as IStyle;
     }
-
+    if (layer.frame) {
+      obj.frame = layer.frame;
+    }
+    if (layer.layers) {
+      obj.layerSize = layer.layers.length;
+    }
     return obj;
   }
 }

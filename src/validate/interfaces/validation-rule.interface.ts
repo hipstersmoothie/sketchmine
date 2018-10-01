@@ -1,5 +1,5 @@
 import { ValidationError } from '../error/validation-error';
-import { IStyle } from '@sketch-draw/interfaces';
+import { IStyle, IFrame } from '@sketch-draw/interfaces';
 
 export type SketchModel =
 'document' |
@@ -8,7 +8,8 @@ export type SketchModel =
 'group' |
 'path' |
 'shapeGroup' |
-'rectangle';
+'rectangle' |
+'artboard' ;
 export type ValidationFunction = (homework: IValidationContext[], currentTask: number) => (ValidationError | boolean)[];
 
 export interface IValidationRule {
@@ -18,14 +19,18 @@ export interface IValidationRule {
   description?: string;
   ignoreArtboards?: string[];
   env?: string[];
+  options?: { [key: string]: any }
 }
 
 export interface IValidationContext {
   _class: string;
   do_objectID: string;
   name: string;
-  style?: IStyle;
   parents: IValidationContextParents;
+  style?: IStyle;
+  frame?: IFrame;
+  layerSize?: number;
+  ruleOptions: { [key: string]: any }
 }
 
 export interface IValidationContextParents {
