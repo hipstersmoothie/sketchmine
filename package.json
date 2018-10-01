@@ -53,6 +53,7 @@
     "normalize-css-color": "^1.0.2",
     "puppeteer": "1.4.0",
     "rimraf": "^2.6.2",
+    "svg-arc-to-cubic-bezier": "^3.1.0",
     "svg-path-parser": "^1.1.0",
     "typescript": "^2.9.2",
     "unzipper": "^0.8.14",

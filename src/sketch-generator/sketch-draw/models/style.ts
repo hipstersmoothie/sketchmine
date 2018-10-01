@@ -1,29 +1,64 @@
 import { cssToRGBA } from '@sketch-draw/helpers/util';
-import { IBorder, IFill, IColor, IStyle } from '@sketch-draw/interfaces';
+import { IBorder, IFill, IColor, IStyle, SketchGraphicsContext, IShadow } from '@sketch-draw/interfaces';
+import {
+  BorderPosition,
+  FillType,
+  PatternFillType,
+  NoiseFillType,
+  BlendingMode,
+} from '@sketch-draw/helpers/sketch-constants';
+
+export interface Shadow {
+  color: string | any;
+  offsetX: number;
+  offsetY: number;
+  spread: number;
+  blurRadius: number;
+}
 
 export class Style {
-  private _borders: IBorder[] = [];
-  private _fills: IFill[] = [];
-  private _opacity: string;
-
-  set opacity(input: number | string) { this._opacity = `${input}`; }
+  shadows: IShadow[] = [];
+  borders: IBorder[] = [];
+  fills: IFill[] = [];
+  opacity: number;
 
   addColorFill(color: string | any, alpha: number = 1) {
-    this._fills.push(this.colorFill(color, alpha));
+    this.fills.push(this.getFill(color, alpha));
   }
 
-  addBorder(color: string | any, thickness: number) {
-    this._borders.push({
-      _class: 'border',
+  addShadow(config: Shadow) {
+    this.shadows.push({
+      _class: 'shadow',
       isEnabled: true,
-      color: this.convertColor(color),
-      fillType: 0,
-      position: 1,
+      color: this.getColor(config.color),
+      contextSettings: this.getGraphicsContext(BlendingMode.Normal, 1),
+      blurRadius: config.blurRadius || 0,
+      offsetX: config.offsetX || 0,
+      offsetY: config.offsetY || 0,
+      spread: config.spread || 0,
+    });
+  }
+
+  addBorder(color: string | any, thickness: number, fillType = FillType.Solid) {
+    this.borders.push({
+      _class: 'border',
+      color: this.getColor(color),
+      fillType,
+      isEnabled: true,
+      position: BorderPosition.Outside,
       thickness,
     });
   }
 
-  convertColor(color: string | any, alpha: number = 1): IColor {
+  getGraphicsContext(blendMode: BlendingMode, opacity: number): SketchGraphicsContext {
+    return {
+      _class: 'graphicsContextSettings',
+      blendMode,
+      opacity,
+    };
+  }
+
+  getColor(color: string | any, alpha: number = 1): IColor {
     const { r, g, b, a } = cssToRGBA(color);
 
     return {
@@ -35,15 +70,15 @@ export class Style {
     };
   }
 
-  private colorFill(color: string | any, alpha: number = 1): IFill {
+  getFill(color: string | any, alpha: number = 1): IFill {
     return {
       _class: 'fill',
       isEnabled: true,
-      color: this.convertColor(color, alpha),
-      fillType: 0,
-      noiseIndex: 0,
+      color: this.getColor(color, alpha),
+      fillType: FillType.Solid,
+      noiseIndex: NoiseFillType.Original,
       noiseIntensity: 0,
-      patternFillType: 1,
+      patternFillType: PatternFillType.Fill,
       patternTileScale: 1,
     };
   }
@@ -57,14 +92,11 @@ export class Style {
       startDecorationType: 0,
     } as IStyle;
 
-    if (this._fills.length > 0) { style.fills = this._fills; }
-    if (this._borders.length > 0) { style.borders = this._borders; }
-    if (this._opacity) {
-      style.contextSettings = {
-        _class: 'graphicsContextSettings',
-        blendMode: 0,
-        opacity: this._opacity,
-      };
+    if (this.fills.length) { style.fills = this.fills; }
+    if (this.borders.length) { style.borders = this.borders; }
+    if (this.shadows.length) { style.shadows = this.shadows; }
+    if (this.opacity) {
+      style.contextSettings = this.getGraphicsContext(BlendingMode.Normal, this.opacity);
     }
 
     return style;

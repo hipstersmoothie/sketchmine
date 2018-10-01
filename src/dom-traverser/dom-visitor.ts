@@ -32,6 +32,10 @@ const DEFAULT_STYLING_VALUES = [
 export class StyleDeclaration {
   backgroundColor = 'rgba(0, 0, 0, 0)';
   backgroundImage = 'none';
+  borderTop = '0px none rgb(0, 0, 0)';
+  borderLeft = '0px none rgb(0, 0, 0)';
+  borderBottom = '0px none rgb(0, 0, 0)';
+  borderRight = '0px none rgb(0, 0, 0)';
   borderColor = 'rgb(0, 0, 0)';
   borderRadius = '0px';
   borderWidth = '0px';
@@ -44,7 +48,10 @@ export class StyleDeclaration {
   fontSize = '16px';
   fontStyle = 'normal';
   fontWeight = '400';
+  lineHeight = 'normal';
   opacity = '1';
+  strokeWidth = '1px';
+  transform = 'none';
   visibility = 'visible';
   whiteSpace = 'normal';
 }
@@ -93,6 +100,9 @@ export class DomVisitor implements Visitor {
     switch (tagName) {
       case 'SVG':
         (el as ITraversedDomSvgNode).html = element.outerHTML;
+        el.styles = options.styles;
+        break;
+      case 'PATH':
         el.styles = options.styles;
         break;
       case 'IMG':

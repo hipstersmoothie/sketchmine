@@ -3,8 +3,10 @@ import { main as AngularLibraryGenerator } from './angular-library-generator/mai
 import { main as SketchGenerator } from './sketch-generator/main';
 import { AMP } from '@angular-meta-parser/meta-information';
 import { startServer } from './start-server';
-import { writeJSON } from '@utils';
+import { writeJSON, Logger } from '@utils';
+import chalk from 'chalk';
 
+const log = new Logger();
 const config = {
   metaInformation: 'dist/sketch-library/src/assets/meta-information.json',
   host: {
@@ -33,6 +35,7 @@ const config = {
 };
 
 export default async function main() {
+  log.info(chalk`{blue ==>} start generating the meta-information.json\n\n`);
   const meta = await AngularMetaParser(
     '_tmp',
     'src/lib',
@@ -41,9 +44,11 @@ export default async function main() {
     true,
   ) as AMP.Result;
 
+  log.info(chalk`{blue ==>} generating the angular app from the meta-information\n\n`);
   await AngularLibraryGenerator(meta, '_tmp/src/docs/components', 'dist/sketch-library');
   await writeJSON(config.metaInformation, meta);
   const server = await startServer(config);
+  log.info(chalk`{blue ==>} generate the .sketch file\n\n`);
   await SketchGenerator(config);
   server.kill();
 }

@@ -30,7 +30,7 @@ export function createSketchLibraryModule(declarations: string[], imports: strin
   const allImports = createPropertyAssignment('imports', ts.createArrayLiteral(angularImports, true));
   const allDeclarations = createPropertyAssignment(
     'declarations',
-    createIdentifierArray(['AppComponent', ...declarations],
+    createIdentifierArray(['AppComponent', 'DebugComponent', ...declarations],
   ));
   const bootstrap = createPropertyAssignment('bootstrap', createIdentifierArray(['AppComponent'], true));
   const provider = ts.createObjectLiteral([

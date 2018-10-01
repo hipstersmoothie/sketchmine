@@ -1,11 +1,12 @@
 import { Base } from '@sketch-draw/models/base';
-import { IBounding, IBase, IColor } from '@sketch-draw/interfaces';
+import { IBounding, IBase, SketchArtboard, IColor } from '@sketch-draw/interfaces';
+import { BooleanOperation } from '@sketch-draw/helpers/sketch-constants';
 
-export class SymbolMaster extends Base {
+export class Artboard extends Base {
 
   constructor(bounding: IBounding) {
     super();
-    super.className = 'symbolMaster';
+    super.className = 'artboard';
     super.breakMaskChain = true;
     super.style = super.addStyle();
     super.bounding = bounding;
@@ -21,23 +22,29 @@ export class SymbolMaster extends Base {
     };
   }
 
-  generateObject(): any {
+  generateObject(): SketchArtboard {
     const base: IBase = super.generateObject();
     return {
       ...base,
       frame: super.addFrame('rect'),
       hasClickThrough: false,
       backgroundColor: this.addBackgroundColor(),
+      booleanOperation: BooleanOperation.None,
       hasBackgroundColor: false,
       horizontalRulerData: super.addRuler(),
       includeBackgroundColorInExport: true,
       includeInCloudUpload: true,
       isFlowHome: false,
+      isFixedToViewport: false,
       resizesContent: false,
       verticalRulerData: super.addRuler(),
-      includeBackgroundColorInInstance: false,
-      symbolID: base.do_objectID,
-      changeIdentifier: 3,
+      style: {
+        _class: 'style',
+        endMarkerType: 0,
+        miterLimit: 10,
+        startMarkerType: 0,
+        windingRule: 1,
+      },
     };
   }
 }

@@ -2,7 +2,7 @@ module.exports = {
   verbose: true,
   testEnvironment: 'node',
   testURL: 'http://localhost/',
-  testPathIgnorePatterns: ['/_tmp/', '/node_modules/'],
+  testPathIgnorePatterns: ['_tmp', 'node_modules', 'angular-app-shell'],
   coveragePathIgnorePatterns: [
     '\\.d\\.ts$',
   ],
@@ -22,6 +22,6 @@ module.exports = {
     '<rootDir>/tests/**/?(*.)+(e2e|test).ts',
   ],
   transform: {
-    '\\.(ts)$': '<rootDir>/node_modules/ts-jest/preprocessor.js',
+    '\\.(ts)$': 'ts-jest',
   },
 }

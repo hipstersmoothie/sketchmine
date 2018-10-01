@@ -1,5 +1,5 @@
-import { IBase, IFrame } from '@sketch-draw/interfaces';
-import { ICurvePoint } from '@sketch-svg-parser/interfaces';
+import { IBase, IFrame } from './base.interface';
+import { ICurvePoint } from '../../sketch-svg-parser/interfaces/curve-point.interface';
 
 export interface IRectangle extends IBase {
   path: IPath;

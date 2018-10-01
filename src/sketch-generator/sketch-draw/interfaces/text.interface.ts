@@ -1,5 +1,5 @@
-import { IBase } from '@sketch-draw/interfaces/base.interface';
-import { IStyle, IColor } from '@sketch-draw/interfaces/style.interface';
+import { IBase } from './base.interface';
+import { IStyle, IColor } from './style.interface';
 
 export interface IText extends IBase {
   style: IStyle;

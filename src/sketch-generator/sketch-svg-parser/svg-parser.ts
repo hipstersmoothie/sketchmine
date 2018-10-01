@@ -6,13 +6,16 @@ import {
   ISvgView,
   ISvg,
   ISvgShape,
-  SvgStyle,
-} from '@sketch-svg-parser/interfaces';
+  ISvgArcPoint,
+} from './interfaces';
 import { BooleanOperation } from '@sketch-draw/helpers/sketch-constants';
-import { Circle } from '@sketch-svg-parser/models/circle';
-import { Rect } from '@sketch-svg-parser/models/rect';
-import { addStyle } from '@sketch-svg-parser/util/styles';
+import { Circle } from './models/circle';
+import { Rect } from './models/rect';
+import { addStyles, arcsToCurves } from './util';
+import { Logger } from '@utils';
+
 const { parseSVG, makeAbsolute } = require('svg-path-parser');
+const log = new Logger();
 
 export class SvgParser {
   static parse(svg: string, width: number, height: number): ISvg {
@@ -37,6 +40,7 @@ export class SvgParser {
       const svg = new DOMParser()
         .parseFromString(this._svg.trim(), 'application/xml')
         .childNodes[0] as SVGElement;
+
       if (svg.tagName !== 'svg') {
         throw new Error(chalk`No SVG element provided for parsing!\nyou provided:{grey \n${this._svg}\n\n}`);
       }
@@ -45,66 +49,40 @@ export class SvgParser {
 
       [].slice.call(svg.childNodes).forEach((child: Node) => {
         // if nodeType is not an ELEMENT_NODE return
-        if (child.nodeType !== 1) {
-          return;
-        }
+        if (child.nodeType !== 1) { return; }
 
         let element: ISvgShape;
 
         if (child.nodeName === 'path') {
           const pathData = (child as SVGPathElement).getAttribute('d');
-          const path = parseSVG(pathData) as ISvgPoint[];
+          const path = makeAbsolute(parseSVG(pathData)) as ISvgPoint[];
           const resized = this.resizeCoordinates(path);
-          element = {
-            points: makeAbsolute(resized),
-          };
+
+          // TODO: fix Arcs and convert arcs to curves
+          // element = { points: arcsToCurves(resized) };
+          element = { points: resized };
 
         } else if (child.nodeName === 'circle') {
           const circle = child as SVGCircleElement;
-          element = {
-            points: this.circleToPath(circle),
-          };
+          element = { points: this.circleToPath(circle) };
         } else if (child.nodeName === 'rect') {
           const rect = child as SVGRectElement;
-          element = {
-            points: this.rectToPath(rect),
-          };
+          element = { points: this.rectToPath(rect) };
         } else {
-          if (process.env.DEBUG_SVG) {
-            console.log(
-              chalk`{red The SVG element: "${child.nodeName}" is not implemented yet!} 😢 Sorry 🙁
-              Try to render without this Element...`,
-            );
-          }
+          log.debug(
+            chalk`{red The SVG element: "${child.nodeName}" is not implemented yet!} 😢 Sorry 🙁
+            Try to render without this Element...`,
+          );
         }
 
         if (element) {
-          this._paths.push(this.addStyles(child as Element, element));
+          this._paths.push(addStyles(child as Element, element, this._viewBox));
         }
       });
 
     } catch (error) {
       throw new Error(chalk`\n\n🚨 {bgRed Failed to parse the SVG DOM:} 🖼\n${error}`);
     }
-  }
-
-  /**
-   * Check if the svg Element has style attributes like fill or stroke
-   *
-   * @param node Element
-   * @param element ISvgShape
-   * @returns ISvgShape
-   */
-  private addStyles(node: Element, element: ISvgShape): ISvgShape {
-    const styles: Map<SvgStyle, string> = new Map();
-    addStyle(styles, node, 'fill');
-    addStyle(styles, node, 'stroke');
-    addStyle(styles, node, 'stroke-width', 'strokeWidth');
-    addStyle(styles, node, 'fill-opacity', 'fillOpacity');
-    addStyle(styles, node, 'stroke-opacity', 'strokeOpacity');
-
-    element.style = styles;
-    return element;
   }
 
   /**
@@ -229,7 +207,7 @@ export class SvgParser {
    * @returns ISvgPoint[]
    * @param path ISvgPoint[] Array of Svg Points
    */
-  private resizeCoordinates(path: ISvgPoint[]): ISvgPoint[] {
+  private resizeCoordinates(path: (ISvgPoint | ISvgArcPoint)[]): ISvgPoint[] {
     const resized = [];
     const factor: ISvgView = { ...this._viewBox };
     path.forEach((point) => {
@@ -244,6 +222,11 @@ export class SvgParser {
       if (!isNaN(point.y0)) { p.y0 = point.y0 / factor.height; }
       if (!isNaN(point.y1)) { p.y1 = point.y1 / factor.height; }
       if (!isNaN(point.y2)) { p.y2 = point.y2 / factor.height; }
+
+      if (point.code === 'a' || point.code === 'A') {
+        if (!isNaN((point as ISvgArcPoint).rx)) { (p as ISvgArcPoint).rx = (point as ISvgArcPoint).rx / factor.height; }
+        if (!isNaN((point as ISvgArcPoint).ry)) { (p as ISvgArcPoint).ry = (point as ISvgArcPoint).ry / factor.height; }
+      }
 
       resized.push(p);
     });

@@ -15,6 +15,11 @@ import { ShapeGroup } from '@sketch-svg-parser/models/shape-group';
 import { SvgParser } from '@sketch-svg-parser/svg-parser';
 import { SvgToSketch } from '@sketch-svg-parser/svg-to-sketch';
 import { Bitmap } from '@sketch-draw/models/bitmap';
+import { Logger } from '@utils';
+import { StyleDeclaration } from 'dom-traverser/dom-visitor';
+import { createBorder } from '@sketch-draw/helpers/border';
+
+const log = new Logger();
 
 export class ElementDrawer {
   private _layers = [];
@@ -41,9 +46,7 @@ export class ElementDrawer {
   }
 
   private generateIMG(element: ITraversedDomImageNode) {
-    if (process.env.DEBUG) {
-      console.log(chalk`\tAdd Image 🖼\t{grey ${element.src}}`);
-    }
+    log.debug(chalk`\tAdd Image 🖼\t{grey ${element.src}}`);
     const size = this.getSize(element);
     const image = new Bitmap(size);
     image.src = element.src;
@@ -52,9 +55,7 @@ export class ElementDrawer {
   }
 
   private generateSVG(element: ITraversedDomSvgNode) {
-    if (process.env.DEBUG) {
-      console.log(chalk`\tAdd SVG 🖼 ...`);
-    }
+    log.debug(chalk`\tAdd SVG 🖼 ...`);
     const size = this.getSize(element);
     const svgObject = SvgParser.parse(element.html, size.width, size.height);
     // svgObject.shapes.map(shape => overrideSvgStyle(shape.style, element.styles));
@@ -89,6 +90,16 @@ export class ElementDrawer {
   }
 
   private generate(element: ITraversedDomElement) {
+
+    if (
+      element.isHidden ||
+      !element.hasOwnProperty('children') &&
+      element.styles === null
+      ) {
+      log.debug(chalk`Element {cyan ${element.tagName}.${element.className}} has no visual state.`);
+      return;
+    }
+
     const size = this.getSize(element);
     const group = new Group(size);
     group.name = element.className || element.tagName.toLowerCase();
@@ -98,6 +109,8 @@ export class ElementDrawer {
       // shape Group in group always starts at x:0, y:0
       const shapeGroup = new ShapeGroup({ ...size, x:0, y:0 });
       shapeGroup.name = 'Background';
+
+      shapeGroup.addRotation(element.styles.transform);
       shapeGroup.style = this.addStyles(element);
       shapeGroup.addLayer(this.addshape(element));
       group.addLayer(shapeGroup.generateObject());
@@ -129,11 +142,10 @@ export class ElementDrawer {
   private addStyles(element: ITraversedDomElement): IStyle {
     const style = new Style();
     const cs = element.styles;
-
     if (!cs) {  return; }
+    createBorder(style, cs);
     if (cs.backgroundColor) { style.addColorFill(cs.backgroundColor); }
-    if (cs.borderWidth) { style.addBorder(cs.borderColor, parseInt(cs.borderWidth, 10)); }
-    if (parseInt(cs.opacity, 10) < 1) { style.opacity = cs.opacity; }
+    if (cs.opacity) { style.opacity = parseInt(cs.opacity, 10); }
 
     return style.generateObject();
   }

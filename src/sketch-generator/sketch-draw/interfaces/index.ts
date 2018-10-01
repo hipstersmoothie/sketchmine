@@ -7,4 +7,5 @@ export * from '@sketch-draw/interfaces/page.interface';
 export * from '@sketch-draw/interfaces/rectangle.interface';
 export * from '@sketch-draw/interfaces/style.interface';
 export * from '@sketch-draw/interfaces/symbol-master.interface';
+export * from '@sketch-draw/interfaces/artboard.interface';
 export * from '@sketch-draw/interfaces/text.interface';

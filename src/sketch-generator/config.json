@@ -5,12 +5,12 @@
     "name": "localhost",
     "port": 4200
   },
-  "rootElement": "ng-component > * ",
+  "rootElement": "app-root > *",
   "library": {
     "app": "dist/sketch-library"
   },
   "pages": [
-    ""
+    "/"
   ],
   "outFile": "dt-asset-lib.sketch",
   "chrome": {

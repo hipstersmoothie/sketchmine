@@ -1,6 +1,6 @@
 import { Base } from '@sketch-draw/models/base';
-import { IShapeGroup } from '@sketch-svg-parser/interfaces';
 import { IBounding, IBase } from '@sketch-draw/interfaces';
+import { IShapeGroup } from '../interfaces';
 
 export class ShapeGroup extends Base {
 

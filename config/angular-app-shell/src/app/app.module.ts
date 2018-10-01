@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { PortalModule } from '@angular/cdk/portal';
 import { EXAMPLES_MAP } from './examples-registry';
 import { AppComponent } from './app.component';
+import { DebugComponent } from './debug.component';
 import { DtButtonModule, DtTileModule, DtIconModule, DtCardModule, DtThemingModule } from '@dynatrace/angular-components';
 
 import { IconOnlyButtonExampleComponent } from './examples/button';
@@ -18,6 +19,7 @@ export const EXAMPLES = new Map<string, any>([
 @NgModule({
   declarations: [
     AppComponent,
+    DebugComponent,
     IconOnlyButtonExampleComponent,
   ],
   imports: [

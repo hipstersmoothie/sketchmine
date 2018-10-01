@@ -1,4 +1,4 @@
-import { IBase } from '@sketch-draw/interfaces';
+import { IBase } from './base.interface';
 
 export interface IGroup extends IBase {
   originalObjectID?: string;

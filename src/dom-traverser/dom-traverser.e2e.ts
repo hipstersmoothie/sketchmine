@@ -6,7 +6,7 @@ import { readFile } from '@utils';
 const config = require(`${process.cwd()}/config/app.json`);
 const TEST_FILE = `file:${path.join(process.cwd(), 'tests', 'fixtures', 'tile-default.html')}`;
 const TRAVERSER = path.join(process.cwd(), config.sketchGenerator.traverser);
-const ROOT_ELEMENT = 'app-root > * > *';
+const ROOT_ELEMENT = 'app-root > * ';
 
 function findObjects(o: Object, targetProp: string, targetValue: any, finalResults) {
   function getObject(obj: Object) {
@@ -71,8 +71,7 @@ describe('E2E Dom Traverser', () => {
   });
 
   test('first child to be dt-tile', () => {
-    expect(result.element.tagName).toBe('DT-TILE');
-    expect(result.element.className).toMatch('dt-tile');
+    expect(result.element.tagName).toBe('APP-TILE-DEFAULT');
     expect(result.element.parentRect).toBeNull();
     expect(result.element.boundingClientRect).toMatchObject(
       expect.objectContaining({

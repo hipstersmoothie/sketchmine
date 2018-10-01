@@ -1,4 +1,4 @@
-import { Component, Type, ViewChild, ViewContainerRef, OnInit, ComponentRef } from '@angular/core';
+import { Component, Type, ViewChild, ViewContainerRef, OnInit, ComponentRef, SimpleChange } from '@angular/core';
 import { DomPortalHost, CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { ViewData } from '@angular/core/src/view';
 import { MetaService } from './meta.service';
@@ -52,17 +52,33 @@ export class AppComponent implements OnInit{
     const exampleComponentRef = this._instanceComponent(exampleType);
     const componentInstances = this._getCompInstances(componentMeta, exampleComponentRef);
 
-    variant.changes.forEach((change: Meta.VariantMethod | Meta.VariantProperty) => {
-      if (change.type === 'property') {
-        componentInstances.forEach((instance) => {
-          instance[change.key] = (change.value === 'undefined') ? undefined : JSON.parse(change.value);
+    exampleComponentRef.changeDetectorRef.detectChanges();
+
+    await asyncForEach(variant.changes, async (change: Meta.VariantMethod | Meta.VariantProperty) => {
+    if (change.type === 'property') {
+        await asyncForEach(componentInstances, async (instance) => {
+          const value = (change.value === 'undefined') ? undefined : JSON.parse(change.value);
+          const oldvalue = instance[change.key];
+          instance[change.key] = value;
+          if (instance.ngOnChanges) {
+            instance.ngOnChanges({
+              [change.key]: new SimpleChange(oldvalue, value, false)
+            });
+          }
+          // if (window.sketchGenerator) {
+          //   const el = instance._elementRef.nativeElement as HTMLElement;
+          //   const selector = `${el.tagName}[class="${el.getAttribute('class')}"]`;
+          //   await window.sketchGenerator.emitClick(selector);
+          // }
         });
       }
     });
-
+    
     exampleComponentRef.changeDetectorRef.detectChanges();
+    
     // wait for browser draw
-    await timeout(0);
+    // TODO: timout has to check if http requests in case of icons are triggered…
+    await timeout(100);
     if (window.sketchGenerator) {
       await window.sketchGenerator.emitDraw(`${componentMeta.component}/${variant.name}`);
     }

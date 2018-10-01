@@ -4,12 +4,10 @@ import { round } from '@sketch-draw/helpers/util';
 export class CurvePoint {
 
   constructor(
-    private _prevP: ISvgPoint,
     private _curP: ISvgPoint,
     private _nextP: ISvgPoint,
   ) { }
 
-  get prev(): ISvgPoint { return this._prevP; }
   get cur(): ISvgPoint { return this._curP; }
   get next(): ISvgPoint { return this._nextP; }
 

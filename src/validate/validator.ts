@@ -1,5 +1,5 @@
 import { IValidationRule, IValidationContext, SketchModel } from './interfaces/validation-rule.interface';
-import { IBase } from '@sketch-draw/interfaces';
+import { IBase, IStyle } from '@sketch-draw/interfaces';
 import { readFile } from '@utils';
 import chalk from 'chalk';
 import { Teacher } from './teacher';
@@ -116,7 +116,7 @@ export class Validator {
     } as IValidationContext;
 
     if (layer.style) {
-      obj.style = layer.style;
+      obj.style = layer.style as IStyle;
     }
 
     return obj;

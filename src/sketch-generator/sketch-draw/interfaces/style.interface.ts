@@ -1,30 +1,23 @@
-import { ITextStyle } from '@sketch-draw/interfaces';
+import { ITextStyle } from './text.interface';
+import { FillType, PatternFillType } from '../helpers/sketch-constants';
 
 export interface IStyle {
   _class: string;
   do_objectID?: string;
   fills?: IFill[];
   borders?: IBorder[];
+  shadows?: IShadow[];
   endDecorationType: number;
   miterLimit: number;
   startDecorationType: number;
-  contextSettings?: IStyleContextSettings;
+  contextSettings?: SketchGraphicsContext;
   textStyle?: ITextStyle;
 }
 
-export interface IStyleContextSettings {
+export interface SketchGraphicsContext {
   _class: string;
   blendMode: number;
-  opacity: string;
-}
-
-export interface IBorder {
-  _class: string;
-  isEnabled: boolean;
-  color: IColor;
-  fillType: number;
-  position: number;
-  thickness;
+  opacity: number;
 }
 
 export interface IColor {
@@ -35,13 +28,33 @@ export interface IColor {
   red: number;
 }
 
+export interface IBorder {
+  _class: string;
+  isEnabled: boolean;
+  color: IColor;
+  fillType: number;
+  position: number;
+  thickness: number;
+}
+
 export interface IFill {
   _class: string;
   isEnabled: boolean;
   color: IColor;
-  fillType: 0;
+  fillType: FillType;
   noiseIndex: 0;
   noiseIntensity: 0;
-  patternFillType: 1;
+  patternFillType: PatternFillType;
   patternTileScale: 1;
+}
+
+export interface IShadow {
+  _class: string;
+  isEnabled: boolean;
+  color: IColor;
+  contextSettings: SketchGraphicsContext;
+  blurRadius: number;
+  offsetX: number;
+  offsetY: number;
+  spread: number;
 }
