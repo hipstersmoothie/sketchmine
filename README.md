@@ -36,7 +36,7 @@ To get started with docker-compose please create following file:
 
 ```bash
 touch .env
-echo 'GIT_PASS=yourpass!\nGIT_USER=git.user' > .env
+echo 'GIT_PASS=${password}\nGIT_USER\n=${user}\nGIT_BRANCH=feat/poc-sketch' > .env
 ```
 
 then just run `docker-compose up`
