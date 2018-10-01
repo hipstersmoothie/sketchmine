@@ -101,7 +101,7 @@ export class Text extends Base {
     const base: IBase = super.generateObject();
     const frame = super.addFrame('rect');
 
-    if (frame.height > Math.round(parseInt(this.styles.lineHeight, 10))) {
+    if (frame.height > parseInt(this.styles.lineHeight, 10)) {
       this._multiline = true;
     }
 
