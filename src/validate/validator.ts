@@ -1,5 +1,5 @@
 import { IValidationRule, IValidationContext, SketchModel } from './interfaces/validation-rule.interface';
-import { IBase, IStyle } from '@sketch-draw/interfaces';
+import { SketchBase, SketchStyle } from '@sketch-draw/interfaces';
 import { readFile } from '@utils';
 import chalk from 'chalk';
 import { Teacher } from './teacher';
@@ -10,7 +10,7 @@ export class Validator {
   private _currentArtboard: string;
   private _currentSymbol: string;
   private _currentPage: string;
-  private _files: IBase[] = [];
+  private _files: SketchBase[] = [];
 
   constructor(private _rules: IValidationRule[], public env: string) {
     /** selector array is faster to check than always lookup in an object */
@@ -56,7 +56,7 @@ export class Validator {
    * and stores it in an array
    * @param content IBase
    */
-  private collectModules(content: IBase) {
+  private collectModules(content: SketchBase) {
     this.setCurrentParents(content);
     if (this._rulesSelectors.includes(content._class)) {
       const rule = this._rules.find(rule => rule.selector.includes(content._class as SketchModel));
@@ -83,7 +83,7 @@ export class Validator {
    * Get the current Artboard, Page, SymbolMaster
    * @param content IBase
    */
-  private setCurrentParents(content: IBase) {
+  private setCurrentParents(content: SketchBase) {
     if (content._class === 'page') {
       this._currentArtboard = undefined;
       this._currentSymbol = undefined;
@@ -102,7 +102,7 @@ export class Validator {
    * @param layer IBase
    * @returns IValidationContext
    */
-  private getProperties(layer: IBase, ruleOptions: { [key: string]: any }): IValidationContext {
+  private getProperties(layer: SketchBase, ruleOptions: { [key: string]: any }): IValidationContext {
     const obj =  {
       _class: layer._class,
       do_objectID: layer.do_objectID,
@@ -116,7 +116,7 @@ export class Validator {
     } as IValidationContext;
 
     if (layer.style) {
-      obj.style = layer.style as IStyle;
+      obj.style = layer.style as SketchStyle;
     }
     if (layer.frame) {
       obj.frame = layer.frame;

@@ -1,4 +1,4 @@
-import { IColor } from '@sketch-draw/interfaces';
+import { SketchColor } from '@sketch-draw/interfaces';
 
 export interface IDynatraceColorPalette {
   [key: string]: IDynatraceColor;
@@ -10,5 +10,5 @@ export interface IDynatraceColor {
   cmyk: string;
   rgb?: string;
   pantone?: string;
-  normalized?: IColor;
+  normalized?: SketchColor;
 }

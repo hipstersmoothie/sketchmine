@@ -1,3 +1,5 @@
+import { BooleanOperation } from '@sketch-draw/helpers';
+
 export interface ISvg {
   size: ISvgView;
   shapes: ISvgPointGroup[];
@@ -12,27 +14,38 @@ export interface ISvgView {
   width: number;
   height: number;
 }
-/**
- *
- * booleanOperation from Sketch constants: ->
- *  export const BooleanOperation = {
- *    None: -1,
- *    Union: 0,
- *    Subtract: 1,
- *    Intersect: 2,
- *    Difference: 3
- *  };
- *
- */
+
 export interface ISvgPointGroup {
-  booleanOperation: number; // Blendmode in sketch constants
+  booleanOperation: BooleanOperation; // Blendmode in sketch constants
   points: ISvgPoint[];
   style: Map<SvgStyle, string>;
 }
 
+export enum SVG_COMMAND_LIST {
+  M = 'moveto',
+  L = 'lineto',
+  V = 'vertical lineto',
+  H = 'horizontal lineto',
+  C = 'curveto',
+  S = 'smooth curveto',
+  Q = 'quadratic curveto',
+  T = 'smooth quadratic curveto',
+  A = 'elliptical arc',
+  Z = 'closepath',
+}
+
+export type SVGCode =
+  'M' | 'A' | 'S' | 'C' | 'Q' | 'H' | 'V' | 'L' | 'Z' |
+  'm' | 's' | 'a' | 'c' | 'q' | 'h' | 'v' | 'l' | 'z';
+
+export interface IPoint {
+  x: number;
+  y: number;
+}
+
 export interface ISvgPoint {
-  code: string;
-  command: string;
+  code: SVGCode;
+  command?: string;
   relative?: boolean;
   x?: number;
   y?: number;
@@ -50,11 +63,6 @@ export interface ISvgArcPoint extends ISvgPoint{
   xAxisRotation: number;
   largeArc: boolean;
   sweep: boolean;
-}
-
-export interface IPoint {
-  x: number;
-  y: number;
 }
 
 export type SvgStyle = 'fill' | 'stroke' | 'strokeWidth' | 'fillOpacity' | 'strokeOpacity';

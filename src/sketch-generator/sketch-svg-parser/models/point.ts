@@ -1,19 +1,6 @@
-import { IPoint, ISvgPoint } from '@sketch-svg-parser/interfaces';
+import { IPoint, ISvgPoint, SVG_COMMAND_LIST } from '@sketch-svg-parser/interfaces';
 
 export class Point {
-
-  static COMMAND_LIST = {
-    M: 'moveto',
-    L: 'lineto',
-    V: 'vertical lineto',
-    H: 'horizontal lineto',
-    C: 'curveto',
-    S: 'smooth curveto',
-    Q: 'quadratic curveto',
-    T: 'smooth quadratic curveto',
-    A: 'elliptical arc',
-    Z: 'closepath',
-  };
 
   constructor(
     private _code: string,
@@ -49,7 +36,7 @@ export class Point {
     const code = this._code.toUpperCase();
     const point = {
       code,
-      command: Point.COMMAND_LIST[code],
+      command: SVG_COMMAND_LIST[code],
       relative: false,
     } as ISvgPoint;
 

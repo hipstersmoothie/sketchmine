@@ -1,60 +1,22 @@
-import { ITextStyle } from './text.interface';
-import { FillType, PatternFillType } from '../helpers/sketch-constants';
+import { SketchFill } from './fill.interface';
+import { SketchGraphicsContext } from './graphics-context.interface';
+import { SketchShadow } from './shadow.interface';
+import { SketchBorder } from './border.interface';
+import { SketchBlur } from './blur.interface';
+import { SketchInnerShadow } from './inner-shadow.interface';
+import { SketchTextStyle } from './text-style.interface';
 
-export interface IStyle {
+export interface SketchStyle {
   _class: string;
-  do_objectID?: string;
-  fills?: IFill[];
-  borders?: IBorder[];
-  shadows?: IShadow[];
-  endDecorationType: number;
-  miterLimit: number;
-  startDecorationType: number;
+  blur?: SketchBlur;
+  borders?: SketchBorder[];
   contextSettings?: SketchGraphicsContext;
-  textStyle?: ITextStyle;
-}
-
-export interface SketchGraphicsContext {
-  _class: string;
-  blendMode: number;
-  opacity: number;
-}
-
-export interface IColor {
-  _class: string;
-  alpha: number;
-  blue: number;
-  green: number;
-  red: number;
-}
-
-export interface IBorder {
-  _class: string;
-  isEnabled: boolean;
-  color: IColor;
-  fillType: number;
-  position: number;
-  thickness: number;
-}
-
-export interface IFill {
-  _class: string;
-  isEnabled: boolean;
-  color: IColor;
-  fillType: FillType;
-  noiseIndex: 0;
-  noiseIntensity: 0;
-  patternFillType: PatternFillType;
-  patternTileScale: 1;
-}
-
-export interface IShadow {
-  _class: string;
-  isEnabled: boolean;
-  color: IColor;
-  contextSettings: SketchGraphicsContext;
-  blurRadius: number;
-  offsetX: number;
-  offsetY: number;
-  spread: number;
+  endMarkerType: number; // 0
+  fills?: SketchFill[];
+  innerShadows?: SketchInnerShadow[];
+  miterLimit: number;
+  shadows?: SketchShadow[];
+  startMarkerType: number;
+  textStyle?: SketchTextStyle;
+  windingRule: number;
 }

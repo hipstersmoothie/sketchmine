@@ -1,5 +1,5 @@
 import { UUID } from '@sketch-draw/helpers/uuid';
-import { IDocument, IDocumentAssets, IDocumentPage } from '@sketch-draw/interfaces';
+import { SketchDocument, IDocumentAssets, IDocumentPage } from '@sketch-draw/interfaces';
 import { Page } from '@sketch-draw/models/page';
 
 export class Document {
@@ -41,7 +41,7 @@ export class Document {
     };
   }
 
-  generateObject(): IDocument {
+  generateObject(): SketchDocument {
     return {
       _class: 'document',
       do_objectID: Document._objectID,

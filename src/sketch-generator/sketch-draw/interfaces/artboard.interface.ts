@@ -1,18 +1,17 @@
-import { SketchArtboardStyle, IBase } from './base.interface';
-import { IRulerData } from './page.interface';
+import { SketchBase } from './base.interface';
 import { BooleanOperation } from '../helpers/sketch-constants';
-import { IColor } from './style.interface';
+import { SketchColor } from './color.interface';
+import { SketchRulerData } from './ruler-data.interface';
 
-export interface SketchArtboard extends IBase {
+export interface SketchArtboard extends SketchBase {
+  backgroundColor: SketchColor;
   booleanOperation: BooleanOperation;
-  isFixedToViewport: boolean;
-  style: SketchArtboardStyle;
-  backgroundColor: IColor;
   hasBackgroundColor: boolean;
-  horizontalRulerData: IRulerData;
+  horizontalRulerData: SketchRulerData;
   includeBackgroundColorInExport: boolean;
   includeInCloudUpload: boolean;
+  isFixedToViewport: boolean;
   isFlowHome: boolean;
   resizesContent: boolean;
-  verticalRulerData: IRulerData;
+  verticalRulerData: SketchRulerData;
 }

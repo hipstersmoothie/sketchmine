@@ -1,11 +1,11 @@
-import { Page } from '@sketch-draw/models/page';
-import { IBounding } from '@sketch-draw/interfaces';
-import { SymbolMaster } from '@sketch-draw/models/symbol-master';
+import { Page } from './sketch-draw/models/page';
+import { IBounding } from './sketch-draw/interfaces';
+import { SymbolMaster } from './sketch-draw/models/symbol-master';
 import { ITraversedDomElement, TraversedLibrary, TraversedSymbol, TraversedPage } from '../dom-traverser/traversed-dom';
-import { boundingClientRectToBounding } from '@sketch-draw/helpers/util';
+import { boundingClientRectToBounding } from './sketch-draw/helpers/util';
 import { ElementDrawer } from './element-drawer';
 import chalk from 'chalk';
-import { Artboard } from '@sketch-draw/models/artboard';
+import { Artboard } from './sketch-draw/models/artboard';
 
 interface LastSymbol extends IBounding {
   name: string;

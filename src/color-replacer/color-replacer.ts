@@ -1,8 +1,7 @@
 import { colorDefinition } from '@color-replacer/interfaces/color-definition.interface';
-import { IBase } from '@sketch-draw/interfaces/base.interface';
-import { IColor } from '@sketch-draw/interfaces/style.interface';
 import { rgbToHex } from '@utils';
 import { round, cssToRGBA } from '@sketch-draw/helpers/util';
+import { SketchColor, SketchBase } from '../sketch-generator/sketch-draw/interfaces';
 
 export class ColorReplacer {
   private _oldColors: string[];
@@ -11,7 +10,7 @@ export class ColorReplacer {
     this._oldColors = Object.keys(this._colors);
   }
 
-  replace(file: IBase) {
+  replace(file: SketchBase) {
     this.findColorObject(file);
     return file;
   }
@@ -45,7 +44,7 @@ export class ColorReplacer {
     return result;
   }
 
-  private updateColor(color: IColor) {
+  private updateColor(color: SketchColor) {
     const hex = this.toHex(color);
     if (this._oldColors.includes(hex)) {
       console.log(this._colors[hex]);
@@ -57,7 +56,7 @@ export class ColorReplacer {
     }
   }
 
-  private toHex(color: IColor) {
+  private toHex(color: SketchColor) {
     return rgbToHex(
       round(color.red * 255, 0),
       round(color.green * 255, 0),

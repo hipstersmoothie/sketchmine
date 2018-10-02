@@ -1,30 +1,28 @@
-import { Style } from '@sketch-draw/models/style';
-import { Rectangle } from '@sketch-draw/models/rectangle';
-import { boundingClientRectToBounding, calcPadding } from '@sketch-draw/helpers/util';
-import { IRectangle, IRectangleOptions, IStyle, IGroup, IBounding } from '@sketch-draw/interfaces';
-import { Group } from '@sketch-draw/models/group';
+import { Style } from './sketch-draw/models/style';
+import { Rectangle } from './sketch-draw/models/rectangle';
+import { boundingClientRectToBounding, calcPadding } from './sketch-draw/helpers/util';
+import { SketchRectangle, SketchStyle, SketchGroup, IBounding } from './sketch-draw/interfaces';
+import { Group } from './sketch-draw/models/group';
 import {
   ITraversedDomElement,
   ITraversedDomTextNode,
   ITraversedDomSvgNode,
   ITraversedDomImageNode,
 } from '../dom-traverser/traversed-dom';
-import { Text } from '@sketch-draw/models/text';
+import { Text } from './sketch-draw/models/text';
 import chalk from 'chalk';
-import { ShapeGroup } from '@sketch-svg-parser/models/shape-group';
 import { SvgParser } from '@sketch-svg-parser/svg-parser';
 import { SvgToSketch } from '@sketch-svg-parser/svg-to-sketch';
-import { Bitmap } from '@sketch-draw/models/bitmap';
+import { Bitmap } from './sketch-draw/models/bitmap';
 import { Logger } from '@utils';
-import { StyleDeclaration } from 'dom-traverser/dom-visitor';
-import { createBorder } from '@sketch-draw/helpers/border';
+import { ShapeGroup } from './sketch-draw/models/shape-group';
 
 const log = new Logger();
 
 export class ElementDrawer {
   private _layers = [];
 
-  get layers(): IGroup[] { return this._layers; }
+  get layers(): SketchGroup[] { return this._layers; }
 
   constructor(element: ITraversedDomElement | ITraversedDomTextNode | ITraversedDomSvgNode) {
     if (!element) {
@@ -128,23 +126,18 @@ export class ElementDrawer {
     this._layers.push(group.generateObject());
   }
 
-  private addshape(element: ITraversedDomElement): IRectangle {
+  private addshape(element: ITraversedDomElement): SketchRectangle {
 
-    const options: IRectangleOptions = {
-      width: element.boundingClientRect.width,
-      height: element.boundingClientRect.height,
-      cornerRadius: parseInt(element.styles.borderRadius, 10),
-    };
-    const rectangle = new Rectangle(options);
+    const rectangle = new Rectangle(element.boundingClientRect, parseInt(element.styles.borderRadius, 10));
     return rectangle.generateObject();
   }
 
-  private addStyles(element: ITraversedDomElement): IStyle {
+  private addStyles(element: ITraversedDomElement): SketchStyle {
     const style = new Style();
     const cs = element.styles;
     if (!cs) {  return; }
-    createBorder(style, cs);
-    if (cs.backgroundColor) { style.addColorFill(cs.backgroundColor); }
+    // createBorder(style, cs);
+    if (cs.backgroundColor) { style.addFill(cs.backgroundColor); }
     if (cs.opacity) { style.opacity = parseInt(cs.opacity, 10); }
 
     return style.generateObject();

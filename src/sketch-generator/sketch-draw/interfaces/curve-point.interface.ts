@@ -1,5 +1,7 @@
-export interface ICurvePoint {
-  _class: 'curvePoint';
+import { SketchObjectTypes } from './base.interface';
+
+export interface SketchCurvePoint {
+  _class: SketchObjectTypes.CurvePoint;
   cornerRadius: number;
   curveFrom: string;
   curveMode: number;

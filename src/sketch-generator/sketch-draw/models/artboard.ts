@@ -1,34 +1,24 @@
-import { Base } from '@sketch-draw/models/base';
-import { IBounding, IBase, SketchArtboard, IColor } from '@sketch-draw/interfaces';
-import { BooleanOperation } from '@sketch-draw/helpers/sketch-constants';
+import { Base } from './base';
+import { IBounding, SketchColor, SketchArtboard, SketchBase, SketchObjectTypes } from '../interfaces';
+import { BooleanOperation } from '../helpers';
+import { Style } from './style';
 
 export class Artboard extends Base {
 
   constructor(bounding: IBounding) {
-    super();
-    super.className = 'artboard';
+    super(bounding);
+    super.className = SketchObjectTypes.Artboard;
     super.breakMaskChain = true;
-    super.style = super.addStyle();
-    super.bounding = bounding;
-  }
-
-  private addBackgroundColor(): IColor {
-    return {
-      _class: 'color',
-      alpha: 1,
-      blue: 1,
-      green: 1,
-      red: 1,
-    };
+    super.style = new Style().generateObject();
   }
 
   generateObject(): SketchArtboard {
-    const base: IBase = super.generateObject();
+    const base: SketchBase = super.generateObject();
     return {
       ...base,
-      frame: super.addFrame('rect'),
+      frame: super.addFrame(),
       hasClickThrough: false,
-      backgroundColor: this.addBackgroundColor(),
+      backgroundColor: addBackgroundColor(),
       booleanOperation: BooleanOperation.None,
       hasBackgroundColor: false,
       horizontalRulerData: super.addRuler(),
@@ -38,13 +28,16 @@ export class Artboard extends Base {
       isFixedToViewport: false,
       resizesContent: false,
       verticalRulerData: super.addRuler(),
-      style: {
-        _class: 'style',
-        endMarkerType: 0,
-        miterLimit: 10,
-        startMarkerType: 0,
-        windingRule: 1,
-      },
     };
   }
+}
+
+export function addBackgroundColor(): SketchColor {
+  return {
+    _class: SketchObjectTypes.Color,
+    alpha: 1,
+    blue: 1,
+    green: 1,
+    red: 1,
+  };
 }

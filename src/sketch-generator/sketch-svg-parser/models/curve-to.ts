@@ -1,10 +1,10 @@
 import { CurvePoint } from '@sketch-svg-parser/models/curve-point';
-import { ICurvePoint } from '@sketch-svg-parser/interfaces';
 import { CurvePointMode } from '@sketch-draw/helpers/sketch-constants';
+import { SketchCurvePoint, SketchObjectTypes } from '../../sketch-draw/interfaces';
 
 export class CurveTo extends CurvePoint {
 
-  generate(): ICurvePoint {
+  generate(): SketchCurvePoint {
     let hasCurveTo = false;
     let hasCurveFrom = false;
 
@@ -29,8 +29,8 @@ export class CurveTo extends CurvePoint {
       hasCurveTo = true;
     }
 
-    const curvePoint = {
-      _class: 'curvePoint',
+    const curvePoint: SketchCurvePoint = {
+      _class: SketchObjectTypes.CurvePoint,
       cornerRadius: 0,
       curveFrom: (hasCurveFrom) ? `{${this.next.x1}, ${this.next.y1}}` : `{${this.cur.x}, ${this.cur.y}}`,
       curveMode: CurvePointMode.Disconnected,
@@ -38,7 +38,7 @@ export class CurveTo extends CurvePoint {
       hasCurveFrom,
       hasCurveTo,
       point: `{${this.cur.x}, ${this.cur.y}}`,
-    } as ICurvePoint;
+    };
 
     // if it is a smooth curve the next reflect the last control point
     if (this.isSmoothCurveTo(this.next)) {

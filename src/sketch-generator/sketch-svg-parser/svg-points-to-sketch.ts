@@ -1,12 +1,12 @@
-import { MoveTo } from '@sketch-svg-parser/models/move-to';
-import { ISvgPoint, ISvgShape } from '@sketch-svg-parser/interfaces';
-import { LineTo } from '@sketch-svg-parser/models/line-to';
-import { CurveTo } from '@sketch-svg-parser/models/curve-to';
-import { ShapePath } from '@sketch-svg-parser/models/shape-path';
-import { IBounding } from '@sketch-draw/interfaces';
-import { QuadraticCurveTo } from '@sketch-svg-parser/models/quadratic-curve-to';
+import { MoveTo } from './models/move-to';
+import { ISvgPoint, ISvgShape } from './interfaces';
+import { LineTo } from './models/line-to';
+import { CurveTo } from './models/curve-to';
+import { ShapePath } from './models/shape-path';
+import { IBounding } from '../sketch-draw/interfaces';
+import { QuadraticCurveTo } from './models/quadratic-curve-to';
 import chalk from 'chalk';
-import { isActionPoint } from '@sketch-svg-parser/util/point';
+import { isActionPoint } from './util/point';
 import { Logger } from '@utils';
 
 const log = new Logger();
@@ -16,14 +16,11 @@ export class SvgPointsToSketch {
     return new SvgPointsToSketch(shape, size).trace();
   }
 
-  constructor(
-    private _shape: ISvgShape,
-    private _size: IBounding,
-  ) {}
+  constructor(private _shape: ISvgShape, private _size: IBounding) {}
 
   private trace() {
     const points: ISvgPoint[] = this._shape.points;
-    const shapePath: ShapePath = new ShapePath();
+    const shapePath: ShapePath = new ShapePath(this._size);
     shapePath.bounding = this._size;
 
     for (let i = 0, end = points.length - 1; i <= end; i += 1) {

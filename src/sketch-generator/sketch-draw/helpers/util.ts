@@ -1,4 +1,5 @@
-import { IBounding } from '@sketch-draw/interfaces';
+import { IBounding } from '../interfaces';
+
 const normalizeCssColor = require('normalize-css-color');
 
 export interface IRGBA { r: number; g: number; b: number; a: number; }

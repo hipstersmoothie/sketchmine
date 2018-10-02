@@ -1,4 +1,4 @@
-export interface IDocument {
+export interface SketchDocument {
   _class: string;
   do_objectID: string;
   assets: IDocumentAssets;

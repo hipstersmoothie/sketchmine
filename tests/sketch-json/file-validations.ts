@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
-import { IDocument, IMeta } from '@sketch-draw/interfaces';
+import { SketchDocument, SketchMeta } from '@sketch-draw/interfaces';
 
 const FOLDER_NAME = 'dt-asset-lib';
 const TEST_TMP = path.resolve('./tests/_tmp');
@@ -9,7 +9,7 @@ const DOCUMENT_JSON = path.resolve(TEST_TMP, FOLDER_NAME, 'document.json');
 const META_JSON = path.resolve(TEST_TMP, FOLDER_NAME, 'meta.json');
 
 export function fileValidations() {
-  let document: IDocument;
+  let document: SketchDocument;
   let pagesFiles: string[];
 
   describe('Pages are correctly registerd', () => {
@@ -53,7 +53,7 @@ export function fileValidations() {
   });
 
   describe('Validate meta.json', () => {
-    let meta: IMeta;
+    let meta: SketchMeta;
 
     beforeAll((done) => {
       fs.readFile(META_JSON, { encoding: 'utf-8' }, (err, data: string) => {

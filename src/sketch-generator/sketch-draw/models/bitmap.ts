@@ -1,39 +1,35 @@
-import { Base } from '@sketch-draw/models/base';
-import { IBase, IBounding, IBitmap, IImage } from '@sketch-draw/interfaces';
-import { Style } from '@sketch-draw/models/style';
+import { Base } from './base';
+import { IBounding, SketchJSONFileReference, SketchBitmap, SketchBase, SketchObjectTypes } from '../interfaces';
+import { Style } from './style';
 
 export class Bitmap extends Base {
 
-  private static _class = 'bitmap';
-  private static DPI = 72;
-  private _imageSrc: string;
+  static DPI = 72;
+  src: string;
 
   constructor(bounding: IBounding) {
-    super();
-    this.className = Bitmap._class;
-    this.bounding = bounding;
+    super(bounding);
+    super.className = SketchObjectTypes.Bitmap;
   }
 
-  set src(src: string) { this._imageSrc = src; }
-
-  private image(): IImage {
+  private image(): SketchJSONFileReference {
     return {
       _class: 'MSJSONFileReference',
       _ref_class: 'MSImageData',
-      _ref: this._imageSrc,
+      _ref: this.src,
     };
   }
 
-  generateObject(): IBitmap {
-    const base: IBase = super.generateObject();
+  generateObject(): SketchBitmap {
+    const base: SketchBase = super.generateObject();
     return {
       ...base,
-      frame: super.addFrame('rect'),
+      frame: super.addFrame(),
       style: new Style().generateObject(),
       clippingMask: '{{0, 0}, {1, 1}}',
       fillReplacesImage: false,
       image: this.image(),
       intendedDPI: Bitmap.DPI,
-    };
+    } as SketchBitmap;
   }
 }

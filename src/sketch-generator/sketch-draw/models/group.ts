@@ -1,27 +1,27 @@
-import { Base } from '@sketch-draw/models/base';
-import { IBase, IBounding, IGroup } from '@sketch-draw/interfaces';
-import { UUID } from '@sketch-draw/helpers/uuid';
+import { Base } from './base';
+import { SketchObjectTypes, SketchGroup, SketchBase, IBounding } from '../interfaces';
+import { BooleanOperation, UUID } from '../helpers';
+import { Style } from './style';
 
 export class Group extends Base {
 
-  private static _class = 'group';
-
   constructor(bounding: IBounding) {
-    super();
-    super.className = Group._class;
-    super.bounding = bounding;
-    super.style = super.addStyle();
+    super(bounding);
+    super.className = SketchObjectTypes.Group;
+    super.style = new Style().generateObject();
   }
 
-  generateObject(): IGroup {
-    const base: IBase = super.generateObject();
+  generateObject(): SketchGroup {
+    const base: SketchBase = super.generateObject();
 
     return {
       ...base,
-      frame: super.addFrame('rect'),
+      frame: super.addFrame(),
+      booleanOperation: BooleanOperation.None,
+      isFixedToViewport: false,
       nameIsFixed: true,
       hasClickThrough: false,
       originalObjectID: UUID.generate(),
-    };
+    } as SketchGroup;
   }
 }
