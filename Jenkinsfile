@@ -33,7 +33,17 @@ pipeline {
       }
     }
 
-    stage('Validate') {
+    stage('Lint') {
+      steps {
+        nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
+          ansiColor('xterm') {
+            sh 'npm run lint'
+          }
+        }
+      }
+    }
+
+    stage('Test') {
       steps {
         nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
           ansiColor('xterm') {
