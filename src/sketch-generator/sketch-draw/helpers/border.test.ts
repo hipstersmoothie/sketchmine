@@ -12,11 +12,11 @@
 //     sketchStyle = new Style();
 //   });
 
-//   test('border without size to be not created', () => {
-//     createBorder(sketchStyle, styling);
-//     expect(sketchStyle.borders).toHaveLength(0);
-//     expect(sketchStyle.shadows).toHaveLength(0);
-//   });
+test('border without size to be not created', () => {
+  // createBorder(sketchStyle, styling);
+  // expect(sketchStyle.borders).toHaveLength(0);
+  // expect(sketchStyle.shadows).toHaveLength(0);
+});
 
 //   test('borderLeft with size but type none not to be created as shadow', () => {
 //     styling.borderLeft = '5px none rgb(0, 0, 0)';

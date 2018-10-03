@@ -10,9 +10,9 @@ export interface TextDecoration {
 }
 
 export function resolveTextDecoration(textDecoration: string): TextDecoration | null {
-  const match = textDecoration.match(/(^\w+?)\s(\w+?)\s(.+)$/);
+  const match = textDecoration.match(/^([\w-]+?)\s(\w+?)\s(.+)$/);
 
-  if (!match || match[0] === 'none') { return null; }
+  if (!match || match[1] === 'none') { return null; }
 
   return {
     type: match[1] as TextDecorationType,

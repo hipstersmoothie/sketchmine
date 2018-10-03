@@ -1,7 +1,7 @@
 import { Text } from './text';
 import { IBounding, SketchObjectTypes, SketchText, SketchColor } from '../interfaces';
 import { StyleDeclaration } from '../../../dom-traverser/dom-visitor';
-import { TextBehaviour } from '../helpers';
+import { TextBehaviour, StrikethroughStyle, UnderlineStyle, TextAlignment } from '../helpers';
 
 const TEXT = 'New Text for the test';
 
@@ -116,5 +116,94 @@ describe('[sketch-generator] › models › generate text', () => {
           size: 15,
         }),
       }));
+  });
+
+  test('paragraph styling with lineheight normal inherits from fontsize', () => {
+    styles.fontSize = '15px';
+    styles.lineHeight = 'normal';
+    styles.textAlign = 'right';
+    const text = new Text(size, styles);
+    text.text = TEXT;
+    const sketchObject = text.generateObject();
+    const attributes = sketchObject.style.textStyle.encodedAttributes;
+
+    expect(attributes.paragraphStyle).toMatchObject(
+      expect.objectContaining({
+        _class: SketchObjectTypes.ParagraphStyle,
+        alignment: TextAlignment.Right,
+        maximumLineHeight: 15,
+        minimumLineHeight: 15,
+        paragraphSpacing: 0,
+        allowsDefaultTighteningForTruncation: 0,
+      }));
+  });
+
+  test('paragraph styling with lineheight set in px', () => {
+    styles.fontSize = '15px';
+    styles.lineHeight = '22px';
+    styles.textAlign = 'center';
+    const text = new Text(size, styles);
+    text.text = TEXT;
+    const sketchObject = text.generateObject();
+    const attributes = sketchObject.style.textStyle.encodedAttributes;
+
+    expect(attributes.paragraphStyle).toMatchObject(
+      expect.objectContaining({
+        _class: SketchObjectTypes.ParagraphStyle,
+        alignment: TextAlignment.Center,
+        maximumLineHeight: 22,
+        minimumLineHeight: 22,
+        paragraphSpacing: 0,
+        allowsDefaultTighteningForTruncation: 0,
+      }));
+  });
+
+  test('if none strike through style is set', () => {
+    const text = new Text(size, styles);
+    text.text = TEXT;
+    const sketchObject = text.generateObject();
+    const attributes = sketchObject.style.textStyle.encodedAttributes;
+    expect(attributes.strikethroughStyle).toEqual(StrikethroughStyle.None);
+  });
+
+  test('if strike through text style is set', () => {
+    styles.textDecoration = 'line-through solid rgb(0, 0, 0)';
+    const text = new Text(size, styles);
+    text.text = TEXT;
+    const sketchObject = text.generateObject();
+    const attributes = sketchObject.style.textStyle.encodedAttributes;
+    expect(attributes.strikethroughStyle).toEqual(StrikethroughStyle.LineThrough);
+    expect(attributes.underlineStyle).toEqual(UnderlineStyle.None);
+  });
+
+  test('if underline text style is set', () => {
+    styles.textDecoration = 'underline solid rgb(0,0,0)';
+    const text = new Text(size, styles);
+    text.text = TEXT;
+    const sketchObject = text.generateObject();
+    const attributes = sketchObject.style.textStyle.encodedAttributes;
+    expect(attributes.underlineStyle).toEqual(UnderlineStyle.Underline);
+    expect(attributes.strikethroughStyle).toEqual(StrikethroughStyle.None);
+  });
+
+  test('if underline double text style is set', () => {
+    styles.textDecoration = 'underline double rgb(0,0,0)';
+    const text = new Text(size, styles);
+    text.text = TEXT;
+    const sketchObject = text.generateObject();
+    const attributes = sketchObject.style.textStyle.encodedAttributes;
+    expect(attributes.underlineStyle).toEqual(UnderlineStyle.Double);
+    expect(attributes.strikethroughStyle).toEqual(StrikethroughStyle.None);
+  });
+
+  test('unknown text decoration like blink', () => {
+    styles.textDecoration = 'blink solid rgb(0,0,0)';
+    const text = new Text(size, styles);
+    text.text = TEXT;
+    expect(text.textDecoration.type).toMatch('blink');
+    const sketchObject = text.generateObject();
+    const attributes = sketchObject.style.textStyle.encodedAttributes;
+    expect(attributes.underlineStyle).toEqual(UnderlineStyle.None);
+    expect(attributes.strikethroughStyle).toEqual(StrikethroughStyle.None);
   });
 });

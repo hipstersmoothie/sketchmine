@@ -1,5 +1,8 @@
 import { SketchBase, IBounding, SketchObjectTypes, SketchShapeGroup } from '../interfaces';
 import { Base } from './base';
+import { Logger } from '../../../utils';
+
+const log = new Logger();
 
 export class ShapeGroup extends Base {
 
@@ -10,7 +13,7 @@ export class ShapeGroup extends Base {
 
   generateObject(): SketchShapeGroup {
     const base: SketchBase = super.generateObject();
-
+    log.debug(`[generated] › ShapeGroup ${super.className} – ${JSON.stringify(super.addFrame())}`);
     return {
       ...base,
       frame: super.addFrame(),
