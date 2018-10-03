@@ -1,4 +1,4 @@
-import { colorDefinition } from '@color-replacer/interfaces/color-definition.interface';
+import { ColorDefinition } from '@color-replacer/interfaces/color-definition.interface';
 import { rgbToHex } from '@utils';
 import { round, cssToRGBA } from '@sketch-draw/helpers/util';
 import { SketchColor, SketchBase } from '../sketch-generator/sketch-draw/interfaces';
@@ -6,7 +6,7 @@ import { SketchColor, SketchBase } from '../sketch-generator/sketch-draw/interfa
 export class ColorReplacer {
   private _oldColors: string[];
 
-  constructor(private _colors: colorDefinition) {
+  constructor(private _colors: ColorDefinition) {
     this._oldColors = Object.keys(this._colors);
   }
 
