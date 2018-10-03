@@ -2,6 +2,7 @@
 import { ElementDrawer } from './element-drawer';
 import { ITraversedDomElement } from '../dom-traverser/traversed-dom';
 import { StyleDeclaration } from '../dom-traverser/dom-visitor';
+import { SketchObjectTypes } from './sketch-draw/interfaces';
 
 describe('[sketch-generator] › draw sketch elements', () => {
   let baseTraversedElement: ITraversedDomElement;
@@ -17,10 +18,6 @@ describe('[sketch-generator] › draw sketch elements', () => {
     };
   });
 
-  test('draw rectangle for div', () => {
-    const el = new ElementDrawer(baseTraversedElement);
-  });
-
   test('draw lines for borderTop and borderLeft', () => {
     baseTraversedElement.tagName = 'DIV',
     baseTraversedElement.className = 'dt-alert-text-container',
@@ -31,7 +28,12 @@ describe('[sketch-generator] › draw sketch elements', () => {
     baseTraversedElement.styles.borderTop = '1px solid rgb(196, 20, 37)';
 
     const el = new ElementDrawer(baseTraversedElement);
-
-    console.log(el.layers);
+    expect(el.layers).toBeInstanceOf(Array);
+    expect(el.layers).toHaveLength(1);
+    const group = el.layers[0];
+    expect(group._class).toMatch(SketchObjectTypes.Group);
+    expect(group.style).not.toHaveProperty('borders');
+    expect(group).toHaveProperty('layers');
+    expect(group.layers).toBeInstanceOf(Array);
   });
 });
