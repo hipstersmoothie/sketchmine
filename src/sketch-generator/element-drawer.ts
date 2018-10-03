@@ -101,18 +101,13 @@ export class ElementDrawer {
       return;
     }
     const size = this.getSize(element);
-    let group: Group;
-    let layers = this.layers;
-
-    if (hasNestedChildren(element)) {
-      group = new Group(size);
-      group.name = element.className || element.tagName.toLowerCase();
-      layers = group.layers; // if we have a folder push everything in the folder
-    }
+    const group = new Group(size);
+    group.name = element.className || element.tagName.toLowerCase();
 
     if (hasStyling(element)) {
-      const visualStyle = new ElementStyle(element, size);
-      layers.push(...visualStyle.createElementStyle());
+      // group resets x and y coordinates to 0
+      const visualStyle = new ElementStyle(element, { ...size, x: 0, y: 0 });
+      group.layers.push(...visualStyle.createElementStyle());
     }
 
     if (hasChildren(element)) {
@@ -122,18 +117,11 @@ export class ElementDrawer {
       .forEach((child: ITraversedDomElement | ITraversedDomTextNode | ITraversedDomSvgNode) => {
         const childNode = new ElementDrawer(child);
         if (childNode.layers.length) {
-          layers.push(...childNode.layers);
+          group.layers.push(...childNode.layers);
         }
       });
     }
-
-    /**
-     * When we overrided the layers object to push everything in a group we have tu push the group
-     * back into the layers object
-     */
-    if (group) {
-      this.layers.push(group.generateObject());
-    }
+    this.layers.push(group.generateObject());
   }
 
   private getSize(element: ITraversedDomElement | ITraversedDomSvgNode): IBounding {
@@ -144,25 +132,18 @@ export class ElementDrawer {
       console.log(chalk`\t{magentaBright ${element.className}} | {yellowBright ${element.tagName}}`, bcr);
     }
 
-    return {
-      height: bcr.height,
-      width: bcr.width,
-      x: bcr.x,
-      y: bcr.y,
-    } ;
-
     /** root elemenet has no parentBCR */
-    // if (parentBCR && Object.keys(parentBCR).length > 0) {
-    //   const x = bcr.x - parentBCR.x;
-    //   const y = bcr.y - parentBCR.y;
-    //   return {
-    //     height: Math.round(bcr.height),
-    //     width: Math.round(bcr.width),
-    //     x: Math.round(x),
-    //     y: Math.round(y),
-    //   };
-    // }
-    // return boundingClientRectToBounding(bcr);
+    if (parentBCR && Object.keys(parentBCR).length > 0) {
+      const x = bcr.x - parentBCR.x;
+      const y = bcr.y - parentBCR.y;
+      return {
+        height: Math.round(bcr.height),
+        width: Math.round(bcr.width),
+        x: Math.round(x),
+        y: Math.round(y),
+      };
+    }
+    return bcr;
   }
 }
 

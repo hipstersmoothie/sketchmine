@@ -18,7 +18,7 @@ export class Group extends Base {
       ...base,
       frame: super.addFrame(),
       booleanOperation: BooleanOperation.None,
-      isFixedToViewport: false,
+      isFixedToViewport: true, // false,
       nameIsFixed: true,
       hasClickThrough: false,
       originalObjectID: UUID.generate(),

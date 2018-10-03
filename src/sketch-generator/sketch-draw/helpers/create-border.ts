@@ -40,6 +40,7 @@ export function createBorder(styles: StyleDeclaration, frame: IBounding) {
     }
     // create new shape if nextBorder has different styling
     if (
+      nextSide === null ||
       nextSide && curSide.color !== nextSide.color ||
       nextSide && curSide.style !== nextSide.style ||
       nextSide && curSide.width !== nextSide.width
@@ -55,7 +56,6 @@ export function createBorder(styles: StyleDeclaration, frame: IBounding) {
     newShape(lastBorder);
   }
 
-  console.log(JSON.stringify(shapes, null, 2));
   return shapes;
 
   /**
