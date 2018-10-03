@@ -1,6 +1,6 @@
 import { bytesToSize } from '@sketch-draw/helpers/util';
 import { createDir } from '@utils/create-dir';
-import { fileBuffer } from '@utils/zip-to-buffer';
+import { FileBuffer } from '@utils/zip-to-buffer';
 import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
@@ -19,7 +19,7 @@ const log = new Logger();
 export function generateSketchFile(
   outDir: string,
   fileName: string,
-  content: fileBuffer[] | string,
+  content: FileBuffer[] | string,
 ): Promise<void | Error> {
   return new Promise((resolve, reject) => {
     createDir(outDir);
@@ -53,7 +53,7 @@ export function generateSketchFile(
     archive.pipe(output);
 
     if (content instanceof  Array) {
-      content.forEach((file: fileBuffer) => {
+      content.forEach((file: FileBuffer) => {
         archive.append(file.buffer, { name: file.path });
       });
     } else {

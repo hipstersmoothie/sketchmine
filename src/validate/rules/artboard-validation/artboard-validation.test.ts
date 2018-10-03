@@ -2,8 +2,6 @@ import { artboardValidation } from './artboard-validation';
 import { ArtboardNamingError, ArtboardSizeError, ArtboardEmptyError } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 
-
-
 describe('Artboard Validation', () => {
   let fakeHomework: IValidationContext;
 
@@ -20,7 +18,7 @@ describe('Artboard Validation', () => {
       },
       layerSize: 3,
     } as IValidationContext;
-  })
+  });
 
   test('should check if validation passes for name with three parts', () => {
     expect(artboardValidation([fakeHomework], 0)).toBeTruthy();

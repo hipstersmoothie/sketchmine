@@ -1,70 +1,70 @@
-import { ISvgShape, ISvgArcPoint, ISvgPoint } from '../interfaces';
-const arcToBezier = require('svg-arc-to-cubic-bezier');
+// import { ISvgArcPoint, ISvgPoint } from '../interfaces';
+// const arcToBezier = require('svg-arc-to-cubic-bezier');
 
-const TAU = Math.PI * 2;
+// const TAU = Math.PI * 2;
 
-export function arcsToCurves(points: ISvgPoint[]): ISvgPoint[] {
-  // if there is no arc return unmodified element
-  if (! points.some(point => point.code === 'A')) {
-    return points;
-  }
+// export function arcsToCurves(points: ISvgPoint[]): ISvgPoint[] {
+//   // if there is no arc return unmodified element
+//   if (! points.some(point => point.code === 'A')) {
+//     return points;
+//   }
 
-  const converted = [];
+//   const converted = [];
 
-  points.forEach((point) => {
-    if (point.code === 'A') {
-      const curves = arcToBezier({
-        px: point.x0,
-        py: point.y0,
-        cx: (point as ISvgArcPoint).x,
-        cy: (point as ISvgArcPoint).y,
-        rx: (point as ISvgArcPoint).rx,
-        ry: (point as ISvgArcPoint).ry,
-        xAxisRotation: (point as ISvgArcPoint).xAxisRotation,
-        largeArcFlag: +(point as ISvgArcPoint).largeArc,
-        sweepFlag: +(point as ISvgArcPoint).sweep,
-      });
+//   points.forEach((point) => {
+//     if (point.code === 'A') {
+//       const curves = arcToBezier({
+//         px: point.x0,
+//         py: point.y0,
+//         cx: (point as ISvgArcPoint).x,
+//         cy: (point as ISvgArcPoint).y,
+//         rx: (point as ISvgArcPoint).rx,
+//         ry: (point as ISvgArcPoint).ry,
+//         xAxisRotation: (point as ISvgArcPoint).xAxisRotation,
+//         largeArcFlag: +(point as ISvgArcPoint).largeArc,
+//         sweepFlag: +(point as ISvgArcPoint).sweep,
+//       });
 
-      if (curves.length === 1) {
-        converted.push({
-          code: 'C',
-          command: 'curveto',
-          x1: curves[0].x1,
-          y1: curves[0].y1,
-          x2: curves[0].x2,
-          y2: curves[0].y2,
-          x: curves[0].x,
-          y: curves[0].y,
-          x0: point.x0,
-          y0: point.y0,
-          relative: false,
-        });
-      } else {
-        // console.log(curves)
-        converted.push(...curves.map((c) => {
-          return {
-            code: 'C',
-            command: 'curveto',
-            x1: c.x1,
-            y1: c.y1,
-            x2: c.x2,
-            y2: c.y2,
-            x: c.x,
-            y: c.y,
-            x0: point.x0,
-            y0: point.y0,
-            relative: false,
-          };
-        }));
-        // throw new Error('Arcs only with one curve supported in the moment!');
-      }
-    } else {
-      converted.push(point);
-    }
-  });
+//       if (curves.length === 1) {
+//         converted.push({
+//           code: 'C',
+//           command: 'curveto',
+//           x1: curves[0].x1,
+//           y1: curves[0].y1,
+//           x2: curves[0].x2,
+//           y2: curves[0].y2,
+//           x: curves[0].x,
+//           y: curves[0].y,
+//           x0: point.x0,
+//           y0: point.y0,
+//           relative: false,
+//         });
+//       } else {
+//         // console.log(curves)
+//         converted.push(...curves.map((c) => {
+//           return {
+//             code: 'C',
+//             command: 'curveto',
+//             x1: c.x1,
+//             y1: c.y1,
+//             x2: c.x2,
+//             y2: c.y2,
+//             x: c.x,
+//             y: c.y,
+//             x0: point.x0,
+//             y0: point.y0,
+//             relative: false,
+//           };
+//         }));
+//         // throw new Error('Arcs only with one curve supported in the moment!');
+//       }
+//     } else {
+//       converted.push(point);
+//     }
+//   });
 
-  return converted;
-}
+//   return converted;
+// }
 
 // const previousPoint = { x: 100, y: 100 }
 
@@ -92,9 +92,6 @@ export function arcsToCurves(points: ISvgPoint[]): ISvgPoint[] {
 //   largeArcFlag: currentPoint.curve.largeArcFlag,
 //   sweepFlag: currentPoint.curve.sweepFlag,
 // });
-
-
-
 
 // export function arcToBezier(arc: ISvgArcPoint) {
 //   const curves = [];
@@ -238,4 +235,3 @@ export function arcsToCurves(points: ISvgPoint[]): ISvgPoint[] {
 
 //   return sign * Math.acos(div)
 // }
-

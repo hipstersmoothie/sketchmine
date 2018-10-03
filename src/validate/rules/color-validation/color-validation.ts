@@ -5,7 +5,7 @@ import { rgbToHex, Logger } from '@utils';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import { SketchFill, SketchBorder } from '@sketch-draw/interfaces';
 import { generateMasterColors } from './generate-master-colors';
-import { ColorErrorMessage } from '../../error/error-messages';
+import { COLOR_ERROR_MESSAGE } from '../../error/error-messages';
 
 const log = new Logger();
 const colors: string[] = generateMasterColors();
@@ -78,7 +78,7 @@ export function colorInPalette(
       {
         objectId: task.do_objectID,
         name: task.name,
-        message: ColorErrorMessage(hex),
+        message: COLOR_ERROR_MESSAGE(hex),
       },
     );
   }

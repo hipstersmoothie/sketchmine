@@ -1,7 +1,7 @@
 import { CentralDirectory, Open as unzip } from 'unzipper';
 import chalk from 'chalk';
 
-export interface fileBuffer {
+export interface FileBuffer {
   path: string;
   buffer: Buffer;
 }
@@ -13,7 +13,7 @@ export interface fileBuffer {
  * @param filter? RegExp – Use a regex to match only certain files in zip /pages\/.*?\.json/
  * @returns Promise<Buffer[]>
  */
-export async function zipToBuffer(pathToZip: string, filter?: RegExp): Promise<fileBuffer[]> {
+export async function zipToBuffer(pathToZip: string, filter?: RegExp): Promise<FileBuffer[]> {
   try {
     const zip: CentralDirectory = await unzip.file(pathToZip);
     let files = zip.files;
@@ -25,7 +25,7 @@ export async function zipToBuffer(pathToZip: string, filter?: RegExp): Promise<f
       return {
         path: file.path,
         buffer,
-      } as fileBuffer;
+      } as FileBuffer;
     });
     return Promise.all(promises);
   } catch (error) {

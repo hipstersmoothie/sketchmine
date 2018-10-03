@@ -1,8 +1,7 @@
 import { ErrorHandler } from '../../error/error-handler';
 import { FileNameError } from '../../error/validation-error';
 import { dirname, basename } from 'path';
-import { FileNameFolderErrorMessage, FileNameErrorMessage } from '../../error/error-messages';
-
+import { FILE_NAME_FOLDER_ERROR_MESSAGE, FILE_NAME_ERROR_MESSAGE } from '../../error/error-messages';
 
 const handler = new ErrorHandler();
 
@@ -28,15 +27,14 @@ export function filenameValidation(
     selector: undefined,
     validation: undefined,
     name: RULE_NAME,
-    description: `Validate if the filename matches this pattern [folder]-[feature].sketch` +
-    ``,
+    description: 'Validate if the filename matches this pattern [folder]-[feature].sketch',
   };
 
   if (foldername !== projectName) {
     const error = new FileNameError({
       objectId: filename,
       name: foldername,
-      message: FileNameFolderErrorMessage(filename),
+      message: FILE_NAME_FOLDER_ERROR_MESSAGE(filename),
     });
     handler.addError(
       rule,
@@ -46,7 +44,7 @@ export function filenameValidation(
     const error = new FileNameError({
       objectId: filename,
       name: projectName,
-      message: FileNameErrorMessage(filename),
+      message: FILE_NAME_ERROR_MESSAGE(filename),
     });
     handler.addError(
       rule,

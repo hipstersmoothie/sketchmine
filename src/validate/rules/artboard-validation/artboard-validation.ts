@@ -1,8 +1,17 @@
 import chalk from 'chalk';
-import { ValidationError, ArtboardNamingError, ArtboardSizeError, ArtboardEmptyError } from '../../error/validation-error';
+import {
+  ValidationError,
+  ArtboardNamingError,
+  ArtboardSizeError,
+  ArtboardEmptyError,
+} from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import { Logger } from '@utils';
-import { ArtboardSizeErrorMessage, ArtboardEmptyErrorMessage, ArtboardNameErrorMessage } from '../../error/error-messages';
+import {
+  ARTBOARD_SIZE_ERROR_MESSAGE,
+  ARTBOARD_EMPTY_ERROR_MESSAGE,
+  ARTBOARD_NAME_ERROR_MESSAGE,
+} from '../../error/error-messages';
 
 const log = new Logger();
 
@@ -28,7 +37,6 @@ export function artboardValidation(
     return;
   }
 
-
   /**
    * Check if the page contains at least one artboard with a valid size
    */
@@ -37,13 +45,13 @@ export function artboardValidation(
       homework._class === 'artboard' &&
       homework.parents.page === task.parents.page)
     .some(homework =>
-      homework.frame.width === parseInt(task.parents.page, 10))
+      homework.frame.width === parseInt(task.parents.page, 10));
 
   const emptyArtboards = homeworks
     .some(homework =>
       homework._class === 'artboard' &&
       (!homework.layerSize ||
-      homework.layerSize < 1))
+      homework.layerSize < 1));
 
   const errors: (ValidationError | boolean)[] = [];
   const name = task.name.split('-');
@@ -55,24 +63,24 @@ export function artboardValidation(
 
   if (!includeArtboardSize) {
     errors.push(new ArtboardSizeError({
-      message: ArtboardSizeErrorMessage,
+      message: ARTBOARD_SIZE_ERROR_MESSAGE,
       ...object,
     }));
   }
   if (emptyArtboards) {
     errors.push(new ArtboardEmptyError({
-      message: ArtboardEmptyErrorMessage,
+      message: ARTBOARD_EMPTY_ERROR_MESSAGE,
       ...object,
     }));
   }
   if (name.length < 3) {
     errors.push(new ArtboardNamingError({
-      message: ArtboardNameErrorMessage,
+      message: ARTBOARD_NAME_ERROR_MESSAGE,
       ...object,
     }));
   } else if (!artboardNameCheck) {
     errors.push(new ArtboardNamingError({
-      message: ArtboardNameErrorMessage,
+      message: ARTBOARD_NAME_ERROR_MESSAGE,
       ...object,
     }));
   } else {
