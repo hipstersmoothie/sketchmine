@@ -1,8 +1,14 @@
-import { Style } from './sketch-draw/models/style';
-import { Rectangle } from './sketch-draw/models/rectangle';
-import { boundingClientRectToBounding, calcPadding } from './sketch-draw/helpers/util';
-import { SketchRectangle, SketchStyle, SketchGroup, IBounding } from './sketch-draw/interfaces';
 import { Group } from './sketch-draw/models/group';
+import { boundingClientRectToBounding, calcPadding } from './sketch-draw/helpers/util';
+import {
+  SketchRectangle,
+  SketchGroup,
+  IBounding,
+  SketchShapePath,
+  SketchBitmap,
+  SketchText,
+  SketchShapeGroup,
+} from './sketch-draw/interfaces';
 import {
   ITraversedDomElement,
   ITraversedDomTextNode,
@@ -15,19 +21,17 @@ import { SvgParser } from '@sketch-svg-parser/svg-parser';
 import { SvgToSketch } from '@sketch-svg-parser/svg-to-sketch';
 import { Bitmap } from './sketch-draw/models/bitmap';
 import { Logger } from '@utils';
-import { ShapeGroup } from './sketch-draw/models/shape-group';
+import { ElementStyle } from './element-style';
 
 const log = new Logger();
 
-export class ElementDrawer {
-  private _layers = [];
+type LayerElements = SketchGroup | SketchRectangle | SketchShapePath | SketchShapeGroup | SketchBitmap | SketchText;
 
-  get layers(): SketchGroup[] { return this._layers; }
+export class ElementDrawer {
+  layers: LayerElements[] = [];
 
   constructor(element: ITraversedDomElement | ITraversedDomTextNode | ITraversedDomSvgNode) {
-    if (!element) {
-      return;
-    }
+    if (!element) { return; }
     switch (element.tagName) {
       case 'TEXT':
         this.generateText(element as ITraversedDomTextNode);
@@ -49,11 +53,11 @@ export class ElementDrawer {
     const image = new Bitmap(size);
     image.src = element.src;
     image.name = element.name;
-    this._layers.push(image.generateObject());
+    this.layers.push(image.generateObject());
   }
 
   private generateSVG(element: ITraversedDomSvgNode) {
-    log.debug(chalk`\tAdd SVG 🖼 ...`);
+    log.debug(chalk`\tAdd SVG 📈  ${element.className}`);
     const size = this.getSize(element);
     const svgObject = SvgParser.parse(element.html, size.width, size.height);
     // svgObject.shapes.map(shape => overrideSvgStyle(shape.style, element.styles));
@@ -62,7 +66,7 @@ export class ElementDrawer {
     const svg = new SvgToSketch(svgObject);
     svg.styles = element.styles;
 
-    this._layers.push(...svg.generateObject());
+    this.layers.push(...svg.generateObject());
   }
 
   /**
@@ -84,87 +88,96 @@ export class ElementDrawer {
     }
     const text = new Text(paddedBCR, element.styles);
     text.text = element.text;
-    this._layers.push(text.generateObject());
+    this.layers.push(text.generateObject());
   }
 
   private generate(element: ITraversedDomElement) {
 
     if (
-      element.isHidden ||
-      !element.hasOwnProperty('children') &&
-      element.styles === null
-      ) {
+      isHidden(element) ||
+      !hasChildren(element) && !hasStyling(element)
+    ) {
       log.debug(chalk`Element {cyan ${element.tagName}.${element.className}} has no visual state.`);
       return;
     }
-
     const size = this.getSize(element);
-    const group = new Group(size);
-    group.name = element.className || element.tagName.toLowerCase();
+    let group: Group;
+    let layers = this.layers;
 
-    // add Background shape only if it has styling
-    if (element.styles) {
-      // shape Group in group always starts at x:0, y:0
-      const shapeGroup = new ShapeGroup({ ...size, x:0, y:0 });
-      shapeGroup.name = 'Background';
-
-      shapeGroup.addRotation(element.styles.transform);
-      shapeGroup.style = this.addStyles(element);
-      shapeGroup.addLayer(this.addshape(element));
-      group.addLayer(shapeGroup.generateObject());
+    if (hasNestedChildren(element)) {
+      group = new Group(size);
+      group.name = element.className || element.tagName.toLowerCase();
+      layers = group.layers; // if we have a folder push everything in the folder
     }
 
-    if (element.children && element.children.length > 0) {
-      element.children.reverse().forEach((child) => {
-        const childNode = new ElementDrawer(child as any);
-        const layers = childNode.layers;
-        if (layers.length > 0) {
-          group.addLayer(layers);
+    if (hasStyling(element)) {
+      const visualStyle = new ElementStyle(element, size);
+      layers.push(...visualStyle.createElementStyle());
+    }
+
+    if (hasChildren(element)) {
+      // reverse children for correct order in sketch
+      element.children
+      .reverse()
+      .forEach((child: ITraversedDomElement | ITraversedDomTextNode | ITraversedDomSvgNode) => {
+        const childNode = new ElementDrawer(child);
+        if (childNode.layers.length) {
+          layers.push(...childNode.layers);
         }
       });
     }
-    this._layers.push(group.generateObject());
-  }
 
-  private addshape(element: ITraversedDomElement): SketchRectangle {
-
-    const rectangle = new Rectangle(element.boundingClientRect, parseInt(element.styles.borderRadius, 10));
-    return rectangle.generateObject();
-  }
-
-  private addStyles(element: ITraversedDomElement): SketchStyle {
-    const style = new Style();
-    const cs = element.styles;
-    if (!cs) {  return; }
-    // createBorder(style, cs);
-    if (cs.backgroundColor) { style.addFill(cs.backgroundColor); }
-    if (cs.opacity) { style.opacity = parseInt(cs.opacity, 10); }
-
-    return style.generateObject();
+    /**
+     * When we overrided the layers object to push everything in a group we have tu push the group
+     * back into the layers object
+     */
+    if (group) {
+      this.layers.push(group.generateObject());
+    }
   }
 
   private getSize(element: ITraversedDomElement | ITraversedDomSvgNode): IBounding {
     const parentBCR = element.parentRect;
-    const bcr = element.boundingClientRect;
+    const bcr = boundingClientRectToBounding(element.boundingClientRect);
 
     if (process.env.DEBUG && element.className) {
-      console.log(
-        chalk`\t{magentaBright ${element.className}} | {yellowBright ${element.tagName}}`,
-        boundingClientRectToBounding(element.boundingClientRect),
-      );
+      console.log(chalk`\t{magentaBright ${element.className}} | {yellowBright ${element.tagName}}`, bcr);
     }
 
+    return {
+      height: bcr.height,
+      width: bcr.width,
+      x: bcr.x,
+      y: bcr.y,
+    } ;
+
     /** root elemenet has no parentBCR */
-    if (parentBCR && Object.keys(parentBCR).length > 0) {
-      const x = bcr.x - parentBCR.x;
-      const y = bcr.y - parentBCR.y;
-      return {
-        height: Math.round(bcr.height),
-        width: Math.round(bcr.width),
-        x: Math.round(x),
-        y: Math.round(y),
-      };
-    }
-    return boundingClientRectToBounding(element.boundingClientRect);
+    // if (parentBCR && Object.keys(parentBCR).length > 0) {
+    //   const x = bcr.x - parentBCR.x;
+    //   const y = bcr.y - parentBCR.y;
+    //   return {
+    //     height: Math.round(bcr.height),
+    //     width: Math.round(bcr.width),
+    //     x: Math.round(x),
+    //     y: Math.round(y),
+    //   };
+    // }
+    // return boundingClientRectToBounding(bcr);
   }
+}
+
+function hasChildren(element: ITraversedDomElement): boolean {
+  return element.hasOwnProperty('children') && element.children.length > 0;
+}
+
+function hasNestedChildren(element: ITraversedDomElement): boolean {
+  return hasChildren(element) ? element.children.hasOwnProperty('children') : false;
+}
+
+function hasStyling(element: ITraversedDomElement): boolean {
+  return element.styles !== null;
+}
+
+function isHidden(element: ITraversedDomElement): boolean {
+  return element.isHidden;
 }

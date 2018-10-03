@@ -37,7 +37,10 @@ export class StyleDeclaration {
   borderBottom = '0px none rgb(0, 0, 0)';
   borderRight = '0px none rgb(0, 0, 0)';
   borderColor = 'rgb(0, 0, 0)';
-  borderRadius = '0px';
+  borderTopLeftRadius = '0px';
+  borderTopRightRadius = '0px';
+  borderBottomRightRadius = '0px';
+  borderBottomLeftRadius = '0px';
   borderWidth = '0px';
   boxShadow = 'none';
   padding = '0px';

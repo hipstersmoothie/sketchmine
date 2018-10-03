@@ -64,7 +64,7 @@ export class Style {
       color: colorToSketchColor(color),
       fillType,
       isEnabled: true,
-      position: BorderPosition.Outside,
+      position: BorderPosition.Inside,
       thickness,
     });
   }

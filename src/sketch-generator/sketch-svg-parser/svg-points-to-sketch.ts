@@ -1,13 +1,13 @@
-import { MoveTo } from './models/move-to';
+import { CurveTo } from './models/curve-to';
+import { IBounding } from '../sketch-draw/interfaces';
+import { isActionPoint } from './util/point';
 import { ISvgPoint, ISvgShape } from './interfaces';
 import { LineTo } from './models/line-to';
-import { CurveTo } from './models/curve-to';
-import { ShapePath } from './models/shape-path';
-import { IBounding } from '../sketch-draw/interfaces';
-import { QuadraticCurveTo } from './models/quadratic-curve-to';
-import chalk from 'chalk';
-import { isActionPoint } from './util/point';
 import { Logger } from '@utils';
+import { MoveTo } from './models/move-to';
+import { QuadraticCurveTo } from './models/quadratic-curve-to';
+import { ShapePath } from '../sketch-draw/models/shape-path';
+import chalk from 'chalk';
 
 const log = new Logger();
 
