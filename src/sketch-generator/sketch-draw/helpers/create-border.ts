@@ -30,7 +30,9 @@ export function createBorder(styles: StyleDeclaration, frame: IBounding) {
     const nextPoint = new CurvePoint(getPointForIndex(next(i)));
     // set point behaviour to straight – no curves
     curPoint.curveMode = CurvePointMode.Straight;
+    curPoint.radius = getBorderRadius(i);
     nextPoint.curveMode = CurvePointMode.Straight;
+    nextPoint.radius = getBorderRadius(next(i));
 
     if (points.length < 1) {
       // if it is the first item we need to push the beginning point as well
@@ -72,6 +74,15 @@ export function createBorder(styles: StyleDeclaration, frame: IBounding) {
     shape.style = style.generateObject();
     shapes.push(shape.generateObject());
     points = [];
+  }
+
+  function getBorderRadius(index: number): number {
+    switch (index) {
+      case 0: return parseInt(styles.borderTopLeftRadius, 10);
+      case 1: return parseInt(styles.borderTopRightRadius, 10);
+      case 2: return parseInt(styles.borderBottomRightRadius, 10);
+      case 3: return parseInt(styles.borderBottomLeftRadius, 10);
+    }
   }
 
   function next(cur: number): number {

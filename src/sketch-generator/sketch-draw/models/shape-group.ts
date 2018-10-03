@@ -6,6 +6,7 @@ const log = new Logger();
 
 export class ShapeGroup extends Base {
 
+  clippingMask = false;
   constructor(bounding: IBounding) {
     super(bounding);
     super.className = SketchObjectTypes.ShapeGroup;
@@ -13,13 +14,12 @@ export class ShapeGroup extends Base {
 
   generateObject(): SketchShapeGroup {
     const base: SketchBase = super.generateObject();
-    log.debug(`[generated] › ShapeGroup ${super.className} – ${JSON.stringify(super.addFrame())}`);
     return {
       ...base,
       frame: super.addFrame(),
       hasClickThrough: false,
       clippingMaskMode: 0,
-      hasClippingMask: false,
+      hasClippingMask: this.clippingMask,
       windingRule: 1,
     };
   }

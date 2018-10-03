@@ -5,6 +5,7 @@ import { resolveBorder, Border } from './sketch-draw/helpers';
 import { Rectangle } from './sketch-draw/models/rectangle';
 import { Style } from './sketch-draw/models/style';
 import { createBorder } from './sketch-draw/helpers/create-border';
+import { ShapeGroup } from './sketch-draw/models/shape-group';
 
 export type ElementStyleObjects = SketchShapePath | SketchRectangle | SketchShapeGroup;
 
@@ -26,12 +27,16 @@ export class ElementStyle {
       this.styles.borderBottomLeftRadius,
     ];
 
+    const background = new ShapeGroup(this.frame);
+    background.name = 'Background';
+    background.addRotation(this.styles.transform);
+    background.clippingMask = true;
+    background.style = this.createStyles().generateObject();
     const rectangle = new Rectangle(this.frame, borderRadius.map(b => parseInt(b, 10)));
-    rectangle.name = 'Background';
-    rectangle.addRotation(this.styles.transform);
-    rectangle.style = this.createStyles().generateObject();
+    rectangle.name = 'Background Shape';
 
-    layers.push(rectangle.generateObject());
+    background.layers.push(rectangle.generateObject());
+    layers.push(background.generateObject());
 
     if (this.border && Array.isArray(this.border)) {
       // create manual borders with lines
