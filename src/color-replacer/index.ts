@@ -17,8 +17,8 @@ export async function main(args: string[]) {
 
   if (!file || !colors) {
     throw Error(
-      `Please pass the --file flag with the path to the .sketch file ` +
-      `and the --colors flag for the legacy-colors.json`);
+      'Please pass the --file flag with the path to the .sketch file ' +
+      'and the --colors flag for the legacy-colors.json');
   }
 
   return unzip(file).then(async (result) => {

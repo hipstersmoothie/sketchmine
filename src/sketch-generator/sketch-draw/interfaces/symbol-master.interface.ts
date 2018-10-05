@@ -1,16 +1,16 @@
-import { IBase } from './base.interface';
-import { IRulerData } from './page.interface';
-import { IColor } from './style.interface';
+import { SketchBase } from './base.interface';
+import { SketchColor } from './color.interface';
+import { SketchRulerData } from './ruler-data.interface';
 
-export interface ISymbolMaster extends IBase {
-  backgroundColor: IColor;
+export interface SketchSymbolMaster extends SketchBase {
+  backgroundColor: SketchColor;
   hasBackgroundColor: boolean;
-  horizontalRulerData: IRulerData;
+  horizontalRulerData: SketchRulerData;
   includeBackgroundColorInExport: boolean;
   includeInCloudUpload: boolean;
   isFlowHome: boolean;
   resizesContent: boolean;
-  verticalRulerData: IRulerData;
+  verticalRulerData: SketchRulerData;
   includeBackgroundColorInInstance: boolean;
   symbolID: string;
   changeIdentifier: number;

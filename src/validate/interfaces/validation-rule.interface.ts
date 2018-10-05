@@ -1,5 +1,5 @@
 import { ValidationError } from '../error/validation-error';
-import { IStyle, IFrame } from '@sketch-draw/interfaces';
+import { SketchStyle, SketchFrame } from '@sketch-draw/interfaces';
 
 export type SketchModel =
 'document' |
@@ -19,7 +19,7 @@ export interface IValidationRule {
   description?: string;
   ignoreArtboards?: string[];
   env?: string[];
-  options?: { [key: string]: any }
+  options?: { [key: string]: any };
 }
 
 export interface IValidationContext {
@@ -27,10 +27,10 @@ export interface IValidationContext {
   do_objectID: string;
   name: string;
   parents: IValidationContextParents;
-  style?: IStyle;
-  frame?: IFrame;
+  style?: SketchStyle;
+  frame?: SketchFrame;
   layerSize?: number;
-  ruleOptions: { [key: string]: any }
+  ruleOptions: { [key: string]: any };
 }
 
 export interface IValidationContextParents {

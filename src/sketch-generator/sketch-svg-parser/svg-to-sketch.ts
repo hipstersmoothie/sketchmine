@@ -1,10 +1,10 @@
-import { ISvgPointGroup, ISvg } from '@sketch-svg-parser/interfaces';
-import { ShapeGroup } from '@sketch-svg-parser/models/shape-group';
-import { IBounding, IStyle } from '@sketch-draw/interfaces';
-import { SvgPointsToSketch } from '@sketch-svg-parser/svg-points-to-sketch';
-import { Style } from '@sketch-draw/models/style';
+import { ISvgPointGroup, ISvg } from './interfaces';
+import { ShapeGroup } from '../sketch-draw/models/shape-group';
+import { IBounding, SketchStyle } from '../sketch-draw/interfaces';
+import { SvgPointsToSketch } from './svg-points-to-sketch';
+import { Style } from '../sketch-draw/models/style';
 import chalk from 'chalk';
-import { addCssStyleToSvg } from '@sketch-svg-parser/util/styles';
+import { addCssStyleToSvg } from './util/styles';
 import { StyleDeclaration } from '../../dom-traverser/dom-visitor';
 import { Logger } from '@utils';
 
@@ -58,7 +58,7 @@ export class SvgToSketch {
   }
 }
 
-function addSvgShapeStyle(shape: ISvgPointGroup): IStyle {
+function addSvgShapeStyle(shape: ISvgPointGroup): SketchStyle {
   const shapeStyle = shape.style;
   const style = new Style();
 
@@ -68,7 +68,7 @@ function addSvgShapeStyle(shape: ISvgPointGroup): IStyle {
   const strokeWidth = parseInt(shapeStyle.get('strokeWidth'), 10);
 
   if (fill && fill !== 'inherit') {
-    style.addColorFill(fill, fillOpacity);
+    style.addFill(fill, fillOpacity);
   }
   if (strokeWidth > 0) {
     style.addBorder(stroke, strokeWidth);

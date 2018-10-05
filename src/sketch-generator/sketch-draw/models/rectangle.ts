@@ -1,35 +1,19 @@
-import { Base } from '@sketch-draw/models/base';
-import { IPoint, IRectangleOptions, IRectangle, IBounding, IBase } from '@sketch-draw/interfaces';
-import { ICurvePoint } from '@sketch-svg-parser/interfaces';
+import { Base } from './base';
+import { IBounding, SketchObjectTypes, SketchCurvePoint, SketchRectangle, SketchBase } from '../interfaces';
+import { CurvePoint } from './curve-point';
+import { CurvePointMode, BooleanOperation } from '../helpers';
 
 export class Rectangle extends Base {
-  private _cornerRadius: number[];
 
-  constructor(options: IRectangleOptions) {
-    super();
-    super.className = 'rectangle';
-    this._cornerRadius = this.convertRadius(options.cornerRadius); // topLeft, topRight, bottomRight, bottomLeft
-    super.bounding =  {
-      height: options.height,
-      width: options.width,
-      x: 0,
-      y: 0,
-    } as IBounding;
+  cornerRadius: number[];
+  constructor(bounding: IBounding, cornerRadius: number | number[]) {
+    super(bounding);
+    super.className = SketchObjectTypes.Rectangle;
+    this.cornerRadius = convertBorderRadiusToArray(cornerRadius); // topLeft, topRight, bottomRight, bottomLeft
   }
 
-  private convertRadius(radius: number | number[]): number[] {
-    if (!radius) {
-      return [0, 0, 0, 0];
-    }
-
-    if (typeof radius === 'number') {
-      return [radius, radius, radius, radius];
-    }
-    return radius;
-  }
-
-  private curvePoints(): ICurvePoint[] {
-    const points: ICurvePoint[] = [];
+  private addRectanglePoints(): SketchCurvePoint[] {
+    const points: SketchCurvePoint[] = [];
     for (let i = 0, max = 4; i < max; i += 1) {
       let point = { x: 0, y: 0 };
       switch (i) {
@@ -40,38 +24,42 @@ export class Rectangle extends Base {
         case 3:
           point = { x: 0, y: 1 }; break;
       }
-      points.push(this.curvePoint(point, this._cornerRadius[i]));
+      const curvePoint = new CurvePoint(point, point, point);
+      curvePoint.curveMode = CurvePointMode.Straight;
+      curvePoint.radius = this.cornerRadius[i];
+      points.push(curvePoint.generateObject());
     }
     return points;
   }
 
-  private curvePoint(point: IPoint, radius: number): ICurvePoint {
-    return {
-      _class: 'curvePoint',
-      cornerRadius: radius || 0,
-      curveFrom: `{${point.x}, ${point.y}}`,
-      curveMode: 1,
-      curveTo: `{${point.x}, ${point.y}}`,
-      hasCurveFrom: false,
-      hasCurveTo: false,
-      point: `{${point.x}, ${point.y}}`,
-    };
-  }
-
-  generateObject(): IRectangle {
-    const base: IBase = super.generateObject();
+  generateObject(): SketchRectangle {
+    const base: SketchBase = super.generateObject();
 
     return {
       ...base,
-      points: this.curvePoints(),
-      // path: this.addPath(), Not neeeded anymore (Maybe Deprecated), saw in latest JSON diff
-      frame: super.addFrame('rect'),
+      booleanOperation: BooleanOperation.None,
       edited: false,
-      booleanOperation: -1,
+      fixedRadius: 0,
+      frame: super.addFrame(),
+      hasConvertedToNewRoundCorners: true,
       isClosed: true,
       pointRadiusBehaviour: 0,
-      fixedRadius: 0,
-      hasConvertedToNewRoundCorners: true,
-    } as any;
+      points: this.addRectanglePoints(),
+    };
   }
+}
+
+/**
+ * Converts border radius to safe array of numbers
+ * @param radius number for all radii or array of [topLeft, topRight, bottomRight, bottomLeft]
+ */
+export function convertBorderRadiusToArray(radius: number | number[]): number[] {
+  if (!radius) {
+    return [0, 0, 0, 0];
+  }
+
+  if (typeof radius === 'number') {
+    return [radius, radius, radius, radius];
+  }
+  return radius;
 }

@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { ValidationError, PageNamingError } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import { Logger } from '@utils';
-import { PageNameErrorMessage } from '../../error/error-messages';
+import { PAGE_NAME_ERROR_MESSAGE } from '../../error/error-messages';
 
 const log = new Logger();
 
@@ -27,7 +27,7 @@ export function pageValidation(
   }
 
   if (!homeworks[currentTask].ruleOptions || !homeworks[currentTask].ruleOptions.hasOwnProperty('artboardSizes')) {
-    throw Error('Please provide the artboard sizes in the configuration')
+    throw Error('Please provide the artboard sizes in the configuration');
   }
 
   const errors: (ValidationError | boolean)[] = [];
@@ -44,7 +44,7 @@ export function pageValidation(
 
   if (!pageNameCheck) {
     errors.push(new PageNamingError({
-      message: PageNameErrorMessage(homeworks[currentTask].ruleOptions.artboardSizes),
+      message: PAGE_NAME_ERROR_MESSAGE(homeworks[currentTask].ruleOptions.artboardSizes),
       ...object,
     }));
   } else {

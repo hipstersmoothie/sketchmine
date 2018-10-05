@@ -1,21 +1,29 @@
-import { UUID } from '@sketch-draw/helpers/uuid';
-import { IBase, IExportOptions, IBounding, IFrame, IRulerData, IStyle } from '@sketch-draw/interfaces';
-import { resolveTransform } from '@sketch-draw/helpers/resolve-transform';
+import { UUID, resolveTransform } from '../helpers';
+import {
+  IBounding,
+  SketchFrame,
+  SketchRulerData,
+  SketchExportOptions,
+  SketchObjectTypes,
+  SketchStyle,
+  SketchBase,
+} from '../interfaces';
 
-export class Base {
-
-  readonly objectID = UUID.generate();
-  name = '';
+export
+class Base {
+  objectID = UUID.generate();
   layers = [];
   breakMaskChain = false;
-  style;
-  bounding: IBounding;
-  className: string;
-  rotation = 0;
+  name: string;
+  style: SketchStyle;
+  className: SketchObjectTypes;
+  private rotation = 0;
 
-  addFrame(name: string): IFrame {
+  constructor(public bounding: IBounding) {}
+
+  addFrame(): SketchFrame {
     return {
-      _class: name,
+      _class: SketchObjectTypes.Frame,
       constrainProportions: false,
       ...this.bounding,
     };
@@ -27,26 +35,17 @@ export class Base {
     }
   }
 
-  addStyle(start: number = 0, mitter: number = 10, end: number = 0): IStyle {
+  addRuler(base: number = 0): SketchRulerData {
     return {
-      _class: 'style',
-      endDecorationType: end,
-      miterLimit: mitter,
-      startDecorationType: start,
-    };
-  }
-
-  addRuler(base: number = 0): IRulerData {
-    return {
-      _class: 'rulerData',
+      _class: SketchObjectTypes.RulerData,
       base,
       guides: [],
     };
   }
 
-  private addExportOptions(): IExportOptions {
+  private addExportOptions(): SketchExportOptions {
     return {
-      _class: 'exportOptions',
+      _class: SketchObjectTypes.ExportOptions,
       exportFormats: [],
       includedLayerIds: [],
       layerOptions: 0,
@@ -62,9 +61,9 @@ export class Base {
     this.layers.push(layer);
   }
 
-  generateObject(): IBase {
+  generateObject(): SketchBase {
     if (!this.className) {
-      throw new Error('Class not set!');
+      throw new Error(`Property _class has not been set on ${this.name}`);
     }
 
     return {
@@ -76,6 +75,7 @@ export class Base {
       isLocked: false,
       isVisible: true,
       layerListExpandedType: 0,
+      layers: this.layers.length ? this.layers : undefined,
       name: this.name || this.className,
       nameIsFixed: false,
       resizingConstraint: 63,
@@ -83,7 +83,6 @@ export class Base {
       rotation: this.rotation,
       shouldBreakMaskChain: this.breakMaskChain,
       style: this.style ? this.style : undefined,
-      layers: (this.layers.length > 0) ? this.layers : undefined,
     };
   }
 }

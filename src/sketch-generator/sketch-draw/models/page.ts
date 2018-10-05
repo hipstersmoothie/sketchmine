@@ -1,26 +1,24 @@
 import { Base } from '@sketch-draw/models/base';
-import { IBounding, IBase, IPage } from '@sketch-draw/interfaces';
+import { IBounding, SketchBase, SketchPage, SketchObjectTypes } from '@sketch-draw/interfaces';
+import { Style } from './style';
 
 export class Page extends Base {
 
   constructor(bounding: IBounding) {
-    super();
-    super.className = 'page';
-    super.name = 'Symbols';
-    super.style = super.addStyle();
-    super.bounding = bounding;
+    super(bounding);
+    super.className = SketchObjectTypes.Page;
+    super.style = new Style().generateObject();
   }
 
-  generateObject(): IPage {
-    const base: IBase = super.generateObject();
+  generateObject(): SketchPage {
+    const base: SketchBase = super.generateObject();
 
     return {
       ...base,
-      frame: super.addFrame('rect'),
       hasClickThrough: false,
-      horizontalRulerData: super.addRuler(-153),
+      horizontalRulerData: super.addRuler(),
       includeInCloudUpload: true,
-      verticalRulerData: super.addRuler(-290),
-    };
+      verticalRulerData: super.addRuler(),
+    } as SketchPage;
   }
 }

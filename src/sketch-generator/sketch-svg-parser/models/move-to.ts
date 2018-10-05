@@ -1,6 +1,6 @@
-import { CurvePoint } from '@sketch-svg-parser/models/curve-point';
-import { ICurvePoint } from '@sketch-svg-parser/interfaces';
-import { CurvePointMode } from '@sketch-draw/helpers/sketch-constants';
+import { CurvePoint } from './curve-point';
+import { CurvePointMode } from '../../sketch-draw/helpers/sketch-constants';
+import { SketchCurvePoint, SketchObjectTypes } from '../../sketch-draw/interfaces';
 
 export class MoveTo extends CurvePoint {
 
@@ -8,7 +8,7 @@ export class MoveTo extends CurvePoint {
    * Todo : implement hasCurveTo and curveTo
    *        - need to check the last point if it is a curve
    */
-  generate(): ICurvePoint {
+  generate(): SketchCurvePoint {
     const hasCurveTo = false;
     let hasCurveFrom = false;
 
@@ -17,7 +17,7 @@ export class MoveTo extends CurvePoint {
     hasCurveFrom = ['x1', 'y1'].every(key => Object.keys(this.next).includes(key));
 
     return {
-      _class: 'curvePoint',
+      _class: SketchObjectTypes.CurvePoint,
       cornerRadius: 0,
       curveFrom: (hasCurveFrom) ? `{${this.next.x1}, ${this.next.y1}}` : `{${this.cur.x}, ${this.cur.y}}`,
       curveMode: CurvePointMode.Disconnected,

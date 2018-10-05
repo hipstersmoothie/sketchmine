@@ -1,5 +1,5 @@
 import { Group } from './group';
-import { IBounding } from '@sketch-draw/interfaces';
+import { IBounding } from '../interfaces';
 jest.mock('./group');
 
 describe('Sketch file format generation', () => {

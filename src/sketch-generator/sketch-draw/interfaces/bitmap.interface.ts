@@ -1,13 +1,13 @@
-import { IBase } from './base.interface';
+import { SketchBase } from './base.interface';
 
-export interface IBitmap extends IBase {
+export interface SketchBitmap extends SketchBase {
   clippingMask: string;
   fillReplacesImage: boolean;
-  image: IImage;
+  image: SketchJSONFileReference;
   intendedDPI: number;
 }
 
-export interface IImage {
+export interface SketchJSONFileReference {
   _class: 'MSJSONFileReference';
   _ref_class: 'MSImageData';
   _ref: string;

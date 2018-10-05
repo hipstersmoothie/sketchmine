@@ -1,16 +1,16 @@
-import { IMeta, IMetaPagesAndArtboards, IMetaArtboard } from '@sketch-draw/interfaces';
-import { Page } from '@sketch-draw/models/page';
+import { SketchMeta, SketchMetaArtboard, SketchPagesAndArtboards } from '../interfaces';
+import { Page } from './page';
 
 export class Meta {
   private static _instance: Meta;
-  private static _version = 101;
-  private static _compatVersion = 93;
-  private static _appVersion = '49.3';
+  private static _version = 105;
+  private static _compatVersion = 99;
+  private static _appVersion = '51.3';
   private static _appUrl = 'com.bohemiancoding.sketch3';
-  private static _commit = '2b45d75f77b3d86c8cfab3e1090bcc520c37ea74';
+  private static _commit = 'a9a8e0cffcaebe58914746cb1ab8f707ba873565';
   private static _variant = 'NONAPPSTORE';
   private static _fonts = ['BerninaSans'];
-  private static _build = 51167;
+  private static _build = 57544;
   private _pages = [];
 
   constructor(pages: Page[]) {
@@ -21,7 +21,7 @@ export class Meta {
     this._pages = [...pages];
   }
 
-  private addArtboards(page: Page): { [key: string]: IMetaArtboard } {
+  private addArtboards(page: Page): { [key: string]: SketchMetaArtboard } {
     const artboards = {};
     page.layers.forEach((layer) => {
       artboards[layer.do_objectID] = {
@@ -31,19 +31,19 @@ export class Meta {
     return artboards;
   }
 
-  private addPagesAndArtboards(): { [key: string]: IMetaPagesAndArtboards } {
+  private addPagesAndArtboards(): { [key: string]: SketchPagesAndArtboards } {
     const artboards = {};
     this._pages.forEach((page: Page) => {
       artboards[page.objectID] = {
-        name: 'Symbols',
+        name: page.name,
         artboards: this.addArtboards(page),
       };
     });
 
-    return artboards as { [key: string]: IMetaPagesAndArtboards };
+    return artboards as { [key: string]: SketchPagesAndArtboards };
   }
 
-  generateObject(): IMeta {
+  generateObject(): SketchMeta {
     return {
       commit: Meta._commit,
       pagesAndArtboards: this.addPagesAndArtboards(),

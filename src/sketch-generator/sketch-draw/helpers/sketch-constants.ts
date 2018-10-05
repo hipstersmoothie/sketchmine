@@ -116,3 +116,19 @@ export enum CurvePointMode {
   Disconnected = 4,
   Asymmetric = 3,
 }
+
+export enum UnderlineStyle {
+  None = 0,
+  Underline = 1,
+  Double = 9,
+}
+
+export enum StrikethroughStyle {
+  None = 0,
+  LineThrough = 1,
+}
+export enum TextTransform {
+  Uppercase = 1,
+  Lowercase = 2,
+  None = 0,
+}

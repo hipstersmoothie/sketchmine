@@ -1,12 +1,21 @@
-import { cssToRGBA } from '@sketch-draw/helpers/util';
-import { IBorder, IFill, IColor, IStyle, SketchGraphicsContext, IShadow } from '@sketch-draw/interfaces';
 import {
+  SketchBorder,
+  SketchShadow,
+  SketchFill,
+  SketchObjectTypes,
+  SketchColor,
+  SketchGraphicsContext,
+  SketchStyle,
+} from '../interfaces';
+import {
+  cssToRGBA,
+  BlendingMode,
   BorderPosition,
+  NoiseFillType,
   FillType,
   PatternFillType,
-  NoiseFillType,
-  BlendingMode,
-} from '@sketch-draw/helpers/sketch-constants';
+} from '../helpers';
+import { colorToSketchColor } from '../helpers/color-to-sketch-color';
 
 export interface Shadow {
   color: string | any;
@@ -17,20 +26,30 @@ export interface Shadow {
 }
 
 export class Style {
-  shadows: IShadow[] = [];
-  borders: IBorder[] = [];
-  fills: IFill[] = [];
+  shadows: SketchShadow[] = [];
+  borders: SketchBorder[] = [];
+  fills: SketchFill[] = [];
   opacity: number;
 
-  addColorFill(color: string | any, alpha: number = 1) {
+  addStyle(startMarkerType: number = 0, miterLimit: number = 10, endMarkerType: number = 0): SketchStyle {
+    return {
+      _class: SketchObjectTypes.Style,
+      endMarkerType,
+      miterLimit,
+      startMarkerType,
+      windingRule: 1,
+    };
+  }
+
+  addFill(color: string | any, alpha: number = 1) {
     this.fills.push(this.getFill(color, alpha));
   }
 
   addShadow(config: Shadow) {
     this.shadows.push({
-      _class: 'shadow',
+      _class: SketchObjectTypes.Shadow,
       isEnabled: true,
-      color: this.getColor(config.color),
+      color: colorToSketchColor(config.color),
       contextSettings: this.getGraphicsContext(BlendingMode.Normal, 1),
       blurRadius: config.blurRadius || 0,
       offsetX: config.offsetX || 0,
@@ -41,40 +60,28 @@ export class Style {
 
   addBorder(color: string | any, thickness: number, fillType = FillType.Solid) {
     this.borders.push({
-      _class: 'border',
-      color: this.getColor(color),
+      _class: SketchObjectTypes.Border,
+      color: colorToSketchColor(color),
       fillType,
       isEnabled: true,
-      position: BorderPosition.Outside,
+      position: BorderPosition.Inside,
       thickness,
     });
   }
 
   getGraphicsContext(blendMode: BlendingMode, opacity: number): SketchGraphicsContext {
     return {
-      _class: 'graphicsContextSettings',
+      _class: SketchObjectTypes.GraphicsContext,
       blendMode,
       opacity,
     };
   }
 
-  getColor(color: string | any, alpha: number = 1): IColor {
-    const { r, g, b, a } = cssToRGBA(color);
-
+  getFill(color: string | any, alpha: number = 1): SketchFill {
     return {
-      _class: 'color',
-      red: r / 255,
-      green: g / 255,
-      blue: b / 255,
-      alpha: a * alpha,
-    };
-  }
-
-  getFill(color: string | any, alpha: number = 1): IFill {
-    return {
-      _class: 'fill',
+      _class: SketchObjectTypes.Fill,
       isEnabled: true,
-      color: this.getColor(color, alpha),
+      color: colorToSketchColor(color, alpha),
       fillType: FillType.Solid,
       noiseIndex: NoiseFillType.Original,
       noiseIntensity: 0,
@@ -83,14 +90,9 @@ export class Style {
     };
   }
 
-  generateObject(): IStyle {
+  generateObject(): SketchStyle {
 
-    const style = {
-      _class: 'style',
-      endDecorationType: 0,
-      miterLimit: 10,
-      startDecorationType: 0,
-    } as IStyle;
+    const style = this.addStyle();
 
     if (this.fills.length) { style.fills = this.fills; }
     if (this.borders.length) { style.borders = this.borders; }

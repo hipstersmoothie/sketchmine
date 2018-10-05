@@ -1,3 +1,3 @@
-export interface colorDefinition {
+export interface ColorDefinition {
   [old: string]: string;
 }

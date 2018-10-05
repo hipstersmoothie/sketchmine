@@ -5,19 +5,17 @@ import { artboardValidation } from './rules/artboard-validation';
 import { pageValidation } from './rules/page-validation';
 
 /** Available sizes */
-const ArtboardSizes: String[] = [
+const artboardSizes: String[] = [
   '360',
   '1280',
   '1920',
-]
+];
 
 export const rules: IValidationRule[] = [
-
   {
     selector: ['symbolMaster'],
     name: 'symbol-name-validation',
-    description: `Validation if the symbol names matches the Dynatrace Sketch naming conventions.` +
-    ``,
+    description: 'Validation if the symbol names matches the Dynatrace Sketch naming conventions.',
     env: ['global'],
     validation: symbolNameValidation,
   },
@@ -41,8 +39,7 @@ export const rules: IValidationRule[] = [
     description: 'Check if the page names are valid.',
     validation: pageValidation,
     options: {
-      artboardSizes: ArtboardSizes,
-    }
+      artboardSizes,
+    },
   },
-
 ];

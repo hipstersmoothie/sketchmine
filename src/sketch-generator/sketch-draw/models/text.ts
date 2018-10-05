@@ -1,70 +1,55 @@
-import { Base } from '@sketch-draw/models/base';
+import { Base } from './base';
 import {
-  IBounding,
-  IBase,
-  IText,
-  IAttributedString,
-  IMSAttributedStringFontAttribute,
+  SketchBase,
+  SketchText,
+  SketchAttributedString,
+  SketchFontDescriptor,
   IParagraphStyle,
-  IEncodedAttributes,
-} from '@sketch-draw/interfaces';
-import { Style } from '@sketch-draw/models/style';
-import { IStyle } from '@sketch-draw/interfaces/style.interface';
-import { fixWhiteSpace, fontMapping, fontStyle } from '@sketch-draw/helpers/font';
+  SketchEncodedAttributes,
+  SketchObjectTypes,
+  IBounding,
+  SketchAttribute,
+  SketchTextStyle,
+} from '../interfaces';
+import {
+  fixWhiteSpace,
+  UnderlineStyle,
+  StrikethroughStyle,
+  TextTransform,
+  fontMapping,
+  fontStyle,
+  TextBehaviour,
+} from '../helpers';
 import { StyleDeclaration } from '../../../dom-traverser/dom-visitor';
-import { TextBehaviour } from '@sketch-draw/helpers/sketch-constants';
+import { resolveTextDecoration, TextDecoration } from '../helpers/resolve-text-decoration';
+import { resolveTextAlign } from '../helpers/resolve-text-align';
+import { colorToSketchColor } from '../helpers/color-to-sketch-color';
+import { Style } from './style';
 
 export class Text extends Base {
-  private _text = '';
-  private _multiline = false;
-  private _styleClass: Style;
+  private textContent = '';
+  private multiline = false;
+  textDecoration: TextDecoration | null;
 
-  set text(text: string) { this._text = fixWhiteSpace(text, this.styles.whiteSpace); }
-  get text(): string { return this._text; }
+  set text(text: string) { this.textContent = fixWhiteSpace(text, this.styles.whiteSpace); }
+  get text(): string { return this.textContent; }
 
-  constructor(bounding: IBounding, public styles) {
-    super();
-    this.bounding = bounding;
-    this.className = 'text';
-    this._styleClass = new Style();
-    // call setter
-    this.style = this.generateStyle();
+  constructor(bounding: IBounding, public styles: StyleDeclaration) {
+    super(bounding);
+    super.className = SketchObjectTypes.Text;
+
+    if (!styles) {
+      throw new Error('Text always have to have a style!');
+    }
+    this.textDecoration = resolveTextDecoration(styles.textDecoration);
   }
 
-  private generateAttributedString(): IAttributedString {
-    return {
-      _class: 'attributedString',
-      string: `${this._text}`,
-      attributes: [
-        {
-          _class: 'stringAttribute',
-          location: 0,
-          length: this._text.length,
-          attributes: this.attributes(),
-        },
-      ],
-    };
-  }
-
-  private attributes(): IEncodedAttributes {
-    // NOT USED in the moment
-    // const sp = this._styles.letterSpacing;
-    // const spacing = (sp !== 'normal') ? parseFloat(sp) : undefined;
-    return {
-      MSAttributedStringFontAttribute: this.fontAttributes(),
-      MSAttributedStringColorAttribute: this._styleClass.getColor(this.styles.color),
-      paragraphStyle: this.paragraphStyle(),
-      kerning: 0,
-    };
-  }
-
-  private paragraphStyle(): IParagraphStyle {
+  addParagraphStyle(): IParagraphStyle {
     const lh = this.styles.lineHeight;
-    // Disable lineheight (only needed for multi line text – otherwise conflicts with padding)
     const lineHeight = (lh !== 'normal') ? parseInt(lh, 10) : parseInt(this.styles.fontSize, 10);
     return {
-      _class: 'paragraphStyle',
-      alignment: 0,
+      _class: SketchObjectTypes.ParagraphStyle,
+      alignment: resolveTextAlign(this.styles.textAlign),
       maximumLineHeight: lineHeight,
       minimumLineHeight: lineHeight,
       paragraphSpacing: 0,
@@ -72,13 +57,53 @@ export class Text extends Base {
     };
   }
 
-  private fontAttributes(): IMSAttributedStringFontAttribute {
+  addUnderline(): number {
+    if (this.textDecoration && this.textDecoration.type === 'underline') {
+      switch (this.textDecoration.style) {
+        case 'double': return UnderlineStyle.Double;
+        case 'solid': return UnderlineStyle.Underline;
+      }
+    }
+    return UnderlineStyle.None;
+  }
+
+  addStrikeThrough(): number {
+    if (this.textDecoration && this.textDecoration.type === 'line-through') {
+      return StrikethroughStyle.LineThrough;
+    }
+    return StrikethroughStyle.None;
+  }
+
+  addKerning(): number | undefined {
+    if (this.styles.letterSpacing !== 'normal') {
+      return parseFloat(this.styles.letterSpacing);
+    }
+    return undefined;
+  }
+
+  addTextTransform(): number {
+    switch (this.styles.textTransform) {
+      case 'uppercase':
+        return TextTransform.Uppercase;
+      case 'lowercase':
+        return TextTransform.Lowercase;
+      default:
+        return TextTransform.None;
+    }
+  }
+
+  addParagraphSpacing(): number | undefined {
+    // TODO: need to implement
+    return undefined;
+  }
+
+  createFontDescriptor(): SketchFontDescriptor {
     const fontFamily = this.styles.fontFamily.split(',')[0];
     const fontWeight = this.styles.fontWeight;
     const fontVariant = this.styles.fontStyle as fontStyle;
 
     return {
-      _class: 'fontDescriptor',
+      _class: SketchObjectTypes.FontDescriptor,
       attributes: {
         name: fontMapping(fontFamily, fontWeight, fontVariant),
         size: parseInt(this.styles.fontSize, 10),
@@ -86,35 +111,67 @@ export class Text extends Base {
     };
   }
 
-  private generateStyle(): IStyle {
-    return  {
-      ...this._styleClass.generateObject(),
-      textStyle: {
-        _class: 'textStyle',
-        encodedAttributes: this.attributes(),
-        verticalAlignment: 0,
-      },
+  createTextStyleAttributes() : SketchEncodedAttributes {
+    return {
+      kerning: this.addKerning(),
+      MSAttributedStringColorAttribute: colorToSketchColor(this.styles.color),
+      MSAttributedStringFontAttribute: this.createFontDescriptor(),
+      MSAttributedStringTextTransformAttribute: this.addTextTransform(),
+      paragraphSpacing: this.addParagraphSpacing(),
+      paragraphStyle: this.addParagraphStyle(),
+      strikethroughStyle: this.addStrikeThrough(),
+      textStyleVerticalAlignmentKey: 0,
+      underlineStyle: this.addUnderline(),
     };
   }
 
-  generateObject(): IText {
-    const base: IBase = super.generateObject();
-    const frame = super.addFrame('rect');
+  createAttribute(location: number, length: number): SketchAttribute {
+    return {
+      _class: SketchObjectTypes.StringAttribute,
+      location,
+      length,
+      attributes: this.createTextStyleAttributes(),
+    };
+  }
+
+  createAttributedString(): SketchAttributedString {
+    return {
+      _class: SketchObjectTypes.AttributedString,
+      string: `${this.textContent}`,
+      attributes: [
+        this.createAttribute(0, this.textContent.length),
+      ],
+    };
+  }
+
+  addTextStyle(): SketchTextStyle {
+    return {
+      _class: SketchObjectTypes.TextStyle,
+      encodedAttributes: this.createTextStyleAttributes(),
+      verticalAlignment: 0,
+    };
+  }
+
+  generateObject(): SketchText {
+    const base: SketchBase = super.generateObject();
+    base.style = new Style().generateObject();
+    base.style.textStyle = this.addTextStyle();
+    const frame = super.addFrame();
 
     if (frame.height > parseInt(this.styles.lineHeight, 10)) {
-      this._multiline = true;
+      this.multiline = true;
     }
 
     return {
       ...base,
       nameIsFixed: true,
-      attributedString: this.generateAttributedString(),
+      attributedString: this.createAttributedString(),
       frame,
       automaticallyDrawOnUnderlyingPath: false,
       dontSynchroniseWithSymbol: false,
       glyphBounds: `{{${frame.x}, ${frame.y}}, {${frame.width}, ${frame.height}}}`,
       lineSpacingBehaviour: 2,
-      textBehaviour: this._multiline ? TextBehaviour.Fixed : TextBehaviour.Auto,
-    } as IText;
+      textBehaviour: this.multiline ? TextBehaviour.Fixed : TextBehaviour.Auto,
+    } as SketchText;
   }
 }

@@ -24,7 +24,7 @@ export interface LogEntry {
  */
 export class Logger {
 
-  private static EMOJI_SPACE = '  ';
+  private static EMOJI_SPACE = '\t';
   private static _instance: Logger;
   private _logStream: fs.WriteStream;
   private _debugEnvs: string[];

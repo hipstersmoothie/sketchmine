@@ -11,7 +11,7 @@ import {
 import { BooleanOperation } from '@sketch-draw/helpers/sketch-constants';
 import { Circle } from './models/circle';
 import { Rect } from './models/rect';
-import { addStyles, arcsToCurves } from './util';
+import { addStyles } from './util';
 import { Logger } from '@utils';
 
 const { parseSVG, makeAbsolute } = require('svg-path-parser');

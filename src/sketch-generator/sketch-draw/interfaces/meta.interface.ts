@@ -1,19 +1,19 @@
-export interface IMeta {
+export interface SketchMeta {
   commit: string;
-  pagesAndArtboards: { [key: string]: IMetaPagesAndArtboards };
+  pagesAndArtboards: { [key: string]: SketchPagesAndArtboards };
   version: number;
   fonts: any[];
   compatibilityVersion: number;
   app: string;
   autosaved: number;
   variant: string;
-  created: IMetaCreated;
+  created: SketchMetaCreated;
   saveHistory: string[];
   appVersion: string;
   build: number;
 }
 
-export interface IMetaCreated {
+export interface SketchMetaCreated {
   commit: string;
   appVersion: string;
   build: number;
@@ -23,11 +23,11 @@ export interface IMetaCreated {
   variant: string;
 }
 
-export interface IMetaPagesAndArtboards {
+export interface SketchPagesAndArtboards {
   name: string;
-  artboards: { [key: string]: IMetaArtboard };
+  artboards: { [key: string]: SketchMetaArtboard };
 }
 
-export interface IMetaArtboard {
+export interface SketchMetaArtboard {
   name: string;
 }

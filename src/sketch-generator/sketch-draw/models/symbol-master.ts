@@ -1,33 +1,24 @@
 import { Base } from '@sketch-draw/models/base';
-import { IBounding, IBase, IColor } from '@sketch-draw/interfaces';
+import { SketchBase, SketchColor, IBounding, SketchObjectTypes, SketchSymbolMaster } from '@sketch-draw/interfaces';
+import { Style } from './style';
+import { addBackgroundColor } from './artboard';
 
 export class SymbolMaster extends Base {
 
   constructor(bounding: IBounding) {
-    super();
-    super.className = 'symbolMaster';
+    super(bounding);
+    super.className = SketchObjectTypes.SymbolMaster;
     super.breakMaskChain = true;
-    super.style = super.addStyle();
-    super.bounding = bounding;
+    super.style = new Style().generateObject();
   }
 
-  private addBackgroundColor(): IColor {
-    return {
-      _class: 'color',
-      alpha: 1,
-      blue: 1,
-      green: 1,
-      red: 1,
-    };
-  }
-
-  generateObject(): any {
-    const base: IBase = super.generateObject();
+  generateObject(): SketchSymbolMaster {
+    const base: SketchBase = super.generateObject();
     return {
       ...base,
-      frame: super.addFrame('rect'),
+      frame: super.addFrame(),
       hasClickThrough: false,
-      backgroundColor: this.addBackgroundColor(),
+      backgroundColor: addBackgroundColor(),
       hasBackgroundColor: false,
       horizontalRulerData: super.addRuler(),
       includeBackgroundColorInExport: true,

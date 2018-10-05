@@ -3,9 +3,9 @@ import { ValidationError, ColorNotInPaletteError } from '../../error/validation-
 import { round } from '@sketch-draw/helpers/util';
 import { rgbToHex, Logger } from '@utils';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
-import { IFill, IBorder } from '@sketch-draw/interfaces';
+import { SketchFill, SketchBorder } from '@sketch-draw/interfaces';
 import { generateMasterColors } from './generate-master-colors';
-import { ColorErrorMessage } from '../../error/error-messages'
+import { COLOR_ERROR_MESSAGE } from '../../error/error-messages';
 
 const log = new Logger();
 const colors: string[] = generateMasterColors();
@@ -57,7 +57,10 @@ export function colorValidation(
  * @param task current Task for validation (context object)
  * @param fill the fill or border to validate
  */
-export function colorInPalette(task: IValidationContext, fill: IFill | IBorder): ColorNotInPaletteError | boolean {
+export function colorInPalette(
+  task: IValidationContext,
+  fill: SketchFill | SketchBorder,
+): ColorNotInPaletteError | boolean {
   /** only activated Fills should be validated */
   if (fill.hasOwnProperty('isEnabled') && !fill.isEnabled) {
     return true;
@@ -75,7 +78,7 @@ export function colorInPalette(task: IValidationContext, fill: IFill | IBorder):
       {
         objectId: task.do_objectID,
         name: task.name,
-        message: ColorErrorMessage(hex)
+        message: COLOR_ERROR_MESSAGE(hex),
       },
     );
   }

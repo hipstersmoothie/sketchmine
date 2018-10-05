@@ -1,50 +1,25 @@
-import { IBase } from './base.interface';
-import { IStyle, IColor } from './style.interface';
+import { SketchBase, SketchObjectTypes } from './base.interface';
+import { SketchStyle } from './style.interface';
+import { SketchEncodedAttributes } from './text-style.interface';
 
-export interface IText extends IBase {
-  style: IStyle;
-  attributedString: IAttributedString;
+export interface SketchText extends SketchBase {
+  _class: SketchObjectTypes.Text;
+  style: SketchStyle;
+  attributedString: SketchAttributedString;
   automaticallyDrawOnUnderlyingPath: boolean;
   dontSynchroniseWithSymbol: boolean;
   glyphBounds: string;
   lineSpacingBehaviour: number;
   textBehaviour: number;
 }
-export interface IAttributedString {
+export interface SketchAttributedString {
   _class: string;
   string: string;
-  attributes: IAttribute[];
+  attributes: SketchAttribute[];
 }
-export interface IAttribute {
-  _class: string;
+export interface SketchAttribute {
+  _class: SketchObjectTypes.StringAttribute;
   location: number;
   length: number;
-  attributes: IEncodedAttributes;
-}
-export interface ITextStyle {
-  _class: string;
-  encodedAttributes: IEncodedAttributes;
-  verticalAlignment: number;
-}
-export interface IEncodedAttributes {
-  MSAttributedStringColorAttribute: IColor;
-  MSAttributedStringFontAttribute: IMSAttributedStringFontAttribute;
-  paragraphStyle: IParagraphStyle;
-  kerning: number;
-}
-export interface IParagraphStyle {
-  _class: string;
-  alignment: number;
-  maximumLineHeight: number;
-  minimumLineHeight: number;
-  paragraphSpacing: number;
-  allowsDefaultTighteningForTruncation: number;
-}
-export interface IMSAttributedStringFontAttribute {
-  _class: string;
-  attributes: IMSAttributedStringFontAttributes;
-}
-export interface IMSAttributedStringFontAttributes {
-  name: string;
-  size: number;
+  attributes: SketchEncodedAttributes;
 }

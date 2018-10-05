@@ -51,7 +51,7 @@ export class ErrorHandler {
 
   emit() {
     let throwingError: ValidationError; // save one Error to throw for exit code
-    let stackedOutput = ``;
+    let stackedOutput = '';
 
     for (const rule in this._rulesStack) {
       if (!this._rulesStack.hasOwnProperty(rule)) {

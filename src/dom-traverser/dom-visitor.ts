@@ -37,7 +37,10 @@ export class StyleDeclaration {
   borderBottom = '0px none rgb(0, 0, 0)';
   borderRight = '0px none rgb(0, 0, 0)';
   borderColor = 'rgb(0, 0, 0)';
-  borderRadius = '0px';
+  borderTopLeftRadius = '0px';
+  borderTopRightRadius = '0px';
+  borderBottomRightRadius = '0px';
+  borderBottomLeftRadius = '0px';
   borderWidth = '0px';
   boxShadow = 'none';
   padding = '0px';
@@ -48,9 +51,13 @@ export class StyleDeclaration {
   fontSize = '16px';
   fontStyle = 'normal';
   fontWeight = '400';
+  letterSpacing = 'normal';
   lineHeight = 'normal';
   opacity = '1';
   strokeWidth = '1px';
+  textDecoration = 'none solid rgb(0, 0, 0)';
+  textAlign = 'start';
+  textTransform = 'none';
   transform = 'none';
   visibility = 'visible';
   whiteSpace = 'normal';

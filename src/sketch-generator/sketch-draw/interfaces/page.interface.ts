@@ -1,13 +1,8 @@
-import { IBase } from './base.interface';
+import { SketchBase } from './base.interface';
+import { SketchRulerData } from './ruler-data.interface';
 
-export interface IPage extends IBase{
-  horizontalRulerData: IRulerData;
+export interface SketchPage extends SketchBase {
   includeInCloudUpload: boolean;
-  verticalRulerData: IRulerData;
-}
-
-export interface IRulerData {
-  _class: string;
-  base: number;
-  guides: any[];
+  horizontalRulerData: SketchRulerData;
+  verticalRulerData: SketchRulerData;
 }

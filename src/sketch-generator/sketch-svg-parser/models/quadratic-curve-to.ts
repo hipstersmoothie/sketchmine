@@ -1,13 +1,13 @@
 import { CurvePoint } from '@sketch-svg-parser/models/curve-point';
-import { ICurvePoint } from '@sketch-svg-parser/interfaces';
 import { CurvePointMode } from '@sketch-draw/helpers/sketch-constants';
+import { SketchObjectTypes, SketchCurvePoint } from '../../sketch-draw/interfaces';
 
 export class QuadraticCurveTo extends CurvePoint {
 
-  generate(): ICurvePoint {
+  generate(): SketchCurvePoint {
 
     return {
-      _class: 'curvePoint',
+      _class: SketchObjectTypes.CurvePoint,
       cornerRadius: 0,
       curveFrom: `{${this.cur.x1}, ${this.cur.y1}}`,
       curveMode: CurvePointMode.Disconnected,

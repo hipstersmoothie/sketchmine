@@ -1,6 +1,6 @@
 import { SvgStyle, ISvgShape, ISvgView } from '@sketch-svg-parser/interfaces';
 import { Style } from '@sketch-draw/models/style';
-import { IStyle } from '@sketch-draw/interfaces';
+import { SketchStyle } from '@sketch-draw/interfaces';
 import { StyleDeclaration } from '../../../dom-traverser/dom-visitor';
 import { Logger } from '@utils';
 
@@ -88,7 +88,7 @@ export function overrideSvgStyle(
  * @param cssStyle StyleDeclaration
  * @returns IStyle
  */
-export function addCssStyleToSvg(cssStyle: StyleDeclaration): IStyle {
+export function addCssStyleToSvg(cssStyle: StyleDeclaration): SketchStyle {
   const style = new Style();
 
   const fill = cssStyle.fill;
@@ -97,7 +97,7 @@ export function addCssStyleToSvg(cssStyle: StyleDeclaration): IStyle {
   const opacity = parseInt(cssStyle.opacity, 10);
 
   if (fill) {
-    style.addColorFill(fill, opacity || 1);
+    style.addFill(fill, opacity || 1);
   }
   if (borderWidth > 0) {
     style.addBorder(border, borderWidth);

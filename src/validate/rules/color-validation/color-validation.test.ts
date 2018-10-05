@@ -1,7 +1,7 @@
 import { generateMasterColors } from './generate-master-colors';
 import { ColorNotInPaletteError } from '../../error/validation-error';
 import { colorInPalette } from './color-validation';
-import { IFill } from '@sketch-draw/interfaces';
+import { SketchFill } from '@sketch-draw/interfaces';
 import { round } from '@sketch-draw/helpers/util';
 import chalk from 'chalk';
 import { rgbToHex } from '@utils';
@@ -63,14 +63,14 @@ describe('Color Validation', () => {
   });
 
   it('should check if validation throws an error if the color does not match the color-palette', () => {
-    const check = colorInPalette(fakeTask, WRONG_FILL as IFill);
+    const check = colorInPalette(fakeTask, WRONG_FILL as SketchFill);
     expect(check).toBeInstanceOf(ColorNotInPaletteError);
   });
 
   it('should check if color element gets ignored if disabled', () => {
     const fakeTask = { do_objectID: 'C8BAFBE8-F0F0-4727-B952-7303F9CA3F33', name: 'Rectangle ' } as any;
     WRONG_FILL.isEnabled = false;
-    const check = colorInPalette(fakeTask, WRONG_FILL as IFill);
+    const check = colorInPalette(fakeTask, WRONG_FILL as SketchFill);
     expect(check).toBeTruthy();
   });
   it(chalk`should check if the validation passes for {hex('#B4DC00') ███} #B4DC00`, () => {
@@ -80,19 +80,19 @@ describe('Color Validation', () => {
       round(TRUE_FILL.color.blue * 255, 0),
     ).toUpperCase();
     expect(hex).toBe('#B4DC00');
-    const check = colorInPalette(fakeTask, TRUE_FILL as IFill);
+    const check = colorInPalette(fakeTask, TRUE_FILL as SketchFill);
     expect(check).not.toBeInstanceOf(ColorNotInPaletteError);
     expect(check).toBeTruthy();
   });
   it(chalk`should check if the validation passes for 3 digit hex values {hex('#CCCCCC') ███} #CCC`, () => {
     TRUE_FILL.color = SHORT_COLOR;
-    const check = colorInPalette(fakeTask, TRUE_FILL as IFill);
+    const check = colorInPalette(fakeTask, TRUE_FILL as SketchFill);
     expect(check).not.toBeInstanceOf(ColorNotInPaletteError);
     expect(check).toBeTruthy();
   });
   it(chalk`should not convert 6 digit hex values to 3 digit hex values {hex('#5ead35') ███} #5ead35`, () => {
     TRUE_FILL.color = { _class: 'color', red: 94 / 255, green: 173 / 255, blue: 53 / 255, alpha: 1 };
-    const check = colorInPalette(fakeTask, TRUE_FILL as IFill);
+    const check = colorInPalette(fakeTask, TRUE_FILL as SketchFill);
     expect(check).not.toBeInstanceOf(ColorNotInPaletteError);
     expect(check).toBeTruthy();
   });

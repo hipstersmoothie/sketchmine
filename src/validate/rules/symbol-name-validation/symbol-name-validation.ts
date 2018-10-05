@@ -2,8 +2,11 @@ import chalk from 'chalk';
 import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import { Logger } from '@utils';
-import { SymbolNameErrorMessage, ThemeNameErrorMessage, DuplicatedSymbolErrorMessage } from '../../error/error-messages';
-
+import {
+  SYMBOL_NAME_ERROR_MESSAGE,
+  THEME_NAME_ERROR_MESSAGE,
+  DUPLICATE_SYMBOL_ERROR_MESSAGE,
+} from '../../error/error-messages';
 
 const log = new Logger();
 
@@ -53,17 +56,17 @@ export function symbolNameValidation(
 
   if (name.length < 2) {
     errors.push(new WrongSymbolNamingError({
-      message: SymbolNameErrorMessage,
+      message: SYMBOL_NAME_ERROR_MESSAGE,
       ...object,
     }));
   } else if (!themeName) {
     errors.push(new WrongSymbolNamingError({
-      message: ThemeNameErrorMessage(ThemeNames),
+      message: THEME_NAME_ERROR_MESSAGE(ThemeNames),
       ...object,
     }));
   } else if (names.indexOf(task.name) !== names.lastIndexOf(task.name)) {
     errors.push(new DuplicatedSymbolError({
-      message: DuplicatedSymbolErrorMessage(task.name),
+      message: DUPLICATE_SYMBOL_ERROR_MESSAGE(task.name),
       ...object,
     }));
   } else {

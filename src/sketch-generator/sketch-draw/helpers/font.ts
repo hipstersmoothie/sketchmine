@@ -51,16 +51,16 @@ export function fontMapping(
     return fontFamily;
   }
 
-  if (weight === 900) { return 'BerninaSans-Extrabold'; }
   if (weight === 900 && style === 'italic') { return 'BerninaSans-ExtraboldItalic'; }
-  if (weight === 700) { return 'BerninaSans-Bold'; }
+  if (weight === 900) { return 'BerninaSans-Extrabold'; }
   if (weight === 700 && style === 'italic') { return 'BerninaSans-BoldItalic'; }
-  if (weight === 600) { return 'BerninaSans-Semibold'; }
+  if (weight === 700) { return 'BerninaSans-Bold'; }
   if (weight === 600 && style === 'italic') { return 'BerninaSans-SemiboldItalic'; }
-  if (weight === 400) { return 'BerninaSans'; }
+  if (weight === 600) { return 'BerninaSans-Semibold'; }
   if (weight === 400 && style === 'italic') { return 'BerninaSans-Italic'; }
-  if (weight === 300) { return 'BerninaSans-Light'; }
+  if (weight === 400) { return 'BerninaSans'; }
   if (weight === 300 && style === 'italic') { return 'BerninaSans-LightItalic'; }
+  if (weight === 300) { return 'BerninaSans-Light'; }
 
   return 'BerninaSans';
 }
