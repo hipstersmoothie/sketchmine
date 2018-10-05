@@ -1,5 +1,5 @@
 {
-  "rootDir": "src/angular-meta-parser/_tmp/",
+  "rootDir": "_tmp/",
   "library": "src/lib",
   "inFile": "index.ts",
   "outFile": "meta-information.json"  

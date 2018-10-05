@@ -1,4 +1,4 @@
-import minimist from 'minimist';
+import { ParsedArgs } from 'minimist';
 
 /**
  * Configuration arguments for the command line args
@@ -16,6 +16,6 @@ export interface ConfigArguments {
  * @param config default config args from .json
  * @return {ConfigArguments}
  */
-export function parseCommandlineArgs(args: string[], config: any): ConfigArguments {
-  return Object.assign(config, minimist(args));
+export function parseCommandlineArgs(args: ParsedArgs, config: any): ConfigArguments {
+  return Object.assign(config, args);
 }

@@ -14,10 +14,21 @@ with cokidar to compile the `.ts` files on the file in the specified dist folder
 The compiled outup can easy started with `npm run run:angular-meta-parser`. The possible command line args for the application
 are written as default values in the `./src/angular-meta-parser/config.json`. The commandline args overwrite the defaults from the JSON
 
+### command line args
+
+```
+-h, --help              | display help
+-c, --config            | path to the configuration file
+--rootDir               | root dir of the angular components library
+--library               | path to lib folder where the components are located from root
+--inFile                | index.ts file as entry point for the lib
+--outFile               | the file that holds the meta-information – as .json
+```
+
 ### Prerequisites
 
 * npm, node
-* Where do I get these tools? 
+* Where do I get these tools?
 * Are there specific versions required?
 
 ### How to install

@@ -1,0 +1,7654 @@
+{
+  "version": "0.3.0-dev",
+  "components": {
+    "button": {
+      "className": "DtButton",
+      "component": "button",
+      "location": "_tmp\/src\/lib\/button\/button.ts",
+      "selector": [
+        "button[dt-button]",
+        "button[dt-icon-button]"
+      ],
+      "clickable": false,
+      "hoverable": false,
+      "variants": [
+        {
+          "name": "dt-button-disabled",
+          "changes": [
+            {
+              "type": "property",
+              "key": "disabled",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "name": "dt-button-color-main",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"main\""
+            }
+          ]
+        },
+        {
+          "name": "dt-button-color-accent",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"accent\""
+            }
+          ]
+        },
+        {
+          "name": "dt-button-color-warning",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"warning\""
+            }
+          ]
+        },
+        {
+          "name": "dt-button-color-error",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"error\""
+            }
+          ]
+        },
+        {
+          "name": "dt-button-color-cta",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"cta\""
+            }
+          ]
+        },
+        {
+          "name": "dt-button-color-undefined",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "undefined"
+            }
+          ]
+        },
+        {
+          "name": "dt-button-variant-primary",
+          "changes": [
+            {
+              "type": "property",
+              "key": "variant",
+              "value": "\"primary\""
+            }
+          ]
+        },
+        {
+          "name": "dt-button-variant-secondary",
+          "changes": [
+            {
+              "type": "property",
+              "key": "variant",
+              "value": "\"secondary\""
+            }
+          ]
+        },
+        {
+          "name": "dt-button-variant-nested",
+          "changes": [
+            {
+              "type": "property",
+              "key": "variant",
+              "value": "\"nested\""
+            }
+          ]
+        }
+      ]
+    },
+    "option": {
+      "className": "DtOption",
+      "component": "option",
+      "location": "_tmp\/src\/lib\/core\/option\/option.ts",
+      "selector": [
+        "dt-option"
+      ],
+      "clickable": false,
+      "hoverable": false,
+      "variants": [
+        {
+          "name": "dt-option-disabled",
+          "changes": [
+            {
+              "type": "property",
+              "key": "disabled",
+              "value": "true"
+            }
+          ]
+        }
+      ]
+    },
+    "optgroup": {
+      "className": "DtOptgroup",
+      "component": "optgroup",
+      "location": "_tmp\/src\/lib\/core\/option\/optgroup.ts",
+      "selector": [
+        "dt-optgroup"
+      ],
+      "clickable": false,
+      "hoverable": false,
+      "variants": [
+        {
+          "name": "dt-optgroup-disabled",
+          "changes": [
+            {
+              "type": "property",
+              "key": "disabled",
+              "value": "true"
+            }
+          ]
+        }
+      ]
+    },
+    "icon": {
+      "className": "DtIcon",
+      "component": "icon",
+      "location": "_tmp\/src\/lib\/icon\/icon.ts",
+      "selector": [
+        "dt-icon"
+      ],
+      "clickable": false,
+      "hoverable": false,
+      "variants": [
+        {
+          "name": "dt-icon-name-abort",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"abort\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-actionspersession",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"actionspersession\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-addcolumnleft",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"addcolumnleft\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-addcolumnright",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"addcolumnright\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-addrowonbottom",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"addrowonbottom\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-addrowontop",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"addrowontop\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-adk-sdk",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"adk-sdk\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-agent",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"agent\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-airplane",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"airplane\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ai",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ai\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-aix",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"aix\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ajaxedition",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ajaxedition\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ajax",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ajax\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-akamai",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"akamai\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-akka",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"akka\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-alarm-off",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"alarm-off\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-alarm-on",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"alarm-on\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-alert-notification",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"alert-notification\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-amazon-alb",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"amazon-alb\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-amazon-asg",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"amazon-asg\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-amazon-aws-marketplace-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"amazon-aws-marketplace-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-amazon-aws-marketplace",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"amazon-aws-marketplace\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-amazon-ebs",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"amazon-ebs\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-amazon-echo",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"amazon-echo\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-amazon-rds",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"amazon-rds\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-amazon-s3bucket",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"amazon-s3bucket\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-amazon-s3",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"amazon-s3\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-amazon",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"amazon\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-amazonwebservices",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"amazonwebservices\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-amp-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"amp-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-amp",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"amp\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-analyze",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"analyze\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-and-not",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"and-not\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-android",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"android\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-and",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"and\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-angularjs",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"angularjs\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ansible-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ansible-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ansible",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ansible\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-apache-activemq",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"apache-activemq\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-apache-ant-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"apache-ant-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-apache-ant",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"apache-ant\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-apache-derby",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"apache-derby\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-apache-hbase-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"apache-hbase-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-apache-hbase",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"apache-hbase\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-apache-jmeter",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"apache-jmeter\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-apache-logo",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"apache-logo\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-apache-solr",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"apache-solr\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-apache-spark-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"apache-spark-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-apache-spark",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"apache-spark\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-apache",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"apache\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-apache-tomcat",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"apache-tomcat\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-apmngcollector",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"apmngcollector\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-appdynamics",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"appdynamics\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-apple",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"apple\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-appliance",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"appliance\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-applicationhealth",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"applicationhealth\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-applicationnetworkmonitoring",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"applicationnetworkmonitoring\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-applicationserver",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"applicationserver\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-application",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"application\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-area-chart",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"area-chart\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-aspnet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"aspnet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-atlanta",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"atlanta\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-atlassian-bamboo",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"atlassian-bamboo\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-atlassian-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"atlassian-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-atlassian",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"atlassian\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-availability",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"availability\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-aws-code-deploy-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"aws-code-deploy-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-aws-code-pipeline-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"aws-code-pipeline-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-aws-iot-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"aws-iot-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-axis2",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"axis2\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-azure-app-service",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"azure-app-service\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-azure-container-service",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"azure-container-service\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-azure-virtual-machines",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"azure-virtual-machines\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-azure-webapps",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"azure-webapps\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-backbonejs",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"backbonejs\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-background",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"background\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-backup",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"backup\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-banking",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"banking\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-barcelona",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"barcelona\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-bigdataserver",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"bigdataserver\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-bigdata",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"bigdata\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-bitbucket-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"bitbucket-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-bitbucket",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"bitbucket\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-blackbox",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"blackbox\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-blazemeter-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"blazemeter-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-blazemeter",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"blazemeter\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-blog",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"blog\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-bold",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"bold\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-boston",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"boston\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-bouncerate",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"bouncerate\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-brain-bulb",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"brain-bulb\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-brasilia",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"brasilia\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-browser",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"browser\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-bug",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"bug\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-businessimpact",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"businessimpact\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-business-transaction",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"business-transaction\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cakephp-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cakephp-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cakephp",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cakephp\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-calendar",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"calendar\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ca-lisa",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ca-lisa\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-camera",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"camera\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cassandra",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cassandra\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-centos",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"centos\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-certificate",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"certificate\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart-2",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart-2\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart-bar",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart-bar\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart-clustered-bar",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart-clustered-bar\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart-diffing-bar",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart-diffing-bar\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart-legend-area",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart-legend-area\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart-legend-bar",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart-legend-bar\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart-legend-businesstransaction",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart-legend-businesstransaction\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart-legend-line",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart-legend-line\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart-legend-meter",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart-legend-meter\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart-legend-percentile",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart-legend-percentile\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart-legend-pie",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart-legend-pie\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart-legend-step",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart-legend-step\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart-pie3d",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart-pie3d\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart-stacked-percentage-bar",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart-stacked-percentage-bar\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart-step",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart-step\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chart",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chart\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-checkmark-ok",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"checkmark-ok\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-checkmark",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"checkmark\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chef-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chef-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chef",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chef\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chicago",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chicago\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-chrome",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"chrome\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cics",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cics\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cinder",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cinder\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cisco",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cisco\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-citrix",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"citrix\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-citrix-wts-network",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"citrix-wts-network\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-city",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"city\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cleanup",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cleanup\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-clientnetwork",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"clientnetwork\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-clock-off",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"clock-off\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-clock",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"clock\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cloudcontrol",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cloudcontrol\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cloud-download",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cloud-download\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cloudflare",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cloudflare\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cloud-foundry-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cloud-foundry-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cloud-foundry",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cloud-foundry\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cloudshare",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cloudshare\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cloud",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cloud\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cloudsync",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cloudsync\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cloud-upload",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cloud-upload\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cluster",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cluster\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-coding",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"coding\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-coldfusion-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"coldfusion-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-collector",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"collector\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-color",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"color\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-community",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"community\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-concourse-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"concourse-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-concourse",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"concourse\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-container-lxc",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"container-lxc\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-container",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"container\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-contract",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"contract\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-conversions",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"conversions\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cordova-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cordova-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cordova",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cordova\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-coreos",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"coreos\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cosminexus",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cosminexus\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-couchbase",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"couchbase\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-couchdb",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"couchdb\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cplusplus-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cplusplus-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cpu-processor",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cpu-processor\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-creditcard",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"creditcard\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-criticalevent",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"criticalevent\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-crossedagent",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"crossedagent\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cucumber-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cucumber-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-cucumber",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"cucumber\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-customaction",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"customaction\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-dallas",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"dallas\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-darwin-apple",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"darwin-apple\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-databaseserver",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"databaseserver\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-database",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"database\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-daymode",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"daymode\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-dc-os-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"dc-os-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-dc-os",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"dc-os\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-debian",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"debian\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-deis-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"deis-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-deis",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"deis\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-delete",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"delete\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-deploy",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"deploy\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-desktop-browser",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"desktop-browser\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-desktop-not-visible",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"desktop-not-visible\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-desktop",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"desktop\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-desktop-visible",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"desktop-visible\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-detroit",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"detroit\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-django",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"django\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-dli",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"dli\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-docker-logo",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"docker-logo\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-documentation",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"documentation\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-dojotoolkit",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"dojotoolkit\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-dont-watch",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"dont-watch\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-donut-chart",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"donut-chart\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-dotnet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"dotnet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-download",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"download\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-drag-and-drop",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"drag-and-drop\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-dropdownclosed",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"dropdownclosed\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-dropdownopen",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"dropdownopen\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-dropdown",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"dropdown\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-drupal-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"drupal-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-drupal",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"drupal\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-duplicate",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"duplicate\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-dynamodb",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"dynamodb\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-dynatrace",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"dynatrace\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-dzone-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"dzone-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-dzone",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"dzone\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ec2",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ec2\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-eclipse-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"eclipse-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-eclipse",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"eclipse\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-edge-microsoft",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"edge-microsoft\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-edit1",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"edit1\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-edit2",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"edit2\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-education",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"education\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-elastic-load",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"elastic-load\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-elastic-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"elastic-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-elastic",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"elastic\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-elb-amazon",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"elb-amazon\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-electric-cloud-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"electric-cloud-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-electric-cloud",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"electric-cloud\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-embedded-pc",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"embedded-pc\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-emberjs",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"emberjs\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-entry",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"entry\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-environment",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"environment\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-equals",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"equals\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-erlang-logo",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"erlang-logo\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-eureka",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"eureka\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-event",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"event\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-exit",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"exit\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-expand",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"expand\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-expertservices",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"expertservices\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-express-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"express-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-express",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"express\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-externallink",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"externallink\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-extjs",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"extjs\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-f5",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"f5\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-facebook",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"facebook\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-faileduseraction",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"faileduseraction\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-fast",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"fast\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-faultdomainanalysis",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"faultdomainanalysis\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-favorite",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"favorite\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-fedora",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"fedora\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-feedly",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"feedly\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-file-library",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"file-library\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-file",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"file\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-filter",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"filter\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-finishflag",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"finishflag\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-firefox",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"firefox\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-firewall",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"firewall\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-firstaid",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"firstaid\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-fittoscreen",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"fittoscreen\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-fixpack",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"fixpack\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-flash",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"flash\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-folder",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"folder\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-font-size",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"font-size\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-foreground",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"foreground\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-forum",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"forum\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-frankfurt",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"frankfurt\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-gatlingio-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"gatlingio-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-gatlingio",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"gatlingio\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-gdansk",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"gdansk\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-gettingstarted",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"gettingstarted\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-github",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"github\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-git-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"git-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-git",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"git\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-glance",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"glance\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-glassfish",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"glassfish\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-golang-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"golang-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-google-cloud-platform-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"google-cloud-platform-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-google-cloud-platform",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"google-cloud-platform\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-google",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"google\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-googlewebkit",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"googlewebkit\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-gradle-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"gradle-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-gradle",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"gradle\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-grails",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"grails\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-gravatar-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"gravatar-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-grpc-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"grpc-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-grpc",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"grpc\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-h2",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"h2\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hadoop",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hadoop\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hagenberg",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hagenberg\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hapi-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hapi-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hapi",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hapi\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-haproxy",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"haproxy\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-harness-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"harness-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-harness",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"harness\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hdd-discdrive",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hdd-discdrive\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-headphones",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"headphones\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-healthstatus",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"healthstatus\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-help-bubble",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"help-bubble\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-heroku-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"heroku-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-heroku",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"heroku\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hibernate-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hibernate-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hibernate",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hibernate\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hipchat",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hipchat\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-home",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"home\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-horizon",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"horizon\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hornetq",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hornetq\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hortonworks",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hortonworks\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-host",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"host\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hourglass",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hourglass\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hp-ux",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hp-ux\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-html5",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"html5\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-https",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"https\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hyperlyzer",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hyperlyzer\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hypervisor",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hypervisor\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hyperv",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hyperv\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-hystrix",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"hystrix\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ibm-bluemix",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ibm-bluemix\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ibm-cloud-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ibm-cloud-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ibm-cloud",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ibm-cloud\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ibm-db2",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ibm-db2\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ibm-ims",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ibm-ims\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ibm",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ibm\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ica-citrix",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ica-citrix\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-icefaces",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"icefaces\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-idle",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"idle\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-iframe",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"iframe\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-iis-dotnet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"iis-dotnet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-iis-microsoft",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"iis-microsoft\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-image-file",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"image-file\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-incident",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"incident\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-infinity-unlimited",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"infinity-unlimited\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-information",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"information\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-informix-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"informix-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-informix",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"informix\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-infrastructurehealth",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"infrastructurehealth\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-infrastructure",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"infrastructure\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-instagram-font",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"instagram-font\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-instagram-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"instagram-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-intellij-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"intellij-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-intellij",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"intellij\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-internetexplorer",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"internetexplorer\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-interstage-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"interstage-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-intuit",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"intuit\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-io-input",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"io-input\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-io-output",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"io-output\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ios",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ios\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-iot",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"iot\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ipv6",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ipv6\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-italic",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"italic\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ixia",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ixia\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-java-script",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"java-script\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-java",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"java\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-jboss",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"jboss\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-jenkins",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"jenkins\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-jetbrains-teamcity",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"jetbrains-teamcity\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-jetty",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"jetty\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-jira-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"jira-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-jira",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"jira\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-joomla-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"joomla-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-joomla",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"joomla\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-jquery",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"jquery\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-jruby",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"jruby\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-junit",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"junit\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-jython",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"jython\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-keystone",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"keystone\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-keystroke",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"keystroke\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-klagenfurt",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"klagenfurt\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-kony-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"kony-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-kony",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"kony\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-kubernetes-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"kubernetes-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-kubernetes",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"kubernetes\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-kvm",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"kvm\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-laboratory",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"laboratory\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-lambda",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"lambda\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-laravel-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"laravel-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-laravel",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"laravel\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-learn-more",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"learn-more\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-leftend",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"leftend\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-left",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"left\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-light-bulb",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"light-bulb\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-like",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"like\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-link-2",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"link-2\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-linkedin-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"linkedin-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-linkedin",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"linkedin\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-linux",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"linux\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-linux-vm",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"linux-vm\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-linz",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"linz\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-list-view",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"list-view\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-litespeed-logo",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"litespeed-logo\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-live-europe",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"live-europe\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-live",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"live\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-loadaction",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"loadaction\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-loadbalancer",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"loadbalancer\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-loadrunner-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"loadrunner-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-load",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"load\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-loadtest",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"loadtest\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-lock",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"lock\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-log4j-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"log4j-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-log4j",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"log4j\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-logfile",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"logfile\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-logout",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"logout\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-london",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"london\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-los-angeles",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"los-angeles\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-lost-and-found",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"lost-and-found\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-magento-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"magento-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-magento",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"magento\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mailclosed",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mailclosed\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mailopen",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mailopen\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mainframeserver",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mainframeserver\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mainframe",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mainframe\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-maintenance",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"maintenance\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mariadb-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mariadb-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mariadb",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mariadb\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-marketing",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"marketing\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-marketo-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"marketo-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-marketo",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"marketo\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-maven",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"maven\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-measure",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"measure\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-memcached",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"memcached\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-memory-ram",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"memory-ram\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-menu-close",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"menu-close\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-menu-hamburger",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"menu-hamburger\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-menu",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"menu\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-menu-tree",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"menu-tree\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mesosphere-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mesosphere-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mesosphere",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mesosphere\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mesos",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mesos\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-messaging-queue",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"messaging-queue\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-meter-chart",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"meter-chart\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-microfocus-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"microfocus-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-microfocus",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"microfocus\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-microsoft-azure-fabric",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"microsoft-azure-fabric\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-microsoft-azure-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"microsoft-azure-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-microsoft-azure",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"microsoft-azure\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-microsoft-hololens",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"microsoft-hololens\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-microsoft-teams-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"microsoft-teams-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-minus",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"minus\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mission-control",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mission-control\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mobile-app",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mobile-app\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mobile-browser",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mobile-browser\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mobile",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mobile\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mongo-db",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mongo-db\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mootools",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mootools\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-more",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"more\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-msbuild-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"msbuild-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-msbuild",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"msbuild\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mule-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mule-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mule",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mule\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-multiple",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"multiple\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-mysql",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"mysql\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-nant",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"nant\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-neotys-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"neotys-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-neotys",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"neotys\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-netflix-oss",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"netflix-oss\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-netty-logo",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"netty-logo\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-network",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"network\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-newrelic",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"newrelic\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-news",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"news\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-new-york",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"new-york\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-nginx",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"nginx\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-nightmode",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"nightmode\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-noc",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"noc\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-node-js",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"node-js\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-notebook",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"notebook\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-nunit",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"nunit\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-oneagent-crossed",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"oneagent-crossed\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-oneagent-sdk",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"oneagent-sdk\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-oneagent",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"oneagent\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-open-liberty-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"open-liberty-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-open-liberty",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"open-liberty\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-openshift-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"openshift-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-openshift",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"openshift\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-openstack-logo",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"openstack-logo\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-openstack",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"openstack\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-opentracing-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"opentracing-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-opentracing",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"opentracing\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-opera",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"opera\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-opsgenie",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"opsgenie\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-options-menu",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"options-menu\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-oraclecloud",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"oraclecloud\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-oracledatabase",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"oracledatabase\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-oracleforms",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"oracleforms\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-oraclejolt",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"oraclejolt\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-oraclesolaris",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"oraclesolaris\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-oracle",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"oracle\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-oracletuxedo",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"oracletuxedo\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-oracleweblogic",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"oracleweblogic\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-orcestrationplatform",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"orcestrationplatform\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ordered-list",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ordered-list\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-overview",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"overview\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-page-paper",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"page-paper\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-pagerduty",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"pagerduty\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-paperclip",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"paperclip\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-paris",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"paris\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-partner",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"partner\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-pause",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"pause\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-percentile-chart",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"percentile-chart\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-perfromance-health",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"perfromance-health\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-perl",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"perl\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-phonegap-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"phonegap-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-phonegap",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"phonegap\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-php",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"php\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-phpunit-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"phpunit-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-phpunit",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"phpunit\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-pie-chart",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"pie-chart\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-pinpoint-location",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"pinpoint-location\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-pin",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"pin\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-pivotal-cloud-foundry-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"pivotal-cloud-foundry-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-pivotal-cloud-foundry",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"pivotal-cloud-foundry\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-pivotal",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"pivotal\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-play-framework-logo",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"play-framework-logo\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-play",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"play\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-plugin-connection",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"plugin-connection\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-plugin",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"plugin\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-plus-add",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"plus-add\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-postgre",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"postgre\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-presales",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"presales\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-processes",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"processes\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-process",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"process\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-prototype",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"prototype\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-proxy",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"proxy\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-puppet-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"puppet-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-puppet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"puppet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-purelytics",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"purelytics\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-puremodel",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"puremodel\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-purepath",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"purepath\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-purestack",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"purestack\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-python",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"python\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-qemu-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"qemu-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-qemu",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"qemu\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-queue",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"queue\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-rabbit-mq",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"rabbit-mq\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-radar-detection",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"radar-detection\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-react-js-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"react-js-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-react-js",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"react-js\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-realuser-monitorwebsiteusers-",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"realuser-monitorwebsiteusers-\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-realuser-monitorwebsiteusers",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"realuser-monitorwebsiteusers\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-realuser",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"realuser\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-rebuildstack",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"rebuildstack\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-record",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"record\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-recurringissue",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"recurringissue\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-redhat",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"redhat\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-redis",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"redis\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-refresh",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"refresh\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-registerdeals",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"registerdeals\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-removecolumn",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"removecolumn\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-removerow",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"removerow\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-repair",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"repair\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-reports",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"reports\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-request",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"request\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-resetpassword",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"resetpassword\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-resize",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"resize\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-resource-contention",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"resource-contention\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-resourcerequest",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"resourcerequest\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-rest-easy",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"rest-easy\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-restify-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"restify-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-restify",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"restify\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-restore",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"restore\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-resume",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"resume\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-revert",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"revert\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-riak",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"riak\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-richfaces",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"richfaces\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-rightend",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"rightend\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-right",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"right\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-robots",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"robots\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-routes",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"routes\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-rss",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"rss\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-rubyonrails",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"rubyonrails\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ruby",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ruby\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ruxituser",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ruxituser\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-safari",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"safari\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sales",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sales\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-saltstack-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"saltstack-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-saltstack",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"saltstack\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-samba-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"samba-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-samba",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"samba\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-san-jose",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"san-jose\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-saopaulo",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"saopaulo\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sap-hybris-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sap-hybris-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sap-hybris",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sap-hybris\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sap-maxdb",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sap-maxdb\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sap",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sap\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sap-sybase-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sap-sybase-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sap-sybase",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sap-sybase\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-scala",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"scala\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-scale-compare",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"scale-compare\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-scatter-plot",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"scatter-plot\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-scissors",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"scissors\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-script",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"script\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sdk",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sdk\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-search-magnifyingglass",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"search-magnifyingglass\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-seattle",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"seattle\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-selenium",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"selenium\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sencha-touch",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sencha-touch\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-send-receive-traffic",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"send-receive-traffic\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sensor",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sensor\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-serverbracket",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"serverbracket\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-server",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"server\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-servicenow-logo",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"servicenow-logo\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-servicenow",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"servicenow\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-services",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"services\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-session-recording",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"session-recording\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sharepoint",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sharepoint\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-share",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"share\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-shoppingcart",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"shoppingcart\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-signal",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"signal\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-singapore",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"singapore\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sitecore-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sitecore-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sitecore",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sitecore\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-slack",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"slack\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-slideshare",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"slideshare\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-slow",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"slow\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-smartbear",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"smartbear\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-smartscape",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"smartscape\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-smiley-enraged-1",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"smiley-enraged-1\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-smiley-enraged-2",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"smiley-enraged-2\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-smiley-happy-1",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"smiley-happy-1\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-smiley-happy-2",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"smiley-happy-2\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-smiley-neutral-1",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"smiley-neutral-1\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-smiley-neutral-2",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"smiley-neutral-2\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-smiley-ok-1",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"smiley-ok-1\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-smiley-ok-2",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"smiley-ok-2\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-smiley-unhappy-1",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"smiley-unhappy-1\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-smiley-unhappy-2",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"smiley-unhappy-2\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-soapui-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"soapui-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-soapui",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"soapui\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-softwareag-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"softwareag-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-softwareag",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"softwareag\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sorter-down",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sorter-down\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sorter-up",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sorter-up\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-splunk",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"splunk\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-spring-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"spring-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-spring",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"spring\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sql-lite-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sql-lite-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sql-lite",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sql-lite\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sql-microsoft",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sql-microsoft\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-stacked-area-chart",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"stacked-area-chart\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-stacked-bar-chart",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"stacked-bar-chart\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-stackoverflow-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"stackoverflow-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-stackoverflow",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"stackoverflow\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-star-empty",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"star-empty\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-stop",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"stop\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-storage-cloud",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"storage-cloud\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-storage-local",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"storage-local\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-storage",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"storage\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-storm-apache",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"storm-apache\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-stride-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"stride-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-stride",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"stride\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-struts",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"struts\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-subversion",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"subversion\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-summary",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"summary\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-support-contact",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"support-contact\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-support-help",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"support-help\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-suselinux",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"suselinux\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-swift",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"swift\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-switch",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"switch\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-sydney",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"sydney\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-symfony-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"symfony-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-symfony",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"symfony\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-syntheticmonitoring",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"syntheticmonitoring\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-table",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"table\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-tablet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"tablet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-tabletui",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"tabletui\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-tag",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"tag\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-team",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"team\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-thermometer",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"thermometer\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-tibco-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"tibco-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-tibco",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"tibco\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-tile-view",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"tile-view\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-timemeasurement",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"timemeasurement\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-traffic-light",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"traffic-light\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-tree",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"tree\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-trello-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"trello-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-trello",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"trello\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-trend-chart-down",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"trend-chart-down\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-trend-chart-up",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"trend-chart-up\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-trend-down",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"trend-down\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-trend-up",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"trend-up\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-trialdaycounter",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"trialdaycounter\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-trophy-outline",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"trophy-outline\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-trophy",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"trophy\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-twilio-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"twilio-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-twilio",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"twilio\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-twitter",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"twitter\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ubuntulinux",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ubuntulinux\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-ufo",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"ufo\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-umbrella",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"umbrella\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-underconstruction",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"underconstruction\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-unknown-server",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"unknown-server\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-unknown",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"unknown\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-unknown-user",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"unknown-user\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-unlock",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"unlock\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-usage1",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"usage1\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-usage2",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"usage2\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-usergroup",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"usergroup\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-user-uem",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"user-uem\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-varnishcache",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"varnishcache\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-vault-safe",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"vault-safe\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-vcenter",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"vcenter\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-versatile",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"versatile\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-vert-x",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"vert-x\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-victorops",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"victorops\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-video",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"video\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-virtualbox",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"virtualbox\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-virtualizationlayer",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"virtualizationlayer\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-visual-resolution-path",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"visual-resolution-path\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-visualstudio-microsoft",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"visualstudio-microsoft\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-visual-studio-tfs",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"visual-studio-tfs\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-vm-ec2",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"vm-ec2\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-vm-hyperv",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"vm-hyperv\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-vm-kvm",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"vm-kvm\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-vm-openstack",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"vm-openstack\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-vm-virtualbox",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"vm-virtualbox\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-vm-vmware",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"vm-vmware\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-vmware",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"vmware\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-vm-xen",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"vm-xen\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-voip",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"voip\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-w3c",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"w3c\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-was-liberty-profile",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"was-liberty-profile\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-web2py",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"web2py\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-webhook",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"webhook\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-webpages",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"webpages\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-webserver",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"webserver\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-web-sphere",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"web-sphere\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-web",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"web\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-wercker-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"wercker-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-wercker",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"wercker\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-wifi-bandwidth",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"wifi-bandwidth\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-wildfly",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"wildfly\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-windows",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"windows\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-windows-vm",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"windows-vm\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-wordpress-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"wordpress-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-wordpress",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"wordpress\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-xcode",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"xcode\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-xenialabs-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"xenialabs-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-xenialabs",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"xenialabs\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-xen",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"xen\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-xhr-load-action",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"xhr-load-action\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-xhrprocess",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"xhrprocess\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-xmatters-signet",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"xmatters-signet\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-xmatters",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"xmatters\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-yui",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"yui\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-zeromq",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"zeromq\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-zkoss",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"zkoss\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-zoomin-found",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"zoomin-found\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-zoomout-notfound",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"zoomout-notfound\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-name-zos",
+          "changes": [
+            {
+              "type": "property",
+              "key": "name",
+              "value": "\"zos\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-color-main",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"main\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-color-accent",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"accent\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-color-warning",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"warning\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-color-error",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"error\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-color-cta",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"cta\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-color-undefined",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "undefined"
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-color-light",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"light\""
+            }
+          ]
+        },
+        {
+          "name": "dt-icon-color-dark",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"dark\""
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

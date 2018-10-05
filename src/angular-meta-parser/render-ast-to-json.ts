@@ -14,7 +14,7 @@ export function renderASTtoJSON(ast: Map<string, ParseResult>, pkg: string): AMP
     jsonResult.push(...result.visit(jsonVisitor));
   }
 
-  const formatted = {};
+  const formatted: { [key: string]: AMP.Component } = {};
   jsonResult.forEach(result => formatted[result.component] = result);
 
   return {

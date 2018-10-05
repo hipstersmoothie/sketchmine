@@ -20,7 +20,6 @@ export async function main(
   inFile: string = 'index.ts',
   inMemory: boolean = false,
 ): Promise<number | AMP.Result> {
-  let parseResults = new Map<string, ParseResult>();
 
   if (!rootDir || !library) {
     throw new Error('The --rootDir and the --library, to the angular components has to be specified!');
@@ -30,6 +29,7 @@ export async function main(
   const tsconfig = resolve(rootDir, 'tsconfig.json');
   const nodeModules = join(dirname(pkg), 'node_modules');
   const entryFile = resolve(rootDir, library, inFile);
+  let parseResults = new Map<string, ParseResult>();
 
   parseFile(entryFile, adjustPathAliases(tsconfig, join(rootDir, library)), parseResults, nodeModules);
 
