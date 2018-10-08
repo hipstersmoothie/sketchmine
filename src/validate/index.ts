@@ -21,7 +21,9 @@ export async function main(args: string[]) {
   log.notice(`validate file: ${file}`);
 
   // validate the file name
-  filenameValidation(file);
+  if (env === 'product') {
+    filenameValidation(file);
+  }
 
   /** unzip only the pages for the validation */
   return unzip(file, /pages\/.*?\.json/).then(async (result) => {
