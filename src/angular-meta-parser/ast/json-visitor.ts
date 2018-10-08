@@ -10,67 +10,14 @@ import { ParseComponent } from './parse-component';
 import { ParseResult } from './parse-result';
 import { ParseNode } from './parse-node';
 import { ParseInterface } from './parse-interface';
+import { mergeClassMembers, generateVariants } from '../utils';
 
-/**
- * Merge members from implement or extend with the original members of a component
- * @param originalMembers Array of Object with {key: any, value: any}
- * @param toBeMerged
- * @returns
- */
-export function mergeClassMembers(originalMembers: any[], toBeMerged: any[]): any[] {
-  if (!toBeMerged.length) {
-    return originalMembers;
-  }
-  const result = originalMembers;
-  toBeMerged.forEach((member) => {
-    const index = result.findIndex(m => m.key === member.key);
-    /** property exists in original Members */
-    if (index > -1) {
-      /** value is null and can be replaced with new results */
-      if (result[index].value === null || result[index].value.length === 0) {
-        result[index].value = member.value;
-      } else { /** value exists so make an array and merege them */
-        const value = Array.isArray(member.value) ?
-          [result[index].value, ...member.value] :  [result[index].value, member.value];
-        /** make set to delete duplicates */
-        result[index].value = Array.from(new Set(value));
-      }
-    } else { /** if the property does not exist in the original object just add it. */
-      result.push(member);
-    }
-  });
-  return result;
-}
+const EXIT_TAGS: NodeTags[] = ['internal', 'unrelated', 'private', 'hasUnderscore'];
 
-/**
- * generates the changes from the variants with unique names that represent
- * the value and the key of the change
- * @param variants Array of Variants
- * @param className needed for the variant name
- */
-export function generateVariants(variants: any, className: string): AMP.Variant[] {
-  const result: AMP.Variant[] = [];
-  const baseName = camelCaseToKebabCase(className);
-
-  variants.forEach((variant) => {
-    variant.value.forEach((val: string) => {
-      let nameValue = '';
-      /** if the value is a boolean true then the key is enought and no value is needed */
-      if (val !== 'true') {
-        nameValue = `-${val.toString().replace(/\"/g, '')}`;
-      }
-      result.push({
-        name: `${baseName}-${variant.key}${nameValue}`,
-        changes: [{
-          type: variant.type,
-          key: variant.key,
-          value: val,
-        }],
-      });
-    });
-  });
-
-  return result;
+export interface Property {
+  type: 'property';
+  key: string;
+  value: string[];
 }
 
 /**
@@ -95,7 +42,7 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
   visitUnionType(node: ParseUnionType): any[] {
     return arrayFlatten(this.visitAll(node.types));
   }
-  visitProperty(node: ParseProperty): any {
+  visitProperty(node: ParseProperty): Property {
     return {
       type: 'property',
       key: node.name,
@@ -129,6 +76,8 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
     const nodes = this.visitAll(node.nodes)
       .filter(node => node.className);
 
+    console.log(JSON.stringify(nodes, null , 2))
+
     /** modify variants and split every value as own variety */
     nodes.forEach(node => node.variants = generateVariants(node.variants, node.className));
     return nodes;
@@ -151,9 +100,8 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
  * @param node Node
  */
 function hasExitCondition(node: ParseNode): boolean {
-  const exitTags: NodeTags[] = ['internal', 'unrelated', 'private', 'hasUnderscore'];
   if (node instanceof ParseDefinition) {
-    return !!exitTags.find(tag => node.tags.includes(tag));
+    return !!EXIT_TAGS.find(tag => node.tags.includes(tag));
   }
   return false;
 }
