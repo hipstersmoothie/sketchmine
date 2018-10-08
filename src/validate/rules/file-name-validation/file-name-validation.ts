@@ -27,6 +27,7 @@ export function filenameValidation(
     selector: undefined,
     validation: undefined,
     name: RULE_NAME,
+    env: ['product'],
     description: 'Validate if the filename matches this pattern [folder]-[feature].sketch',
   };
 
