@@ -24,7 +24,7 @@ export const rules: IValidationRule[] = [
     name: 'color-palette-validation',
     description: 'Check if the used colors are in our color palette.',
     ignoreArtboards: ['full-color-palette'],
-    env: ['global'],
+    env: ['global', 'product'],
     validation: colorValidation,
   },
   {
