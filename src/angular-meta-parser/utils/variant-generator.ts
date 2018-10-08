@@ -1,43 +1,48 @@
 import { Property } from '../ast/json-visitor';
 import { AMP } from '../meta-information';
+import { generateVariantName } from './generate-variant-name';
 
+/**
+ * generate all the permutaded variants of a component
+ * @param baseName name of the component for example button, or alert, ...
+ * @param variants the Porperty or methods that can be applied
+ */
 export function variantGenerator(baseName: string, ...variants: Property[]): AMP.Variant[] {
+  if (!variants || !Array.isArray(variants) || !variants.length) {
+    return [];
+  }
   const result: AMP.Variant[] = [];
   const length = variants.length - 1;
 
   // add undefined to mutate single values as well
-  variants.map(variant => variant.value.push(undefined));
+  variants.map(variant =>  variant.value.push(undefined));
 
-  function helper(changes: (AMP.VariantMethod | AMP.VariantProperty)[], name: string, i: number) {
+  function helper(changes: (AMP.VariantMethod | AMP.VariantProperty)[], i: number) {
     const variant = variants[i];
-    let stackedName = name;
 
     for (let j = 0, l = variant.value.length; j < l; j += 1) {
       const value = variant.value[j];
       const newChanges = changes.slice(0); // clone arr
-      if (value) {
+      if (value && value !== 'undefined') {
         newChanges.push({
           type: variant.type,
           key: variant.key,
           value,
         });
-        stackedName += `/${variant.key}/${value.replace(/\"/g, '')}`;
       }
       if (i === length) {
         if (newChanges.length) {
           result.push({
-            name: stackedName,
+            name: generateVariantName(baseName, newChanges),
             changes: newChanges,
           });
-          // reset stackedName to baseName for next change
-          stackedName = baseName;
         }
       } else {
-        helper(newChanges, stackedName, i + 1);
+        helper(newChanges, i + 1);
       }
     }
   }
 
-  helper([], baseName, 0);
-  return result;
+  helper([], 0);
+  return result.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
 }

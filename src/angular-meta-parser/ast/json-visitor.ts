@@ -11,6 +11,7 @@ import { ParseResult } from './parse-result';
 import { ParseNode } from './parse-node';
 import { ParseInterface } from './parse-interface';
 import { mergeClassMembers, generateVariants } from '../utils';
+import { variantGenerator } from '../utils/variant-generator';
 
 const EXIT_TAGS: NodeTags[] = ['internal', 'unrelated', 'private', 'hasUnderscore'];
 
@@ -76,10 +77,8 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
     const nodes = this.visitAll(node.nodes)
       .filter(node => node.className);
 
-    console.log(JSON.stringify(nodes, null , 2))
-
     /** modify variants and split every value as own variety */
-    nodes.forEach(node => node.variants = generateVariants(node.variants, node.className));
+    nodes.forEach(node => node.variants = variantGenerator(node.className, ...node.variants));
     return nodes;
   }
 
