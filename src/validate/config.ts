@@ -24,19 +24,21 @@ export const rules: IValidationRule[] = [
     name: 'color-palette-validation',
     description: 'Check if the used colors are in our color palette.',
     ignoreArtboards: ['full-color-palette'],
-    env: ['product'],
+    env: ['global', 'product'],
     validation: colorValidation,
   },
   {
     selector: ['artboard'],
     name: 'arboard-validation',
     description: 'Check if the artboard names are valid.',
+    env: ['product'],
     validation: artboardValidation,
   },
   {
     selector: ['page'],
     name: 'page-validation',
     description: 'Check if the page names are valid.',
+    env: ['product'],
     validation: pageValidation,
     options: {
       artboardSizes,
