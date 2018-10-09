@@ -373,8 +373,11 @@ function resolveDesignPropValues(node: ts.Node): any[] {
   if (!comment) {
     return values;
   }
-  /** regex for param value: const regex = /@design-param-value\s(.+?)\s(.+)\n/g; */
-  /** matches property values https://regex101.com/r/SWxdIh/4 */
+  /** regex for param value:
+   * @see https://regex101.com/r/0scFW3/1
+   * @example const regex = /@design-param-value\s(.+?)\s(.+)\n/g; */
+  /** matches property values
+   * @see https://regex101.com/r/SWxdIh/4 */
   const regex = /@design-prop-value\s(.+?)(\s?\*\/)?$/gm;
   let match = regex.exec(comment);
   while (match !== null) {

@@ -31,6 +31,24 @@ are written as default values in the `./src/angular-meta-parser/config.json`. Th
 * Where do I get these tools?
 * Are there specific versions required?
 
+## Annotations for the code
+
+It is possible to add JSDoc annotatins that are specifc for the generation of the meta information abstraction of the library in case that some properties can be filled with values or classes can be ignored for design unrelated stuff.
+
+// TODO: add optional selector to click and hoverable, to specify a trigger for clicking!
+
+| Annotation | Explanation |
+| --- | --- |
+| `@private` | Marks property, class, ..., as private and will be ignored by the parser. |
+| `@internal` | Marks property, class, ..., as internal same as private. |
+| `@design-unrelated` |  Marks property, class, ..., as unrelated for the design system and will be ignored by the parser. |
+| `@design-hoverable` | the component is hoverable |
+| `@design-clickable` | the component is clickable |
+| `@design-prop-value "UNIQQUE_ID_FOR_ELEMENT"` | bind a custom value to a property. can be even a complex object or a number, string, etc.. [see Regex](https://regex101.com/r/SWxdIh/4) |
+| `@design-param-value propToBeBinded {obj: "asdf"}` | bind a custom value to a specific param. can be even a complex object or a number, string, etc.. [see Regex](https://regex101.com/r/0scFW3/1) |
+| `@no-design-combinations` | Does not combine all the properties together and did not generate all possible combinations. |
+| `@design-action-timeout` | Uses a delay for drawing, if an action should be performed like an animation.|
+
 ### How to install
 
 Just run `npm i` in the root.
