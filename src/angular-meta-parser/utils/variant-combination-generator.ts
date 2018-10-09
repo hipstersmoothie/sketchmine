@@ -3,11 +3,11 @@ import { AMP } from '../meta-information';
 import { generateVariantName } from './generate-variant-name';
 
 /**
- * generate all the permutaded variants of a component
+ * generate all the combined variants of a component
  * @param baseName name of the component for example button, or alert, ...
  * @param variants the Porperty or methods that can be applied
  */
-export function variantGenerator(baseName: string, ...variants: Property[]): AMP.Variant[] {
+export function variantCombinationGenerator(baseName: string, ...variants: Property[]): AMP.Variant[] {
   if (!variants || !Array.isArray(variants) || !variants.length) {
     return [];
   }

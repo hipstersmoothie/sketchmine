@@ -39,8 +39,7 @@ It is possible to add JSDoc annotatins that are specifc for the generation of th
 
 | Annotation | Explanation |
 | --- | --- |
-| `@private` | Marks property, class, ..., as private and will be ignored by the parser. |
-| `@internal` | Marks property, class, ..., as internal same as private. |
+| `@internal` | Marks property, class, ..., as internal and will be ignored. The same like private class members. |
 | `@design-unrelated` |  Marks property, class, ..., as unrelated for the design system and will be ignored by the parser. |
 | `@design-hoverable` | the component is hoverable |
 | `@design-clickable` | the component is clickable |

@@ -12,7 +12,7 @@ export function generateVariants(variants: Property[], className: string): AMP.V
   const result: AMP.Variant[] = [];
   const baseName = camelCaseToKebabCase(className);
 
-  console.log(variants)
+  console.log(variants);
 
   variants.forEach((variant) => {
     variant.value.forEach((val: string) => {
@@ -34,5 +34,3 @@ export function generateVariants(variants: Property[], className: string): AMP.V
 
   return result;
 }
-
-

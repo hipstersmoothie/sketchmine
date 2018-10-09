@@ -30,15 +30,18 @@ import {
   hasExportModifier,
   parseAbsoluteModulePath,
   getDecoratorOfType,
+  checkNodeTags,
+  visitJsDoc,
 } from './utils';
 import { Logger } from '@utils';
 
 const log = new Logger();
 
-const JSDOC_ANNOTATION_INTERNAL = '@internal';
-const JSDOC_ANNOTATION_UNRELATED = '@design-unrelated';
-const JSDOC_ANNOTATION_CLICKABLE = '@design-clickable';
-const JSDOC_ANNOTATION_HOVERABLE = '@design-hoverable';
+export const JSDOC_ANNOTATION_INTERNAL = '@internal';
+export const JSDOC_ANNOTATION_UNRELATED = '@design-unrelated';
+export const JSDOC_ANNOTATION_CLICKABLE = '@design-clickable';
+export const JSDOC_ANNOTATION_HOVERABLE = '@design-hoverable';
+export const JSDOC_ANNOTATION_NO_COMBINATIONS = '@no-design-combinations';
 
 /**
  * The factory that visits the source Files
@@ -385,49 +388,4 @@ function resolveDesignPropValues(node: ts.Node): any[] {
     match = regex.exec(comment);
   }
   return values;
-}
-
-/**
- * Check if a node has an **@internal** or **@design-unrelated** identifier in the jsDoc comment
- * basic blacklisting of components, properties, methods and so on.
- * @param comment string of the JsDoc comment
- * @param node The node where the information should be applied
- */
-function checkNodeTags(node: ts.Node): NodeTags[] {
-  const comment = visitJsDoc(node);
-  const tags: NodeTags[] = [];
-
-  if (node.modifiers) {
-    if (node.modifiers.find(m => m.kind === ts.SyntaxKind.PrivateKeyword)) {
-      tags.push('private');
-    }
-  }
-
-  const name = getSymbolName(node);
-
-  if (name && name.startsWith('_')) {
-    tags.push('hasUnderscore');
-  }
-
-  if (comment !== null && comment.includes(JSDOC_ANNOTATION_INTERNAL)) {
-    tags.push('internal');
-  }
-  if (comment !== null && comment.includes(JSDOC_ANNOTATION_UNRELATED)) {
-    tags.push('unrelated');
-  }
-  return tags;
-}
-
-/**
- * Check if a jsDoc comment exist on node and returns the comment as string
- * @param {ts.Node} node Typescript AST node
- */
-function visitJsDoc(node: ts.Node): string | null {
-  const jsDocComments: any[] = (node as any).jsDoc;
-  if (!jsDocComments) {
-    return null;
-  }
-  return jsDocComments
-    .map(comment => comment.getFullText())
-    .join('\n') as string;
 }

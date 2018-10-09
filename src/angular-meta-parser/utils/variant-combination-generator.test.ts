@@ -1,5 +1,5 @@
 import { Property } from '../ast/json-visitor';
-import { variantGenerator } from './variant-generator';
+import { variantCombinationGenerator } from './variant-combination-generator';
 
 const BUTTON_VARIANTS: Property[] = [
   { type: 'property', key: 'disabled', value: ['true'] },
@@ -16,7 +16,7 @@ describe('[angular-meta-parser] › utils › generate variants', () => {
       { type: 'property', key: 'color', value: ['"main"'] },
     ];
 
-    const result = variantGenerator('DtButton', ...testVariants);
+    const result = variantCombinationGenerator('DtButton', ...testVariants);
     expect(result).toBeInstanceOf(Array);
     expect(result).toHaveLength(3);
     expect(result).toContainEqual(
@@ -63,7 +63,7 @@ describe('[angular-meta-parser] › utils › generate variants', () => {
   });
 
   test('permutate all the button variants', () => {
-    const result = variantGenerator('DtButton', ...BUTTON_VARIANTS);
+    const result = variantCombinationGenerator('DtButton', ...BUTTON_VARIANTS);
     expect(result).toBeInstanceOf(Array);
     expect(result).toHaveLength(23);
 
