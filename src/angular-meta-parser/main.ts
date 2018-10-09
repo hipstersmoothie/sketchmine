@@ -1,6 +1,6 @@
 import { join, resolve, dirname } from 'path';
 import { ParseResult, AstVisitor } from './ast';
-import { adjustPathAliases } from './utils';
+import { adjustPathAliases, readTsConfig } from './utils';
 import { ReferenceResolver } from './reference-resolver';
 import { writeJSON } from '@utils';
 import { ValuesResolver } from './values-resolver';
@@ -31,7 +31,8 @@ export async function main(
   const entryFile = resolve(rootDir, library, inFile);
   let parseResults = new Map<string, ParseResult>();
 
-  parseFile(entryFile, adjustPathAliases(tsconfig, join(rootDir, library)), parseResults, nodeModules);
+  const config = await readTsConfig(tsconfig);
+  parseFile(entryFile, adjustPathAliases(config, join(rootDir, library)), parseResults, nodeModules);
 
   const results = Array.from(parseResults.values());
 
