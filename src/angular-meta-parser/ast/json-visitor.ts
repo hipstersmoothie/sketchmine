@@ -10,7 +10,7 @@ import { ParseComponent } from './parse-component';
 import { ParseResult } from './parse-result';
 import { ParseNode } from './parse-node';
 import { ParseInterface } from './parse-interface';
-import { mergeClassMembers, variantCombinationGenerator } from '../utils';
+import { mergeClassMembers, variantCombinationGenerator, generateVariants } from '../utils';
 
 const EXIT_TAGS: NodeTags[] = ['internal', 'unrelated', 'private', 'hasUnderscore'];
 
@@ -69,6 +69,7 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
       clickable: node.clickable,
       hoverable: node.hoverable,
       variants: componentMembers,
+      combinedVariants: node.combinedVariants,
     };
   }
 
@@ -77,7 +78,13 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
       .filter(node => node.className);
 
     /** modify variants and split every value as own variety */
-    nodes.forEach(node => node.variants = variantCombinationGenerator(node.className, ...node.variants));
+    nodes.forEach((node) => {
+      if (node.combinedVariants) {
+        node.variants = variantCombinationGenerator(node.component, ...node.variants);
+      } else {
+        node.variants = generateVariants(node.component, node.variants);
+      }
+    });
     return nodes;
   }
 

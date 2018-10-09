@@ -1,18 +1,16 @@
 import { AMP } from '../meta-information';
 import { camelCaseToKebabCase } from '@utils';
 import { Property } from '../ast/json-visitor';
+import { generateVariantName } from './generate-variant-name';
 
 /**
  * generates the changes from the variants with unique names that represent
  * the value and the key of the change
+ * @param component needed for the variant name
  * @param variants Array of Variants
- * @param className needed for the variant name
  */
-export function generateVariants(variants: Property[], className: string): AMP.Variant[] {
+export function generateVariants(component: string, variants: Property[]): AMP.Variant[] {
   const result: AMP.Variant[] = [];
-  const baseName = camelCaseToKebabCase(className);
-
-  console.log(variants);
 
   variants.forEach((variant) => {
     variant.value.forEach((val: string) => {
@@ -21,13 +19,15 @@ export function generateVariants(variants: Property[], className: string): AMP.V
       if (val !== 'true') {
         nameValue = `-${val.toString().replace(/\"/g, '')}`;
       }
+      const changes = [{
+        type: variant.type,
+        key: variant.key,
+        value: val,
+      }];
+
       result.push({
-        name: `${baseName}-${variant.key}${nameValue}`,
-        changes: [{
-          type: variant.type,
-          key: variant.key,
-          value: val,
-        }],
+        name: generateVariantName(component, changes).replace('/default', ''),
+        changes,
       });
     });
   });

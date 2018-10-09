@@ -157,6 +157,7 @@ export function tsVisitorFactory(
       implementsHeritageClauses,
       !!comment && comment.includes(JSDOC_ANNOTATION_CLICKABLE),
       !!comment && comment.includes(JSDOC_ANNOTATION_HOVERABLE),
+      !!comment && !comment.includes(JSDOC_ANNOTATION_NO_COMBINATIONS),
     ));
   }
 

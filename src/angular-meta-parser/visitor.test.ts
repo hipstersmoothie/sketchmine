@@ -7,7 +7,7 @@ import * as fs from 'fs';
 
 const TEST_FILE_PATH = `${process.cwd()}/tests/fixtures/button.ts`;
 
-describe('➡ AST Visitor', () => {
+describe('[angular-meta-parser] › visitor', () => {
   let sourceFile: ts.SourceFile;
 
   beforeAll(() => {

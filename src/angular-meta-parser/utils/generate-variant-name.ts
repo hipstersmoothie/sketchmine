@@ -36,7 +36,7 @@ export function generateVariantName(base: string, changes: (AMP.VariantMethod | 
 
   const actionPart = actions.length ? `/${actions.sort().join('/')}` : '/default';
   const variantPart = parts.length ? `/${parts.join('/')}` : '';
-  const basePart = camelCaseToKebabCase(base).replace(/^dt-/, ''); // replace dynatrace prefix
+  const basePart = camelCaseToKebabCase(base);
 
   return `${basePart}${variantPart}${actionPart}`;
 }

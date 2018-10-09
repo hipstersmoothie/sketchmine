@@ -7,7 +7,7 @@ describe('[angular-meta-parser] › utils › generate variant name', () => {
 
   test('generate name for button primary', () => {
     const variants: Porperty[] =  [{ type: 'property', key: 'variant', value: '"primary"' }];
-    const name = generateVariantName('DtButton', variants);
+    const name = generateVariantName('button', variants);
     expect(name).toMatch('button/primary/default');
   });
 
@@ -16,7 +16,7 @@ describe('[angular-meta-parser] › utils › generate variant name', () => {
       { type: 'property', key: 'variant', value: '"primary"' },
       { type: 'property', key: 'color', value: '"main"' },
     ];
-    const name = generateVariantName('DtButton', variants);
+    const name = generateVariantName('button', variants);
     expect(name).toMatch('button/main/primary/default');
   });
 
@@ -26,7 +26,7 @@ describe('[angular-meta-parser] › utils › generate variant name', () => {
       { type: 'property', key: 'color', value: '\"main\"' },
       { type: 'property', key: 'disabled', value: 'true' },
     ];
-    const name = generateVariantName('DtButton', variants);
+    const name = generateVariantName('button', variants);
     expect(name).toMatch('button/main/primary/disabled');
   });
 
@@ -36,7 +36,7 @@ describe('[angular-meta-parser] › utils › generate variant name', () => {
       { type: 'property', key: 'variant', value: '\"primary\"' },
       { type: 'property', key: 'color', value: '\"main\"' },
     ];
-    const name = generateVariantName('DtButton', variants);
+    const name = generateVariantName('button', variants);
     expect(name).toMatch('button/main/primary/disabled');
   });
 
@@ -44,7 +44,7 @@ describe('[angular-meta-parser] › utils › generate variant name', () => {
     const variants: Porperty[] =  [
       { type: 'property', key: 'severity', value: 'undefined' },
     ];
-    expect(() => generateVariantName('DtAlert', variants))
+    expect(() => generateVariantName('alert', variants))
       .toThrowError('Value have to be defined for name generation!');
   });
 
@@ -52,7 +52,7 @@ describe('[angular-meta-parser] › utils › generate variant name', () => {
     const variants: Porperty[] =  [
       { type: 'property', key: 'required', value: 'true' },
     ];
-    const name = generateVariantName('DtInlineEditor', variants);
+    const name = generateVariantName('inlineEditor', variants);
     expect(name).toMatch('inline-editor/required/default');
   });
 
@@ -60,7 +60,7 @@ describe('[angular-meta-parser] › utils › generate variant name', () => {
     const variants: Porperty[] =  [
       { type: 'property', key: 'disabled', value: 'true' },
     ];
-    const name = generateVariantName('DtButton', variants);
+    const name = generateVariantName('button', variants);
     expect(name).toMatch('button/disabled');
   });
 });

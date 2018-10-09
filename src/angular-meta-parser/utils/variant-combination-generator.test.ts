@@ -16,7 +16,7 @@ describe('[angular-meta-parser] › utils › generate variants', () => {
       { type: 'property', key: 'color', value: ['"main"'] },
     ];
 
-    const result = variantCombinationGenerator('DtButton', ...testVariants);
+    const result = variantCombinationGenerator('button', ...testVariants);
     expect(result).toBeInstanceOf(Array);
     expect(result).toHaveLength(3);
     expect(result).toContainEqual(
@@ -63,7 +63,7 @@ describe('[angular-meta-parser] › utils › generate variants', () => {
   });
 
   test('permutate all the button variants', () => {
-    const result = variantCombinationGenerator('DtButton', ...BUTTON_VARIANTS);
+    const result = variantCombinationGenerator('button', ...BUTTON_VARIANTS);
     expect(result).toBeInstanceOf(Array);
     expect(result).toHaveLength(23);
 
