@@ -55,7 +55,7 @@ export class Text extends Base {
      * When the font size is normal the browser sets it of 1.2 of the font size:
      * @see https://www.w3.org/TR/CSS22/visudet.html#line-height
     */
-    const lineHeight = (lh === 'normal' || display === 'inline') ? this.fontSize * 1.2 : parseInt(lh, 10);
+    const lineHeight = (lh === 'normal' || display === 'inline') ? Math.ceil(this.fontSize * 1.2) : parseInt(lh, 10);
     return {
       _class: SketchObjectTypes.ParagraphStyle,
       alignment: resolveTextAlign(this.styles.textAlign),
@@ -167,7 +167,7 @@ export class Text extends Base {
 
     // if style display inline the bounding client gets ignored for the size
     if (this.styles.display === 'inline') {
-      height = this.fontSize * 1.2;
+      height = Math.ceil(this.fontSize * 1.2);
     }
 
     return `{{${frame.x}, ${frame.y}}, {${frame.width}, ${height}}}`;
