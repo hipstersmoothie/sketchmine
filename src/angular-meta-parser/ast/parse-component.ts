@@ -16,6 +16,7 @@ export class ParseComponent extends ParseInterface {
     public implementing: ParseReferenceType[],
     public clickable: boolean,
     public hoverable: boolean,
+    public combinedVariants: boolean = true,
   ) {
     super(name, location, tags, members);
   }

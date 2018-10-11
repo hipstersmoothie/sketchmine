@@ -2,7 +2,7 @@ import { ParseNode } from './parse-node';
 import { ParseLocation } from './parse-location';
 import { AstVisitor } from './ast-visitor';
 
-export type NodeTags = 'internal' | 'unrelated' | 'private' | 'hasUnderscore';
+export type NodeTags = 'internal' | 'unrelated' | 'private' | 'hasUnderscore' | 'noCombinations';
 
 /**
  * @class

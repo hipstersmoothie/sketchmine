@@ -14,8 +14,8 @@ export namespace AMP {
     type: 'property';
     key: string;
     value: string;
-  } 
-  
+  }
+
   export interface Variant {
     name: string;
     changes: (VariantMethod | VariantProperty)[];
@@ -29,6 +29,7 @@ export namespace AMP {
     hoverable: boolean;
     selector: string[];
     variants: Variant[];
+    combinedVariants: boolean; // defines if the variants are combined or not
   }
 
   export interface Result {
