@@ -46,7 +46,10 @@ export class Text extends Base {
 
   addParagraphStyle(): IParagraphStyle {
     const lh = this.styles.lineHeight;
-    const lineHeight = (lh !== 'normal') ? parseInt(lh, 10) : parseInt(this.styles.fontSize, 10);
+    const display = this.styles.display;
+    /** display inline gives wrong bounding client rect for lineheight */
+    const lineHeight = (lh !== 'normal' && display !== 'inline') ?
+      parseInt(lh, 10) : parseInt(this.styles.fontSize, 10);
     return {
       _class: SketchObjectTypes.ParagraphStyle,
       alignment: resolveTextAlign(this.styles.textAlign),

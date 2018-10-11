@@ -14,7 +14,17 @@ async function asyncForEach(array, callback) {
   }
 }
 
-const timeout = ms => new Promise(res => setTimeout(res, ms))
+export function waitForDraw(): Promise<void> {
+  return new Promise((res) => {
+    // Timout as Fallback if the requestIdleCallback needs longer than 5sec
+    const timeoutId = setTimeout(res, 5000);
+    /** @see https://developers.google.com/web/updates/2015/08/using-requestidlecallback */
+    window.requestIdleCallback(() => {
+      clearTimeout(timeoutId);
+      res();
+    });
+  });
+}
 
 @Component({
   selector: 'app-root',
@@ -25,7 +35,7 @@ export class AppComponent implements OnInit{
   @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
   constructor(
     private _viewContainerRef: ViewContainerRef,
-    private _metaService: MetaService, 
+    private _metaService: MetaService,
     private _registry: ExamplesRegistry,
   ) { }
 
@@ -73,12 +83,11 @@ export class AppComponent implements OnInit{
         });
       }
     });
-    
+
     exampleComponentRef.changeDetectorRef.detectChanges();
-    
+
     // wait for browser draw
-    // TODO: timout has to check if http requests in case of icons are triggered…
-    await timeout(100);
+    await waitForDraw();
     if (window.sketchGenerator) {
       await window.sketchGenerator.emitDraw(`${componentMeta.component}/${variant.name}`);
     }

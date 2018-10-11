@@ -31,7 +31,7 @@ It has to include following properties:
 {
   "host": {
     "protocol": "https",
-    "name": "dynatrace.com",
+    "name": "dynatrace.com"
   },
   "rootElement": "body",
   "pages": [

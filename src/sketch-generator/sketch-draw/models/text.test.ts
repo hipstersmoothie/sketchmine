@@ -158,6 +158,26 @@ describe('[sketch-generator] › models › generate text', () => {
       }));
   });
 
+  test('paragraph styling with lineheight should be ignroed with display inline, instead use fontsize', () => {
+    styles.fontSize = '15px';
+    styles.lineHeight = '22px';
+    styles.display = 'inline';
+    const text = new Text(size, styles);
+    text.text = TEXT;
+    const sketchObject = text.generateObject();
+    const attributes = sketchObject.style.textStyle.encodedAttributes;
+
+    expect(attributes.paragraphStyle).toMatchObject(
+      expect.objectContaining({
+        _class: SketchObjectTypes.ParagraphStyle,
+        alignment: TextAlignment.Left,
+        maximumLineHeight: 15,
+        minimumLineHeight: 15,
+        paragraphSpacing: 0,
+        allowsDefaultTighteningForTruncation: 0,
+      }));
+  });
+
   test('if none strike through style is set', () => {
     const text = new Text(size, styles);
     text.text = TEXT;

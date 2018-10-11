@@ -15,7 +15,7 @@
   "outFile": "dt-asset-lib.sketch",
   "chrome": {
     "defaultViewport": {
-      "width": 800,
+      "width": 1200,
       "height": 600,
       "deviceScaleFactor": 1,
       "isMobile": false,
