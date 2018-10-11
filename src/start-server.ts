@@ -24,6 +24,8 @@ export function startServer(config: SketchGenerator.Config): Promise<ChildProces
         .catch(() => {}); /** catch does not matter try again on next stdout */
     });
     server.on('error', err => reject(err));
-    server.on('exit', () => console.log('should exit'));
+    server.on('exit', () => {
+      log.error('Angular App could not Start, exited! Maybe something is running on the same port?');
+    });
   });
 }

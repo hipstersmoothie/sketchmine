@@ -11,7 +11,7 @@ that takes control of that for you.
 
 Afterwards just run in one window the rollup build: `npm run build:dev` this will start rollup in watch mode
 with cokidar to compile the `.ts` files on the file in the specified dist folder *(specified in `./config/build.js`).
-The compiled outup can easy started with `npm run run:angular-meta-parser`. The possible command line args for the application
+The compiled outup can easy started with `node dist/angular-meta-parser`. The possible command line args for the application
 are written as default values in the `./src/angular-meta-parser/config.json`. The commandline args overwrite the defaults from the JSON
 
 ### command line args

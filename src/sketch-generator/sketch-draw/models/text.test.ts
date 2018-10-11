@@ -93,7 +93,7 @@ describe('[sketch-generator] › models › generate text', () => {
         _class: SketchObjectTypes.FontDescriptor,
         attributes: expect.objectContaining({
           name: 'BerninaSans',
-          size: 14,
+          size: 12, // 14px are 12 sketch units
         }),
       }));
   });
@@ -113,12 +113,12 @@ describe('[sketch-generator] › models › generate text', () => {
         _class: SketchObjectTypes.FontDescriptor,
         attributes: expect.objectContaining({
           name: 'BerninaSans-LightItalic',
-          size: 15,
+          size: 13, // 15px are 13 sketch units
         }),
       }));
   });
 
-  test('paragraph styling with lineheight normal inherits from fontsize', () => {
+  test('paragraph styling with lineheight normal inherits from fontsize * 1.2', () => {
     styles.fontSize = '15px';
     styles.lineHeight = 'normal';
     styles.textAlign = 'right';
@@ -131,8 +131,8 @@ describe('[sketch-generator] › models › generate text', () => {
       expect.objectContaining({
         _class: SketchObjectTypes.ParagraphStyle,
         alignment: TextAlignment.Right,
-        maximumLineHeight: 15,
-        minimumLineHeight: 15,
+        maximumLineHeight: 16,
+        minimumLineHeight: 16,
         paragraphSpacing: 0,
         allowsDefaultTighteningForTruncation: 0,
       }));
@@ -153,6 +153,26 @@ describe('[sketch-generator] › models › generate text', () => {
         alignment: TextAlignment.Center,
         maximumLineHeight: 22,
         minimumLineHeight: 22,
+        paragraphSpacing: 0,
+        allowsDefaultTighteningForTruncation: 0,
+      }));
+  });
+
+  test('paragraph styling with lineheight should be ignroed with display inline, instead use fontsize * 1.2', () => {
+    styles.fontSize = '15px';
+    styles.lineHeight = '22px';
+    styles.display = 'inline';
+    const text = new Text(size, styles);
+    text.text = TEXT;
+    const sketchObject = text.generateObject();
+    const attributes = sketchObject.style.textStyle.encodedAttributes;
+
+    expect(attributes.paragraphStyle).toMatchObject(
+      expect.objectContaining({
+        _class: SketchObjectTypes.ParagraphStyle,
+        alignment: TextAlignment.Left,
+        maximumLineHeight: 16,
+        minimumLineHeight: 16,
         paragraphSpacing: 0,
         allowsDefaultTighteningForTruncation: 0,
       }));

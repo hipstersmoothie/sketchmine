@@ -81,6 +81,7 @@ export class ElementFetcher {
       result = await sketchGeneratorApi(browser, url, this.conf.rootElement, traverser);
     } else {
       const page = await browser.newPage();
+      page.setViewport(this.conf.chrome.defaultViewport);
       await page.goto(url, { waitUntil: 'networkidle0' });
       await page.addScriptTag({ content: traverser });
       await page.addScriptTag({ content: `

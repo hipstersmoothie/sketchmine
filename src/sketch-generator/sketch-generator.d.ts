@@ -1,7 +1,7 @@
 export namespace SketchGenerator {
 
   export interface Config {
-    metaInformation: string;
+    metaInformation?: string;
     host: Host;
     rootElement: string;
     library?: Library;

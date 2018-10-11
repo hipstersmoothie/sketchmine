@@ -10,6 +10,7 @@ import {
   IBounding,
   SketchAttribute,
   SketchTextStyle,
+  SketchFrame,
 } from '../interfaces';
 import {
   fixWhiteSpace,
@@ -19,6 +20,7 @@ import {
   fontMapping,
   fontStyle,
   TextBehaviour,
+  kerningTableBernina,
 } from '../helpers';
 import { StyleDeclaration } from '../../../dom-traverser/dom-visitor';
 import { resolveTextDecoration, TextDecoration } from '../helpers/resolve-text-decoration';
@@ -30,6 +32,7 @@ export class Text extends Base {
   private textContent = '';
   private multiline = false;
   textDecoration: TextDecoration | null;
+  fontSize: number;
 
   set text(text: string) { this.textContent = fixWhiteSpace(text, this.styles.whiteSpace); }
   get text(): string { return this.textContent; }
@@ -42,11 +45,17 @@ export class Text extends Base {
       throw new Error('Text always have to have a style!');
     }
     this.textDecoration = resolveTextDecoration(styles.textDecoration);
+    this.fontSize = parseInt(this.styles.fontSize, 10) - 2; // Sketch does not calculate the font in px
   }
 
   addParagraphStyle(): IParagraphStyle {
     const lh = this.styles.lineHeight;
-    const lineHeight = (lh !== 'normal') ? parseInt(lh, 10) : parseInt(this.styles.fontSize, 10);
+    const display = this.styles.display;
+    /**
+     * When the font size is normal the browser sets it of 1.2 of the font size:
+     * @see https://www.w3.org/TR/CSS22/visudet.html#line-height
+    */
+    const lineHeight = (lh === 'normal' || display === 'inline') ? Math.ceil(this.fontSize * 1.2) : parseInt(lh, 10);
     return {
       _class: SketchObjectTypes.ParagraphStyle,
       alignment: resolveTextAlign(this.styles.textAlign),
@@ -74,11 +83,12 @@ export class Text extends Base {
     return StrikethroughStyle.None;
   }
 
-  addKerning(): number | undefined {
+  addKerning(): number {
+    let kerning = kerningTableBernina(this.fontSize);
     if (this.styles.letterSpacing !== 'normal') {
-      return parseFloat(this.styles.letterSpacing);
+      kerning = parseFloat(this.styles.letterSpacing);
     }
-    return undefined;
+    return kerning;
   }
 
   addTextTransform(): number {
@@ -106,7 +116,7 @@ export class Text extends Base {
       _class: SketchObjectTypes.FontDescriptor,
       attributes: {
         name: fontMapping(fontFamily, fontWeight, fontVariant),
-        size: parseInt(this.styles.fontSize, 10),
+        size: this.fontSize,
       },
     };
   }
@@ -152,6 +162,17 @@ export class Text extends Base {
     };
   }
 
+  generateGlyphBounds(frame: SketchFrame): string {
+    let height = frame.height;
+
+    // if style display inline the bounding client gets ignored for the size
+    if (this.styles.display === 'inline') {
+      height = Math.ceil(this.fontSize * 1.2);
+    }
+
+    return `{{${frame.x}, ${frame.y}}, {${frame.width}, ${height}}}`;
+  }
+
   generateObject(): SketchText {
     const base: SketchBase = super.generateObject();
     base.style = new Style().generateObject();
@@ -169,7 +190,7 @@ export class Text extends Base {
       frame,
       automaticallyDrawOnUnderlyingPath: false,
       dontSynchroniseWithSymbol: false,
-      glyphBounds: `{{${frame.x}, ${frame.y}}, {${frame.width}, ${frame.height}}}`,
+      glyphBounds: this.generateGlyphBounds(frame),
       lineSpacingBehaviour: 2,
       textBehaviour: this.multiline ? TextBehaviour.Fixed : TextBehaviour.Auto,
     } as SketchText;
