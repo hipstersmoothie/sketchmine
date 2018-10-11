@@ -19,6 +19,7 @@ import {
   fontMapping,
   fontStyle,
   TextBehaviour,
+  kerningTableBernina,
 } from '../helpers';
 import { StyleDeclaration } from '../../../dom-traverser/dom-visitor';
 import { resolveTextDecoration, TextDecoration } from '../helpers/resolve-text-decoration';
@@ -77,11 +78,12 @@ export class Text extends Base {
     return StrikethroughStyle.None;
   }
 
-  addKerning(): number | undefined {
+  addKerning(): number {
+    let kerning = kerningTableBernina(parseInt(this.styles.fontSize, 10));
     if (this.styles.letterSpacing !== 'normal') {
-      return parseFloat(this.styles.letterSpacing);
+      kerning = parseFloat(this.styles.letterSpacing);
     }
-    return undefined;
+    return kerning;
   }
 
   addTextTransform(): number {

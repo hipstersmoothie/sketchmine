@@ -40,6 +40,34 @@ export function fixWhiteSpace(text: string, whiteSpace: string) {
   return text;
 }
 
+export function kerningTableBernina(fontSize: number): number {
+  switch (fontSize) {
+    case 10: return -0.27;
+    case 11: return -0.3;
+    case 12: return -0.35;
+    case 13: return -0.38;
+    case 14: return -0.4;
+    case 15: return -0.42;
+    case 16: return -0.5;
+    case 17: return -0.52;
+    case 18: return -0.54;
+    case 19: return -0.55;
+    case 20: return -0.6;
+    case 21: return -0.62;
+    case 22: return -0.65;
+    case 23: return -0.7;
+    case 24: return -0.72;
+    case 25: return -0.73;
+    case 26: return -0.75;
+    case 27: return -0.8;
+    case 28: return -0.8;
+    case 29: return -0.85;
+    case 30: return -0.9;
+    case 31: return -0.92;
+    case 32: return -0.95;
+  }
+}
+
 export function fontMapping(
   fontFamily: string,
   fontWeight: string,
