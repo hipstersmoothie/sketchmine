@@ -14,11 +14,9 @@ export class SvgToSketch {
 
   styles: StyleDeclaration;
 
-  constructor(public svgObject: ISvg) { }
+  constructor(public svgObject: ISvg, public size: IBounding) { }
 
   generateObject(): any[] {
-
-    const size: IBounding = { ...this.svgObject.size, x: 0, y: 0 };
     const shapeGroupLayers = [];
     const groupLayers = [];
 
@@ -28,18 +26,18 @@ export class SvgToSketch {
       // it is not possible to group them so we need a own shape group for each fill/style
       if (!this.hasNoStyles()) {
         log.debug(chalk` The SVG has inline styles: `, JSON.stringify(shape.style, null, 2));
-        const shapeGroup = new ShapeGroup(size);
-        shapeGroup.addLayer(SvgPointsToSketch.parse(shape, size));
+        const shapeGroup = new ShapeGroup(this.size);
+        shapeGroup.addLayer(SvgPointsToSketch.parse(shape, { ...this.size, x: 0, y: 0 }));
         shapeGroup.name = 'SVG';
         shapeGroup.style = addSvgShapeStyle(shape);
         groupLayers.push(shapeGroup.generateObject());
       } else {
-        shapeGroupLayers.push(SvgPointsToSketch.parse(shape, size));
+        shapeGroupLayers.push(SvgPointsToSketch.parse(shape, { ...this.size, x: 0, y: 0 }));
       }
     }
 
     if (this.hasNoStyles()) {
-      const shapeGroup = new ShapeGroup(size);
+      const shapeGroup = new ShapeGroup(this.size);
       shapeGroup.name = 'SVG';
       shapeGroup.layers = shapeGroupLayers;
       if (this.styles) {

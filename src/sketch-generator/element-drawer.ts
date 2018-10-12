@@ -63,7 +63,7 @@ export class ElementDrawer {
     // svgObject.shapes.map(shape => overrideSvgStyle(shape.style, element.styles));
     // const styles = this.addStyles(element);
 
-    const svg = new SvgToSketch(svgObject);
+    const svg = new SvgToSketch(svgObject, size);
     svg.styles = element.styles;
 
     this.layers.push(...svg.generateObject());
