@@ -15,7 +15,12 @@ export function variantCombinationGenerator(baseName: string, ...variants: Prope
   const length = variants.length - 1;
 
   // add undefined to mutate single values as well
-  variants.map(variant =>  variant.value.push(undefined));
+  variants.forEach((variant) => {
+    // only add undefined if it is not there otherwise we get duplicates
+    if (!variant.value.includes(undefined)) {
+      variant.value.push(undefined);
+    }
+  });
 
   function helper(changes: (AMP.VariantMethod | AMP.VariantProperty)[], i: number) {
     const variant = variants[i];

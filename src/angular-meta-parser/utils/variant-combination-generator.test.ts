@@ -92,4 +92,15 @@ describe('[angular-meta-parser] › utils › generate variants', () => {
     expect(variants).toContain('button/warning/default');
     expect(variants).toContain('button/warning/disabled');
   });
+
+  test('if undefine is getting stripped out', () => {
+    const BUTTON: Property[] = [
+      { type: 'property', key: 'disabled', value: ['true'] },
+      { type: 'property', key: 'color', value: ['"main"', '"accent"', '"warning"', '"error"', '"cta"', undefined] },
+      { type: 'property', key: 'variant', value: ['"primary"', '"secondary"', '"nested"'] },
+    ];
+    const result = variantCombinationGenerator('button', ...BUTTON);
+    const variants = result.map(r => r.name);
+    expect(variants).toHaveLength(47);
+  });
 });
