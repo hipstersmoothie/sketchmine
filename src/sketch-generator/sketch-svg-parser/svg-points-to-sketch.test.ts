@@ -1,28 +1,8 @@
-import { SvgParser } from '@sketch-svg-parser/svg-parser';
-import { ISvg } from '@sketch-svg-parser/interfaces';
+import { SvgParser } from './svg-parser';
+import { SvgPointsToSketch } from './svg-points-to-sketch';
+import { IBounding } from '../sketch-draw/interfaces';
 
-/* tslint:disable:max-line-length */
-const checkboxDisabled = `
-<svg _ngcontent-c0="" focusable="false" viewBox="0 0 512 512">
-  <path _ngcontent-c0="" class="dt-checkbox-checkmark" d="M79.57 267.044l128.761 107.991 221.185-263.55" fill="transparent" stroke-dasharray="560" stroke-width="64"></path>
-  <path _ngcontent-c0="" class="dt-checkbox-indeterminate" d="M80 256 h 352" fill="transparent" stroke-dasharray="352" stroke-width="64"></path>
-</svg>`;
-
-const actionspersession = `
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
-<polygon id="XMLID_419_" fill="inherit" points="370.23865,338.23825 407.67355,300.80334 245.05382,257.22491 288.6387,419.8382 326.06714,382.40329 411.66394,468.00009 455.83542,423.83502 "></polygon>
-<path id="XMLID_420_" fill="inherit" d="M173.51688,271.43948c0.95409-4.22891,1.56006-8.58676,1.56006-13.10574
-  c0-9.34746-2.35298-18.07603-6.1951-25.94722l184.31223-102.39641c6.09195,3.02986,12.86081,4.89291,20.12601,4.89291
-  c25.09628,0,45.44147-20.34519,45.44147-45.44146S398.41635,44.0001,373.32007,44.0001
-  c-20.47412,0-37.58316,13.62793-43.26254,32.23901h-92.14644c-5.37639-14.43374-19.16548-24.76105-35.4687-24.76105
-  c-20.9705,0-37.96352,16.99301-37.96352,37.96351c0,20.96406,16.99301,37.96351,37.96352,37.96351
-  c16.30322,0,30.09232-10.32732,35.4687-24.76105h92.14644c0.8703,2.84291,1.98553,5.55045,3.36508,8.12905L151.95329,211.58362
-  c-10.06946-7.8454-22.57568-12.70607-36.33253-12.70607c-32.83853,0-59.45618,26.61765-59.45618,59.45619
-  s26.61765,59.45618,59.45618,59.45618c18.76581,0,35.29465-8.87039,46.19571-22.45322l72.85205,25.10916l-8.24509-30.7692
-  L173.51688,271.43948z"></path>
-</svg>
-`;
-
+// tslint:disable:max-line-length //
 const cassandra = `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fit="" height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
   <path d="M238.76 135.577c0-.102 0-.102 0 0 0-.102 0-.102 0 0zM413.052 276.988a416.65 416.65 0 0 0 11.293 7.794s-4.996-3.797-11.293-7.794zM206.68 197.038c.2.1.2.1 0 0z"></path>
@@ -31,28 +11,62 @@ const cassandra = `
   <path d="M199.785 214.527c-1.4 6.295-1.698 12.792-1 19.088 4.697.9 8.396 4.696 9.195 9.393 6.197-3.998 12.392-7.894 18.588-11.892-8.395-2.899-17.088-2.899-25.982-3.498 4.295-.9 8.493-1.8 12.791-2.8-2.4-1.398-13.692-9.991-13.592-10.291-1.5 6.395 0-.3 0 0zM228.367 213.028c-7.195-5.297-14.39-10.594-21.486-15.89-13.991 22.985 20.885 17.588 21.486 15.89z"></path>
   <path d="M215.075 217.824c-5.896-3.798-7.495-3.997-14.59-3.798 4.896 1.3 9.694 2.498 14.59 3.798zM242.358 246.306a3198.624 3198.624 0 0 0-16.09 22.886c2-7.495 3.998-14.89 5.997-22.386-5.496 5.197-19.788 20.387-12.992 26.884 7.594 7.295 23.785 5.995 33.579 4.696 22.984-2.998 43.873-16.19 56.464-35.677-9.094-6.296-20.087-11.093-31.181-11.194l18.29 17.99c-7.996-3.1-15.991-6.197-23.886-9.295l14.09 21.586c-2.898-2.297-19.086-17.489-21.585-16.189 2.299 8.395 4.598 16.79 6.896 25.284-3.998-7.596-7.896-15.09-11.893-22.685-.7 8.894-1.298 17.688-2 26.582-1.097-3.497-5.295-25.684-8.093-26.383-3.098 8.394-6.297 16.69-9.394 25.085.2-3.498 3.797-26.284 1.798-27.184z"></path>
 </svg>`;
+// tslint:enable:max-line-length
 
-describe('checkbox disabled icon', () => {
+describe('[sketch-generator] › sketch-svg-parser › convert svg points to sketch', () => {
+  const size: IBounding = { width: 20, height: 20, x: 0, y: 0 };
+  let shape;
 
-  test('check if the checkbox disabled svg consist out of two shapes', () => {
-    const svg = SvgParser.parse(checkboxDisabled, 16, 16);
-    expect(svg.shapes).toHaveLength(2);
-    expect(svg.shapes.every(shape => shape.points.length > 0)).toBeTruthy();
+  beforeEach(() => {
+    shape = {
+      booleanOperation: -1,
+      style: new Map(),
+      points: [],
+    };
   });
 
-  test('checkboxDisabled to not have styles', () => {
-    const svg = SvgParser.parse(checkboxDisabled, 16, 16);
-    svg.shapes.forEach(
-      shape => expect(shape.style).toMatchObject(new Map([['strokeWidth', '1']])));
+  test('Test shape with only moveto and close command', () => {
+    shape.points = [
+      { code: 'M',  command: 'moveto', x: 0, y: 0, x0: 1, y0: 15, relative: false },
+      { code: 'Z', command: 'closepath', x0: 0, y0: 0, x: 1, y: 1, relative: false },
+    ];
+    const shapePath = SvgPointsToSketch.parse(shape, size);
+    expect(shapePath.points).toHaveLength(1);
+    expect(shapePath.isClosed).toBeTruthy();
+    expect(shapePath.points[0]).toMatchObject(
+      expect.objectContaining({
+        _class: 'curvePoint',
+        cornerRadius: 0,
+        curveFrom: '{0, 0}',
+        curveMode: 4,
+        curveTo: '{0, 0}',
+        hasCurveFrom: false,
+        hasCurveTo: false,
+        point: '{0, 0}',
+      }));
   });
 
-  test('test cassandra icon', () => {
+  test('Test shape with only moveto command', () => {
+    shape.points = [
+      { code: 'M',  command: 'moveto', x: 0, y: 0, x0: 1, y0: 15, relative: false },
+    ];
+    const shapePath = SvgPointsToSketch.parse(shape, size);
+    expect(shapePath.points).toHaveLength(0);
+    expect(shapePath.isClosed).toBeFalsy();
+
+  });
+
+  test('cassandra icon to not fail', () => {
     const svg = SvgParser.parse(cassandra, 20, 20);
-    expect(svg).toHaveProperty('size');
-    expect(svg.size).toHaveProperty('width');
-    expect(svg.size.width).toEqual(20);
-    expect(svg.size.height).toEqual(20);
-    expect(svg).toHaveProperty('shapes');
-    expect(svg.shapes).toHaveLength(12);
+    const size: IBounding = { ...svg.size, x: 0, y: 0 };
+
+    for (let i = 0, max = svg.shapes.length; i < max; i += 1) {
+      const shape = svg.shapes[i];
+      const shapePath = SvgPointsToSketch.parse(shape, size);
+      expect(shapePath).toBeInstanceOf(Object);
+      expect(shapePath).toHaveProperty('points');
+      expect(shapePath.points).toBeInstanceOf(Array);
+      expect(shapePath.points.length).toBeGreaterThan(0);
+    }
   });
 });

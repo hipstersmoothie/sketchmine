@@ -7,12 +7,20 @@ describe('[sketch-generator] › svg › line-to', () => {
   let end: ISvgPoint;
 
   beforeEach(() => {
-    start = { code: 'M', x: 0, y: 0 };
-    end = { code: 'Z' };
+    start = { code: 'M', command: 'moveto', x0: 0, y0: 0, x: 0, y: 0, relative: false };
+    end = { code: 'Z', command: 'moveto', x0: 0, y0: 0, x: 0, y: 0, relative: false  };
   });
 
   test('draw vertical line to', () => {
-    const line: ISvgPoint = { code: 'V', x: 1, y: 0, x0: start.x, y0: start.y };
+    const line: ISvgPoint = {
+      code: 'V',
+      command: 'vertical line',
+      relative: false,
+      x: 1,
+      y: 0,
+      x0: start.x,
+      y0: start.y,
+    };
 
     const moveTo = new MoveTo(start, line).generate();
     const lineTo = new MoveTo(line, start).generate();
@@ -41,7 +49,15 @@ describe('[sketch-generator] › svg › line-to', () => {
   });
 
   test('draw normal line to', () => {
-    const line: ISvgPoint = { code: 'L', x: 1, y: 1, x0: start.x, y0: start.y };
+    const line: ISvgPoint = {
+      code: 'L',
+      command: 'line to',
+      relative: false,
+      x: 1,
+      y: 1,
+      x0: start.x,
+      y0: start.y,
+    };
 
     const moveTo = new MoveTo(start, line).generate();
     const lineTo = new MoveTo(line, start).generate();

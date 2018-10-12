@@ -45,16 +45,16 @@ export interface IPoint {
 
 export interface ISvgPoint {
   code: SVGCode;
-  command?: string;
-  relative?: boolean;
-  x?: number;
-  y?: number;
+  command: string;
+  relative: boolean;
+  x: number;
+  y: number;
   x1?: number;
   y1?: number;
   x2?: number;
   y2?: number;
-  x0?: number;
-  y0?: number;
+  x0: number;
+  y0: number;
 }
 
 export interface ISvgArcPoint extends ISvgPoint{
