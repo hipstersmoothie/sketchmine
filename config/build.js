@@ -5,15 +5,15 @@ const SRC_DIR = path.resolve(__dirname, 'src');
 const DIST_DIR = path.resolve(__dirname, 'dist');
 
 export const config = {
-  general: {
+  'general': {
     src: SRC_DIR,
   },
-  library: {
+  'library': {
     name: 'library',
     description: 'Angular to sketch library',
     path: SRC_DIR
   },
-  angularMetaParser: {
+  'angular-meta-parser': {
     name: 'angular-meta-parser',
     description: 'The angular-meta-parser is a compiler, that generates an abstract syntax tree short AST from the\nAngular Components library and transforms the AST to a JSON format that represents all components,\nthat are related for the components library in sketch with all possible variants',
     path: path.join(SRC_DIR, 'angular-meta-parser'),
@@ -21,24 +21,24 @@ export const config = {
       'src/angular-meta-parser/config.json': 'dist/angular-meta-parser/config.json',
     }
   },
-  angularVariantGenerator: {
+  'angular-library-generator': {
     name: 'angular-library-generator',
     path: path.join(SRC_DIR, 'angular-library-generator'),
     copy: {
       'src/angular-library-generator/config.json': 'dist/angular-library-generator/config.json',
     }
   },
-  colorReplacer: {
+  'sketch-color-replacer': {
     name: 'sketch-color-replacer',
     path: path.join(SRC_DIR, 'color-replacer'),
   },
-  domTraverser: {
+  'dom-traverser': {
     name: 'dom-traverser',
     description: 'The Dom Traverser collects the information from the DOM to\ndraw afterwards a .sketch file from the collected information in the tree.',
     path: path.join(SRC_DIR, 'dom-traverser'),
     browser: true,
   },
-  ngSketch: {
+  'sketch-generator': {
     name: 'sketch-generator',
     description: 'Generates .sketch files from an html website that is inspected with a headless chrome.',
     path: path.join(SRC_DIR, 'sketch-generator'),
@@ -47,7 +47,7 @@ export const config = {
       'src/assets/preview.png' : 'dist/sketch-generator/assets/preview.png',
     },
   },
-  validate: {
+  'sketch-validator': {
     name: 'sketch-validator',
     path: path.join(SRC_DIR, 'validate'),
   },
@@ -66,12 +66,12 @@ export function banner(name, version, description) {
   * Company: Dynatrace
   * Author: Lukas Holzer <lukas.holzer@dynatrace.com>
   **/
- 
+
 `;
 }
 
 /**
- * 
+ *
  * @param {{[key: string]: string}} options Key Value list of files to copy
  */
 export function copyPlugin(options) {

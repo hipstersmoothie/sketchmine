@@ -52,6 +52,15 @@ The angular components will be checked out into `_tmp` and the library app shell
 
 If you want to run the library `node dist/library` and the **.sketch** file will be generated 🤘🏻
 
+### Available commands
+
+```
+npm run build           | build all the parts
+npm run build:dev       | build with watch flag
+npm run test            | run all the unit tests and e2e tests
+npm run lint            | lint the project
+node dist/${part}       | run the specified part of the library
+```
 
 ### Debugging
 
@@ -77,7 +86,7 @@ process.env.SKETCH = 'open-close';
 
 Tests are done with **JEST**
 
-The files have to contain the pattern `**/*.test.ts` in the folder `src` and `tests` for unit tests and 
+The files have to contain the pattern `**/*.test.ts` in the folder `src` and `tests` for unit tests and
 for end 2 end testing `**/*.e2e.ts`
 
 Just run `npm run test`
