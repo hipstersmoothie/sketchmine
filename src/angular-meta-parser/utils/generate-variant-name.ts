@@ -51,9 +51,17 @@ function parseBooleanValue(change: AMP.VariantProperty): string {
   if (change.value === 'undefined') {
     throw Error('Value have to be defined for name generation!');
   }
-  switch (typeof JSON.parse(change.value)) {
+  let val;
+
+  try {
+    val = JSON.parse(change.value);
+  } catch (e) {
+    throw new Error(`generate-variant-name.ts › parseBooleanValue() => Cannot JSON.parse: ${change.value}`);
+  }
+
+  switch (typeof val) {
     case 'boolean': return change.key;
     case 'number' : return `${change.key}-${change.value}`;
-    default: return change.value.replace(/\"/g, '');
   }
+  return change.value.replace(/\"/g, '');
 }
