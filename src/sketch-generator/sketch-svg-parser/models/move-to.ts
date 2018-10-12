@@ -10,11 +10,10 @@ export class MoveTo extends CurvePoint {
    */
   generate(): SketchCurvePoint {
     const hasCurveTo = false;
-    let hasCurveFrom = false;
 
     // Check if the next point has the properties x1 and y1 (tangent controll points)
     // then you know that it has a curve from
-    hasCurveFrom = ['x1', 'y1'].every(key => Object.keys(this.next).includes(key));
+    const hasCurveFrom = ['x1', 'y1'].every(key => Object.keys(this.next).includes(key));
 
     return {
       _class: SketchObjectTypes.CurvePoint,

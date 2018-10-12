@@ -23,6 +23,11 @@ export class SvgPointsToSketch {
     const shapePath: ShapePath = new ShapePath(this._size);
     shapePath.bounding = this._size;
 
+    if (points.length === 1) {
+      log.error('The SVG Shape has only one Point!');
+      return shapePath.generateObject();
+    }
+
     for (let i = 0, end = points.length - 1; i <= end; i += 1) {
       const cur = points[i];
       const next = this.getNextCurvePoint(i);
@@ -65,16 +70,25 @@ export class SvgPointsToSketch {
   private getNextCurvePoint(index: number): ISvgPoint {
     let next: ISvgPoint;
     let i = index;
+    let runs = 0; // to prevent endless loops
 
-    while (!next) {
+    while (!next && runs < 2) {
       const p = this._shape.points[i + 1];
       if (p) {
-        if (!isActionPoint(p)) {
+        /**
+         * in second run through points the last point can be an action point
+         * this can occure when the points array only consists out of action points like
+         * [M (moveto), Z (closepath)]
+         * [M (moveto)
+         * [Z (closepath)]
+         */
+        if (!isActionPoint(p) || runs > 0) {
           next = p;
         }
         i += 1;
       }
       i = 0;
+      runs += 1;
     }
     return next;
   }
