@@ -28,10 +28,10 @@ export interface SymbolsPage {
 }
 
 /**
- * Order the symbols in a matrix according to same component grouping
+ * Sort the symbols in a matrix according to same component grouping
  * @param symbols
  */
-function orderSymbols(symbols: TraversedSymbol[]): SymbolsPage {
+function sortSymbols(symbols: TraversedSymbol[]): SymbolsPage {
   let lastSymbol: LastSymbol;
   let stacked = 0;
   const matrix: Symbol[] = [];
@@ -75,7 +75,7 @@ function orderSymbols(symbols: TraversedSymbol[]): SymbolsPage {
 export class Drawer {
 
   drawSymbols(library: TraversedLibrary): Page {
-    const symbolsPage = orderSymbols(library.symbols as TraversedSymbol[]);
+    const symbolsPage = sortSymbols(library.symbols as TraversedSymbol[]);
     const page = new Page(symbolsPage.size);
 
     for (let i = 0, max = symbolsPage.symbols.length; i < max; i += 1) {
