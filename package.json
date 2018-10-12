@@ -1,12 +1,11 @@
 {
   "name": "sketch-library",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Library for Sketch operations like generating .sketch files from angular components, followed by a Sketch validator and color replacer",
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/.bin/rollup -c",
     "build:dev": "npm run build -- -w",
-    "postinstall": "sh ./postinstall.sh",
     "lint": "tslint -p tsconfig.json",
     "test": "jest --detectOpenHandles --verbose --forceExit",
     "test:watch": "jest --watch --verbose",
