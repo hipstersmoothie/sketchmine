@@ -14,21 +14,19 @@ export function generateVariants(component: string, variants: Property[]): AMP.V
 
   variants.forEach((variant) => {
     variant.value.forEach((val: string) => {
-      let nameValue = '';
-      /** if the value is a boolean true then the key is enought and no value is needed */
-      if (val !== 'true') {
-        nameValue = `-${val.toString().replace(/\"/g, '')}`;
-      }
-      const changes = [{
-        type: variant.type,
-        key: variant.key,
-        value: val,
-      }];
 
-      result.push({
-        name: generateVariantName(component, changes).replace('/default', ''),
-        changes,
-      });
+      if (val && val !== undefined) {
+        const changes = [{
+          type: variant.type,
+          key: variant.key,
+          value: val,
+        }];
+
+        result.push({
+          name: generateVariantName(component, changes).replace('/default', ''),
+          changes,
+        });
+      }
     });
   });
 

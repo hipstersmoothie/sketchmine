@@ -89,7 +89,7 @@ export class AppComponent implements OnInit{
     // wait for browser draw
     await waitForDraw();
     if (window.sketchGenerator) {
-      await window.sketchGenerator.emitDraw(`${componentMeta.component}/${variant.name}`);
+      await window.sketchGenerator.emitDraw(variant.name);
     }
   }
 

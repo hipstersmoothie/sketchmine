@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { waitForDraw } from './app.component';
 
 declare var window: any;
 
