@@ -172,7 +172,7 @@ pipeline {
 
             dir('ux-global-ressources') {
               sh '''
-                PACKAGE_VERSION=$(cat ./.version)
+                PACKAGE_VERSION=$(cat ../.version)
                 git checkout -b feat/library-update-version-${PACKAGE_VERSION}-${BUILD_NUMBER}
               '''
           }
