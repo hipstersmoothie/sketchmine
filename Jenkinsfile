@@ -91,9 +91,9 @@ pipeline {
     }
 
     stage('Build Docker image') {
-      when {
-        branch 'master'
-      }
+      // when {
+      //   branch 'master'
+      // }
 
       steps {
         withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
@@ -120,6 +120,28 @@ pipeline {
             docker push webkins.lab.dynatrace.org:5000/ng-sketch:latest
           '''
         }
+      }
+    }
+
+    stage('Generate .sketch library') {
+      // when {
+      //   branch 'master'
+      // }
+
+      steps {
+        sh '''
+          docker pull webkins.lab.dynatrace.org:5000/ng-sketch:latest
+          mkdir _library
+
+          docker run\
+            -it \
+            -v $(pwd)/_library/:/lib/_library/ \
+            -e DOCKER=true \
+            -e DEBUG=true \
+            --cap-add=SYS_ADMIN \
+            ng-sketch \
+            node dist/library
+        '''
       }
     }
 

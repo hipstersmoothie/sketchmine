@@ -21,7 +21,7 @@ const config = {
   pages: [
     '/',
   ],
-  outFile: 'dt-asset-lib.sketch',
+  outFile: '_library/dt-asset-lib.sketch',
   chrome: {
     defaultViewport: {
       width: 800,
