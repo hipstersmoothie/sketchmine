@@ -13,6 +13,7 @@ pipeline {
   environment {
     ANGULAR_COMPONENTS_BRANCH = 'feat/poc-sketch'
     VERBOSE = 'true'
+    FEATURE_BRANCH_PREFIX = 'feat/library-update-version'
   }
 
   stages {
@@ -140,6 +141,7 @@ pipeline {
           steps {
             ansiColor('xterm') {
               sh '''
+                echo "0.3.0-dev" > .version
                 docker pull webkins.lab.dynatrace.org:5000/ng-sketch:latest
 
                 # create _library for out dir of the generated file
@@ -173,7 +175,11 @@ pipeline {
             dir('ux-global-ressources') {
               sh '''
                 PACKAGE_VERSION=$(cat ../.version)
-                git checkout -b feat/library-update-version-${PACKAGE_VERSION}-${BUILD_NUMBER}
+
+                # replace dot with divis for branchname
+                version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
+                FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
+                git checkout -b ${FEATURE_BRANCH}
               '''
           }
           }
@@ -182,11 +188,17 @@ pipeline {
     }
 
     stage('deploy the library 🚀') {
+      // when {
+      //   branch 'master'
+      // }
+
       steps {
         sh '''
           PACKAGE_VERSION=$(cat ./.version)
+          version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
+          FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
+
           cp ./_library/dt-asset-lib.sketch ./ux-global-ressources/dt-asset-lib.sketch
-          BRANCH_NAME=feat/library-update-version-${PACKAGE_VERSION}-${BUILD_NUMBER}
         '''
         dir('ux-global-ressources') {
           sh 'git add .'
@@ -195,24 +207,24 @@ pipeline {
           withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
 
           sh '''
-          git push https://${GIT_USER}:${GIT_PASS}@bitbucket.lab.dynatrace.org/scm/ux/global-resources.git ${BRANCH_NAME}
-          curl --request \
-            POST \
-            --url https://${GIT_USER}:${GIT_PASS}@bitbucket.lab.dynatrace.org/rest/api/1.0/projects/UX/repos/global-resources/pull-requests \
-            --header 'content-type: application/json' \
-            --data '{ \
-              "title": "Automatic Library update for Angular Components version: '"$PACKAGE_VERSION"'",\
-              "description": "**New Library updates** 🚀 \\nPlease update your sketch library!.", \
-              "state": "OPEN", \
-              "open": true, \
-              "closed": false, \
-              "fromRef": { "id": "refs/heads/'"$BRANCH_NAME"'" }, \
-              "toRef": { "id": "refs/heads/master" }, \
-              "locked": false, \
-              "reviewers": [ \
-                { "user": { "name": "simon.ludwig" } }, \
-                { "user": { "name": "lukas.holzer" } } \
-              ] }'
+            git push https://${GIT_USER}:${GIT_PASS}@bitbucket.lab.dynatrace.org/scm/ux/global-resources.git ${FEATURE_BRANCH}
+            curl --request \
+              POST \
+              --url https://${GIT_USER}:${GIT_PASS}@bitbucket.lab.dynatrace.org/rest/api/1.0/projects/UX/repos/global-resources/pull-requests \
+              --header 'content-type: application/json' \
+              --data '{ \
+                "title": "Automatic Library update for Angular Components version: ${PACKAGE_VERSION}",\
+                "description": "**New Library updates** 🚀 \\nPlease update your sketch library!.", \
+                "state": "OPEN", \
+                "open": true, \
+                "closed": false, \
+                "fromRef": { "id": "refs/heads/${FEATURE_BRANCH}" }, \
+                "toRef": { "id": "refs/heads/master" }, \
+                "locked": false, \
+                "reviewers": [ \
+                  { "user": { "name": "simon.ludwig" } }, \
+                  { "user": { "name": "lukas.holzer" } } \
+                ] }'
           '''
           }
         }
