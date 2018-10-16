@@ -1,5 +1,5 @@
 import { UUID } from '@sketch-draw/helpers/uuid';
-import { SketchDocument, IDocumentAssets, IDocumentPage } from '@sketch-draw/interfaces';
+import { SketchDocument, SketchDocumentAssets, SketchDocumentPage } from '@sketch-draw/interfaces';
 import { Page } from '@sketch-draw/models/page';
 
 export class Document {
@@ -15,7 +15,7 @@ export class Document {
     this._pages = [...pages];
   }
 
-  private addPages(): IDocumentPage[] {
+  private addPages(): SketchDocumentPage[] {
     const pages = [];
     this._pages.forEach((page: Page) => {
       pages.push({
@@ -28,7 +28,7 @@ export class Document {
     return pages;
   }
 
-  private addAssets(): IDocumentAssets {
+  private addAssets(): SketchDocumentAssets {
     return {
       _class: 'assetCollection',
       colors: [],
@@ -49,6 +49,7 @@ export class Document {
       colorSpace: 0,
       currentPageIndex: 0,
       foreignSymbols: [],
+      foreignTextStyles: [],
       layerStyles: {
         _class: 'sharedStyleContainer',
         objects: [],

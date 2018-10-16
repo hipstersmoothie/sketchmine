@@ -19,6 +19,7 @@ export enum SketchObjectTypes {
   InnerShadow = 'innerShadow',
   Page = 'page',
   ParagraphStyle = 'paragraphStyle',
+  Path = 'path',
   Rectangle = 'rectangle',
   RulerData = 'rulerData',
   Shadow = 'shadow',

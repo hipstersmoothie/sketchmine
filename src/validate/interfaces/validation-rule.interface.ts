@@ -1,20 +1,11 @@
 import { ValidationError } from '../error/validation-error';
-import { SketchStyle, SketchFrame } from '@sketch-draw/interfaces';
+import { SketchStyle, SketchFrame, SketchObjectTypes } from '@sketch-draw/interfaces';
 
-export type SketchModel =
-'document' |
-'page' |
-'symbolMaster' |
-'group' |
-'path' |
-'shapeGroup' |
-'rectangle' |
-'artboard' ;
 export type ValidationFunction = (homework: IValidationContext[], currentTask: number) => (ValidationError | boolean)[];
 
 export interface IValidationRule {
   name: string;
-  selector: SketchModel[];
+  selector: SketchObjectTypes[];
   validation: ValidationFunction;
   description?: string;
   ignoreArtboards?: string[];
