@@ -62,7 +62,11 @@ pipeline {
             | tr -d \'[[:space:]]\')
           echo $PACKAGE_VERSION > .version
         '''
+      }
+    }
 
+    stage('install') {
+      steps {
         nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
           ansiColor('xterm') {
             sh 'npm install'
@@ -103,9 +107,9 @@ pipeline {
     }
 
     stage('Build Docker image') {
-      // when {
-      //   branch 'master'
-      // }
+      when {
+        branch 'master'
+      }
 
       steps {
         withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
@@ -121,104 +125,123 @@ pipeline {
               --build-arg GIT_USER=$GIT_USER \
               --build-arg GIT_BRANCH=${ANGULAR_COMPONENTS_BRANCH} \
               .
-
-
-            docker push webkins.lab.dynatrace.org:5000/ng-sketch:${PACKAGE_VERSION}
-            docker push webkins.lab.dynatrace.org:5000/ng-sketch:latest
           '''
         }
       }
     }
 
-    stage('Prepare for Deployment') {
-      // when {
-      //   branch 'master'
-      // }
-
-      failFast true
-      parallel {
-        stage('Generate .sketch library 💎') {
-          steps {
-            ansiColor('xterm') {
-              sh '''
-                echo "0.3.0-dev" > .version
-                docker pull webkins.lab.dynatrace.org:5000/ng-sketch:latest
-
-                # create _library for out dir of the generated file
-                mkdir _library
-
-                # for verbose logging add -e DEBUG=true
-                docker run\
-                  -v $(pwd)/_library/:/lib/_library/ \
-                  -e DOCKER=true \
-                  --cap-add=SYS_ADMIN \
-                  webkins.lab.dynatrace.org:5000/ng-sketch \
-                  node dist/library
-              '''
-            }
-          }
-        }
-        stage('clone UX global ressources 🗄') {
-          steps {
-            checkout([
-              $class: 'GitSCM',
-              branches: [[name: '*/master']],
-              doGenerateSubmoduleConfigurations: false,
-              extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'ux-global-ressources']],
-              submoduleCfg: [],
-              userRemoteConfigs: [[
-                credentialsId: 'Buildmaster',
-                url: 'https://bitbucket.lab.dynatrace.org/scm/ux/global-resources.git'
-              ]]
-            ])
-
-            dir('ux-global-ressources') {
-              sh '''
-                PACKAGE_VERSION=$(cat ../.version)
-
-                # replace dot with divis for branchname
-                version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
-                FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
-                git checkout -b ${FEATURE_BRANCH}
-              '''
-          }
-          }
-        }
+    stage('Push docker image to regestry 🛫') {
+      when {
+        branch 'master'
       }
-    }
-
-    stage('deploy the library 🚀') {
-      // when {
-      //   branch 'master'
-      // }
 
       steps {
         sh '''
           PACKAGE_VERSION=$(cat ./.version)
-          version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
-          FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
 
-          cp ./_library/dt-asset-lib.sketch ./ux-global-ressources/dt-asset-lib.sketch
+          docker push webkins.lab.dynatrace.org:5000/ng-sketch:${PACKAGE_VERSION}
+          docker push webkins.lab.dynatrace.org:5000/ng-sketch:latest
         '''
+      }
+    }
+
+    stage('Generate .sketch library 💎') {
+      when {
+        branch 'master'
+      }
+
+      steps {
+        ansiColor('xterm') {
+          sh '''
+            echo "0.3.0-dev" > .version
+            docker pull webkins.lab.dynatrace.org:5000/ng-sketch:latest
+
+            # create _library for out dir of the generated file
+            mkdir _library
+
+            # for verbose logging add -e DEBUG=true
+            docker run\
+              -v $(pwd)/_library/:/lib/_library/ \
+              -e DOCKER=true \
+              -e DEBUG=true \
+              --cap-add=SYS_ADMIN \
+              webkins.lab.dynatrace.org:5000/ng-sketch \
+              node dist/library
+          '''
+        }
+      }
+    }
+
+    stage('clone UX global ressources 🗄') {
+      when {
+        branch 'master'
+      }
+
+      steps {
+        checkout([
+          $class: 'GitSCM',
+          branches: [[name: '*/master']],
+          doGenerateSubmoduleConfigurations: false,
+          extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'ux-global-ressources']],
+          submoduleCfg: [],
+          userRemoteConfigs: [[
+            credentialsId: 'Buildmaster',
+            url: 'https://bitbucket.lab.dynatrace.org/scm/ux/global-resources.git'
+          ]]
+        ])
+
         dir('ux-global-ressources') {
-          sh 'git add .'
-          sh 'git commit -m "feat(library): new library version was generated"'
+          sh '''
+            PACKAGE_VERSION=$(cat ../.version)
+
+            # replace dot with divis for branchname
+            version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
+            FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
+            git checkout -b ${FEATURE_BRANCH}
+          '''
+      }
+      }
+    }
+
+    stage('deploy the library 🚀') {
+      when {
+        branch 'master'
+      }
+
+      steps {
+        dir('ux-global-ressources') {
+          sh '''
+            PACKAGE_VERSION=$(cat ../.version)
+            version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
+            FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
+
+            cp ../_library/dt-asset-lib.sketch ./dt-asset-lib.sketch
+
+            git add .
+            message="feat(library): new library for version ${PACKAGE_VERSION} was generated."
+            git commit -m "$message"
+            git status
+          '''
 
           withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
 
           sh '''
+            PACKAGE_VERSION=$(cat ../.version)
+            version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
+            FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
+
             git push https://${GIT_USER}:${GIT_PASS}@bitbucket.lab.dynatrace.org/scm/ux/global-resources.git ${FEATURE_BRANCH}
             curl --request \
               POST \
               --url https://${GIT_USER}:${GIT_PASS}@bitbucket.lab.dynatrace.org/rest/api/1.0/projects/UX/repos/global-resources/pull-requests \
               --header 'content-type: application/json' \
               --data '{ \
-                "title": "Automatic Library update for Angular Components version: ${PACKAGE_VERSION}",\
+                "title": "Automatic Library update for Angular Components version: '"${PACKAGE_VERSION}"'",\
                 "description": "**New Library updates** 🚀 \\nPlease update your sketch library!.", \
                 "state": "OPEN", \
                 "open": true, \
                 "closed": false, \
-                "fromRef": { "id": "refs/heads/${FEATURE_BRANCH}" }, \
+                "fromRef": { "id": "refs/heads/'"${FEATURE_BRANCH}"'" }, \
                 "toRef": { "id": "refs/heads/master" }, \
                 "locked": false, \
                 "reviewers": [ \
