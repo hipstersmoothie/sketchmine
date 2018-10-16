@@ -30,6 +30,36 @@ Generates a Sketch App Symbol library out of the *Dynatrace Angular Components L
 
 ### How to get running
 
+There are several options to get running with the library if you want to develop locally you can skip to the section [Run without docker](#run-without-docker). If you need to develop something with the docker image for the **CI/CD** you can decide if you want to [get running with docker-compose](#run-with-docker-compose) — the easy way or plain docker without composer. *(that is the way jenkins is using docker)*
+
+### Docker *the jenkins way* 🐳
+
+1. you have to build the image
+
+  ```bash
+  docker build \
+    -t ${YOUR_TAG} \
+    --build-arg GIT_PASS=$GIT_PASS \
+    --build-arg GIT_USER=$GIT_USER \
+    --build-arg GIT_BRANCH=${ANGULAR_COMPONENTS_BRANCH} \
+    .
+  ```
+
+2. run the image
+
+It is **important** to set the environment variable `-e DOCKER=true` for the headless chrome tasks like the *sketch-generator* and the *library* in addition you can set a second variable like `-e DEBUG=true` to see verbose logging.
+
+  ```bash
+  # mount angular components into docker image
+  docker run -it -v $(pwd)/_tmp/:/lib/_tmp/ -e DOCKER=true --cap-add=SYS_ADMIN ${container} ls -lah _tmp
+
+  # generate library
+  docker run -it -v $(pwd)/_tmp/:/lib/_tmp/ -e DOCKER=true --cap-add=SYS_ADMIN ${container} node dist/library
+
+  # use validation
+  docker run -it -v $(pwd)/_tmp/:/lib/_tmp/ -e DOCKER=true --cap-add=SYS_ADMIN ${container} node dist/sketch-validator --file="/path/to/file.sketch"
+  ```
+
 #### Run with docker-compose
 
 To get started with docker-compose please create following file:
@@ -41,7 +71,9 @@ echo 'GIT_PASS=${password}\nGIT_USER\n=${user}\nGIT_BRANCH=feat/poc-sketch' > .e
 
 then just run `docker-compose up`
 
-to run without docker in a local development environment run first
+#### Run without docker
+
+To run without docker in a local development environment run first
 
 ```bash
 sh postinstall.sh
@@ -51,6 +83,13 @@ It will prepare everything for you so you can start developing.
 The angular components will be checked out into `_tmp` and the library app shell will be moved in the correct place.
 
 If you want to run the library `node dist/library` and the **.sketch** file will be generated 🤘🏻
+
+#### Docker Registry
+
+
+On every successfull master build a new Docker Image of the library is generated and deployed to the Dockerregistry.
+You can see the list of all available tags here: [Docker Registry Tag List](https://webkins.lab.dynatrace.org:5000/v2/ng-sketch/tags/list).
+
 
 ### Available commands
 
@@ -82,7 +121,7 @@ Open and close sketch.app on MacOS for easier development.
 process.env.SKETCH = 'open-close';
 ```
 
-### Testing the SVG generator
+### Testing
 
 Tests are done with **JEST**
 
@@ -91,6 +130,20 @@ for end 2 end testing `**/*.e2e.ts`
 
 Just run `npm run test`
 for test-coverage analysis run `npm run test:coverage`
+
+**Important!**
+
+All tests according to this space should be wrapped in a describe with the prefix of the part like : `[sketch-generator] › ...` like the following:
+
+```typescript
+//... import statements
+
+describe('[${part}] › ${folder} › ${description of the suite}', () => {
+
+// .. your tests should place here.
+
+});
+```
 
 ## Useful bash scripts
 
@@ -122,7 +175,7 @@ rm -rf ${filename}.zip
 ## Validator
 
 This tool is found in `src/validate`
-run `npm run run:validate -- --file=path/to/file.sketch`
+run `node dist/sketch-validator --file=path/to/file.sketch`
 
 ### Configuration
 
@@ -142,7 +195,7 @@ export const rules: IValidationRule[] = [
 
 ## Color Replacer to change a set of unused legacy colors
 
-run `run:color-replacer -- --file=path/to/file.sketch --colors=path/to/colors.json`
+run `node dist/sketch-color-replacer --file=path/to/file.sketch --colors=path/to/colors.json`
 The script creates a `./_tmp`dir in the current workdir with the canged file.
 
 All colors have to be provided as **HEX** colors
