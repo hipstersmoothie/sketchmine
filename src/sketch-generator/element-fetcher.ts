@@ -14,6 +14,12 @@ const log = new Logger();
 const config = require(`${process.cwd()}/config/app.json`);
 const TRAVERSER = path.join(process.cwd(), config.sketchGenerator.traverser);
 
+/**
+ * For debugging reasons the result of the dom Traverser can be stored in a file,
+ * then the traversing in the browser gets skiped and uses the result from the json.
+ */
+const LOCAL_RESULT_PATH = 'tests/fixtures/library.json';
+
 export class ElementFetcher {
   // private _assetHsandler: AssetHandler = new AssetHandler();
   private _result: (TraversedPage | TraversedLibrary)[] = [];
@@ -107,11 +113,17 @@ export class ElementFetcher {
           window.page.element = traverser.traverse(hostElement, visitor);` });
       result = await page.evaluate(() => window.page) as ITraversedElement[];
     }
-    log.debug(JSON.stringify(result, null, 2), 'dom-traverser');
+    log.debug(JSON.stringify(result), 'dom-traverser');
     return result;
   }
 
   async collectElements() {
+    if (process.env.TRAVERSER.includes('skip-traverser')) {
+      const result = JSON.parse(await readFile(LOCAL_RESULT_PATH));
+      this._result.push(result);
+      return;
+    }
+
     const options = process.env.DOCKER ?  {
       ...this.conf.chrome,
       /**

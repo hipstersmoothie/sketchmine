@@ -19,7 +19,7 @@ const config = {
     app: 'dist/sketch-library',
   },
   pages: [
-    '/',
+    '',
   ],
   outFile: '_library/dt-asset-lib.sketch',
   chrome: {
