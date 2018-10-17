@@ -1,4 +1,5 @@
 import { SketchStyle } from './style.interface';
+import { SketchForeignTextStyles } from './text-style.interface';
 
 export enum SketchObjectTypes {
   Artboard = 'artboard',
@@ -36,6 +37,7 @@ export interface SketchBase {
   _class: SketchObjectTypes;
   do_objectID: string;
   exportOptions: SketchExportOptions;
+  foreignTextStyles?: SketchForeignTextStyles[];
   frame?: SketchFrame;
   hasClickThrough?: boolean;
   isFlippedHorizontal: boolean;
@@ -50,6 +52,7 @@ export interface SketchBase {
   resizingConstraint: number;
   resizingType: number;
   rotation: number;
+  sharedStyleID?: string;
   shouldBreakMaskChain: boolean;
   style: SketchStyle;
 }

@@ -1,5 +1,5 @@
 import { ValidationError } from '../error/validation-error';
-import { SketchStyle, SketchFrame, SketchObjectTypes } from '@sketch-draw/interfaces';
+import { SketchStyle, SketchFrame, SketchObjectTypes, SketchBase } from '@sketch-draw/interfaces';
 
 export type ValidationFunction = (homework: IValidationContext[], currentTask: number) => (ValidationError | boolean)[];
 
@@ -9,6 +9,7 @@ export interface IValidationRule {
   validation: ValidationFunction;
   description?: string;
   ignoreArtboards?: string[];
+  includePages?: string[];
   env?: string[];
   options?: { [key: string]: any };
   includePages?: string[];
@@ -19,9 +20,11 @@ export interface IValidationContext {
   do_objectID: string;
   name: string;
   parents: IValidationContextParents;
+  sharedStyleID?: string;
   style?: SketchStyle;
   frame?: SketchFrame;
   layerSize?: number;
+  document: SketchBase;
   ruleOptions: { [key: string]: any };
 }
 
@@ -29,4 +32,11 @@ export interface IValidationContextParents {
   page: string;
   artboard: string;
   symbolMaster: string;
+}
+
+export enum ValidationRequirements {
+  DocumentReference = 'document.json',
+  Frame = 'frame',
+  LayerSize = 'layersize',
+  Style = 'style',
 }
