@@ -1,9 +1,16 @@
 import { main } from './main';
 import { SketchGenerator } from './sketch-generator';
+import { readFile } from '@utils';
+import { AMP } from '../angular-meta-parser/meta-information';
 
 export async function commandLineExecutor(): Promise<number> {
   const config = require('./config.json') as SketchGenerator.Config;
-  return await main(config) as number;
+  let meta: AMP.Result;
+
+  if (config.metaInformation) {
+    meta = JSON.parse(await readFile(config.metaInformation));
+  }
+  return await main(config, meta) as number;
 }
 
 /** Call the main function with command line args */

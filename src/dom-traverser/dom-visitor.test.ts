@@ -32,7 +32,7 @@ describe('DOM Visitor', () => {
     dom = new JSDOM(html);
     document = dom.window.document;
     hostElement = document.querySelector(ROOT_ELEMENT) as HTMLElement;
-    visitor = new DomVisitor(hostElement);
+    visitor = new DomVisitor(hostElement, []);
     /**
      * mock the getStyle function in case of getComputedStyle(),
      * in case that it is not available in jsdom.

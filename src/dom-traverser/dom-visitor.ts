@@ -86,7 +86,8 @@ export interface StyleOptions {
  */
 export class DomVisitor implements Visitor {
 
-  constructor(public hostElement: HTMLElement) {}
+  hasNestedSymbols = false;
+  constructor(public hostElement: HTMLElement, public selectors: string[]) {}
 
   visitElement(element: elementNode): ITraversedDomElement {
     const className = (typeof element.className === 'string') ? element.className.split(' ').join('\/') : '';
@@ -95,12 +96,20 @@ export class DomVisitor implements Visitor {
     const parentRect: DOMRect | null =
       (parent && element !== this.hostElement) ? this.getRect(parent as HTMLElement) : null;
     const options = this.getStyle(element);
+
+    const matchingComponent = this.selectors.find(sel => element.webkitMatchesSelector(sel)) || null;
+
+    if (matchingComponent) {
+      this.hasNestedSymbols = true;
+    }
+
     const el = {
       tagName,
       className,
       parentRect,
       boundingClientRect: this.getRect(element as HTMLElement),
       styles: !options.hasDefaultStyling && !options.isHidden ? options.styles : null,
+      matchingComponent,
       isHidden: options.isHidden,
     } as ITraversedDomElement;
 

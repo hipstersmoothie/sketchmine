@@ -8,9 +8,7 @@ import { exec } from 'child_process';
 import { SketchGenerator } from './sketch-generator';
 import { readFile, Logger } from '@utils';
 import { sketchGeneratorApi } from './sketch-generator-api';
-import { AssetHelper } from '../dom-traverser/asset-helper';
-import { DomVisitor } from '../dom-traverser/dom-visitor';
-import { DomTraverser } from '../dom-traverser/dom-traverser';
+import { AMP } from '../angular-meta-parser/meta-information';
 
 const log = new Logger();
 const config = require(`${process.cwd()}/config/app.json`);
@@ -19,7 +17,8 @@ const TRAVERSER = path.join(process.cwd(), config.sketchGenerator.traverser);
 export class ElementFetcher {
   // private _assetHsandler: AssetHandler = new AssetHandler();
   private _result: (TraversedPage | TraversedLibrary)[] = [];
-  constructor(public conf: SketchGenerator.Config) { }
+
+  constructor(public conf: SketchGenerator.Config, public meta?: AMP.Result) { }
 
   async generateSketchFile(): Promise<number> {
     const drawer = new Drawer();
@@ -78,7 +77,13 @@ export class ElementFetcher {
     let result: any;
 
     if (this.conf.library) {
-      result = await sketchGeneratorApi(browser, url, this.conf.rootElement, traverser);
+      result = await sketchGeneratorApi({
+        browser,
+        url,
+        rootSelector: this.conf.rootElement,
+        traverser,
+        metaInformation: this.meta,
+      });
     } else {
       const page = await browser.newPage();
       page.setViewport(this.conf.chrome.defaultViewport);
@@ -97,7 +102,7 @@ export class ElementFetcher {
           if (!hostElement) {
             throw new Error(\`Could not select hostElement with selector: ${this.conf.rootElement}\`);
           }
-          const visitor = new DomVisitor(hostElement);
+          const visitor = new DomVisitor(hostElement, []);
           const traverser = new DomTraverser();
           window.page.element = traverser.traverse(hostElement, visitor);` });
       result = await page.evaluate(() => window.page) as ITraversedElement[];
@@ -137,6 +142,6 @@ export class ElementFetcher {
       this._result.push(await this.getPage(browser, url));
     }
 
-    await browser.close();
+    // await browser.close();
   }
 }

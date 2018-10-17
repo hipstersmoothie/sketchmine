@@ -5,16 +5,21 @@ import { DomVisitor } from '../../dom-traverser/dom-visitor';
 import { DomTraverser } from '../../dom-traverser/dom-traverser';
 import { ITraversedElement, TraversedSymbol } from '../../dom-traverser/traversed-dom';
 import { Logger } from '@utils';
+import { AMP } from '../../angular-meta-parser/meta-information';
+import { getComponentSelectors } from '../helpers/get-component-selectors';
+
+export interface SketchGeneratorApiConfig {
+  browser: puppeteer.Browser;
+  url: string;
+  rootSelector: string;
+  traverser: string;
+  metaInformation: AMP.Result;
+}
 
 const log = new Logger();
-export async function sketchGeneratorApi(
-  browser: puppeteer.Browser,
-  url: string,
-  rootSelector: string,
-  traverser: string,
-  ): Promise<any> {
-
-  const page = await browser.newPage();
+export async function sketchGeneratorApi(config: SketchGeneratorApiConfig): Promise<any> {
+  const componentSelectors = getComponentSelectors(config.metaInformation);
+  const page = await config.browser.newPage();
   let resolveFinish;
   const finished = new Promise((resolve) => { resolveFinish = resolve; });
 
@@ -43,17 +48,22 @@ export async function sketchGeneratorApi(
   await page.exposeFunction('_draw', async (cbID: number, symbolName: string) => {
     log.debug(`Traverser › draw Symbol ${symbolName}`);
     await page.evaluate(
-      (rootSelector: string, symbolName: string) => {
+      (rootSelector: string, symbolName: string, selectors: string[]) => {
         const hostElement = document.querySelector(rootSelector) as HTMLElement;
-        const visitor = new DomVisitor(hostElement);
+        const visitor = new DomVisitor(hostElement, selectors);
         const traverser = new DomTraverser();
-        window.library.symbols.push({
+        const symbol = {
           name: symbolName,
           symbol: traverser.traverse(hostElement, visitor),
-        } as TraversedSymbol);
+          hasNestedSymbols: false,
+        } as TraversedSymbol;
+
+        symbol.hasNestedSymbols = visitor.hasNestedSymbols;
+        window.library.symbols.push(symbol);
       },
-      rootSelector,
-      symbolName);
+      config.rootSelector,
+      symbolName,
+      componentSelectors);
     return resolvePending(cbID);
   });
 
@@ -108,8 +118,8 @@ export async function sketchGeneratorApi(
     };
   });
 
-  await page.evaluateOnNewDocument(traverser);
-  await page.goto(url, { waitUntil: 'networkidle0' });
+  await page.evaluateOnNewDocument(config.traverser);
+  await page.goto(config.url, { waitUntil: 'networkidle0' });
 
   await finished;
 

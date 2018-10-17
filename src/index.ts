@@ -49,7 +49,7 @@ export default async function main() {
   await writeJSON(config.metaInformation, meta);
   const server = await startServer(config);
   log.info(chalk`{blue ==>} generate the .sketch file\n\n`);
-  await SketchGenerator(config);
+  await SketchGenerator(config, meta);
   server.kill();
 }
 
