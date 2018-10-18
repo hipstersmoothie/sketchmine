@@ -141,27 +141,6 @@ export class ElementFetcher {
     });
   }
 
-  getSymbol(element: ITraversedDomElement) {
-
-    const sortedList = [];
-
-    if (element.matchingComponent) {
-      const comp = Object.values(this.meta.components)
-        .find((comp: AMP.Component) => comp.selector.includes(element.matchingComponent));
-
-      // if (sortedList.)
-      // console.log(comp.component);
-    }
-
-    if (element.children) {
-      element.children.forEach((child) => {
-        if (child.hasOwnProperty('matchingComponent')) {
-          this.getSymbol(child as ITraversedDomElement);
-        }
-      });
-    }
-  }
-
   async getPage(browser: puppeteer.Browser, url: string): Promise<TraversedPage | TraversedLibrary> {
     const traverser = await readFile(TRAVERSER);
     let result: any;
