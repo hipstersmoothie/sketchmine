@@ -5,14 +5,14 @@
     "name": "localhost",
     "port": 4200
   },
-  "rootElement": "app-root > *",
+  "rootElement": "ng-component > * ",
   "library": {
     "app": "dist/sketch-library"
   },
   "pages": [
-    "/"
+    ""
   ],
-  "outFile": "dt-asset-lib.sketch",
+  "outFile": "_library/dt-asset-lib.sketch",
   "chrome": {
     "defaultViewport": {
       "width": 1200,

@@ -1149,7 +1149,7 @@
         }]
       }]
     },
-    "hasNestedSymbols": true
+    "hasNestedSymbols": ["button[dt-button]", "button[dt-button]"]
   }, {
     "name": "tile/main",
     "symbol": {
@@ -2298,7 +2298,7 @@
         }]
       }]
     },
-    "hasNestedSymbols": true
+    "hasNestedSymbols": ["button[dt-button]", "button[dt-button]"]
   }, {
     "name": "tile/accent",
     "symbol": {
@@ -3447,7 +3447,7 @@
         }]
       }]
     },
-    "hasNestedSymbols": true
+    "hasNestedSymbols": ["button[dt-button]", "button[dt-button]"]
   }, {
     "name": "tile/warning",
     "symbol": {
@@ -4596,7 +4596,7 @@
         }]
       }]
     },
-    "hasNestedSymbols": true
+    "hasNestedSymbols": ["button[dt-button]", "button[dt-button]"]
   }, {
     "name": "tile/error",
     "symbol": {
@@ -5745,7 +5745,7 @@
         }]
       }]
     },
-    "hasNestedSymbols": true
+    "hasNestedSymbols": ["button[dt-button]", "button[dt-button]"]
   }, {
     "name": "tile/cta",
     "symbol": {
@@ -6894,7 +6894,7 @@
         }]
       }]
     },
-    "hasNestedSymbols": true
+    "hasNestedSymbols": ["button[dt-button]", "button[dt-button]"]
   }, {
     "name": "button/disabled",
     "symbol": {
@@ -7022,7 +7022,7 @@
         }]
       }]
     },
-    "hasNestedSymbols": true
+    "hasNestedSymbols": []
   }, {
     "name": "button/main",
     "symbol": {
@@ -7150,7 +7150,7 @@
         }]
       }]
     },
-    "hasNestedSymbols": true
+    "hasNestedSymbols": []
   }, {
     "name": "button/accent",
     "symbol": {
@@ -7278,7 +7278,7 @@
         }]
       }]
     },
-    "hasNestedSymbols": true
+    "hasNestedSymbols": []
   }, {
     "name": "button/warning",
     "symbol": {
@@ -7406,7 +7406,7 @@
         }]
       }]
     },
-    "hasNestedSymbols": true
+    "hasNestedSymbols": []
   }, {
     "name": "button/error",
     "symbol": {
@@ -7534,7 +7534,7 @@
         }]
       }]
     },
-    "hasNestedSymbols": true
+    "hasNestedSymbols": []
   }, {
     "name": "button/cta",
     "symbol": {
@@ -7662,7 +7662,7 @@
         }]
       }]
     },
-    "hasNestedSymbols": true
+    "hasNestedSymbols": []
   }, {
     "name": "button/primary",
     "symbol": {
@@ -7790,7 +7790,7 @@
         }]
       }]
     },
-    "hasNestedSymbols": true
+    "hasNestedSymbols": []
   }, {
     "name": "button/secondary",
     "symbol": {
@@ -7918,7 +7918,7 @@
         }]
       }]
     },
-    "hasNestedSymbols": true
+    "hasNestedSymbols": []
   }, {
     "name": "button/nested",
     "symbol": {
@@ -8046,6 +8046,6 @@
         }]
       }]
     },
-    "hasNestedSymbols": true
+    "hasNestedSymbols": []
   }]
 }

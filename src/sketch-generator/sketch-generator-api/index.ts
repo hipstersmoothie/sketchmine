@@ -55,7 +55,7 @@ export async function sketchGeneratorApi(config: SketchGeneratorApiConfig): Prom
         const symbol = {
           name: symbolName,
           symbol: traverser.traverse(hostElement, visitor),
-          hasNestedSymbols: false,
+          hasNestedSymbols: [],
         } as TraversedSymbol;
 
         symbol.hasNestedSymbols = visitor.hasNestedSymbols;

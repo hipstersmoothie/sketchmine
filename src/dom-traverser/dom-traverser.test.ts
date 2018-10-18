@@ -17,7 +17,7 @@ describe('DOM Traverser', () => {
     const dom = new JSDOM(html);
     const document = dom.window.document;
     const hostElement = document.querySelector(ROOT_ELEMENT) as HTMLElement;
-    const visitor = new DomVisitor(hostElement);
+    const visitor = new DomVisitor(hostElement, []);
     const traverser = new DomTraverser();
     /**
      * mock the getStyle function in case of getComputedStyle(),

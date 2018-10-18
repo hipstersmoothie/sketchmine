@@ -17,7 +17,7 @@ export interface TraversedLibrary {
 export interface TraversedSymbol {
   name: string;
   symbol: ITraversedDomElement;
-  hasNestedSymbols: boolean;
+  hasNestedSymbols: string[];
 }
 
 export interface IAsset {

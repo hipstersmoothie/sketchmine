@@ -86,21 +86,21 @@ export interface StyleOptions {
  */
 export class DomVisitor implements Visitor {
 
-  hasNestedSymbols = false;
+  hasNestedSymbols = [];
   constructor(public hostElement: HTMLElement, public selectors: string[]) {}
 
   visitElement(element: elementNode): ITraversedDomElement {
+    const isRoot = element === this.hostElement;
     const className = (typeof element.className === 'string') ? element.className.split(' ').join('\/') : '';
     const tagName = element.tagName.toUpperCase();
     const parent = element.parentElement;
-    const parentRect: DOMRect | null =
-      (parent && element !== this.hostElement) ? this.getRect(parent as HTMLElement) : null;
+    const parentRect: DOMRect | null = (parent && !isRoot) ? this.getRect(parent as HTMLElement) : null;
     const options = this.getStyle(element);
 
     const matchingComponent = this.selectors.find(sel => element.webkitMatchesSelector(sel)) || null;
 
-    if (matchingComponent) {
-      this.hasNestedSymbols = true;
+    if (matchingComponent && !isRoot) {
+      this.hasNestedSymbols.push(matchingComponent);
     }
 
     const el = {

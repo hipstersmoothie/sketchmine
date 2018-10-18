@@ -3,7 +3,13 @@ import chalk from 'chalk';
 import puppeteer from 'puppeteer';
 import { Sketch } from '@sketch-draw/sketch';
 import { Drawer } from './drawer';
-import { ITraversedElement, TraversedLibrary, TraversedPage } from '../dom-traverser/traversed-dom';
+import {
+  ITraversedElement,
+  TraversedLibrary,
+  TraversedPage,
+  ITraversedDomElement,
+  TraversedSymbol,
+} from '../dom-traverser/traversed-dom';
 import { exec } from 'child_process';
 import { SketchGenerator } from './sketch-generator';
 import { readFile, Logger } from '@utils';
@@ -22,24 +28,25 @@ const LOCAL_RESULT_PATH = 'tests/fixtures/library.json';
 
 export class ElementFetcher {
   // private _assetHsandler: AssetHandler = new AssetHandler();
-  private _result: (TraversedPage | TraversedLibrary)[] = [];
+  result: (TraversedPage | TraversedLibrary)[] = [];
 
   constructor(public conf: SketchGenerator.Config, public meta?: AMP.Result) { }
 
   async generateSketchFile(): Promise<number> {
+    this.sortSymbols();
     const drawer = new Drawer();
     const sketch = new Sketch(this.conf.outFile);
     const pages = [];
     let symbolsMaster = drawer.drawSymbols({ symbols: [] } as any);
 
-    if (this._result.length > 0) {
-      this._result.forEach((result) => {
+    if (this.result.length > 0) {
+      this.result.forEach((result) => {
         switch (result.type) {
           case 'page':
             pages.push(drawer.drawPage(result));
             break;
           case 'library':
-            symbolsMaster = drawer.drawSymbols(this._result[0] as TraversedLibrary);
+            symbolsMaster = drawer.drawSymbols(this.result[0] as TraversedLibrary);
             break;
         }
       });
@@ -77,6 +84,83 @@ export class ElementFetcher {
   //   const assets = this._symbols.map(symbol => this._assetHandler.download(symbol.assets));
   //   await Promise.all(assets);
   // }
+
+  /**
+   * this function sorts the Symbols according to the way they are nested to ensure every symbol that
+   * is going to be reused is drawn before being reused.
+   */
+  sortSymbols() {
+    const sorted = [];
+    const lib = this.result.find(page => page.type === 'library') as TraversedLibrary;
+
+    if (!lib) { return; }
+
+    for (let i = 0, max = lib.symbols.length; i < max; i += 1) {
+      const comp = lib.symbols[i];
+      const componentName = comp.name.split('/')[0];
+      let compPos = sorted.indexOf(componentName);
+
+      // if component does not exist just add it.
+      if (compPos < 0) {
+        sorted.push(componentName);
+        // of course update the index because old is wrong
+        compPos = sorted.indexOf(componentName);
+      }
+
+      if (!comp.hasNestedSymbols.length) {
+        continue;
+      }
+
+      comp.hasNestedSymbols.forEach((symbol) => {
+        // TODO: @lukas.holzer make this more efficient
+        const comp = Object.values(this.meta.components)
+          .find((comp: AMP.Component) => comp.selector.includes(symbol));
+        const pos = sorted.indexOf(comp.component);
+
+        // if nested component is not in the order list
+        // add it before element
+        if (pos < 0) {
+          sorted.splice(compPos, 0, comp.component);
+        } else if (pos > -1) {
+          // now check if it is before parent component
+          // if parent component is before component shuffle...
+          if (pos > compPos) {
+            // remove component from behind parent
+            sorted.splice(pos, 1);
+            // add component before parent
+            sorted.splice(compPos, 0, comp.component);
+          }
+        }
+      });
+    }
+
+    // sort the symbols according to the sorted array
+    lib.symbols.sort((a: TraversedSymbol, b: TraversedSymbol): number => {
+      return sorted.indexOf(a.name.split('/')[0]) -
+            sorted.indexOf(b.name.split('/')[0]);
+    });
+  }
+
+  getSymbol(element: ITraversedDomElement) {
+
+    const sortedList = [];
+
+    if (element.matchingComponent) {
+      const comp = Object.values(this.meta.components)
+        .find((comp: AMP.Component) => comp.selector.includes(element.matchingComponent));
+
+      // if (sortedList.)
+      // console.log(comp.component);
+    }
+
+    if (element.children) {
+      element.children.forEach((child) => {
+        if (child.hasOwnProperty('matchingComponent')) {
+          this.getSymbol(child as ITraversedDomElement);
+        }
+      });
+    }
+  }
 
   async getPage(browser: puppeteer.Browser, url: string): Promise<TraversedPage | TraversedLibrary> {
     const traverser = await readFile(TRAVERSER);
@@ -118,9 +202,9 @@ export class ElementFetcher {
   }
 
   async collectElements() {
-    if (process.env.TRAVERSER.includes('skip-traverser')) {
+    if (process.env.TRAVERSER && process.env.TRAVERSER.includes('skip-traverser')) {
       const result = JSON.parse(await readFile(LOCAL_RESULT_PATH));
-      this._result.push(result);
+      this.result.push(result);
       return;
     }
 
@@ -151,7 +235,7 @@ export class ElementFetcher {
       const url = `${host.protocol}://${host.name}${port}/${page}`;
 
       log.debug(chalk`🛬\t{cyanBright Fetching Page}: ${url}`);
-      this._result.push(await this.getPage(browser, url));
+      this.result.push(await this.getPage(browser, url));
     }
 
     // await browser.close();
