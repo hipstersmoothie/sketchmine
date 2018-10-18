@@ -7,7 +7,6 @@ import {
   ITraversedElement,
   TraversedLibrary,
   TraversedPage,
-  ITraversedDomElement,
   TraversedSymbol,
 } from '../dom-traverser/traversed-dom';
 import { exec } from 'child_process';
@@ -217,6 +216,6 @@ export class ElementFetcher {
       this.result.push(await this.getPage(browser, url));
     }
 
-    // await browser.close();
+    await browser.close();
   }
 }

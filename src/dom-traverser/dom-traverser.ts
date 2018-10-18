@@ -36,6 +36,10 @@ export class DomTraverser {
   }
 
   traverse(node, visitor: DomVisitor): ITraversedElement {
+    if (!node) {
+      throw new Error('No node was passed to the traverse function, maybe the root Element does not exist!');
+    }
+
     this.nodeCount += 1;
     let treeLevel: ITraversedElement;
 
