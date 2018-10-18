@@ -15,7 +15,7 @@ describe('[sketch-generator] › draw sketch elements', () => {
       boundingClientRect: { x: 0, y: 0, width: 800, height: 44, top: 0, right: 800, bottom: 44, left: 0 } as DOMRect,
       styles: null,
       isHidden: false,
-    };
+    } as ITraversedDomElement;
   });
 
   test('draw lines for borderTop and borderLeft', () => {

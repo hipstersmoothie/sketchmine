@@ -45,7 +45,7 @@ describe('E2E Dom Traverser', () => {
     await page.addScriptTag({ content: traverser });
     await page.addScriptTag({ content: `
         const hostElement = document.querySelector('${ROOT_ELEMENT}');
-        const visitor = new DomVisitor(hostElement);
+        const visitor = new DomVisitor(hostElement, []);
         const traverser = new DomTraverser();
         const images = new AssetHelper();
         window.page = {
