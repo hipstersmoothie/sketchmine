@@ -26,13 +26,16 @@ export async function main(args: string[]) {
   }
 
   /** unzip only the pages for the validation */
-  return unzip(file, /pages\/.*?\.json/).then(async (result) => {
+  return unzip(file, /(document.json|pages\/.*?\.json)/).then(async (result) => {
     log.debug(chalk`\n⏱  Parsing and Validating ${result.length.toString()} Pages: \n\n`);
     await result.forEach((file) => {
       const content = file.buffer.toString();
       const page = JSON.parse(content);
-
-      validator.addFile(page);
+      if (file.path === 'document.json') {
+        validator.addDocumentFile(page);
+      } else {
+        validator.addFile(page);
+      }
     });
     validator.validate();
     handler.emit();

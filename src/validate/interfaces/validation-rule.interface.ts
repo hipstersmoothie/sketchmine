@@ -24,7 +24,7 @@ export interface IValidationContext {
   style?: SketchStyle;
   frame?: SketchFrame;
   layerSize?: number;
-  document: SketchBase;
+  document?: SketchBase;
   ruleOptions: { [key: string]: any };
 }
 

@@ -9,6 +9,7 @@ export enum SketchObjectTypes {
   Border = 'border',
   Color = 'color',
   CurvePoint = 'curvePoint',
+  Document = 'document',
   ExportOptions = 'exportOptions',
   Fill = 'fill',
   FontDescriptor = 'fontDescriptor',

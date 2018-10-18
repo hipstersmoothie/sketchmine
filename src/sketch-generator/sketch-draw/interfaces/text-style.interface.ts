@@ -20,19 +20,19 @@ export interface SketchEncodedAttributes {
   kerning?: number;
   MSAttributedStringColorAttribute: SketchColor;
   MSAttributedStringFontAttribute: SketchFontDescriptor;
-  MSAttributedStringTextTransformAttribute: TextTransform;
+  MSAttributedStringTextTransformAttribute?: TextTransform;
   paragraphSpacing?: number;
   paragraphStyle: SketchParagraphStyle;
-  strikethroughStyle: StrikethroughStyle;
-  textStyleVerticalAlignmentKey: number;
+  strikethroughStyle?: StrikethroughStyle;
+  textStyleVerticalAlignmentKey?: number;
   underlineStyle?: UnderlineStyle;
 }
 export interface SketchParagraphStyle {
   _class: SketchObjectTypes.ParagraphStyle;
   alignment: number;
-  maximumLineHeight: number;
-  minimumLineHeight: number;
-  paragraphSpacing: number;
+  maximumLineHeight?: number;
+  minimumLineHeight?: number;
+  paragraphSpacing?: number;
   allowsDefaultTighteningForTruncation: number;
 }
 export interface SketchFontDescriptor {
