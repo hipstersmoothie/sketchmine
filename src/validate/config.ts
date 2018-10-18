@@ -53,15 +53,15 @@ export const rules: IValidationRule[] = [
       artboardSizes,
     },
   },
-  // {
-  //   selector: [SketchObjectTypes.Text],
-  //   name: 'text-style-validation',
-  //   description: 'Check if text styles are used correctly.',
-  //   env: ['product'],
-  //   validation: textStyleValidation,
-  //   includePages: artboardSizes,
-  //   options: {
-  //     requirements: [ValidationRequirements.DocumentReference, ValidationRequirements.Style],
-  //   },
-  // },
+  {
+    selector: [SketchObjectTypes.Text],
+    name: 'text-style-validation',
+    description: 'Check if text styles are used correctly.',
+    env: ['product'],
+    validation: textStyleValidation,
+    includePages: artboardSizes,
+    options: {
+      requirements: [ValidationRequirements.DocumentReference, ValidationRequirements.Style],
+    },
+  },
 ];
