@@ -13,7 +13,7 @@ describe('[sketch-generator] › element fetcher', () => {
     fetcher = new ElementFetcher({} as SketchGenerator.Config, meta);
   });
 
-  test('Sortig of tile has nested button', async () => {
+  test('Sorting of tile has nested button', async () => {
     fetcher.result = [{
       type: 'library',
       symbols: [
