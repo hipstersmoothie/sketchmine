@@ -1,8 +1,6 @@
-import { SketchBase } from './base.interface';
+import { SketchBase, SketchClippingMask } from './base.interface';
 
-export interface SketchShapeGroup extends SketchBase {
+export interface SketchShapeGroup extends SketchBase, SketchClippingMask {
   hasClickThrough: boolean;
-  clippingMaskMode: number;
-  hasClippingMask: boolean;
   windingRule: number;
 }

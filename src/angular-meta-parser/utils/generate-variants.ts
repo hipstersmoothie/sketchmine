@@ -23,7 +23,7 @@ export function generateVariants(component: string, variants: Property[]): AMP.V
         }];
 
         result.push({
-          name: generateVariantName(component, changes).replace('/default', ''),
+          name: generateVariantName(component, changes),
           changes,
         });
       }

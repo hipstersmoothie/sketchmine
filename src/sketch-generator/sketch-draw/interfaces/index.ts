@@ -19,6 +19,7 @@ export * from './shadow.interface';
 export * from './shape-group.interface';
 export * from './shape-path.interface';
 export * from './style.interface';
+export * from './symbol-instance.interface';
 export * from './symbol-master.interface';
 export * from './text-style.interface';
 export * from './text.interface';
