@@ -5,7 +5,7 @@ import { ViewData, ElementData } from '@angular/core/src/view';
 
 export function checkSubComponents(viewData: ViewData, components: AMP.Component[], current: AMP.Component) {
   for (const key in viewData.nodes) {
-    if (!viewData.nodes.hasOwnProperty(key)) {
+    if (!viewData.nodes.hasOwnProperty(key) || !viewData.nodes[key]) {
       continue;
     }
     const node: ElementData = viewData.nodes[key] as any;
