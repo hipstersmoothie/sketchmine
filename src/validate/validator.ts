@@ -51,6 +51,16 @@ export class Validator {
     verena.improve(this.matchedRules);
   }
 
+    /**
+   * Checks if rule is unrelvant for current validation and can be excluded.
+   * @param rule rule to check
+   */
+  private excludeRule(rule: IValidationRule): boolean {
+    return rule.ignoreArtboards && rule.ignoreArtboards.includes(this._currentArtboard) ||
+      rule.env && !rule.env.includes(this.env) ||
+      rule.includePages && !rule.includePages.includes(this._currentPage);
+  }
+
   /**
    * Gathers the matching Objects from the Sketch JSON file
    * and stores it in an array
@@ -60,11 +70,7 @@ export class Validator {
     this.setCurrentParents(content);
     if (this._rulesSelectors.includes(content._class)) {
       const rule = this._rules.find(rule => rule.selector.includes(content._class as SketchModel));
-      if (
-        rule.ignoreArtboards &&
-        rule.ignoreArtboards.includes(this._currentArtboard) ||
-        rule.env && !rule.env.includes(this.env)
-      ) {
+      if (this.excludeRule(rule)) {
         return;
       }
       this.matchedRules.push(this.getProperties(content, rule.options || {}));
