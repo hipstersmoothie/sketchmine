@@ -1,6 +1,7 @@
 export * from './adjust-path-aliases';
 export * from './check-node-tags';
 export * from './display-help';
+export * from './generate-variant-name';
 export * from './generate-variants';
 export * from './get-component-decorator';
 export * from './get-decorator-of-type';

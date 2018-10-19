@@ -97,6 +97,7 @@ export class DomVisitor implements Visitor {
     const parentRect: DOMRect | null = (parent && !isRoot) ? this.getRect(parent as HTMLElement) : null;
     const options = this.getStyle(element);
 
+
     const matchingComponent = this.selectors.find(sel => element.webkitMatchesSelector(sel)) || null;
 
     if (matchingComponent && !isRoot) {
@@ -110,6 +111,7 @@ export class DomVisitor implements Visitor {
       boundingClientRect: this.getRect(element as HTMLElement),
       styles: !options.hasDefaultStyling && !options.isHidden ? options.styles : null,
       matchingComponent,
+      variant: matchingComponent ? element.getAttribute('symbol-variant') : null,
       isHidden: options.isHidden,
     } as ITraversedDomElement;
 

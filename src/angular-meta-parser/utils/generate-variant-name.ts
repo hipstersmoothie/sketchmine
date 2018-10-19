@@ -1,5 +1,5 @@
 import { AMP } from '../meta-information';
-import { camelCaseToKebabCase } from '../../utils';
+import { camelCaseToKebabCase } from '../../utils/camel-case-to-kebab-case';
 
 const ACTIONS = ['disabled', 'active', 'hover', 'click'];
 

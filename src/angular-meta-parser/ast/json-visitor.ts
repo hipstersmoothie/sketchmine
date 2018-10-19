@@ -68,6 +68,7 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
       selector: node.selector,
       clickable: node.clickable,
       hoverable: node.hoverable,
+      properties: componentMembers.map(prop => prop.key),
       variants: componentMembers,
       combinedVariants: node.combinedVariants,
     };
