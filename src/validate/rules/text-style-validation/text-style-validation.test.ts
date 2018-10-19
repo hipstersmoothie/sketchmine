@@ -8,7 +8,7 @@ import {
 import { getFakeHomeworks } from './fake-homeworks';
 import { textStyleValidation } from './text-style-validation';
 
-describe('[sketch-validator] › Text Style Validation › Tests', () => {
+describe('[sketch-validator] › Text Style Validation › Tests usage of text styles defined in global library.', () => {
   let sketchDocument: SketchBase;
 
   beforeEach(async () => {
@@ -24,7 +24,7 @@ describe('[sketch-validator] › Text Style Validation › Tests', () => {
     expect(result[0]).toBeInstanceOf(NoForeignTextStylesError);
   });
 
-  test('should check if validation fails if no shared text style is used', () => {
+  test('should check if validation fails when no shared text style is used', () => {
     const fakeHomeworks = getFakeHomeworks(sketchDocument);
     const result = textStyleValidation(fakeHomeworks, 1);
     expect(result).toBeInstanceOf(Array);
@@ -32,9 +32,16 @@ describe('[sketch-validator] › Text Style Validation › Tests', () => {
     expect(result[0]).toBeInstanceOf(NoSharedTextStylesError);
   });
 
-  test('should check if shared style has not been changed manually', () => {
+  test('should check if validation passes when more attributed string attributes are given', () => {
     const fakeHomeworks = getFakeHomeworks(sketchDocument);
     const result = textStyleValidation(fakeHomeworks, 2);
+    expect(result).toBeInstanceOf(Array);
+    expect(result).toHaveLength(0);
+  });
+
+  test('should check if shared style has not been changed manually', () => {
+    const fakeHomeworks = getFakeHomeworks(sketchDocument);
+    const result = textStyleValidation(fakeHomeworks, 3);
     expect(result).toBeInstanceOf(Array);
     expect(result).toHaveLength(1);
     expect(result[0]).toBeInstanceOf(NoSharedTextStylesOverridesError);

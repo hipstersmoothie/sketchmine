@@ -61,7 +61,11 @@ export const rules: IValidationRule[] = [
     validation: textStyleValidation,
     includePages: artboardSizes,
     options: {
-      requirements: [ValidationRequirements.DocumentReference, ValidationRequirements.Style],
+      requirements: [
+        ValidationRequirements.AttributedString,
+        ValidationRequirements.DocumentReference,
+        ValidationRequirements.Style,
+      ],
     },
   },
 ];

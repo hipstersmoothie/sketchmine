@@ -148,13 +148,17 @@ export class Validator {
     } as IValidationContext;
 
     /**
-     * Extend validation context depending on rule requirements defined in
+     * Extend validation context depending on rule requirements defined in validator config.
      */
     const requirements = ruleOptions.requirements;
     if (requirements) {
       if (requirements.includes(ValidationRequirements.Style) && layer.style) {
         obj.style = layer.style as SketchStyle;
         obj.sharedStyleID = layer.sharedStyleID;
+      }
+      if (requirements.includes(ValidationRequirements.AttributedString)
+            && layer.attributedString && layer.attributedString.attributes) {
+        obj.attributedStringSize = layer.attributedString.attributes.length;
       }
       if (requirements.includes(ValidationRequirements.Frame) && layer.frame) {
         obj.frame = layer.frame;

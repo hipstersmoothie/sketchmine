@@ -1,5 +1,6 @@
 import { SketchStyle } from './style.interface';
 import { SketchForeignTextStyles } from './text-style.interface';
+import { SketchAttributedString } from './text.interface';
 
 export enum SketchObjectTypes {
   Artboard = 'artboard',
@@ -36,6 +37,7 @@ export enum SketchObjectTypes {
 
 export interface SketchBase {
   _class: SketchObjectTypes;
+  attributedString: SketchAttributedString;
   do_objectID: string;
   exportOptions: SketchExportOptions;
   foreignTextStyles?: SketchForeignTextStyles[];

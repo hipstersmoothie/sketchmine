@@ -24,6 +24,7 @@ export interface IValidationContext {
   style?: SketchStyle;
   frame?: SketchFrame;
   layerSize?: number;
+  attributedStringSize?: number;
   document?: SketchBase;
   ruleOptions: { [key: string]: any };
 }
@@ -35,6 +36,7 @@ export interface IValidationContextParents {
 }
 
 export enum ValidationRequirements {
+  AttributedString = 'attributedString',
   DocumentReference = 'document.json',
   Frame = 'frame',
   LayerSize = 'layersize',

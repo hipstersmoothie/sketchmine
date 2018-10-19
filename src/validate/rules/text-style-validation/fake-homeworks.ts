@@ -27,7 +27,19 @@ export const getFakeHomeworks = sketchDocument => [
     ruleOptions: {
       artboardSizes,
     },
-    /* sharedStyleID has been removed */
+    /* sharedStyleID is missing */
+    document: sketchDocument,
+  },
+  {
+    _class: SketchObjectTypes.Page,
+    do_objectID: 'C8BAFBE8-F0F0-4727-B952-7303F9CA3F33',
+    name: '1280',
+    parents: {} as IValidationContextParents,
+    ruleOptions: {
+      artboardSizes,
+    },
+    /* sharedStyleID is missing, but attributedStringSize is given */
+    attributedStringSize: 3,
     document: sketchDocument,
   },
   {

@@ -18,9 +18,11 @@ const log = new Logger();
 /**
  * Takes a homework and corrects it like a teacher 👩🏼‍🏫
  * check if the text matches the following rules:
- *  - Sketch document must use a library for text styles, i.e. must have foreign text styles
- *  - every text node must use a text style defined in the library
- *  - text style object must be the same in document.json and page.json
+ *  - Sketch document must use a library for text styles, i.e. must contain foreign text styles.
+ *  - Every text node must use a text style defined in the library. Exception:
+ *    - If link is used in a body text (i.e. there are 2 colors used)
+ *    - TODO: are there more exceptions? check with UX team.
+ *  - Text style object must be the same in document.json and page.json (no modified text style).
  * @param homeworks List of Validation Rules
  * @param currentTask number of the current task to validate
  */
@@ -64,6 +66,14 @@ export function textStyleValidation(
    * Check if text node uses a text style defined in the library.
    */
   if (!task.sharedStyleID) {
+    /**
+     * If there are more attributed string attributes, it's okay if no shared style is used.
+     * This can e.g. happen if a body text contains a link in a different font color.
+     */
+    if (task.attributedStringSize && task.attributedStringSize > 1) {
+      return errors;
+    }
+
     errors.push(new NoSharedTextStylesError({
       message: NO_SHARED_TEXT_STYLES_ERROR_MESSAGE(task.name),
       ...object,
