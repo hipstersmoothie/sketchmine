@@ -20,6 +20,7 @@ export interface IValidationRule {
   ignoreArtboards?: string[];
   env?: string[];
   options?: { [key: string]: any };
+  includePages?: string[];
 }
 
 export interface IValidationContext {

@@ -53,4 +53,12 @@ describe('Artboard Validation', () => {
     expect(result).toBeInstanceOf(Array);
     expect(result[0]).toBeInstanceOf(ArtboardEmptyError);
   });
+
+  test('should check if validation fails if an artboard has not a valid name', () => {
+    fakeHomework.name = 'this-is-a-test';
+    const result = artboardValidation([fakeHomework], 0);
+    expect(result).toBeInstanceOf(Array);
+    expect(result).toHaveLength(1);
+    expect(result[0]).toBeInstanceOf(ArtboardNamingError);
+  });
 });

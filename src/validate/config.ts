@@ -5,7 +5,7 @@ import { artboardValidation } from './rules/artboard-validation';
 import { pageValidation } from './rules/page-validation';
 
 /** Available sizes */
-const artboardSizes: String[] = [
+const artboardSizes: string[] = [
   '360',
   '1280',
   '1920',
@@ -33,6 +33,7 @@ export const rules: IValidationRule[] = [
     description: 'Check if the artboard names are valid.',
     env: ['product'],
     validation: artboardValidation,
+    includePages: artboardSizes,
   },
   {
     selector: ['page'],
