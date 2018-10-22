@@ -1,0 +1,21 @@
+{
+  "name": "@dynatrace/sketch-validation",
+  "version": "1.1.1",
+  "description": "Dynatrace Sktech file validation for our design system.",
+  "main": "index.js",
+  "module": "./es6/index.js",
+  "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.lab.dynatrace.org/projects/WX/repos/ng-sketch/"
+  },
+  "dependencies": {
+    "archiver": "^2.1.1",
+    "chalk": "^2.4.1",
+    "minimist": "^1.2.0",
+    "normalize-css-color": "^1.0.2",
+    "puppeteer": "1.4.0",
+    "unzipper": "^0.8.14"
+  }
+}

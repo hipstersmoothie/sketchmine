@@ -49,7 +49,19 @@ export const config = {
   },
   'sketch-validator': {
     name: 'sketch-validator',
+    description: 'Dynatrace Sktech validation for our design system.',
     path: path.join(SRC_DIR, 'validate'),
+    outFile: path.join(DIST_DIR, 'sketch-validator/index.js'),
+    copy: {
+      'src/validate/package.json': 'dist/sketch-validator/package.json',
+    },
+  },
+  'sketch-validator-es6': {
+    name: 'sketch-validator',
+    description: 'Dynatrace Sktech validation for our design system.',
+    path: path.join(SRC_DIR, 'validate'),
+    outFile: path.join(DIST_DIR, 'sketch-validator/es6/index.js'),
+    format: 'es',
   },
 }
 

@@ -46,7 +46,7 @@ function buildDependency(dependency) {
     const configObject = {
       input: path.join(el.path, 'index.ts'),
       output: [{
-        file: outFile(el.name),
+        file: el.outFile || outFile(el.name),
         name: el.name,
         banner: banner(el.name, PKG_JSON.version, description),
         format: el.format || 'cjs',
