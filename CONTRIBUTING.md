@@ -15,7 +15,7 @@ To ensure consistency through our sourcecode we have some rules that you should 
 ## Branch name format
 
 The branch name has to include a JIRA ticket and a prefix. Furthermore the lenght of a branch name can only be up to 50 characters.
-please use the following pattern: `${prefix}/${JIRA-ticket-number}-${name}`
+please use the following pattern: `${prefix}/${name}-${JIRA-ticket-number}`
 
 The Branch name can only consist out of uppercase letters, lowercase letters, numbers and dashes.
 
@@ -29,7 +29,7 @@ The Branch name can only consist out of uppercase letters, lowercase letters, nu
 and have to match the following regular expression
 
 ```typescript
-const regex = /(fix|feat|hotfix|release)\/[A-Z]{2,4}-[0-9]{4,5}-[A-Za-z0-9\-]+/gm;
+const regex = /develop|master|(?:(?:fix|feat|hotfix|release)\/[A-Za-z0-9\-]+?-[A-Z]{2,4}-[0-9]{4,5})$/gm;
 ```
 
 ## Commit message guideline
@@ -47,7 +47,7 @@ for example: `UX-8220 feat(angular-meta-parser): Added new feature`
 it is going to be validated with this regular expression:
 
 ```typescript
-const regex = /[A-Z]{2,4}-[0-9]{4,5}\s(build|ci|docs|feat|fix|perf|refactor|style|test)\(.+?\):\s.+/gm;
+const regex = /[A-Z]{2,4}-[0-9]{4,5}\s(?:build|ci|docs|feat|fix|perf|refactor|style|test)\(.+?\):\s.+/gm;
 ```
 
 #### Available scopes for commit messages
