@@ -55,7 +55,7 @@ export async function main(
     return metaInformation;
   }
   /** write the JSON structure to the outFile */
-  await writeJSON(outFile, metaInformation, true);
+  await writeJSON(outFile, metaInformation, false);
 
   // return exit code
   return 0;

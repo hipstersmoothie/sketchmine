@@ -17,6 +17,7 @@ export interface TraversedLibrary {
 export interface TraversedSymbol {
   name: string;
   symbol: ITraversedDomElement;
+  hasNestedSymbols: string[];
 }
 
 export interface IAsset {
@@ -32,6 +33,7 @@ export interface ITraversedElement {
 export interface ITraversedDomElement extends ITraversedElement {
   className: string;
   boundingClientRect: DOMRect;
+  matchingComponent: string;
   children?: ITraversedElement[];
 }
 export interface ITraversedDomTextNode extends ITraversedElement{

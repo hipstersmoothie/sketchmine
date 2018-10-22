@@ -92,6 +92,11 @@ Just run `npm i` in the root.
 For debbugging, you can specify specific debug spaces with `DEBUG=${space1},${space2},${space3}... node dist/sketch-generator`
 or just set `DEBUG` to `true`.
 
+If you want to speed up the sketch-generator you can skip the headless chrome part and use a static json file from the fixtures.
+The fixture file is located under `/tests/fixtures/library.json`.
+
+If you pass the Node environement `TRAVERSER=skip-traverser node ...` to the node command the fixture file is used.
+
 #### Available debug spaces for granular logging:
 
 * debug *general information about all the drawn symbols with measurements*
