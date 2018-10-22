@@ -96,8 +96,6 @@ export class DomVisitor implements Visitor {
     const parent = element.parentElement;
     const parentRect: DOMRect | null = (parent && !isRoot) ? this.getRect(parent as HTMLElement) : null;
     const options = this.getStyle(element);
-
-
     const matchingComponent = this.selectors.find(sel => element.webkitMatchesSelector(sel)) || null;
 
     if (matchingComponent && !isRoot) {
