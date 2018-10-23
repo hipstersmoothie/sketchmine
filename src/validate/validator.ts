@@ -2,6 +2,7 @@ import {
   SketchBase,
   SketchObjectTypes,
   SketchStyle,
+  SketchText,
 } from '@sketch-draw/interfaces';
 import { readFile } from '@utils';
 import chalk from 'chalk';
@@ -157,8 +158,8 @@ export class Validator {
         obj.sharedStyleID = layer.sharedStyleID;
       }
       if (requirements.includes(ValidationRequirements.AttributedString)
-            && layer.attributedString && layer.attributedString.attributes) {
-        obj.attributedStringSize = layer.attributedString.attributes.length;
+            && (layer as SketchText).attributedString && (layer as SketchText).attributedString.attributes) {
+        obj.attributedStringSize = (layer as SketchText).attributedString.attributes.length;
       }
       if (requirements.includes(ValidationRequirements.Frame) && layer.frame) {
         obj.frame = layer.frame;

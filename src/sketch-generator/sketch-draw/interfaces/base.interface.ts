@@ -37,7 +37,6 @@ export enum SketchObjectTypes {
 
 export interface SketchBase {
   _class: SketchObjectTypes;
-  attributedString: SketchAttributedString;
   do_objectID: string;
   exportOptions: SketchExportOptions;
   foreignTextStyles?: SketchForeignTextStyles[];
