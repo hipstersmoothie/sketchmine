@@ -51,17 +51,27 @@ export const config = {
     name: 'sketch-validator',
     description: 'Dynatrace Sktech validation for our design system.',
     path: path.join(SRC_DIR, 'validate'),
-    outFile: path.join(DIST_DIR, 'sketch-validator/index.js'),
-    copy: {
-      'src/validate/package.json': 'dist/sketch-validator/package.json',
-    },
   },
-  'sketch-validator-es6': {
+  'sketch-validator-npm': {
     name: 'sketch-validator',
-    description: 'Dynatrace Sktech validation for our design system.',
-    path: path.join(SRC_DIR, 'validate'),
-    outFile: path.join(DIST_DIR, 'sketch-validator/es6/index.js'),
-    format: 'es',
+    input: path.join(SRC_DIR, 'validate', 'package.ts'),
+    output: (version) => [
+      {
+        file: path.join(DIST_DIR, 'sketch-validator/npm/index.es6.js'),
+        name: 'sketch-validator-npm-es6',
+        banner: banner('sketch-validator-npm-es6', version, 'NPM package for the Dynatrace Sktech validation for our design system.'),
+        format: 'es',
+      },
+      {
+        file: path.join(DIST_DIR, 'sketch-validator/npm/index.cjs.js'),
+        name: 'sketch-validator-npm-cjs',
+        banner: banner('sketch-validator-npm-es6', version, 'NPM package for the Dynatrace Sktech validation for our design system.'),
+        format: 'cjs',
+      },
+    ],
+    copy: {
+      'src/validate/package.json': 'dist/sketch-validator/npm/package.json',
+    },
   },
 }
 

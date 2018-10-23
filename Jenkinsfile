@@ -109,13 +109,14 @@ pipeline {
     stage('Publish validation to npm') {
       steps {
         nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
-          dir('dist') {
-            withCredentials([usernamePassword(credentialsId: 'npm-artifactory', passwordVariable: 'npm_password', usernameVariable: 'npm_user')]) {
-              sh'''
-              curl -u$npm_user:$npm_password https://artifactory.lab.dynatrace.org/artifactory/api/npm/auth >> .npmrc
-              yarn publish ./sketch-validator
-              '''
-            }
+          withCredentials([usernamePassword(credentialsId: 'npm-artifactory', passwordVariable: 'npm_password', usernameVariable: 'npm_user')]) {
+            sh'''
+            echo "@dynatrace:registry=https://artifactory.lab.dynatrace.org/artifactory/api/npm/npm-dynatrace-release-local/" > .npmrc
+            curl -u$npm_user:$npm_password https://artifactory.lab.dynatrace.org/artifactory/api/npm/auth >> .npmrc
+            '''
+          }
+          dir('dist/sketch-validator/npm') {
+            sh 'npx yarn publish --verbose --new-version 1.1.1 ./'
           }
         }
       }

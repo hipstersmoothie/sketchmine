@@ -1,7 +1,7 @@
 import { IValidationContext, IValidationRule, SketchModel } from './interfaces/validation-rule.interface';
 import { ErrorHandler } from './error/error-handler';
 import { ValidationError } from './error/validation-error';
-import { Logger } from '@utils';
+import { Logger } from '@utils/logger';
 
 const log = new Logger();
 

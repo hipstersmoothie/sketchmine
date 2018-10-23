@@ -44,9 +44,9 @@ function buildDependency(dependency) {
     const el = config[dependency];
     const description = el.description || '';
     const configObject = {
-      input: path.join(el.path, 'index.ts'),
-      output: [{
-        file: el.outFile || outFile(el.name),
+      input: el.input || path.join(el.path, 'index.ts'),
+      output: el.hasOwnProperty('output') ? el.output(PKG_JSON.version) : [{
+        file: outFile(el.name),
         name: el.name,
         banner: banner(el.name, PKG_JSON.version, description),
         format: el.format || 'cjs',

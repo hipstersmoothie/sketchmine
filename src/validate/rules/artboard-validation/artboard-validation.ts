@@ -6,7 +6,7 @@ import {
   ArtboardEmptyError,
 } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
-import { Logger } from '@utils';
+import { Logger } from '@utils/logger';
 import {
   ARTBOARD_SIZE_ERROR_MESSAGE,
   ARTBOARD_EMPTY_ERROR_MESSAGE,

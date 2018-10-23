@@ -14,7 +14,7 @@ in case it has to work cross plattform.
 Provide all necessary data with the options in thre config and gather them in the run file first.`;
 
 /** @see https://regex101.com/r/VvI102/1 */
-const FILES_REGEX = new RegExp(/\/src\/validate\/(?!(?:index|interfaces|run)).+/gm);
+const FILES_REGEX = new RegExp(/\/src\/validate\/(?!(?:index|interfaces|run|rules\/file-name-validation)).+/gm);
 // const FORBIDDEN =
 
 class ValidationNoNodeNativesRuleWalker extends RuleWalker {
@@ -55,7 +55,10 @@ export class Rule extends Rules.AbstractRule {
   };
 
   apply(sourceFile: ts.SourceFile): RuleFailure[] {
-    if (sourceFile.fileName.match(FILES_REGEX)) {
+    if (
+      sourceFile.fileName.match(FILES_REGEX) &&
+      !sourceFile.fileName.endsWith('.test.ts')
+    ) {
       return this.applyWithWalker(new ValidationNoNodeNativesRuleWalker(sourceFile, this.getOptions()));
     }
     return [];

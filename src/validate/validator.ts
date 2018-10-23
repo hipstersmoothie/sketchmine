@@ -1,6 +1,5 @@
 import { IValidationRule, IValidationContext, SketchModel } from './interfaces/validation-rule.interface';
 import { SketchBase, SketchStyle } from '@sketch-draw/interfaces';
-import { readFile } from '@utils';
 import chalk from 'chalk';
 import { Teacher } from './teacher';
 
@@ -22,12 +21,11 @@ export class Validator {
    * You can Provide a String (path) to a file or an object with the filecontent to be validated
    * @param file string | Object
    */
-  async addFile(file: string | Object): Promise<void> {
-    if (!file) {
-      throw Error(chalk`{bgRed Please Provide a path to a JSON file, or an object so that we can validate it!}`);
+  async addFile(file: Object): Promise<void> {
+    if (!file || typeof file !== 'object') {
+      throw Error(chalk`{bgRed Please Provide a valid JSON object so that we can validate it!}`);
     }
-    const content = (typeof file === 'object') ? file : JSON.parse(await readFile(file));
-    this._files.push(content);
+    this._files.push(file as SketchBase);
   }
 
   /** validates a sketch file with the given rules. */

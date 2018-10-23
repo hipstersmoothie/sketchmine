@@ -11,6 +11,15 @@ const artboardSizes: string[] = [
   '1920',
 ];
 
+export const DYNATRACE_LOGO_COLORS = [
+  '#FFFFFF', /** logo-white */
+  '#1496FF', /** logo-blue */
+  '#6F2DA8', /** logo-purple */
+  '#B4DC00', /** logo-limegreen */
+  '#73BE28', /** logo-green */
+  '#1A1A1A', /** logo-dark-gray */
+];
+
 export const rules: IValidationRule[] = [
   {
     selector: ['symbolMaster'],
@@ -26,6 +35,10 @@ export const rules: IValidationRule[] = [
     ignoreArtboards: ['full-color-palette'],
     env: ['global', 'product'],
     validation: colorValidation,
+    options: {
+      dynatraceLogoColors: DYNATRACE_LOGO_COLORS,
+      colors: '', // gets overriden by run function on node.js and otherwise by sketch plugin
+    },
   },
   {
     selector: ['artboard'],
