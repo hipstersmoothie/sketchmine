@@ -45,8 +45,12 @@ export const getFakeHomeworks = sketchDocument => [
   {
     _class: SketchObjectTypes.Page,
     do_objectID: '493BDF72-5E8F-44B1-8BE0-725BA0EDC7B1',
-    name: '1920',
-    parents: {} as IValidationContextParents,
+    name: '1280',
+    parents: {
+      page: '1280',
+      artboard: '1280-Applications',
+      symbolMaster: undefined,
+    } as IValidationContextParents,
     ruleOptions: {
       artboardSizes,
     },

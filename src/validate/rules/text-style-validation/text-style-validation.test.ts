@@ -12,7 +12,9 @@ describe('[sketch-validator] › Text Style Validation › Tests usage of text s
   let sketchDocument: SketchBase;
 
   beforeEach(async () => {
-    sketchDocument = JSON.parse(await readFile('tests/fixtures/text-validation-document.json'));
+    sketchDocument = JSON.parse(
+      await readFile('src/validate/rules/text-style-validation/text-validation-document.json'),
+    );
   });
 
   test('should check if validation fails when foreign text style property is empty in document.json', () => {

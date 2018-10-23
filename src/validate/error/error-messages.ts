@@ -16,5 +16,6 @@ export const COLOR_ERROR_MESSAGE = hex => `The Color {hex('${hex}') ███} $
 Take a look at {grey https://styles.lab.dynatrace.org/resources/colors}\n`;
 
 export const NO_FOREIGN_TEXT_STYLES_ERROR_MESSAGE = 'The Sketch file must include text files from a shared library.';
-export const NO_SHARED_TEXT_STYLES_ERROR_MESSAGE = taskname => `The page ${taskname} must contain text styles from a shared library only, no custom text styles are allowed.`;
-export const NO_SHARED_TEXT_STYLES_OVERRIDES_ERROR_MESSAGE = taskname => `Shared text styles should not be modified on page ${taskname}.`;
+export const NO_SHARED_TEXT_STYLES_ERROR_MESSAGE = textElementName => `The text "${textElementName}" must use text styles from a shared library only, no custom text styles are allowed.`;
+export const NO_SHARED_TEXT_STYLES_OVERRIDES_ERROR_MESSAGE = textElementName => `The shared text style for "${textElementName}" has been modified.`;
+export const NO_WRONG_HEADLINE_ERROR = (textElementName, artboardSize) => `The headline "${textElementName}" uses the wrong text style for artboard size ${artboardSize}.`;

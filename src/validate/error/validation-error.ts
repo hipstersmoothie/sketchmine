@@ -44,3 +44,4 @@ export class ColorNotInPaletteError extends ValidationError {
 export class NoForeignTextStylesError extends ValidationError { }
 export class NoSharedTextStylesError extends ValidationError { }
 export class NoSharedTextStylesOverridesError extends ValidationError { }
+export class WrongHeadlineError extends ValidationError { }
