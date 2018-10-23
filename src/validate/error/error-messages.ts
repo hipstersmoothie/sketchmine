@@ -1,3 +1,5 @@
+import chalk from 'chalk';
+
 // tslint:disable:max-line-length
 export const ARTBOARD_SIZE_ERROR_MESSAGE = 'Every page needs to have at least one artboard with a valid width (360, 1280, 1920), that is not empty.';
 export const ARTBOARD_EMPTY_ERROR_MESSAGE = 'Artboards should not be left empty.';
@@ -12,5 +14,4 @@ export const DUPLICATE_SYMBOL_ERROR_MESSAGE = taskname => `Duplicated Symbol!\nT
 export const THEME_NAME_ERROR_MESSAGE = themeNames => `The symbol name has to include a theme name: {${Object.values(themeNames).join(', ')}}`;
 export const SYMBOL_NAME_ERROR_MESSAGE = 'The symbolname should contain at least 1 backslash / so that it is correct grouped!';
 
-export const COLOR_ERROR_MESSAGE = hex => `The Color {hex('${hex}') ███} ${hex}} is not in the Dynatrace Color Palette!
-Take a look at {grey https://styles.lab.dynatrace.org/resources/colors}\n`;
+export const COLOR_ERROR_MESSAGE = (hex: string) => chalk`The Color {hex('${hex}') ███} ${hex} is not in the Dynatrace Color Palette!\nTake a look at {grey https://styles.lab.dynatrace.org/resources/colors}\n`;

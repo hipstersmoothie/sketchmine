@@ -68,19 +68,17 @@ export class Validator {
     this.setCurrentParents(content);
     if (this._rulesSelectors.includes(content._class)) {
       const rule = this._rules.find(rule => rule.selector.includes(content._class as SketchModel));
-      if (this.excludeRule(rule)) {
-        return;
+      if (!this.excludeRule(rule)) {
+        this.matchedRules.push(this.getProperties(content, rule.options || {}));
       }
-      this.matchedRules.push(this.getProperties(content, rule.options || {}));
     }
 
-    if (!content.layers) {
-      return;
+    if (content.layers && content.layers.length) {
+      /** check for childs and call recurse */
+      content.layers.forEach((layer) => {
+        this.collectModules(layer);
+      });
     }
-    /** check for childs and call recurse */
-    content.layers.forEach((layer) => {
-      this.collectModules(layer);
-    });
   }
 
   /**
