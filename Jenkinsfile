@@ -116,7 +116,15 @@ pipeline {
             '''
           }
           dir('dist/sketch-validator/npm') {
-            sh 'npx yarn publish --verbose --new-version 1.1.1 ./'
+            sh '''
+              VERSION=$(cat ./_tmp/package.json \\
+                | grep version \\
+                | head -1 \\
+                | awk -F: \'{ print $2 }\' \\
+                | sed \'s/[",]//g\' \\
+                | tr -d \'[[:space:]]\')
+              npx yarn publish --verbose --new-version $VERSION ./
+            '''
           }
         }
       }
