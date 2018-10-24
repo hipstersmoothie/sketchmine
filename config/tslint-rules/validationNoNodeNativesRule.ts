@@ -11,11 +11,10 @@ const FAILURE_NODE_NATIVES = (m: string) => chalk`
 The use of importing node natives like {blue ${m}} is forbidden in the validation except in the {grey run.ts} file,
 in case it has to work cross plattform.
 {yellow This rules are going to be used in a 💎 .sketch plugin as well!}
-Provide all necessary data with the options in thre config and gather them in the run file first.`;
+Provide all necessary data with the options in the config and gather them in the run file first.`;
 
 /** @see https://regex101.com/r/VvI102/1 */
 const FILES_REGEX = new RegExp(/\/src\/validate\/(?!(?:index|interfaces|run|rules\/file-name-validation)).+/gm);
-// const FORBIDDEN =
 
 class ValidationNoNodeNativesRuleWalker extends RuleWalker {
 

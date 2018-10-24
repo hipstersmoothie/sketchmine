@@ -1,3 +1,30 @@
+#!/usr/bin/env groovy
+import groovy.json.JsonSlurper
+
+sketchValidationNpm = 'https://artifactory.lab.dynatrace.org/artifactory/npm-dynatrace-release-local/.npm/%40dynatrace/sketch-validation/package.json'
+
+def getPackageVersion(path) {
+  def jsonSlurper = new JsonSlurper()
+  def file = readFile "${env.WORKSPACE}/${path}"
+  def json = jsonSlurper.parseText(file)
+  return json.version
+}
+
+def getValidationVersion(path) {
+  def jsonSlurper = new JsonSlurper()
+  def data = new URL(sketchValidationNpm).getText()
+  def object = jsonSlurper.parseText(data)
+  def latestVersion = object['dist-tags'].latest
+
+  def curVersion = getPackageVersion(path)
+
+  if (curVersion > latestVersion) {
+    return curVersion
+  }
+  return false
+}
+
+
 pipeline {
   agent {
     node {
@@ -14,6 +41,7 @@ pipeline {
     ANGULAR_COMPONENTS_BRANCH = 'feat/poc-sketch'
     VERBOSE = 'true'
     FEATURE_BRANCH_PREFIX = 'feat/library-update-version'
+    VALIDATION_VERSION = getValidationVersion('src/validate/package.json')
   }
 
   stages {
@@ -107,25 +135,17 @@ pipeline {
     }
 
     stage('Publish validation to npm') {
+      when {
+        expression { return env.VALIDATION_VERSION != 'false' }
+      }
       steps {
-        nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
-          withCredentials([usernamePassword(credentialsId: 'npm-artifactory', passwordVariable: 'npm_password', usernameVariable: 'npm_user')]) {
-            sh'''
-            echo "@dynatrace:registry=https://artifactory.lab.dynatrace.org/artifactory/api/npm/npm-dynatrace-release-local/" > .npmrc
-            curl -u$npm_user:$npm_password https://artifactory.lab.dynatrace.org/artifactory/api/npm/auth >> .npmrc
-            '''
-          }
-          dir('dist/sketch-validator/npm') {
-            sh '''
-              VERSION=$(cat ./package.json \\
-                | grep version \\
-                | head -1 \\
-                | awk -F: \'{ print $2 }\' \\
-                | sed \'s/[",]//g\' \\
-                | tr -d \'[[:space:]]\')
-              npx yarn publish --verbose --new-version $VERSION ./
-            '''
-          }
+        sh'''
+          echo "@dynatrace:registry=https://artifactory.lab.dynatrace.org/artifactory/api/npm/npm-dynatrace-release-local/" > .npmrc
+          curl -u$npm_user:$npm_password https://artifactory.lab.dynatrace.org/artifactory/api/npm/auth >> .npmrc
+        '''
+
+        dir('dist/sketch-validator/npm') {
+          sh 'npx yarn publish --verbose --new-version $VALIDATION_VERSION ./'
         }
       }
     }

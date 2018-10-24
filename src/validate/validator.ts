@@ -23,7 +23,7 @@ export class Validator {
    */
   async addFile(file: Object): Promise<void> {
     if (!file || typeof file !== 'object') {
-      throw Error(chalk`{bgRed Please Provide a valid JSON object so that we can validate it!}`);
+      throw Error(chalk`{bgRed Please provide a valid JSON object so that we can validate it!}`);
     }
     this._files.push(file as SketchBase);
   }

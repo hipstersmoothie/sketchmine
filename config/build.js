@@ -49,7 +49,7 @@ export const config = {
   },
   'sketch-validator': {
     name: 'sketch-validator',
-    description: 'Dynatrace Sktech validation for our design system.',
+    description: 'Dynatrace Sketch validation for our design system.',
     path: path.join(SRC_DIR, 'validate'),
   },
   'sketch-validator-npm': {
@@ -59,13 +59,13 @@ export const config = {
       {
         file: path.join(DIST_DIR, 'sketch-validator/npm/index.es6.js'),
         name: 'sketch-validator-npm-es6',
-        banner: banner('sketch-validator-npm-es6', version, 'NPM package for the Dynatrace Sktech validation for our design system.'),
+        banner: banner('sketch-validator-npm-es6', version, 'NPM package for the Dynatrace Sketch validation for our design system.'),
         format: 'es',
       },
       {
         file: path.join(DIST_DIR, 'sketch-validator/npm/index.cjs.js'),
         name: 'sketch-validator-npm-cjs',
-        banner: banner('sketch-validator-npm-es6', version, 'NPM package for the Dynatrace Sktech validation for our design system.'),
+        banner: banner('sketch-validator-npm-es6', version, 'NPM package for the Dynatrace Sketch validation for our design system.'),
         format: 'cjs',
       },
     ],
