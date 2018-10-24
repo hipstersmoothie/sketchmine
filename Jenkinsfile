@@ -24,7 +24,6 @@ def getValidationVersion(path) {
   return false
 }
 
-
 pipeline {
   agent {
     node {
@@ -139,13 +138,15 @@ pipeline {
         expression { return env.VALIDATION_VERSION != 'false' }
       }
       steps {
-        sh'''
-          echo "@dynatrace:registry=https://artifactory.lab.dynatrace.org/artifactory/api/npm/npm-dynatrace-release-local/" > .npmrc
-          curl -u$npm_user:$npm_password https://artifactory.lab.dynatrace.org/artifactory/api/npm/auth >> .npmrc
-        '''
+        nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
+          sh'''
+            echo "@dynatrace:registry=https://artifactory.lab.dynatrace.org/artifactory/api/npm/npm-dynatrace-release-local/" > .npmrc
+            curl -u$npm_user:$npm_password https://artifactory.lab.dynatrace.org/artifactory/api/npm/auth >> .npmrc
+          '''
 
-        dir('dist/sketch-validator/npm') {
-          sh 'npx yarn publish --verbose --new-version $VALIDATION_VERSION ./'
+          dir('dist/sketch-validator/npm') {
+            sh 'npx yarn publish --verbose --new-version $VALIDATION_VERSION ./'
+          }
         }
       }
     }
