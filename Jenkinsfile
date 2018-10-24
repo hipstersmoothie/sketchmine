@@ -31,6 +31,10 @@ pipeline {
     }
   }
 
+  parameters {
+    string(name: 'VALIDATION_VERSION', defaultValue: 'false')
+  }
+
   options {
     timestamps()
     buildDiscarder(logRotator(numToKeepStr: '10'))
@@ -40,7 +44,6 @@ pipeline {
     ANGULAR_COMPONENTS_BRANCH = 'feat/poc-sketch'
     VERBOSE = 'true'
     FEATURE_BRANCH_PREFIX = 'feat/library-update-version'
-    VALIDATION_VERSION = getValidationVersion('src/validate/package.json')
   }
 
   stages {
@@ -78,6 +81,10 @@ pipeline {
             ]
           ]
         ])
+
+        script {
+          env.VALIDATION_VERSION = getValidationVersion('src/validate/package.json')
+        }
 
         sh '''
         # get Package version from Angular Components
@@ -145,7 +152,7 @@ pipeline {
           '''
 
           dir('dist/sketch-validator/npm') {
-            sh 'npx yarn publish --verbose --new-version $VALIDATION_VERSION ./'
+            sh 'npx yarn publish --verbose --new-version ${VALIDATION_VERSION} ./'
           }
         }
       }
