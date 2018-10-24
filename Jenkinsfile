@@ -117,7 +117,7 @@ pipeline {
           }
           dir('dist/sketch-validator/npm') {
             sh '''
-              VERSION=$(cat ./_tmp/package.json \\
+              VERSION=$(cat ./package.json \\
                 | grep version \\
                 | head -1 \\
                 | awk -F: \'{ print $2 }\' \\
