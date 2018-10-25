@@ -3,7 +3,7 @@ const exec = require('child_process').exec;
 const COMMIT_REGEX = new RegExp(/[A-Z]{2,4}-[0-9]{4,5}\s(build|ci|docs|feat|fix|perf|refactor|style|test)\((.+?)\):\s(.+)/gm);
 const COMMIT_MESSAGE = version => `UX-0000 ci(sketch-validator): Automatic release: ${version} [skip-ci]`;
 
-async function main(commit, pathToPackageJson) {
+async function main(commit, pathToPackageJson, branch) {
   if (!commit || !pathToPackageJson) {
     throw new Error('Please provide a git commit hash and a path to the package json')
   }
@@ -20,7 +20,7 @@ async function main(commit, pathToPackageJson) {
   if (commitParts[2].includes('sketch-validator')) {
     const bumped = bumpVersion(commitParts[1], package.version)
     updatePackageVersion(bumped, package, pathToPackageJson)
-    await commitChanges(COMMIT_MESSAGE(bumped));
+    await commitChanges(COMMIT_MESSAGE(bumped), branch);
     return bumped
   }
   return 'no-version';
@@ -52,10 +52,11 @@ async function getCommitMessage(commit) {
   return run(`git log --format=%B -n 1 ${commit}`);
 }
 
-async function commitChanges(message) {
+async function commitChanges(message, branch) {
   await run('git add .');
   await run(`git commit -m "${message}"`);
-  await run('git push origin');
+  const head = branch ? ` HEAD:${branch}` : '';
+  await run(`git push origin${head}`);
 }
 
 async function run(command) {
@@ -81,7 +82,7 @@ async function run(command) {
  */
 if (require.main === module) {
   const args = parseCommandLineArgs(process.argv.slice(2));
-  main(args.c, args.p)
+  main(args.c, args.p, args.b)
   .catch((err) => {
     console.error(err);
     process.exit(1);
