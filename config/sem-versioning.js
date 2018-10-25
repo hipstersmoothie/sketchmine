@@ -1,7 +1,7 @@
 const fs = require('fs');
 const exec = require('child_process').exec;
 const COMMIT_REGEX = new RegExp(/[A-Z]{2,4}-[0-9]{4,5}\s(build|ci|docs|feat|fix|perf|refactor|style|test)\((.+?)\):\s(.+)/gm);
-const COMMIT_MESSAGE = version => `UX-0000 ci(sketch-validator): Automatic release: ${version} 🚀 [skip-ci]`;
+const COMMIT_MESSAGE = version => `UX-0000 ci(sketch-validator): Automatic release: ${version} [skip-ci]`;
 
 async function main(commit, pathToPackageJson) {
   if (!commit || !pathToPackageJson) {
@@ -83,7 +83,7 @@ if (require.main === module) {
   const args = parseCommandLineArgs(process.argv.slice(2));
   main(args.c, args.p)
   .catch((err) => {
-    console.error('err');
+    console.error(err);
     process.exit(1);
   })
   .then((version) => {

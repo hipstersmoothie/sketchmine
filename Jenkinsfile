@@ -54,6 +54,7 @@ pipeline {
         ])
 
         nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
+          sh 'echo "command attributes: -c $GIT_COMMIT -p $WORKSPACE/src/validate/package.json"'
           sh 'export VALIDATION_VERSION=$(node config/sem-versioning -c $GIT_COMMIT -p $WORKSPACE/src/validate/package.json)'
         }
         sh '''
