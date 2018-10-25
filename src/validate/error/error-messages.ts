@@ -19,3 +19,5 @@ export const NO_FOREIGN_TEXT_STYLES_ERROR_MESSAGE = 'The Sketch file must includ
 export const NO_SHARED_TEXT_STYLES_ERROR_MESSAGE = textElementName => `The text "${textElementName}" must use text styles from a shared library only, no custom text styles are allowed.`;
 export const NO_SHARED_TEXT_STYLES_OVERRIDES_ERROR_MESSAGE = textElementName => `The shared text style for "${textElementName}" has been modified.`;
 export const NO_WRONG_HEADLINE_ERROR = (textElementName, artboardSize) => `The headline "${textElementName}" uses the wrong text style for artboard size ${artboardSize}.`;
+export const INVALID_TEXT_COLOR_ERROR = textElementName => `The text "${textElementName}" uses a wrong text color.`;
+export const TEXT_TOO_SMALL_ERROR = textElementName => `Font of text "${textElementName}" is smaller than 12px.`;

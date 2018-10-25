@@ -1,5 +1,5 @@
 import { ValidationError } from '../error/validation-error';
-import { SketchStyle, SketchFrame, SketchObjectTypes, SketchBase } from '@sketch-draw/interfaces';
+import { SketchStyle, SketchFrame, SketchObjectTypes, SketchBase, SketchAttribute } from '@sketch-draw/interfaces';
 
 export type ValidationFunction = (homework: IValidationContext[], currentTask: number) => (ValidationError | boolean)[];
 
@@ -24,7 +24,7 @@ export interface IValidationContext {
   style?: SketchStyle;
   frame?: SketchFrame;
   layerSize?: number;
-  attributedStringSize?: number;
+  stringAttributes?: SketchAttribute[];
   document?: SketchBase;
   ruleOptions: { [key: string]: any };
 }

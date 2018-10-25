@@ -159,7 +159,7 @@ export class Validator {
       }
       if (requirements.includes(ValidationRequirements.AttributedString)
             && (layer as SketchText).attributedString && (layer as SketchText).attributedString.attributes) {
-        obj.attributedStringSize = (layer as SketchText).attributedString.attributes.length;
+        obj.stringAttributes = (layer as SketchText).attributedString.attributes;
       }
       if (requirements.includes(ValidationRequirements.Frame) && layer.frame) {
         obj.frame = layer.frame;

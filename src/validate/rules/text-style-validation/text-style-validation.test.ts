@@ -4,6 +4,9 @@ import {
   NoForeignTextStylesError,
   NoSharedTextStylesError,
   NoSharedTextStylesOverridesError,
+  WrongHeadlineError,
+  InvalidTextColorError,
+  TextTooSmallError,
 } from '../../error/validation-error';
 import { getFakeHomeworks } from './fake-homeworks';
 import { textStyleValidation } from './text-style-validation';
@@ -30,22 +33,55 @@ describe('[sketch-validator] › Text Style Validation › Tests usage of text s
     const fakeHomeworks = getFakeHomeworks(sketchDocument);
     const result = textStyleValidation(fakeHomeworks, 1);
     expect(result).toBeInstanceOf(Array);
-    expect(result).toHaveLength(1);
-    expect(result[0]).toBeInstanceOf(NoSharedTextStylesError);
+    expect(result).toHaveLength(2);
+    expect(result[1]).toBeInstanceOf(NoSharedTextStylesError);
   });
 
-  test('should check if validation passes when more attributed string attributes are given', () => {
+  test('should check if validation passes when no shared text style is used because color has been changed', () => {
     const fakeHomeworks = getFakeHomeworks(sketchDocument);
     const result = textStyleValidation(fakeHomeworks, 2);
     expect(result).toBeInstanceOf(Array);
-    expect(result).toHaveLength(0);
+    expect(result).toHaveLength(1);
+    expect(result[0]).toBeTruthy();
+  });
+
+  test('should check if validation fails when no shared text style is used because font size has been changed', () => {
+    const fakeHomeworks = getFakeHomeworks(sketchDocument);
+    const result = textStyleValidation(fakeHomeworks, 3);
+    expect(result).toBeInstanceOf(Array);
+    expect(result).toHaveLength(2);
+    expect(result[1]).toBeInstanceOf(NoSharedTextStylesError);
   });
 
   test('should check if shared style has not been changed manually', () => {
     const fakeHomeworks = getFakeHomeworks(sketchDocument);
-    const result = textStyleValidation(fakeHomeworks, 3);
+    const result = textStyleValidation(fakeHomeworks, 4);
     expect(result).toBeInstanceOf(Array);
-    expect(result).toHaveLength(1);
-    expect(result[0]).toBeInstanceOf(NoSharedTextStylesOverridesError);
+    expect(result).toHaveLength(3);
+    expect(result[1]).toBeInstanceOf(NoSharedTextStylesOverridesError);
+  });
+
+  test('should check if correct headline text styles are used', () => {
+    const fakeHomeworks = getFakeHomeworks(sketchDocument);
+    const result = textStyleValidation(fakeHomeworks, 5);
+    expect(result).toBeInstanceOf(Array);
+    expect(result).toHaveLength(3);
+    expect(result[2]).toBeInstanceOf(WrongHeadlineError);
+  });
+
+  test('should check if only valid text colors are used', () => {
+    const fakeHomeworks = getFakeHomeworks(sketchDocument);
+    const result = textStyleValidation(fakeHomeworks, 6);
+    expect(result).toBeInstanceOf(Array);
+    expect(result).toHaveLength(4);
+    expect(result[2]).toBeInstanceOf(InvalidTextColorError);
+  });
+
+  test('should check if no font smaller than 12px is used', () => {
+    const fakeHomeworks = getFakeHomeworks(sketchDocument);
+    const result = textStyleValidation(fakeHomeworks, 6);
+    expect(result).toBeInstanceOf(Array);
+    expect(result).toHaveLength(4);
+    expect(result[1]).toBeInstanceOf(TextTooSmallError);
   });
 });
