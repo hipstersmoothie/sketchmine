@@ -4,7 +4,7 @@ import { artboardValidation } from './rules/artboard-validation';
 import { colorValidation } from './rules/color-validation';
 import { pageValidation } from './rules/page-validation';
 import { symbolNameValidation } from './rules/symbol-name-validation';
-// import { textStyleValidation } from './rules/text-style-validation';
+import { textStyleValidation } from './rules/text-style-validation';
 
 /** Available sizes */
 const artboardSizes: string[] = [

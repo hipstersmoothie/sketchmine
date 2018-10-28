@@ -12,7 +12,6 @@ export interface IValidationRule {
   includePages?: string[];
   env?: string[];
   options?: { [key: string]: any };
-  includePages?: string[];
 }
 
 export interface IValidationContext {
