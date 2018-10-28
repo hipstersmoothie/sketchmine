@@ -7,7 +7,7 @@ import { SketchObjectTypes } from '@sketch-draw/interfaces';
 const log = new Logger();
 
 /**
- * The teacher that applies the rules on the homeworks
+ * The teacher that applies the rules to the homeworks.
  */
 export class Teacher {
   private _handler: ErrorHandler;

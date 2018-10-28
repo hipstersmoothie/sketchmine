@@ -28,8 +28,8 @@ export class Validator {
   }
 
   /**
-   * Add files to validate
-   * You can Provide a String (path) to a file or an object with the filecontent to be validated
+   * Add files to validate.
+   * You can provide a string (path) to a file or an object with the filecontent to be validated.
    * @param file string | Object
    */
   async addFile(file: string | Object): Promise<void> {
@@ -41,7 +41,7 @@ export class Validator {
   }
 
   /**
-   * Add document JSON file needed for some validations
+   * Add document JSON file needed for some validations.
    * @param file string | Object
    */
   async addDocumentFile(file: string | Object): Promise<void> {
@@ -52,7 +52,9 @@ export class Validator {
     this._document = content;
   }
 
-  /** validates a sketch file with the given rules. */
+  /**
+   * Validates a Sketch file according to the given rules.
+   */
   validate() {
     if (this._files.length === 0) {
       throw Error(chalk`{bgRed No files to validate!}`);
@@ -63,18 +65,20 @@ export class Validator {
     this.correct();
   }
 
-  /** 👩🏼‍🏫 The teacher applies the rules for you */
+  /**
+   * 👩🏼‍🏫 The teacher applies the rules for you.
+   */
   private correct() {
     if (this.matchedRules.length === 0) {
       return;
     }
-    /** We call her verena, because pinkys girlfriend is a teacher 💁🏻‍ */
+    // We call her Verena, because Pinky's girlfriend is a teacher 💁🏻‍.
     const verena = new Teacher(this._rules);
     verena.improve(this.matchedRules);
   }
 
   /**
-   * Checks if rule is unrelvant for current validation and can be excluded.
+   * Checks if rule is unrelvant for the current validation and can be excluded.
    * @param rule rule to check
    */
   private excludeRule(rule: IValidationRule): boolean {
@@ -84,8 +88,8 @@ export class Validator {
   }
 
   /**
-   * Gathers the matching Objects from the Sketch JSON file
-   * and stores it in an array
+   * Gathers the matching objects from the Sketch JSON file
+   * and stores it in an array.
    * @param content SketchBase
    */
   private collectModules(content: SketchBase) {
@@ -106,14 +110,14 @@ export class Validator {
     if (!content.layers) {
       return;
     }
-    /** check for children and call recurse */
+    /** Check for children and call function recursively. */
     content.layers.forEach((layer) => {
       this.collectModules(layer);
     });
   }
 
   /**
-   * Get the current Artboard, Page, SymbolMaster
+   * Get the current artboard, page, symbolMaster.
    * @param content SketchBase
    */
   private setCurrentParents(content: SketchBase) {
@@ -131,7 +135,7 @@ export class Validator {
   }
 
   /**
-   * Get only needed properties from Object.
+   * Get only needed properties from object.
    * @param layer SketchBase
    * @returns IValidationContext
    */
