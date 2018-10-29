@@ -24,7 +24,7 @@ async function main(commit, pathToPackageJson, branch) {
   if (commitParts[2].includes('sketch-validator')) {
     const bumped = bumpVersion(commitParts[1], package.version)
     updatePackageVersion(bumped, package, pathToPackageJson)
-    await commitChanges(COMMIT_MESSAGE(bumped), branch);
+    await commitChanges(COMMIT_MESSAGE(bumped), branch, bumped);
     return bumped
   }
   return 'no-version';
@@ -56,11 +56,11 @@ async function getCommitMessage(commit) {
   return run(`git log --format=%B -n 1 ${commit}`);
 }
 
-async function commitChanges(message, branch) {
+async function commitChanges(message, branch, version) {
   await run('git add .');
   await run(`git commit -m "${message}"`);
   const head = branch ? ` HEAD:${branch}` : '';
-  await run(`git tag -a [skip-ci] -m "This is an automatic version bump."`);
+  await run(`git tag -a v${version} -m "This is an automatic version bump. [skip-ci]"`);
   await run(`git push ${GIT_ORIGIN(process.env.GIT_USER, process.env.GIT_PASS)}${head}`);
 }
 
