@@ -57,12 +57,12 @@ async function getCommitMessage(commit) {
 }
 
 async function commitChanges(message, branch, version) {
+  const origin = GIT_ORIGIN(process.env.GIT_USER, process.env.GIT_PASS);
   await run('git add .');
   await run(`git commit -m "${message}"`);
-  const head = branch ? ` HEAD:${branch}` : '';
   await run(`git tag -a v${version} -m "This is an automatic version bump. [skip-ci]"`);
-  await run(`git push ${GIT_ORIGIN(process.env.GIT_USER, process.env.GIT_PASS)}:v${version}`);
-  await run(`git push ${GIT_ORIGIN(process.env.GIT_USER, process.env.GIT_PASS)}${head}`);
+  await run(`git push ${origin} HEAD:v${version}`);
+  await run(`git push ${origin} HEAD:${branch}`);
 }
 
 async function run(command) {
