@@ -24,7 +24,7 @@ async function main(commit, pathToPackageJson, branch) {
   if (commitParts[2].includes('sketch-validator')) {
     const bumped = bumpVersion(commitParts[1], package.version)
     updatePackageVersion(bumped, package, pathToPackageJson)
-    // await commitChanges(COMMIT_MESSAGE(bumped), branch);
+    await commitChanges(COMMIT_MESSAGE(bumped), branch);
     return bumped
   }
   return 'no-version';

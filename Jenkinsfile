@@ -14,7 +14,6 @@ pipeline {
     ANGULAR_COMPONENTS_BRANCH = 'feat/poc-sketch'
     VERBOSE = 'true'
     FEATURE_BRANCH_PREFIX = 'feat/library-update-version'
-    VALIDATION_VERSION = 'no-version'
   }
 
   stages {
@@ -54,30 +53,25 @@ pipeline {
         ])
         withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
           nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
-            sh 'echo "command attributes: -b $GIT_BRANCH -c $GIT_COMMIT -p $WORKSPACE/src/validate/package.json"'
+            sh 'node config/sem-versioning -c $GIT_COMMIT -p $WORKSPACE/src/validate/package.json -b $GIT_BRANCH --git-user $GIT_USER --git-pass $GIT_PASS'
 
             sh '''
-                node config/sem-versioning \
-                  -c $GIT_COMMIT \
-                  -p $WORKSPACE/src/validate/package.json \
-                  -b $GIT_BRANCH \
-                  --git-user $GIT_USER \
-                  -git-pass $GIT_PASS
-
-                export VALIDATION_VERSION=$(cat ./.validator-version)
+              PACKAGE_VERSION=$(cat ./_tmp/package.json \\
+                | grep version \\
+                | head -1 \\
+                | awk -F: \'{ print $2 }\' \\
+                | sed \'s/[",]//g\' \\
+                | tr -d \'[[:space:]]\')
+              echo $PACKAGE_VERSION > .version
             '''
           }
         }
-        sh '''
-        # get Package version from Angular Components
-          PACKAGE_VERSION=$(cat ./_tmp/package.json \\
-            | grep version \\
-            | head -1 \\
-            | awk -F: \'{ print $2 }\' \\
-            | sed \'s/[",]//g\' \\
-            | tr -d \'[[:space:]]\')
-          echo $PACKAGE_VERSION > .version
-        '''
+        script {
+          def packageVersion = sh(returnStdout: true, script: "cat ./.version");
+          def version = sh(returnStdout: true, script: "cat ./.validator-version");
+          env.PACKAGE_VERSION = packageVersion;
+          env.VALIDATION_VERSION = version;
+        }
       }
     }
 
@@ -85,6 +79,7 @@ pipeline {
       steps {
         nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
           ansiColor('xterm') {
+            sh 'echo $VALIDATION_VERSION'
             sh 'npm install'
           }
         }
@@ -124,17 +119,23 @@ pipeline {
 
     stage('Publish validation to npm') {
       when {
-        expression { return env.VALIDATION_VERSION != 'no-version' }
+        allOf {
+          expression { return env.VALIDATION_VERSION != 'true' }
+          expression { return env.VALIDATION_VERSION != 'no-version' }
+        }
       }
       steps {
-        nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
-          sh '''
-            echo "@dynatrace:registry=https://artifactory.lab.dynatrace.org/artifactory/api/npm/npm-dynatrace-release-local/" > .npmrc
-            curl -u$npm_user:$npm_password https://artifactory.lab.dynatrace.org/artifactory/api/npm/auth >> .npmrc
-          '''
+        withCredentials([usernamePassword(credentialsId: 'npm-artifactory', passwordVariable: 'npm_pass', usernameVariable: 'npm_user')]) {
 
-          dir('dist/sketch-validator/npm') {
-            sh 'npx yarn publish --verbose --new-version $VALIDATION_VERSION ./'
+          nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
+            dir('dist/sketch-validator/npm') {
+               sh '''
+            echo "@dynatrace:registry=https://artifactory.lab.dynatrace.org/artifactory/api/npm/npm-dynatrace-release-local/" > .npmrc
+            curl -u$npm_user:$npm_pass https://artifactory.lab.dynatrace.org/artifactory/api/npm/auth >> .npmrc
+            cat .npmrc
+          '''
+              sh 'npx yarn publish --verbose --new-version $VALIDATION_VERSION ./'
+            }
           }
         }
       }
@@ -148,8 +149,6 @@ pipeline {
       steps {
         withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
           sh '''
-            PACKAGE_VERSION=$(cat ./.version)
-
             echo "Build Library for version: ${PACKAGE_VERSION}"
 
             docker build \
@@ -171,8 +170,6 @@ pipeline {
 
       steps {
         sh '''
-          PACKAGE_VERSION=$(cat ./.version)
-
           docker push webkins.lab.dynatrace.org:5000/ng-sketch:${PACKAGE_VERSION}
           docker push webkins.lab.dynatrace.org:5000/ng-sketch:latest
         '''
@@ -187,7 +184,6 @@ pipeline {
       steps {
         ansiColor('xterm') {
           sh '''
-            echo "0.3.0-dev" > .version
             docker pull webkins.lab.dynatrace.org:5000/ng-sketch:latest
 
             # create _library for out dir of the generated file
@@ -226,8 +222,6 @@ pipeline {
 
         dir('ux-global-ressources') {
           sh '''
-            PACKAGE_VERSION=$(cat ../.version)
-
             # replace dot with divis for branchname
             version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
             FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
@@ -245,7 +239,6 @@ pipeline {
       steps {
         dir('ux-global-ressources') {
           sh '''
-            PACKAGE_VERSION=$(cat ../.version)
             version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
             FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
 
@@ -260,7 +253,6 @@ pipeline {
           withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
 
           sh '''
-            PACKAGE_VERSION=$(cat ../.version)
             version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
             FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
 
