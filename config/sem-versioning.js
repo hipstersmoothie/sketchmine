@@ -1,11 +1,15 @@
 const fs = require('fs');
+const path = require('path');
 const exec = require('child_process').exec;
+
 const COMMIT_REGEX = new RegExp(/[A-Z]{2,4}-[0-9]{4,5}\s(build|ci|docs|feat|fix|perf|refactor|style|test)\((.+?)\):\s(.+)/gm);
+const VERSION_FILE = '.validator-version';
 const COMMIT_MESSAGE = version => `UX-0000 ci(sketch-validator): Automatic release: ${version} [skip-ci]`;
+const GIT_ORIGIN = (user, pass) => `https://${user}:${pass}@bitbucket.lab.dynatrace.org/scm/wx/ng-sketch.git`
 
 async function main(commit, pathToPackageJson, branch) {
   if (!commit || !pathToPackageJson) {
-    throw new Error('Please provide a git commit hash and a path to the package json')
+    throw new Error('Please provide a git commit hash and a path to the package json');
   }
 
   const commitMessage = await getCommitMessage(commit);
@@ -20,7 +24,7 @@ async function main(commit, pathToPackageJson, branch) {
   if (commitParts[2].includes('sketch-validator')) {
     const bumped = bumpVersion(commitParts[1], package.version)
     updatePackageVersion(bumped, package, pathToPackageJson)
-    await commitChanges(COMMIT_MESSAGE(bumped), branch);
+    // await commitChanges(COMMIT_MESSAGE(bumped), branch);
     return bumped
   }
   return 'no-version';
@@ -56,7 +60,7 @@ async function commitChanges(message, branch) {
   await run('git add .');
   await run(`git commit -m "${message}"`);
   const head = branch ? ` HEAD:${branch}` : '';
-  await run(`git push origin${head}`);
+  await run(`git push ${GIT_ORIGIN(process.env.GIT_USER, process.env.GIT_PASS)}${head}`);
 }
 
 async function run(command) {
@@ -79,28 +83,44 @@ async function run(command) {
  * you have to provide two params
  * -p (path to the package.json)
  * -c commit hash
+ * -b branch
+ * --git-user
+ * --git-pass
  */
 if (require.main === module) {
   const args = parseCommandLineArgs(process.argv.slice(2));
+
+  if (!args['git-user'] || !args['git-pass']) {
+    throw new Error('🚨 You have to provide url-encoded git credentials!');
+  }
+
+  process.env.GIT_USER = args['git-user'];
+  process.env.GIT_PASS = args['git-pass'];
+
   main(args.c, args.p, args.b)
   .catch((err) => {
     console.error(err);
     process.exit(1);
   })
   .then((version) => {
-    console.log(version)
-    process.exit(0);
+    const versionFilePath = path.join(process.cwd(), VERSION_FILE);
+    fs.writeFile(versionFilePath, version, err => {
+      if (err) {
+        console.log(`🚨 failed writing version to file.\n${err.message}`);
+        process.exit(1);
+      }
+      console.log(`✅ successfully written version ${version} to ${versionFilePath}`)
+      process.exit(0);
+    });
   });
 }
-
-
 
 function parseCommandLineArgs(args) {
   const obj = {};
   let key = '';
   for (let i = 0, max = args.length; i < max; i++) {
     if (i % 2 === 0) {
-      key = args[i].replace(/-/gm, '');
+      key = args[i].replace(/^-+/gm, '');
     } else {
       obj[key] = args[i];
     }
