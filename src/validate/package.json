@@ -1,6 +1,6 @@
 {
   "name": "@dynatrace/sketch-validation",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Dynatrace Sktech file validation for our design system.",
   "main": "index.cjs.js",
   "module": "index.es6.js",
