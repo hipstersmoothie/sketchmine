@@ -61,7 +61,7 @@ async function commitChanges(message, branch, version) {
   await run('git add .');
   await run(`git commit -m "${message}"`);
   await run(`git tag -a v${version} -m "This is an automatic version bump. [skip-ci]"`);
-  await run(`git push ${origin} HEAD:v${version}`);
+  await run(`git push ${origin} v${version}`);
   await run(`git push ${origin} HEAD:${branch}`);
 }
 
