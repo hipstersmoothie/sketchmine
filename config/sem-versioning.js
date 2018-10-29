@@ -4,7 +4,7 @@ const exec = require('child_process').exec;
 
 const COMMIT_REGEX = new RegExp(/[A-Z]{2,4}-[0-9]{4,5}\s(build|ci|docs|feat|fix|perf|refactor|style|test)\((.+?)\):\s(.+)/gm);
 const VERSION_FILE = '.validator-version';
-const COMMIT_MESSAGE = version => `UX-0000 ci(sketch-validator): Automatic release: ${version} [skip-ci]`;
+const COMMIT_MESSAGE = version => `UX-0000 ci(sketch-validator): Automatic release: ${version}`;
 const GIT_ORIGIN = (user, pass) => `https://${user}:${pass}@bitbucket.lab.dynatrace.org/scm/wx/ng-sketch.git`
 
 async function main(commit, pathToPackageJson, branch) {
@@ -20,10 +20,6 @@ async function main(commit, pathToPackageJson, branch) {
 
   const package = require(pathToPackageJson);
   const commitParts = COMMIT_REGEX.exec(commitMessage);
-
-  if (commitParts[2].includes('[skip-ci]')) {
-    return 'no-version';
-  }
 
   if (commitParts[2].includes('sketch-validator')) {
     const bumped = bumpVersion(commitParts[1], package.version)
@@ -64,6 +60,7 @@ async function commitChanges(message, branch) {
   await run('git add .');
   await run(`git commit -m "${message}"`);
   const head = branch ? ` HEAD:${branch}` : '';
+  await run(`git tag -a [skip-ci] -m "This is an automatic version bump."`);
   await run(`git push ${GIT_ORIGIN(process.env.GIT_USER, process.env.GIT_PASS)}${head}`);
 }
 
