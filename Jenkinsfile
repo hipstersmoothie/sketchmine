@@ -85,7 +85,7 @@ pipeline {
       steps {
         nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
           ansiColor('xterm') {
-            sh 'echo "VERSION: ${VALIDATION_VERSION}"'
+            sh 'echo "Angular components version: ${VALIDATION_VERSION}"'
             sh 'npm install'
           }
         }
