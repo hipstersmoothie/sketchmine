@@ -51,6 +51,12 @@ pipeline {
             ]
           ]
         ])
+
+      }
+    }
+
+    stage('controll versions') {
+      steps {
         withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
           nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
             sh 'node config/sem-versioning -c $GIT_COMMIT -p $WORKSPACE/src/validate/package.json -b $GIT_BRANCH --git-user $GIT_USER --git-pass $GIT_PASS'
