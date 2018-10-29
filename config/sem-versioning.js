@@ -21,6 +21,10 @@ async function main(commit, pathToPackageJson, branch) {
   const package = require(pathToPackageJson);
   const commitParts = COMMIT_REGEX.exec(commitMessage);
 
+  if (commitParts[2].includes('[skip-ci]')) {
+    return 'no-version';
+  }
+
   if (commitParts[2].includes('sketch-validator')) {
     const bumped = bumpVersion(commitParts[1], package.version)
     updatePackageVersion(bumped, package, pathToPackageJson)
