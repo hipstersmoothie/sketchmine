@@ -13,6 +13,28 @@ const artboardSizes: string[] = [
   '1920',
 ];
 
+/** Available headline text styles */
+const HEADLINE_TEXT_STYLES = [
+  '1920-H1', '1920-H2', '1920-H3',
+  '1280-H1', '1280-H2', '1280-H3',
+  '360-H1', '360-H2', '360-H3',
+];
+
+/** Valid text colors */
+const VALID_TEXT_COLORS = [
+  '#FFFFFF', // white
+  '#CCCCCC', // gray-300
+  '#B7B7B7', // gray-400
+  '#898989', // gray-500
+  '#454646', // gray-700, text color
+  '#00A1B2', // turquoise-600, link color
+  '#00848e', // turquoise-700, link hover color
+  '#DC172A', // red-500, error color
+  '#C41425', // red-600, error hover color
+  '#5EAD35', // green-600
+  '#3F962A', // green-700
+];
+
 export const rules: IValidationRule[] = [
   {
     selector: [SketchObjectTypes.SymbolMaster],
@@ -66,6 +88,8 @@ export const rules: IValidationRule[] = [
         ValidationRequirements.DocumentReference,
         ValidationRequirements.Style,
       ],
+      HEADLINE_TEXT_STYLES,
+      VALID_TEXT_COLORS,
     },
   },
 ];

@@ -1,7 +1,7 @@
 import { SketchObjectTypes } from './base.interface';
 import { SketchColor } from './color.interface';
 import { TextTransform, StrikethroughStyle, UnderlineStyle } from '../helpers';
-import { SketchLocalSharedStyle } from './style.interface';
+import { SketchSharedStyle } from './style.interface';
 
 export interface SketchTextStyle {
   _class: SketchObjectTypes.TextStyle;
@@ -13,7 +13,7 @@ export interface SketchForeignTextStyles {
   libraryID: string;
   sourceLibraryName: string;
   symbolPrivate: boolean;
-  localSharedStyle: SketchLocalSharedStyle;
+  localSharedStyle: SketchSharedStyle;
   remoteStyleID: string;
 }
 export interface SketchEncodedAttributes {

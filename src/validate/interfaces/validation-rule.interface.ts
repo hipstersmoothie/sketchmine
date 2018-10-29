@@ -19,12 +19,8 @@ export interface IValidationContext {
   do_objectID: string;
   name: string;
   parents: IValidationContextParents;
-  sharedStyleID?: string;
   style?: SketchStyle;
   frame?: SketchFrame;
-  layerSize?: number;
-  stringAttributes?: SketchAttribute[];
-  document?: SketchBase;
   ruleOptions: { [key: string]: any };
 }
 

@@ -8,7 +8,7 @@ import {
   InvalidTextColorError,
   TextTooSmallError,
 } from '../../error/validation-error';
-import { getFakeHomeworks } from './fake-homeworks';
+import { getFakeHomeworks } from '../../../../tests/fixtures/fake-homeworks';
 import { textStyleValidation } from './text-style-validation';
 
 describe('[sketch-validator] › Text Style Validation › Tests usage of text styles defined in global library.', () => {
@@ -16,7 +16,7 @@ describe('[sketch-validator] › Text Style Validation › Tests usage of text s
 
   beforeEach(async () => {
     sketchDocument = JSON.parse(
-      await readFile('src/validate/rules/text-style-validation/text-validation-document.json'),
+      await readFile('tests/fixtures/text-validation-document.json'),
     );
   });
 

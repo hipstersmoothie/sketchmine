@@ -54,7 +54,6 @@ export interface SketchBase {
   resizingConstraint: number;
   resizingType: number;
   rotation: number;
-  sharedStyleID?: string;
   shouldBreakMaskChain: boolean;
   style: SketchStyle;
 }

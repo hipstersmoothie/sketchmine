@@ -16,13 +16,12 @@ export interface SketchStyle {
   innerShadows?: SketchInnerShadow[];
   miterLimit: number;
   shadows?: SketchShadow[];
-  sharedObjectID?: string;
   startMarkerType: number;
   textStyle?: SketchTextStyle;
   windingRule: number;
 }
 
-export interface SketchLocalSharedStyle {
+export interface SketchSharedStyle {
   _class: 'sharedStyle';
   do_objectID: string;
   name: string;

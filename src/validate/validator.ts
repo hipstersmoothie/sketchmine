@@ -6,6 +6,7 @@ import {
 } from '@sketch-draw/interfaces';
 import { readFile } from '@utils';
 import chalk from 'chalk';
+import cloneDeep from 'lodash/cloneDeep';
 import {
   IValidationContext,
   IValidationRule,
@@ -95,16 +96,13 @@ export class Validator {
   private collectModules(content: SketchBase) {
     this.setCurrentParents(content);
     if (this._rulesSelectors.includes(content._class)) {
-      /**
-       * TODO: fix it
-       * What if there are more rules matching the same selector?
-       * ... "find" only finds the first matching rule
-       */
-      const rule = this._rules.find(rule => rule.selector.includes(content._class as SketchObjectTypes));
-      if (this.excludeRule(rule)) {
-        return;
+      const selectedRules = this._rules.filter(rule => rule.selector.includes(content._class as SketchObjectTypes));
+      for (let i = 0; i < selectedRules.length; i += 1) {
+        if (this.excludeRule(selectedRules[i])) {
+          continue;
+        }
+        this.matchedRules.push(this.getProperties(content, selectedRules[i].options || {}));
       }
-      this.matchedRules.push(this.getProperties(content, rule.options || {}));
     }
 
     if (!content.layers) {
@@ -149,7 +147,7 @@ export class Validator {
         artboard: this._currentArtboard,
         symbolMaster: this._currentSymbol,
       },
-      ruleOptions,
+      ruleOptions: cloneDeep(ruleOptions),
     } as IValidationContext;
 
     /**
@@ -159,20 +157,22 @@ export class Validator {
     if (requirements) {
       if (requirements.includes(ValidationRequirements.Style) && layer.style) {
         obj.style = layer.style as SketchStyle;
-        obj.sharedStyleID = layer.sharedStyleID;
+      }
+      if (requirements.includes(ValidationRequirements.Style) && (layer as SketchText).sharedStyleID) {
+        obj.ruleOptions.sharedStyleID = (layer as SketchText).sharedStyleID;
       }
       if (requirements.includes(ValidationRequirements.AttributedString)
             && (layer as SketchText).attributedString && (layer as SketchText).attributedString.attributes) {
-        obj.stringAttributes = (layer as SketchText).attributedString.attributes;
+        obj.ruleOptions.stringAttributes = (layer as SketchText).attributedString.attributes;
       }
       if (requirements.includes(ValidationRequirements.Frame) && layer.frame) {
         obj.frame = layer.frame;
       }
       if (requirements.includes(ValidationRequirements.LayerSize) && layer.layers) {
-        obj.layerSize = layer.layers.length;
+        obj.ruleOptions.layerSize = layer.layers.length;
       }
       if (requirements.includes(ValidationRequirements.DocumentReference) && this._document) {
-        obj.document = this._document;
+        obj.ruleOptions.document = this._document;
       }
     }
 

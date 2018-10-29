@@ -1,6 +1,7 @@
 import { SketchAttribute } from '@sketch-draw/interfaces';
 import { round } from '@sketch-draw/helpers/util';
-import { rgbToHex, Logger } from '@utils';
+import { Logger } from '@utils/logger';
+import { rgbToHex } from '@utils/rgb-to-hex';
 import chalk from 'chalk';
 import {
   NO_FOREIGN_TEXT_STYLES_ERROR_MESSAGE,
@@ -23,26 +24,6 @@ import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import isEqual from 'lodash/isEqual';
 
 const log = new Logger();
-
-const HEADLINE_TEXT_STYLES = [
-  '1920-H1', '1920-H2', '1920-H3',
-  '1280-H1', '1280-H2', '1280-H3',
-  '360-H1', '360-H2', '360-H3',
-];
-
-const VALID_TEXT_COLORS = [
-  '#FFFFFF', // white
-  '#CCCCCC', // gray-300
-  '#B7B7B7', // gray-400
-  '#898989', // gray-500
-  '#454646', // gray-700, text color
-  '#00A1B2', // turquoise-600, link color
-  '#00848e', // turquoise-700, link hover color
-  '#DC172A', // red-500, error color
-  '#C41425', // red-600, error hover color
-  '#5EAD35', // green-600
-  '#3F962A', // green-700
-];
 
 /**
  * Checks if string attributes are identical except for color attribute;
@@ -92,13 +73,13 @@ export function textStyleValidation(
     log.error(
       chalk`{bgRed [text-style-validation.ts]} -> textStyleValidation needs a valid task` +
       chalk`{cyan IValdiationContext[]} parameter with index!\n`,
-    );
+      );
     return;
   }
 
   const errors: (ValidationError | boolean)[] = [];
 
-  if (!task.document) {
+  if (!task.ruleOptions.document) {
     log.error('document.json is needed for text style validation');
     return;
   }
@@ -106,7 +87,7 @@ export function textStyleValidation(
   /**
    * Check if Sketch file uses library text styles.
    */
-  if (task.document.foreignTextStyles.length < 1) {
+  if (task.ruleOptions.document.foreignTextStyles.length < 1) {
     errors.push(new NoForeignTextStylesError({
       message: NO_FOREIGN_TEXT_STYLES_ERROR_MESSAGE,
       ...object,
@@ -119,8 +100,8 @@ export function textStyleValidation(
    * Check if text color is one of the defined valid text colors
    * and if the text is not smaller than 12px.
    */
-  if (task.stringAttributes) {
-    task.stringAttributes.forEach((attribute) => {
+  if (task.ruleOptions.stringAttributes) {
+    task.ruleOptions.stringAttributes.forEach((attribute) => {
       const colorHex = rgbToHex(
         round(attribute.attributes.MSAttributedStringColorAttribute.red * 255, 0),
         round(attribute.attributes.MSAttributedStringColorAttribute.green * 255, 0),
@@ -128,7 +109,7 @@ export function textStyleValidation(
       ).toUpperCase();
 
       // Check text colors
-      if (!VALID_TEXT_COLORS.includes(colorHex)) {
+      if (!task.ruleOptions.VALID_TEXT_COLORS.includes(colorHex)) {
         errors.push(new InvalidTextColorError({
           message: INVALID_TEXT_COLOR_ERROR(task.name),
           ...object,
@@ -150,9 +131,11 @@ export function textStyleValidation(
    * Check if text node uses a text style defined in the library.
    * (We can return errors here, because for later checks the sharedStyleID is needed.)
    */
-  if (!task.sharedStyleID) {
+  if (!task.ruleOptions.sharedStyleID) {
     // It's okay not to use a shared style, but only if different text colors are used.
-    if (task.stringAttributes && task.stringAttributes.length > 1 && onlyColorChanged(task.stringAttributes)) {
+    if (task.ruleOptions.stringAttributes
+        && task.ruleOptions.stringAttributes.length > 1
+        && onlyColorChanged(task.ruleOptions.stringAttributes)) {
       return errors;
     }
 
@@ -163,11 +146,11 @@ export function textStyleValidation(
     return errors;
   }
 
-  const foreignTextStyle = task.document.foreignTextStyles
-    .find(textstyle => textstyle.localSharedStyle.do_objectID === task.sharedStyleID);
+  const foreignTextStyle = task.ruleOptions.document.foreignTextStyles
+    .find(textstyle => textstyle.localSharedStyle.do_objectID === task.ruleOptions.sharedStyleID);
 
   if (!foreignTextStyle) {
-    log.error(`No foreign text style given that can be compared with ${task.sharedStyleID}.`);
+    log.error(`No foreign text style given that can be compared with ${task.ruleOptions.sharedStyleID}.`);
     return errors;
   }
 
@@ -177,7 +160,7 @@ export function textStyleValidation(
   }
 
   if (!task.style || !task.style.textStyle) {
-    log.error(`No text style given for ${task.sharedStyleID} in current task.`);
+    log.error(`No text style given for ${task.ruleOptions.sharedStyleID} in current task.`);
     return errors;
   }
 
@@ -186,6 +169,7 @@ export function textStyleValidation(
    */
   const foreignTextStyleAttributes = foreignTextStyle.localSharedStyle.value.textStyle.encodedAttributes;
   const taskTextStyleAttributes = task.style.textStyle.encodedAttributes;
+
   if (!isEqual(foreignTextStyleAttributes, taskTextStyleAttributes)) {
     errors.push(new NoSharedTextStylesOverridesError({
       message: NO_SHARED_TEXT_STYLES_OVERRIDES_ERROR_MESSAGE(task.name),
@@ -200,7 +184,8 @@ export function textStyleValidation(
    */
   const foreignTextStyleName = foreignTextStyle.localSharedStyle.name;
   const taskPageName = task.parents.page;
-  if (HEADLINE_TEXT_STYLES.includes(foreignTextStyleName) && !foreignTextStyleName.startsWith(taskPageName)) {
+  if (task.ruleOptions.HEADLINE_TEXT_STYLES.includes(foreignTextStyleName)
+      && !foreignTextStyleName.startsWith(taskPageName)) {
     errors.push(new WrongHeadlineError({
       message: NO_WRONG_HEADLINE_ERROR(task.name, task.parents.page),
       ...object,
