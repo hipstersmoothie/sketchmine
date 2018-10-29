@@ -61,6 +61,7 @@ async function commitChanges(message, branch, version) {
   await run(`git commit -m "${message}"`);
   const head = branch ? ` HEAD:${branch}` : '';
   await run(`git tag -a v${version} -m "This is an automatic version bump. [skip-ci]"`);
+  await run(`git push ${GIT_ORIGIN(process.env.GIT_USER, process.env.GIT_PASS)}:v${version}`);
   await run(`git push ${GIT_ORIGIN(process.env.GIT_USER, process.env.GIT_PASS)}${head}`);
 }
 
