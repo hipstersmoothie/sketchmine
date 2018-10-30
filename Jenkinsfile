@@ -60,10 +60,11 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
           nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
             sh 'node config/sem-versioning -p src/validate/package.json -b origin/master -c origin/$BRANCH_NAME '
+            sh 'echo $(node config/get-package-version -p package.json) > .version'
           }
         }
         script {
-          def packageVersion = sh(returnStdout: true, script: "node config/get-package-version -p package.json");
+          def packageVersion = sh(returnStdout: true, script: "cat ./.version");
           def version = sh(returnStdout: true, script: "cat ./.validator-version");
           env.PACKAGE_VERSION = packageVersion;
           env.VALIDATION_VERSION = version;
