@@ -4,7 +4,7 @@ import {
   SketchText,
   SketchAttributedString,
   SketchFontDescriptor,
-  IParagraphStyle,
+  SketchParagraphStyle,
   SketchEncodedAttributes,
   SketchObjectTypes,
   IBounding,
@@ -48,7 +48,7 @@ export class Text extends Base {
     this.fontSize = parseInt(this.styles.fontSize, 10) - 2; // Sketch does not calculate the font in px
   }
 
-  addParagraphStyle(): IParagraphStyle {
+  addParagraphStyle(): SketchParagraphStyle {
     const lh = this.styles.lineHeight;
     const display = this.styles.display;
     /**

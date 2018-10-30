@@ -16,7 +16,9 @@ describe('Artboard Validation', () => {
       parents: {
         page: '1280',
       },
-      layerSize: 3,
+      ruleOptions: {
+        layerSize: 3,
+      } as any,
     } as IValidationContext;
   });
 
@@ -48,7 +50,7 @@ describe('Artboard Validation', () => {
   });
 
   test('should check if validation fails if an artboard is left empty', () => {
-    fakeHomework.layerSize = 0;
+    fakeHomework.ruleOptions.layerSize = 0;
     const result = artboardValidation([fakeHomework], 0);
     expect(result).toBeInstanceOf(Array);
     expect(result[0]).toBeInstanceOf(ArtboardEmptyError);

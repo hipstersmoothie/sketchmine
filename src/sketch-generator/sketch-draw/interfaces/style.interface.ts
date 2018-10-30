@@ -20,3 +20,10 @@ export interface SketchStyle {
   textStyle?: SketchTextStyle;
   windingRule: number;
 }
+
+export interface SketchSharedStyle {
+  _class: 'sharedStyle';
+  do_objectID: string;
+  name: string;
+  value: SketchStyle;
+}

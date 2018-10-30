@@ -43,10 +43,10 @@ export class Logger {
                               __/ |
                              |___/
 {yellow * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-*  🚧 DEBUG actived for enviornments:
+*  🚧 DEBUG mode active for the following environments:
 ${envs.join('\n')}
 *
-* ☛ current working in directory:
+* ☛ Currently working in directory:
 * ${process.cwd()}
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *}
       `);

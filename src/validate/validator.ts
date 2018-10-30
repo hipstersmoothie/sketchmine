@@ -1,6 +1,17 @@
-import { IValidationRule, IValidationContext, SketchModel } from './interfaces/validation-rule.interface';
-import { SketchBase, SketchStyle } from '@sketch-draw/interfaces';
+import {
+  SketchBase,
+  SketchObjectTypes,
+  SketchStyle,
+  SketchText,
+} from '@sketch-draw/interfaces';
 import chalk from 'chalk';
+import cloneDeep from 'lodash/cloneDeep';
+import {
+  IValidationContext,
+  IValidationRule,
+  ValidationRequirements,
+  SketchModel,
+} from './interfaces/validation-rule.interface';
 import { Teacher } from './teacher';
 
 export class Validator {
@@ -10,6 +21,7 @@ export class Validator {
   private _currentSymbol: string;
   private _currentPage: string;
   private _files: SketchBase[] = [];
+  private _document: SketchBase;
 
   constructor(private _rules: IValidationRule[], public env: string) {
     /** selector array is faster to check than always lookup in an object */
@@ -17,8 +29,8 @@ export class Validator {
   }
 
   /**
-   * Add files to validate
-   * You can Provide a String (path) to a file or an object with the filecontent to be validated
+   * Add files to validate.
+   * You can provide a string (path) to a file or an object with the filecontent to be validated.
    * @param file string | Object
    */
   async addFile(file: Object): Promise<void> {
@@ -28,7 +40,21 @@ export class Validator {
     this._files.push(file as SketchBase);
   }
 
-  /** validates a sketch file with the given rules. */
+  /**
+   * Add document JSON file needed for some validations.
+   * @param file string | Object
+   */
+  async addDocumentFile(file: string | Object): Promise<void> {
+    if (!file) {
+      throw Error(chalk`{bgRed Please provide a document JSON file!}`);
+    }
+    const content = (typeof file === 'object') ? file : JSON.parse(await readFile(file));
+    this._document = content;
+  }
+
+  /**
+   * Validates a Sketch file according to the given rules.
+   */
   validate() {
     if (this._files.length === 0) {
       throw Error(chalk`{bgRed No files to validate!}`);
@@ -39,18 +65,20 @@ export class Validator {
     this.correct();
   }
 
-  /** 👩🏼‍🏫 The teacher applies the rules for you */
+  /**
+   * 👩🏼‍🏫 The teacher applies the rules for you.
+   */
   private correct() {
     if (this.matchedRules.length === 0) {
       return;
     }
-    /** We call her verena, because pinkys girlfriend is a teacher 💁🏻‍ */
+    // We call her Verena, because Pinky's girlfriend is a teacher 💁🏻‍.
     const verena = new Teacher(this._rules);
     verena.improve(this.matchedRules);
   }
 
-    /**
-   * Checks if rule is unrelvant for current validation and can be excluded.
+  /**
+   * Checks if rule is unrelvant for the current validation and can be excluded.
    * @param rule rule to check
    */
   private excludeRule(rule: IValidationRule): boolean {
@@ -60,16 +88,18 @@ export class Validator {
   }
 
   /**
-   * Gathers the matching Objects from the Sketch JSON file
-   * and stores it in an array
-   * @param content IBase
+   * Gathers the matching objects from the Sketch JSON file
+   * and stores it in an array.
+   * @param content SketchBase
    */
   private collectModules(content: SketchBase) {
     this.setCurrentParents(content);
     if (this._rulesSelectors.includes(content._class)) {
-      const rule = this._rules.find(rule => rule.selector.includes(content._class as SketchModel));
-      if (!this.excludeRule(rule)) {
-        this.matchedRules.push(this.getProperties(content, rule.options || {}));
+      const selectedRules = this._rules.filter(rule => rule.selector.includes(content._class as SketchObjectTypes));
+      for (let i = 0; i < selectedRules.length; i += 1) {
+        if (!this.excludeRule(selectedRules[i])) {
+          this.matchedRules.push(this.getProperties(content, selectedRules[i].options || {}));
+        }
       }
     }
 
@@ -79,11 +109,16 @@ export class Validator {
         this.collectModules(layer);
       });
     }
+      
+    /** Check for children and call function recursively. */
+    content.layers.forEach((layer) => {
+      this.collectModules(layer);
+    });
   }
 
   /**
-   * Get the current Artboard, Page, SymbolMaster
-   * @param content IBase
+   * Get the current artboard, page, symbolMaster.
+   * @param content SketchBase
    */
   private setCurrentParents(content: SketchBase) {
     if (content._class === 'page') {
@@ -100,8 +135,8 @@ export class Validator {
   }
 
   /**
-   * Get only needed properties from Object.
-   * @param layer IBase
+   * Get only needed properties from object.
+   * @param layer SketchBase
    * @returns IValidationContext
    */
   private getProperties(layer: SketchBase, ruleOptions: { [key: string]: any }): IValidationContext {
@@ -114,18 +149,35 @@ export class Validator {
         artboard: this._currentArtboard,
         symbolMaster: this._currentSymbol,
       },
-      ruleOptions,
+      ruleOptions: cloneDeep(ruleOptions),
     } as IValidationContext;
 
-    if (layer.style) {
-      obj.style = layer.style as SketchStyle;
+    /**
+     * Extend validation context depending on rule requirements defined in validator config.
+     */
+    const requirements = ruleOptions.requirements;
+    if (requirements) {
+      if (requirements.includes(ValidationRequirements.Style) && layer.style) {
+        obj.style = layer.style as SketchStyle;
+      }
+      if (requirements.includes(ValidationRequirements.Style) && (layer as SketchText).sharedStyleID) {
+        obj.ruleOptions.sharedStyleID = (layer as SketchText).sharedStyleID;
+      }
+      if (requirements.includes(ValidationRequirements.AttributedString)
+            && (layer as SketchText).attributedString && (layer as SketchText).attributedString.attributes) {
+        obj.ruleOptions.stringAttributes = (layer as SketchText).attributedString.attributes;
+      }
+      if (requirements.includes(ValidationRequirements.Frame) && layer.frame) {
+        obj.frame = layer.frame;
+      }
+      if (requirements.includes(ValidationRequirements.LayerSize) && layer.layers) {
+        obj.ruleOptions.layerSize = layer.layers.length;
+      }
+      if (requirements.includes(ValidationRequirements.DocumentReference) && this._document) {
+        obj.ruleOptions.document = this._document;
+      }
     }
-    if (layer.frame) {
-      obj.frame = layer.frame;
-    }
-    if (layer.layers) {
-      obj.layerSize = layer.layers.length;
-    }
+
     return obj;
   }
 }

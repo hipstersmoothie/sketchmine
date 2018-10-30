@@ -10,6 +10,7 @@ export interface SketchText extends SketchBase {
   dontSynchroniseWithSymbol: boolean;
   glyphBounds: string;
   lineSpacingBehaviour: number;
+  sharedStyleID?: string;
   textBehaviour: number;
 }
 export interface SketchAttributedString {

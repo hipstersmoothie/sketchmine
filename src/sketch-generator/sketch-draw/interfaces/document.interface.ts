@@ -1,39 +1,41 @@
+import { SketchForeignTextStyles } from './text-style.interface';
+
 export interface SketchDocument {
   _class: string;
   do_objectID: string;
-  assets: IDocumentAssets;
+  assets: SketchDocumentAssets;
   colorSpace: number;
   currentPageIndex: number;
   foreignSymbols: any[];
-  layerStyles: IDocumentLayerStyles;
-  layerSymbols: IDocumentLayerStyles;
-  layerTextStyles: IDocumentLayerStyles;
-  pages: IDocumentPage[];
+  foreignTextStyles: SketchForeignTextStyles[];
+  layerStyles: SketchDocumentLayerStyles;
+  layerSymbols: SketchDocumentLayerStyles;
+  layerTextStyles: SketchDocumentLayerStyles;
+  pages: SketchDocumentPage[];
 }
-
-export interface IDocumentAssets {
+export interface SketchDocumentAssets {
   _class: string;
   colors: any[];
   gradients: any[];
-  imageCollection: IDocumentImageCollection;
+  imageCollection: SketchDocumentImageCollection;
   images: any[];
 }
 
-export interface IDocumentPage {
+export interface SketchDocumentPage {
   _class: string;
   _ref_class: string;
   _ref: string;
 }
 
-export interface IDocumentLayerStyles {
+export interface SketchDocumentLayerStyles {
   _class: string;
   objects: any[];
 }
 
-export interface IDocumentImageCollection {
+export interface SketchDocumentImageCollection {
   _class: string;
-  images: IImages;
+  images: SketchImages;
 }
 
-export interface IImages {
+export interface SketchImages {
 }
