@@ -10,7 +10,6 @@ import {
   IValidationContext,
   IValidationRule,
   ValidationRequirements,
-  SketchModel,
 } from './interfaces/validation-rule.interface';
 import { Teacher } from './teacher';
 
@@ -33,23 +32,22 @@ export class Validator {
    * You can provide a string (path) to a file or an object with the filecontent to be validated.
    * @param file string | Object
    */
-  async addFile(file: Object): Promise<void> {
+  addFile(file: SketchBase) {
     if (!file || typeof file !== 'object') {
       throw Error(chalk`{bgRed Please provide a valid JSON object so that we can validate it!}`);
     }
-    this._files.push(file as SketchBase);
+    this._files.push(file);
   }
 
   /**
    * Add document JSON file needed for some validations.
    * @param file string | Object
    */
-  async addDocumentFile(file: string | Object): Promise<void> {
-    if (!file) {
-      throw Error(chalk`{bgRed Please provide a document JSON file!}`);
+  addDocumentFile(file: SketchBase) {
+    if (!file || typeof file !== 'object') {
+      throw Error(chalk`{bgRed Please provide a valid JSON object of the document JSON file!}`);
     }
-    const content = (typeof file === 'object') ? file : JSON.parse(await readFile(file));
-    this._document = content;
+    this._document = file;
   }
 
   /**
@@ -104,16 +102,11 @@ export class Validator {
     }
 
     if (content.layers && content.layers.length) {
-      /** check for childs and call recurse */
+      /** Check for children and call function recursively. */
       content.layers.forEach((layer) => {
         this.collectModules(layer);
       });
     }
-      
-    /** Check for children and call function recursively. */
-    content.layers.forEach((layer) => {
-      this.collectModules(layer);
-    });
   }
 
   /**

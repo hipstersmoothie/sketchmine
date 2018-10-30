@@ -1,93 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const exec = require('child_process').exec;
+const utils = require('./utils');
 
 const BREAKING_WORD = 'BREAKING_CHANGE'
 const COMMIT_REGEX = new RegExp(/[A-Z]{2,4}-[0-9]{4,5}\s(build|ci|docs|feat|fix|perf|refactor|style|test)\((.+?)\):\s(.+)/gm);
-// const COMMIT_MESSAGE = version => `UX-0000 ci(sketch-validator): Automatic release: ${version} [skip ci]`;
-// const GIT_ORIGIN = (user, pass) => `https://${user}:${pass}@bitbucket.lab.dynatrace.org/scm/wx/ng-sketch.git`
-
-// async function main(commit, pathToPackageJson, branch) {
-//   if (!commit || !pathToPackageJson) {
-//     throw new Error('Please provide a git commit hash and a path to the package json');
-//   }
-
-//   const commitMessage = await getCommitMessage(commit);
-
-//   if (!commitMessage.match(COMMIT_REGEX)) {
-//     throw new Error('Commit message does not follow the commit guidelines! You can read them in the CONTRIBUTING.md');
-//   }
-
-//   const package = require(pathToPackageJson);
-//   const commitParts = COMMIT_REGEX.exec(commitMessage);
-
-//   if (commitParts[2].includes('sketch-validator')) {
-//     const bumped = bumpVersion(commitParts[1], package.version)
-//     updatePackageVersion(bumped, package, pathToPackageJson)
-//     await commitChanges(COMMIT_MESSAGE(bumped), branch, bumped);
-//     return bumped
-//   }
-//   return 'no-version';
-// }
-
-
-
-
-// function bumpVersion(scope, curVersion) {
-//   const version = curVersion.split('.');
-//   switch(scope) {
-//     case 'fix':
-//       version[2]++;
-//       break;
-//     case 'feat':
-//       version[1]++;
-//       version[2] = 0;
-//       break;
-//   }
-//   return version.join('.');
-// }
-
-// async function getCommitMessage(commit) {
-//   return run(`git log --format=%B -n 1 ${commit}`);
-// }
-
-// async function commitChanges(message, branch, version) {
-//   const origin = GIT_ORIGIN(process.env.GIT_USER, process.env.GIT_PASS);
-//   const tag = `sketch-validator-${version}`;
-//   await run('git add .');
-//   await run(`git commit -m "${message}"`);
-//   await run(`git tag -a ${tag} -m "This is an automatic version bump. [skip ci]"`);
-//   await run(`git push ${origin} ${tag}`);
-//   await run(`git push ${origin} HEAD:${branch}`);
-// }
-const https = require("https");
 const SKETCH_VALIDATION_API = 'https://artifactory.lab.dynatrace.org/artifactory/npm-dynatrace-release-local/.npm/%40dynatrace/sketch-validation/package.json'
-
-/**
- * @param {string} endpoint The endpoint to fetch the data from the dynatrace artifactory
- * @returns {string} latest version from artifactory
- */
-async function getLatestVersion(endpoint) {
-  const data = await getJSON(endpoint);
-  return data['dist-tags'].latest;
-}
-
-/**
- * uses the node native https to get a JSON
- * @param {string} url url to get
- * @param {string} encoding default utf8
- * @returns {Object}
- */
-function getJSON(url, encoding = 'utf8') {
-  return new Promise((resolve, reject) => {
-    https.get(url, res => {
-      res.setEncoding(encoding);
-      let body = '';
-      res.on('data', data => body += data);
-      res.on('end', () => resolve(JSON.parse(body)))
-    }).on('error', e => reject(e));
-  })
-}
 
 /**
  * execute shell commands and return stdout as promise value
@@ -195,7 +113,7 @@ async function main(baseBranch = 'master', currentBranch = 'HEAD') {
     return 'no-version'
   }
 
-  const version = await getLatestVersion(SKETCH_VALIDATION_API);
+  const version = await utils.getLatestVersion(SKETCH_VALIDATION_API);
   const bumped = bumpVersion(version, major, minor, patch);
   console.log('[@dynatrace/sketch-validator] versioning ➢ old version: ', version)
   console.log('[@dynatrace/sketch-validator] versioning ➢ bumped version: ', bumped)
@@ -206,14 +124,13 @@ async function main(baseBranch = 'master', currentBranch = 'HEAD') {
  * Call the main function with command line args
  *
  * @see
- * you have to provide two params
+ * you have to provide following params
  * -b base branch to compare (master)
  * -c current branch to compare (HEAD)
  * -p path to package.json
  */
 if (require.main === module) {
-  const args = parseCommandLineArgs(process.argv.slice(2));
-
+  const args = utils.parseCommandLineArgs(process.argv.slice(2));
 
   if (!args.p || !fs.existsSync(path.join(process.cwd(), args.p))) {
     throw new Error('You have to provide a path to the package.json');
@@ -228,21 +145,4 @@ if (require.main === module) {
     await writeFile('.validator-version', version, false);
     await updatePackageVersion(version, path.join(process.cwd(), args.p))
   });
-}
-
-/**
- * parses the command line arguments from `process.argv.slice(2)`
- * @param {string[]} args array of arguments
- */
-function parseCommandLineArgs(args) {
-  const obj = {};
-  let key = '';
-  for (let i = 0, max = args.length; i < max; i++) {
-    if (i % 2 === 0) {
-      key = args[i].replace(/^-+/gm, '');
-    } else {
-      obj[key] = args[i];
-    }
-  }
-  return obj;
 }
