@@ -18,21 +18,24 @@ export async function main(args: string[]) {
   const file = minimist(args).file || DEFAULT_TEST_FILE;
 
   log.notice(chalk`💎💎💎  Start Validating Sketch File:  💎💎💎\n`);
-  log.notice(`validate file: ${file}`);
+  log.notice(`Validate file: ${file}`);
 
-  // validate the file name
+  /** Validate the file name for product environment only. */
   if (env === 'product') {
     filenameValidation(file);
   }
 
-  /** unzip only the pages for the validation */
-  return unzip(file, /pages\/.*?\.json/).then(async (result) => {
-    log.debug(chalk`\n⏱  Parsing and Validating ${result.length.toString()} Pages: \n\n`);
+  /** Unzip all the pages and the document.json file for the validation. */
+  return unzip(file, /(document.json|pages\/.*?\.json)/).then(async (result) => {
+    log.debug(chalk`\n⏱  Parsing and validating ${result.length.toString()} pages: \n\n`);
     await result.forEach((file) => {
       const content = file.buffer.toString();
       const page = JSON.parse(content);
-
-      validator.addFile(page);
+      if (file.path === 'document.json') {
+        validator.addDocumentFile(page);
+      } else {
+        validator.addFile(page);
+      }
     });
     validator.validate();
     handler.emit();
@@ -40,7 +43,7 @@ export async function main(args: string[]) {
   });
 }
 
-/** Call the main function with command line args */
+/** Call the main function with command line args. */
 if (require.main === module) {
   const args = process.argv.slice(2);
   main(args).catch((err) => {

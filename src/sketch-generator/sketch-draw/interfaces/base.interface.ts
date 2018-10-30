@@ -1,4 +1,6 @@
 import { SketchStyle } from './style.interface';
+import { SketchForeignTextStyles } from './text-style.interface';
+import { SketchAttributedString } from './text.interface';
 
 export enum SketchObjectTypes {
   Artboard = 'artboard',
@@ -8,6 +10,7 @@ export enum SketchObjectTypes {
   Border = 'border',
   Color = 'color',
   CurvePoint = 'curvePoint',
+  Document = 'document',
   ExportOptions = 'exportOptions',
   Fill = 'fill',
   FontDescriptor = 'fontDescriptor',
@@ -19,6 +22,7 @@ export enum SketchObjectTypes {
   InnerShadow = 'innerShadow',
   Page = 'page',
   ParagraphStyle = 'paragraphStyle',
+  Path = 'path',
   Rectangle = 'rectangle',
   RulerData = 'rulerData',
   Shadow = 'shadow',
@@ -35,6 +39,7 @@ export interface SketchBase {
   _class: SketchObjectTypes;
   do_objectID: string;
   exportOptions: SketchExportOptions;
+  foreignTextStyles?: SketchForeignTextStyles[];
   frame?: SketchFrame;
   hasClickThrough?: boolean;
   isFlippedHorizontal: boolean;

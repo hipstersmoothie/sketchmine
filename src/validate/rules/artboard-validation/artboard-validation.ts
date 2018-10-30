@@ -50,8 +50,8 @@ export function artboardValidation(
   const emptyArtboards = homeworks
     .some(homework =>
       homework._class === 'artboard' &&
-      (!homework.layerSize ||
-      homework.layerSize < 1));
+      (!homework.ruleOptions.layerSize ||
+      homework.ruleOptions.layerSize < 1));
 
   const errors: (ValidationError | boolean)[] = [];
   const name = task.name.split('-');

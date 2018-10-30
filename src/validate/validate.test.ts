@@ -1,3 +1,4 @@
+import { SketchObjectTypes } from '@sketch-draw/interfaces';
 import { Validator } from './validator';
 import { Teacher } from './teacher';
 import { colorValidation } from './rules/color-validation';
@@ -5,7 +6,7 @@ import { IValidationRule } from './interfaces/validation-rule.interface';
 
 const fixture = require('../../tests/fixtures/validation-fixture.json');
 const RULE_FIXTURE: IValidationRule = {
-  selector: ['shapeGroup', 'rectangle', 'path'],
+  selector: [SketchObjectTypes.ShapeGroup, SketchObjectTypes.Rectangle, SketchObjectTypes.Path],
   name: 'color-palette-validation',
   description: 'Check if the used colors are in our color palette.',
   ignoreArtboards: ['full-color-palette'],
