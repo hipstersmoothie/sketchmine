@@ -18,7 +18,7 @@ pipeline {
 
   stages {
 
-    stage('Prepare') {
+    stage('🔧 Prepare') {
       steps {
         checkout([
           $class: 'GitSCM',
@@ -55,12 +55,11 @@ pipeline {
       }
     }
 
-    stage('controll versions') {
+    stage('🔨 controll versions') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
           nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
-            sh 'node config/sem-versioning -c $GIT_COMMIT -p $WORKSPACE/src/validate/package.json -b $GIT_BRANCH --git-user $GIT_USER --git-pass $GIT_PASS'
-
+            sh 'node config/sem-versioning -p src/validate/package.json -b origin/master -c origin/$BRANCH_NAME '
             sh '''
               PACKAGE_VERSION=$(cat ./_tmp/package.json \\
                 | grep version \\
@@ -78,21 +77,23 @@ pipeline {
           env.PACKAGE_VERSION = packageVersion;
           env.VALIDATION_VERSION = version;
         }
+
+        sh 'echo "\n\n🛡 Angular Componets Version:\t$PACKAGE_VERSION"'
+        sh 'echo "\n\n🖍 Sketch Validator Version:\t$VALIDATION_VERSION"'
       }
     }
 
-    stage('install') {
+    stage('⛏ Install') {
       steps {
         nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
           ansiColor('xterm') {
-            sh 'echo "Angular components version: ${VALIDATION_VERSION}"'
             sh 'npm install'
           }
         }
       }
     }
 
-    stage('Lint') {
+    stage('🔎 Lint') {
       steps {
         nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
           ansiColor('xterm') {
@@ -103,7 +104,7 @@ pipeline {
     }
 
     // Build need to run before test because the dom traverser has to be build!
-    stage('Build') {
+    stage('⚒ Build') {
       steps {
         nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
           ansiColor('xterm') {
@@ -113,7 +114,7 @@ pipeline {
       }
     }
 
-    stage('Test') {
+    stage('🌡 Test') {
       steps {
         nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
           ansiColor('xterm') {
@@ -123,7 +124,7 @@ pipeline {
       }
     }
 
-    stage('Publish validation to npm') {
+    stage('🚀 Publish validation to npm') {
       when {
         allOf {
           expression { return env.VALIDATION_VERSION != 'true' }
@@ -139,15 +140,17 @@ pipeline {
                 echo "@dynatrace:registry=https://artifactory.lab.dynatrace.org/artifactory/api/npm/npm-dynatrace-release-local/" > .npmrc
                 curl -u$npm_user:$npm_pass https://artifactory.lab.dynatrace.org/artifactory/api/npm/auth >> .npmrc
                 cat .npmrc
+
+                echo "publish new version of the @dynatrace/sketch-validation with version: ${VALIDATION_VERSION}"
+                npx yarn publish --verbose --new-version $VALIDATION_VERSION ./
               '''
-              sh 'npx yarn publish --verbose --new-version $VALIDATION_VERSION ./'
             }
           }
         }
       }
     }
 
-    stage('Build Docker image') {
+    stage('🐳 Build Docker image') {
       when {
         branch 'master'
       }
@@ -169,7 +172,7 @@ pipeline {
       }
     }
 
-    stage('Push docker image to regestry 🛫') {
+    stage('✈️ Push docker image to regestry') {
       when {
         branch 'master'
       }
@@ -182,7 +185,7 @@ pipeline {
       }
     }
 
-    stage('Generate .sketch library 💎') {
+    stage('💎 Generate .sketch library') {
       when {
         branch 'master'
       }
@@ -208,7 +211,7 @@ pipeline {
       }
     }
 
-    stage('clone UX global ressources 🗄') {
+    stage('🗄 Clone UX global ressources') {
       when {
         branch 'master'
       }
@@ -237,7 +240,7 @@ pipeline {
       }
     }
 
-    stage('deploy the library 🚀') {
+    stage('🚀 deploy the library') {
       when {
         branch 'master'
       }
