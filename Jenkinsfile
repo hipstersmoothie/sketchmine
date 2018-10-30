@@ -142,7 +142,7 @@ pipeline {
                 cat .npmrc
 
                 echo "publish new version of the @dynatrace/sketch-validation with version: ${VALIDATION_VERSION}"
-                npx yarn publish --verbose --new-version $VALIDATION_VERSION ./
+                npx yarn publish --verbose --no-git-tag-version --new-version $VALIDATION_VERSION ./
               '''
             }
           }
