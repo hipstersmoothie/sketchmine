@@ -127,6 +127,7 @@ pipeline {
     stage('🚀 Publish validation to npm') {
       when {
         allOf {
+          branch 'master'
           expression { return env.VALIDATION_VERSION != 'true' }
           expression { return env.VALIDATION_VERSION != 'no-version' }
         }
