@@ -9,6 +9,7 @@ export namespace IErrorHandler {
     failing: ValidationError[];
     succeeding: number;
     description?: string;
+    warning?: boolean; // if it rule should throw or warn
   }
 
 }

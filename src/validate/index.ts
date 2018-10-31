@@ -1,65 +1,59 @@
-import { zipToBuffer as unzip, Logger, readFile } from '@utils';
+
 import { rules } from './config';
-import { resolve, join } from 'path';
-import { lstatSync } from 'fs';
-import { Validator } from './validator';
-import chalk from 'chalk';
-import { ErrorHandler } from './error/error-handler';
 import minimist from 'minimist';
-import { filenameValidation } from './rules/file-name-validation';
 
-const log = new Logger();
-const env = process.env.ENVIRONMENT || 'global';
+import { main } from './main';
+import { displayHelp } from './help';
+import { resolve } from 'path';
+import { existsSync } from 'fs';
+import { IValidationRule } from './interfaces/validation-rule.interface';
 
-const COLORS_FILE = resolve('_tmp/src/lib/core/style/_colors.scss');
-const DEFAULT_TEST_FILE = join(process.cwd(), 'tests', 'fixtures', 'name-validation-test.sketch');
+const DEFAULT_LINT_FILE = resolve('sketchlint.json');
+const DEFAULT_TEST_FILE = resolve('tests', 'fixtures', 'name-validation-test.sketch');
 
-export async function main(args: string[]) {
-  if (!lstatSync(COLORS_FILE).isFile()) {
-    log.error(
-      chalk`Please use the {bgBlue  [sh src/validate/prepare.sh] } ` +
-      chalk`script to get the {grey _colors.scs}s file `);
-    throw new Error(`${COLORS_FILE} file not found!`);
-  }
-  const file = minimist(args).file || DEFAULT_TEST_FILE;
-  rules.find(rule => rule.name === 'color-palette-validation').options.colors = await readFile(COLORS_FILE);
-  const validator = new Validator(rules, env);
-  const handler = new ErrorHandler();
+let environment = process.env.ENVIRONMENT || 'global';
 
-  log.notice(chalk`💎💎💎  Start Validating Sketch File:  💎💎💎\n`);
-  log.notice(`Validate file: ${file}`);
+function configureRules(config: string): IValidationRule[] {
+  const rulesConfig = require(config);
+  const matched: IValidationRule[] = [];
 
-  /** Validate the file name for product environment only. */
-  if (env === 'product') {
-    filenameValidation(file);
-  }
+  for (const ruleName in rulesConfig.rules) {
+    if (rulesConfig.rules.hasOwnProperty(ruleName)) {
+      const rule = rulesConfig.rules[ruleName];
+      const r = rules.find(_r => _r.name === ruleName);
 
-  /** Unzip all the pages and the document.json file for the validation. */
-  return unzip(file, /(document.json|pages\/.*?\.json)/).then(async (result) => {
-    log.debug(chalk`\n⏱  Parsing and validating ${result.length.toString()} pages: \n\n`);
-    await result.forEach((file) => {
-      const content = file.buffer.toString();
-      const page = JSON.parse(content);
-      if (file.path === 'document.json') {
-        validator.addDocumentFile(page);
-      } else {
-        validator.addFile(page);
+      if (!rule || !r) { continue; }
+      if (typeof rule === 'object') {
+        r.warning = rule.hasOwnProperty('warning') && rule.warning;
       }
-    });
-    validator.validate();
-    handler.emit();
-    return 0;
-  });
+      matched.push(r);
+    }
+  }
+
+  return matched;
 }
 
-/** Call the main function with command line args. */
-if (require.main === module) {
-  const args = process.argv.slice(2);
-  main(args).catch((err) => {
-    log.error(err as any);
-    process.exit(1);
-  })
-  .then((code: number) => {
-    process.exit(code);
-  });
+export async function commandLineExecutor(): Promise<number> {
+  const args = minimist(process.argv.slice(2));
+
+  if (args.help || args.h) {
+    displayHelp();
+    return 0;
+  }
+
+  if (args.environment || args.e) {
+    environment = args.environment || args.e;
+  }
+
+  const configFile = args.config || args.c ? args.config || args.c : DEFAULT_LINT_FILE;
+  const config = existsSync(configFile) ? configureRules(configFile) : rules;
+
+  return await main(args.file || DEFAULT_TEST_FILE, config, environment);
 }
+
+commandLineExecutor().then((code: number) => {
+  process.exit(code);
+}).then((err) => {
+  console.error(err);
+  process.exit(1);
+});

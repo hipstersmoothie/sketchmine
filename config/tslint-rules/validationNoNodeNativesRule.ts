@@ -14,7 +14,7 @@ in case it has to work cross plattform.
 Provide all necessary data with the options in the config and gather them in the run file first.`;
 
 /** @see https://regex101.com/r/VvI102/1 */
-const FILES_REGEX = new RegExp(/\/src\/validate\/(?!(?:index|interfaces|run|rules\/file-name-validation)).+/gm);
+const FILES_REGEX = new RegExp(/\/src\/validate\/(?!(?:index|main|interfaces|run|rules\/file-name-validation)).+/gm);
 
 class ValidationNoNodeNativesRuleWalker extends RuleWalker {
 
