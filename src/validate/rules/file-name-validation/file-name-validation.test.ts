@@ -7,8 +7,14 @@ describe('Filename Validation', () => {
   beforeEach(() => (ErrorHandler as any).instance.destroy());
 
   test('should check if validation passes if filename is invalid', () => {
-
     const path = '/myprojects/projectname/projectname-feature-detail.sketch';
+    filenameValidation(path);
+    const val = (ErrorHandler as any).instance._rulesStack[RULE_NAME];
+    expect(val.succeeding).toBeTruthy();
+  });
+
+  test('should check if ci360 (numbers) are valid in folder and file name', () => {
+    const path = '/ci360/ci360-account.sketch';
     filenameValidation(path);
     const val = (ErrorHandler as any).instance._rulesStack[RULE_NAME];
     expect(val.succeeding).toBeTruthy();
