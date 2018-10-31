@@ -56,7 +56,7 @@ export class ErrorHandler {
     let stackedOutput = '';
 
     for (const rule in this._rulesStack) {
-      if (!this._rulesStack.hasOwnProperty(rule)) {
+      if (this._rulesStack.hasOwnProperty(rule)) {
         const element = this._rulesStack[rule];
         const isWarning = element.warning;
 
