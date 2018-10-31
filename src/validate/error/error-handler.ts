@@ -56,32 +56,32 @@ export class ErrorHandler {
     let stackedOutput = '';
 
     for (const rule in this._rulesStack) {
-      if (!this._rulesStack.hasOwnProperty(rule)) { continue; }
-      const element = this._rulesStack[rule];
-      const isWarning = element.warning;
+      if (!this._rulesStack.hasOwnProperty(rule)) {
+        const element = this._rulesStack[rule];
+        const isWarning = element.warning;
 
-      if (element.failing.length === 0) {
-        stackedOutput += this.printErrorStatus(element, rule, 0);
-      } else {
-        if (!isWarning) {
-          throwingError = element.failing[0];
-          stackedOutput += this.printErrorStatus(element, rule, 2);
+        if (element.failing.length === 0) {
+          stackedOutput += this.printErrorStatus(element, rule, 0);
         } else {
-          stackedOutput += this.printErrorStatus(element, rule, 1);
-        }
+          if (!isWarning) {
+            throwingError = element.failing[0];
+            stackedOutput += this.printErrorStatus(element, rule, 2);
+          } else {
+            stackedOutput += this.printErrorStatus(element, rule, 1);
+          }
 
-        if (element.description) {
-          stackedOutput += chalk`\n{grey \t${element.description}}\n`;
-        }
+          if (element.description) {
+            stackedOutput += chalk`\n{grey \t${element.description}}\n`;
+          }
 
-        if (process.env.DEBUG) {
-          this.tracedFailings(element.failing, isWarning);
-        }
+          if (process.env.DEBUG) {
+            this.tracedFailings(element.failing, isWarning);
+          }
 
-        if (this._colors.size > 0) {
-          stackedOutput += this.colorPaletteError();
+          if (this._colors.size > 0) {
+            stackedOutput += this.colorPaletteError();
+          }
         }
-
       }
     }
 
