@@ -55,12 +55,10 @@ export class ErrorHandler {
     let throwingError: ValidationError; // save one Error to throw for exit code
     let stackedOutput = '';
 
-
     for (const rule in this._rulesStack) {
       if (!this._rulesStack.hasOwnProperty(rule)) { continue; }
       const element = this._rulesStack[rule];
       const isWarning = element.warning;
-
 
       if (element.failing.length === 0) {
         stackedOutput += this.printErrorStatus(element, rule, 0);
