@@ -4,29 +4,30 @@ import { SketchStyle, SketchFrame, SketchObjectTypes, SketchBase, SketchAttribut
 export type ValidationFunction = (homework: IValidationContext[], currentTask: number) => (ValidationError | boolean)[];
 
 export interface IValidationRule {
-  name: string;
-  selector: SketchObjectTypes[];
-  validation: ValidationFunction;
   description?: string;
+  env?: string[];
   ignoreArtboards?: string[];
   includePages?: string[];
-  env?: string[];
+  name: string;
   options?: { [key: string]: any };
+  selector: SketchObjectTypes[];
+  validation: ValidationFunction;
+  warning?: boolean;
 }
 
 export interface IValidationContext {
   _class: string;
   do_objectID: string;
+  frame?: SketchFrame;
   name: string;
   parents: IValidationContextParents;
-  style?: SketchStyle;
-  frame?: SketchFrame;
   ruleOptions: { [key: string]: any };
+  style?: SketchStyle;
 }
 
 export interface IValidationContextParents {
-  page: string;
   artboard: string;
+  page: string;
   symbolMaster: string;
 }
 

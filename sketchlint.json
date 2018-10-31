@@ -1,0 +1,12 @@
+{
+  "version": "1.2.2",
+  "rules": {
+    "artboard-validation": true,
+    "color-palette-validation": true,
+    "page-validation": true,
+    "symbol-name-validation": true,
+    "text-style-validation": {
+      "warning": true
+    }
+  }
+}

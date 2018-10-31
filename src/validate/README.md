@@ -8,7 +8,9 @@ The file validation works like a teacher that is correcting homeworks of their s
 
 In a separate terminal window run `npm run build:dev -- --part="sketch-validator"` to start the Sketch validator. The build is always retriggered as soon as a file is updated and saved. To check if all **ts-lint** and **compiler** rules pass run `npm run lint`.
 
-To validate a given Sketch file open a new terminal window and run `node dist/sketch-validator --file="path/to/file.sketch"`. The default validation environment is `global` (see all environments below). You can change it by adding `ENVIRONMENT=<env-name>` to the command above. Enable the debug mode by adding `DEBUG=true`.
+To display the help page run `node dist/sketch-validator -h`. It will give you an overview of all possible command line arguments that are needed for the validator.
+
+To validate a given Sketch file open a new terminal window and run `node dist/sketch-validator --file="path/to/file.sketch"`. The default validation environment is `global` (see all environments below). You can change it by adding `ENVIRONMENT=<env-name>` or passing an environment with the command-line args to the command above. Enable the debug mode by adding `DEBUG=true`.
 
 ```sh
 ENVIRONMENT=product DEBUG=true node dist/sketch-validator --file="tests/fixtures/fixtures-testfile.sketch"
@@ -26,6 +28,29 @@ The `config.ts` file defines all validation rules (the rules the teacher must st
 * includePages (optional): pages of the Sketch file that should be validated
 * ignoreArtboards (optional): artboards of the Sketch file that can be ignored
 * options (optional): an array of additional options (see details below)
+
+Furthermore you can specify which rules should validate and throw warnings with a `sketchlint.json` in the project root.
+Then you have to provide the `-c` or `--config` argument to the call with the path to the sketchlint file.
+This file follows following convention:
+
+The version property is used to specify the docker image (it is the version of the library `${project-root}/package.json` and not the version of the validation)
+It can be locked to a fix version like `1.2.2` or simply `latest`
+
+```json
+{
+  "version": "1.2.2",
+  "rules": {
+    "artboard-validation": true,
+    "color-palette-validation": false,
+    "page-validation": true,
+    "symbol-name-validation": true,
+    "text-style-validation": {
+      "warning": true
+    }
+  }
+}
+
+```
 
 ### Validation environments
 
