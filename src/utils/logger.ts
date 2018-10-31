@@ -1,7 +1,4 @@
-import * as fs from 'fs';
-import * as path from 'path';
 import chalk from 'chalk';
-import { createDir } from './create-dir';
 
 export type LogTypes = 'ERROR' | 'WARNING' | 'NOTICE' | 'INFO' | 'DEBUG';
 
@@ -26,7 +23,6 @@ export class Logger {
 
   private static EMOJI_SPACE = '\t';
   private static _instance: Logger;
-  private _logStream: fs.WriteStream;
   private _debugEnvs: string[];
 
   constructor() {
@@ -63,17 +59,6 @@ ${envs.join('\n')}
     `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
   }
 
-  writeLogStream(file: string): void {
-    if (this._logStream) {
-      return;
-    }
-    const dir = path.dirname(file);
-    if (!fs.existsSync(dir) || !fs.lstatSync(dir).isDirectory()) {
-      createDir(dir);
-    }
-    this._logStream = fs.createWriteStream(file, { flags: 'a' });
-  }
-
   error(message: string): void { this.message(chalk.redBright(message), 1); }
   warning(message: string): void { this.message(chalk.yellow(message), 2); }
   notice(message: string, emoji?: string): void { this.message(chalk.cyan(message), 3, emoji); }
@@ -97,9 +82,6 @@ ${envs.join('\n')}
     const e = emoji ? `${emoji}${Logger.EMOJI_SPACE}` : this.getEmoji(level);
     const msg = `${e}${message.replace('\n', `\n  ${Logger.EMOJI_SPACE}`)}`;
     console.log(msg);
-    if (this._logStream) {
-      this._logStream.write(JSON.stringify(this.logEntry(msg, level)));
-    }
   }
 
   private getEmoji(level: number): string {

@@ -18,7 +18,7 @@ pipeline {
 
   stages {
 
-    stage('Prepare') {
+    stage('🔧 Prepare') {
       steps {
         checkout([
           $class: 'GitSCM',
@@ -52,20 +52,30 @@ pipeline {
           ]
         ])
 
-        sh '''
-        # get Package version from Angular Components
-          PACKAGE_VERSION=$(cat ./_tmp/package.json \\
-            | grep version \\
-            | head -1 \\
-            | awk -F: \'{ print $2 }\' \\
-            | sed \'s/[",]//g\' \\
-            | tr -d \'[[:space:]]\')
-          echo $PACKAGE_VERSION > .version
-        '''
       }
     }
 
-    stage('install') {
+    stage('🔨 controll versions') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
+          nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
+            sh 'node config/sem-versioning -p src/validate/package.json -b origin/master -c origin/$BRANCH_NAME '
+            sh 'echo $(node config/get-package-version -p package.json) > .version'
+          }
+        }
+        script {
+          def packageVersion = sh(returnStdout: true, script: "cat ./.version");
+          def version = sh(returnStdout: true, script: "cat ./.validator-version");
+          env.PACKAGE_VERSION = packageVersion;
+          env.VALIDATION_VERSION = version;
+        }
+
+        sh 'echo "\n💎 Library Version:\t$PACKAGE_VERSION"'
+        sh 'echo "\n🖍 Sketch Validator Version:\t$VALIDATION_VERSION"'
+      }
+    }
+
+    stage('⛏ Install') {
       steps {
         nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
           ansiColor('xterm') {
@@ -75,7 +85,7 @@ pipeline {
       }
     }
 
-    stage('Lint') {
+    stage('🔎 Lint') {
       steps {
         nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
           ansiColor('xterm') {
@@ -86,7 +96,7 @@ pipeline {
     }
 
     // Build need to run before test because the dom traverser has to be build!
-    stage('Build') {
+    stage('⚒ Build') {
       steps {
         nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
           ansiColor('xterm') {
@@ -96,7 +106,7 @@ pipeline {
       }
     }
 
-    stage('Test') {
+    stage('🌡 Test') {
       steps {
         nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
           ansiColor('xterm') {
@@ -106,7 +116,34 @@ pipeline {
       }
     }
 
-    stage('Build Docker image') {
+    stage('🚀 Publish validation to npm') {
+      when {
+        allOf {
+          branch 'master'
+          expression { return env.VALIDATION_VERSION != 'true' }
+          expression { return env.VALIDATION_VERSION != 'no-version' }
+        }
+      }
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'npm-artifactory', passwordVariable: 'npm_pass', usernameVariable: 'npm_user')]) {
+
+          nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
+            dir('dist/sketch-validator/npm') {
+               sh '''
+                echo "@dynatrace:registry=https://artifactory.lab.dynatrace.org/artifactory/api/npm/npm-dynatrace-release-local/" > .npmrc
+                curl -u$npm_user:$npm_pass https://artifactory.lab.dynatrace.org/artifactory/api/npm/auth >> .npmrc
+                cat .npmrc
+
+                echo "publish new version of the @dynatrace/sketch-validation with version: ${VALIDATION_VERSION}"
+                npx yarn publish --verbose --no-git-tag-version --new-version $VALIDATION_VERSION ./
+              '''
+            }
+          }
+        }
+      }
+    }
+
+    stage('🐳 Build Docker image') {
       when {
         branch 'master'
       }
@@ -114,8 +151,6 @@ pipeline {
       steps {
         withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
           sh '''
-            PACKAGE_VERSION=$(cat ./.version)
-
             echo "Build Library for version: ${PACKAGE_VERSION}"
 
             docker build \
@@ -130,22 +165,20 @@ pipeline {
       }
     }
 
-    stage('Push docker image to regestry 🛫') {
+    stage('✈️ Push docker image to registry') {
       when {
         branch 'master'
       }
 
       steps {
         sh '''
-          PACKAGE_VERSION=$(cat ./.version)
-
           docker push webkins.lab.dynatrace.org:5000/ng-sketch:${PACKAGE_VERSION}
           docker push webkins.lab.dynatrace.org:5000/ng-sketch:latest
         '''
       }
     }
 
-    stage('Generate .sketch library 💎') {
+    stage('💎 Generate .sketch library') {
       when {
         branch 'master'
       }
@@ -153,7 +186,6 @@ pipeline {
       steps {
         ansiColor('xterm') {
           sh '''
-            echo "0.3.0-dev" > .version
             docker pull webkins.lab.dynatrace.org:5000/ng-sketch:latest
 
             # create _library for out dir of the generated file
@@ -172,7 +204,7 @@ pipeline {
       }
     }
 
-    stage('clone UX global ressources 🗄') {
+    stage('🗄 Clone UX global ressources') {
       when {
         branch 'master'
       }
@@ -192,8 +224,6 @@ pipeline {
 
         dir('ux-global-ressources') {
           sh '''
-            PACKAGE_VERSION=$(cat ../.version)
-
             # replace dot with divis for branchname
             version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
             FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
@@ -203,7 +233,7 @@ pipeline {
       }
     }
 
-    stage('deploy the library 🚀') {
+    stage('🚀 deploy the library') {
       when {
         branch 'master'
       }
@@ -211,7 +241,6 @@ pipeline {
       steps {
         dir('ux-global-ressources') {
           sh '''
-            PACKAGE_VERSION=$(cat ../.version)
             version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
             FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
 
@@ -226,7 +255,6 @@ pipeline {
           withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
 
           sh '''
-            PACKAGE_VERSION=$(cat ../.version)
             version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
             FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
 

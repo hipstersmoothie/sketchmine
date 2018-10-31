@@ -4,7 +4,6 @@ import {
   SketchStyle,
   SketchText,
 } from '@sketch-draw/interfaces';
-import { readFile } from '@utils';
 import chalk from 'chalk';
 import cloneDeep from 'lodash/cloneDeep';
 import {
@@ -33,24 +32,22 @@ export class Validator {
    * You can provide a string (path) to a file or an object with the filecontent to be validated.
    * @param file string | Object
    */
-  async addFile(file: string | Object): Promise<void> {
-    if (!file) {
-      throw Error(chalk`{bgRed Please provide a path to a JSON file or an object that can be validated!}`);
+  addFile(file: SketchBase) {
+    if (!file || typeof file !== 'object') {
+      throw Error(chalk`{bgRed Please provide a valid JSON object so that we can validate it!}`);
     }
-    const content = (typeof file === 'object') ? file : JSON.parse(await readFile(file));
-    this._files.push(content);
+    this._files.push(file);
   }
 
   /**
    * Add document JSON file needed for some validations.
    * @param file string | Object
    */
-  async addDocumentFile(file: string | Object): Promise<void> {
-    if (!file) {
-      throw Error(chalk`{bgRed Please provide a document JSON file!}`);
+  addDocumentFile(file: SketchBase) {
+    if (!file || typeof file !== 'object') {
+      throw Error(chalk`{bgRed Please provide a valid JSON object of the document JSON file!}`);
     }
-    const content = (typeof file === 'object') ? file : JSON.parse(await readFile(file));
-    this._document = content;
+    this._document = file;
   }
 
   /**
@@ -98,20 +95,18 @@ export class Validator {
     if (this._rulesSelectors.includes(content._class)) {
       const selectedRules = this._rules.filter(rule => rule.selector.includes(content._class as SketchObjectTypes));
       for (let i = 0; i < selectedRules.length; i += 1) {
-        if (this.excludeRule(selectedRules[i])) {
-          continue;
+        if (!this.excludeRule(selectedRules[i])) {
+          this.matchedRules.push(this.getProperties(content, selectedRules[i].options || {}));
         }
-        this.matchedRules.push(this.getProperties(content, selectedRules[i].options || {}));
       }
     }
 
-    if (!content.layers) {
-      return;
+    if (content.layers && content.layers.length) {
+      /** Check for children and call function recursively. */
+      content.layers.forEach((layer) => {
+        this.collectModules(layer);
+      });
     }
-    /** Check for children and call function recursively. */
-    content.layers.forEach((layer) => {
-      this.collectModules(layer);
-    });
   }
 
   /**

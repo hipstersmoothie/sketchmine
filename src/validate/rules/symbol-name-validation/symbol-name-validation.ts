@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
-import { Logger } from '@utils';
+import { Logger } from '@utils/logger';
 import {
   SYMBOL_NAME_ERROR_MESSAGE,
   THEME_NAME_ERROR_MESSAGE,

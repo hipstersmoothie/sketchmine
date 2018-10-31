@@ -1,5 +1,8 @@
 {
   "extends": "tslint-config-airbnb",
+  "rulesDirectory": [
+    "./config/tslint-rules/"
+  ],
   "linterOptions": {
     "exclude": [
         "_tmp",
@@ -17,6 +20,10 @@
       "ban-keywords",
       "check-format",
       "allow-leading-underscore"
-    ]
+    ],
+
+    // Custom Rules
+    "ts-loader": true,
+    "validation-no-node-natives": true
   }
 }

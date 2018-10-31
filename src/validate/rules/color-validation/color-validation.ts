@@ -1,14 +1,14 @@
 import chalk from 'chalk';
 import { ValidationError, ColorNotInPaletteError } from '../../error/validation-error';
 import { round } from '@sketch-draw/helpers/util';
-import { rgbToHex, Logger } from '@utils';
+import { rgbToHex } from '@utils/rgb-to-hex';
+import { Logger } from '@utils/logger';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import { SketchFill, SketchBorder } from '@sketch-draw/interfaces';
 import { generateMasterColors } from './generate-master-colors';
 import { COLOR_ERROR_MESSAGE } from '../../error/error-messages';
 
 const log = new Logger();
-const colors: string[] = generateMasterColors();
 
 /**
  * Takes a homework and corrects it like a teacher 👩🏼‍🏫
@@ -33,19 +33,22 @@ export function colorValidation(
     return;
   }
 
+  const logoColors = task.ruleOptions.dynatraceLogoColors;
+  const allColors = task.ruleOptions.colors;
+  const colors: string[] = generateMasterColors(logoColors, allColors);
   const errors: (ValidationError | boolean)[] = [];
 
   if (task.style) {
     if (task.style.fills) {
       for (let i = 0, max = task.style.fills.length; i < max; i += 1) {
         const color = task.style.fills[i];
-        errors.push(colorInPalette(task, color));
+        errors.push(colorInPalette(task, color, colors));
       }
     }
     if (task.style.borders) {
       for (let i = 0, max = task.style.borders.length; i < max; i += 1) {
         const color = task.style.borders[i];
-        errors.push(colorInPalette(task, color));
+        errors.push(colorInPalette(task, color, colors));
       }
     }
   }
@@ -60,6 +63,7 @@ export function colorValidation(
 export function colorInPalette(
   task: IValidationContext,
   fill: SketchFill | SketchBorder,
+  colors: string[],
 ): ColorNotInPaletteError | boolean {
   /** only activated Fills should be validated */
   if (fill.hasOwnProperty('isEnabled') && !fill.isEnabled) {
