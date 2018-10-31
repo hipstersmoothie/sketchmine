@@ -33,6 +33,7 @@ export class ErrorHandler {
     this._rulesStack[rule.name] = {
       succeeding: 0,
       failing: [error],
+      warning: rule.hasOwnProperty('warning') && rule.warning,
       description: rule.description,
     };
   }
@@ -45,6 +46,7 @@ export class ErrorHandler {
     this._rulesStack[rule.name] = {
       succeeding: 1,
       failing: [],
+      warning: rule.hasOwnProperty('warning') && rule.warning,
       description: rule.description,
     };
   }
@@ -53,23 +55,29 @@ export class ErrorHandler {
     let throwingError: ValidationError; // save one Error to throw for exit code
     let stackedOutput = '';
 
+
     for (const rule in this._rulesStack) {
-      if (!this._rulesStack.hasOwnProperty(rule)) {
-        continue;
-      }
+      if (!this._rulesStack.hasOwnProperty(rule)) { continue; }
       const element = this._rulesStack[rule];
+      const isWarning = element.warning;
+
 
       if (element.failing.length === 0) {
-        stackedOutput += chalk`\n\n{green ✔︎ ${rule}} {grey — passed ${element.succeeding.toString()} times.}\n`;
+        stackedOutput += this.printErrorStatus(element, rule, 0);
       } else {
-        throwingError = element.failing[0];
-        stackedOutput += chalk`\n\n{redBright ✘ ${rule} — failed ${element.failing.length.toString()} times!}\n`;
+        if (!isWarning) {
+          throwingError = element.failing[0];
+          stackedOutput += this.printErrorStatus(element, rule, 2);
+        } else {
+          stackedOutput += this.printErrorStatus(element, rule, 1);
+        }
+
         if (element.description) {
-          stackedOutput += chalk`{grey   ${element.description}}\n`;
+          stackedOutput += chalk`\n{grey \t${element.description}}\n`;
         }
 
         if (process.env.DEBUG) {
-          this.tracedFailings(element.failing);
+          this.tracedFailings(element.failing, isWarning);
         }
 
         if (this._colors.size > 0) {
@@ -86,12 +94,28 @@ export class ErrorHandler {
     log.notice(stackedOutput);
 
     if (throwingError) {
-
       log.error(chalk`{redBright The Error occured in the Object with the id: ${throwingError.objectId}} ` +
         chalk`{red ${throwingError.name}}\n`);
 
       throw throwingError;
     }
+  }
+
+  /**
+   *
+   * @param element The Error
+   * @param type Type as number { 0 = success, 1 = warning, 2 = error }
+   */
+  printErrorStatus(element: IErrorHandler.Rule, rule: string, type: number): string {
+    switch (type) {
+      case 0:
+        return chalk`\n\n{green ✅\t${rule}} {grey — passed ${element.succeeding.toString()} times.}`;
+      case 1:
+        return chalk`\n\n{yellow ⚠️\t${rule}} {grey – warned ${element.failing.length.toString()} times.}`;
+      case 2:
+        return chalk`\n\n{red ⛔️\t${rule}} {grey – failed ${element.failing.length.toString()} times.}`;
+    }
+
   }
 
   private colorPaletteError(): string {
@@ -105,21 +129,23 @@ export class ErrorHandler {
     return output;
   }
 
-  private tracedFailings(failings: ValidationError[]) {
+  private tracedFailings(failings: ValidationError[], warning: boolean) {
+    const color = warning ? 'yellow' : 'redBright';
+
     for (let i = 1, max = failings.length; i <= max; i += 1) {
       const item = failings[i - 1];
       if (item instanceof FileNameError) {
         console.log(
-          chalk`{redBright ${i.toString()}) ${item.constructor.name}} → in Folder ${item.name} with filename: \n` +
-          chalk`{red ${item.objectId}}\n` +
+          chalk`{${color} ${i.toString()}) ${item.constructor.name}} → in Folder ${item.name} with filename: \n` +
+          chalk`{${color} ${item.objectId}}\n` +
           chalk`${item.message}\n`,
         );
         continue;
       }
       const trace = (item.parents.artboard) ? item.parents.artboard : item.parents.symbolMaster;
       console.log(
-        chalk`{redBright ${i.toString()}) ${item.constructor.name}} → {grey ${item.parents.page} → ${trace}}\n` +
-        chalk`{red ${item.objectId}} — ${item.name}\n` +
+        chalk`{${color} ${i.toString()}) ${item.constructor.name}} → {grey ${item.parents.page} → ${trace}}\n` +
+        chalk`{${color} ${item.objectId}} — ${item.name}\n` +
         chalk`${item.message}\n`,
       );
 
