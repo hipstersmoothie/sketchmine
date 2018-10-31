@@ -51,9 +51,11 @@ export async function commandLineExecutor(): Promise<number> {
   return await main(args.file || DEFAULT_TEST_FILE, config, environment);
 }
 
-commandLineExecutor().then((code: number) => {
-  process.exit(code);
-}).then((err) => {
-  console.error(err);
+commandLineExecutor().catch((err) => {
+  console.error(err.message);
   process.exit(1);
+})
+.then((code: number) => {
+  console.log('\n\n🦄\tThe validation passed successfully 🎉');
+  process.exit(code);
 });
