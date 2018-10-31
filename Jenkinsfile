@@ -165,7 +165,7 @@ pipeline {
       }
     }
 
-    stage('✈️ Push docker image to regestry') {
+    stage('✈️ Push docker image to registry') {
       when {
         branch 'master'
       }

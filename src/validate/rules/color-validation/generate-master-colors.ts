@@ -3,7 +3,7 @@
  * _colors.scss file.
  * Add the static Dynatrace logo colors in case they are not present in the angular-components
  * @example https://regex101.com/r/nuKQ0X/2
- * @param logoColors String array of hex values from the logo colos.
+ * @param logoColors String array of hex values from the logo colors.
  * @param allColors the file content of the _colors.scss file
  */
 export function generateMasterColors(logoColors: string[], allColors: string): string[] {

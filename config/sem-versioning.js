@@ -9,7 +9,7 @@ const SKETCH_VALIDATION_API = 'https://artifactory.lab.dynatrace.org/artifactory
 
 /**
  * execute shell commands and return stdout as promise value
- * @param {string} command command that schould be executed by child_process
+ * @param {string} command command that should be executed by child_process
  * @returns {Promise<string>} Promise with the stdout string
  */
 async function run(command) {
@@ -71,8 +71,7 @@ function writeFile(path, content, insertFinalNewline = true) {
 
 /**
  *
- * @param {string} bumped bumped version
- * @param {*} package
+ * @param {string} bumpedVersion bumped version
  * @param {string} packagePath path to the package.json
  */
 async function updatePackageVersion(bumpedVersion, packagePath) {

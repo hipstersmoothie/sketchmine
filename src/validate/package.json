@@ -1,7 +1,7 @@
 {
   "name": "@dynatrace/sketch-validation",
   "version": "automatic-versioned-by-ci",
-  "description": "Dynatrace Sktech file validation for our design system.",
+  "description": "Dynatrace Sketch file validation for our design system.",
   "main": "index.cjs.js",
   "module": "index.es6.js",
   "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
