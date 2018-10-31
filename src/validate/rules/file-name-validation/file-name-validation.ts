@@ -2,6 +2,7 @@ import { ErrorHandler } from '../../error/error-handler';
 import { FileNameError } from '../../error/validation-error';
 import { dirname, basename } from 'path';
 import { FILE_NAME_FOLDER_ERROR_MESSAGE, FILE_NAME_ERROR_MESSAGE } from '../../error/error-messages';
+import { IValidationRule } from '../../interfaces/validation-rule.interface';
 
 const handler = new ErrorHandler();
 
@@ -24,12 +25,10 @@ export function filenameValidation(
   const projectName = filename.split('-')[0];
 
   const rule = {
-    selector: undefined,
-    validation: undefined,
     name: RULE_NAME,
     env: ['product'],
     description: 'Validate if the filename matches this pattern [folder]-[feature].sketch',
-  };
+  } as IValidationRule;
 
   if (foldername !== projectName) {
     const error = new FileNameError({
@@ -41,7 +40,7 @@ export function filenameValidation(
       rule,
       error,
     );
-  } else if (!filename.match('^[a-zA-Z\d-]*.sketch')) {
+  } else if (!filename.match(/^[a-zA-Z\d-]+?\.sketch/gm)) {
     const error = new FileNameError({
       objectId: filename,
       name: projectName,
