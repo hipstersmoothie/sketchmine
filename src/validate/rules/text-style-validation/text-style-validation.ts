@@ -10,6 +10,8 @@ import {
   NO_WRONG_HEADLINE_ERROR,
   INVALID_TEXT_COLOR_ERROR,
   TEXT_TOO_SMALL_ERROR,
+  NO_TEXT_COLOR_ERROR,
+  WRONG_FONT_ERROR,
 } from '../../error/error-messages';
 import {
   NoForeignTextStylesError,
@@ -19,6 +21,8 @@ import {
   WrongHeadlineError,
   InvalidTextColorError,
   TextTooSmallError,
+  NoTextColorError,
+  WrongFontError,
 } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import isEqual from 'lodash/isEqual';
@@ -102,25 +106,41 @@ export function textStyleValidation(
    */
   if (task.ruleOptions.stringAttributes) {
     task.ruleOptions.stringAttributes.forEach((attribute) => {
-      const colorHex = rgbToHex(
-        round(attribute.attributes.MSAttributedStringColorAttribute.red * 255, 0),
-        round(attribute.attributes.MSAttributedStringColorAttribute.green * 255, 0),
-        round(attribute.attributes.MSAttributedStringColorAttribute.blue * 255, 0),
-      ).toUpperCase();
+      if (!attribute.attributes.MSAttributedStringColorAttribute) {
+        errors.push(new NoTextColorError({
+          message: NO_TEXT_COLOR_ERROR(task.name),
+          ...object,
+        }));
+      } else {
+        const colorHex = rgbToHex(
+          round(attribute.attributes.MSAttributedStringColorAttribute.red * 255, 0),
+          round(attribute.attributes.MSAttributedStringColorAttribute.green * 255, 0),
+          round(attribute.attributes.MSAttributedStringColorAttribute.blue * 255, 0),
+        ).toUpperCase();
+  
+        // Check text colors
+        if (!task.ruleOptions.VALID_TEXT_COLORS.includes(colorHex)) {
+          errors.push(new InvalidTextColorError({
+            message: INVALID_TEXT_COLOR_ERROR(task.name),
+            ...object,
+          }));
+        }
+      }
 
-      // Check text colors
-      if (!task.ruleOptions.VALID_TEXT_COLORS.includes(colorHex)) {
-        errors.push(new InvalidTextColorError({
-          message: INVALID_TEXT_COLOR_ERROR(task.name),
+      const fontAttributes = attribute.attributes.MSAttributedStringFontAttribute.attributes;
+      // Check font size (not allowed to be smaller than 12px)
+      // TODO: is it 12 or another value?
+      if (fontAttributes.size < 12) {
+        errors.push(new TextTooSmallError({
+          message: TEXT_TOO_SMALL_ERROR(task.name),
           ...object,
         }));
       }
 
-      // Check font size (not allowed to be smaller than 12px)
-      // TODO: is it 12 or another value?
-      if (attribute.attributes.MSAttributedStringFontAttribute.attributes.size < 12) {
-        errors.push(new TextTooSmallError({
-          message: TEXT_TOO_SMALL_ERROR(task.name),
+      // Check font family name (not allowed to be anything else than Bernina)
+      if (!fontAttributes.name.toLowerCase().startsWith('bernina')) {
+        errors.push(new WrongFontError({
+          message: WRONG_FONT_ERROR(task.name),
           ...object,
         }));
       }
