@@ -138,8 +138,8 @@ export function textStyleValidation(
       }
 
       // Check font family name (not allowed to be anything else than BerninaSans or Bitstream Vera )
-      if (!fontAttributes.name.toLowerCase().startsWith('bernina')
-          && !fontAttributes.name.toLowerCase().startsWith('bitstream')) {
+      const fontnameLowercase = fontAttributes.name.toLowerCase();
+      if (!fontnameLowercase.startsWith('bernina') && !fontnameLowercase.startsWith('bitstream')) {
         errors.push(new WrongFontError({
           message: WRONG_FONT_ERROR(task.name),
           ...object,

@@ -30,7 +30,7 @@ export class Logger {
     Logger._instance = this;
 
     if (process.env.DEBUG) {
-      this._debugEnvs = process.env.ENVIRONMENT.split(',');
+      this._debugEnvs = process.env.DEBUG.split(',');
       const envs = this._debugEnvs.map(env => `*     - ${env}`);
       console.log(chalk`
 {yellow * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *}
