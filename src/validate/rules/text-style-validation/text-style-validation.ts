@@ -117,7 +117,7 @@ export function textStyleValidation(
           round(attribute.attributes.MSAttributedStringColorAttribute.green * 255, 0),
           round(attribute.attributes.MSAttributedStringColorAttribute.blue * 255, 0),
         ).toUpperCase();
-  
+
         // Check text colors
         if (!task.ruleOptions.VALID_TEXT_COLORS.includes(colorHex)) {
           errors.push(new InvalidTextColorError({
@@ -137,8 +137,9 @@ export function textStyleValidation(
         }));
       }
 
-      // Check font family name (not allowed to be anything else than Bernina)
-      if (!fontAttributes.name.toLowerCase().startsWith('bernina')) {
+      // Check font family name (not allowed to be anything else than BerninaSans or Bitstream Vera )
+      if (!fontAttributes.name.toLowerCase().startsWith('bernina')
+          && !fontAttributes.name.toLowerCase().startsWith('bitstream')) {
         errors.push(new WrongFontError({
           message: WRONG_FONT_ERROR(task.name),
           ...object,
