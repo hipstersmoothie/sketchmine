@@ -16,4 +16,6 @@ export const NO_SHARED_TEXT_STYLES_ERROR_MESSAGE = textElementName => `The text 
 export const NO_SHARED_TEXT_STYLES_OVERRIDES_ERROR_MESSAGE = textElementName => `The shared text style for "${textElementName}" has been modified.`;
 export const NO_WRONG_HEADLINE_ERROR = (textElementName, artboardSize) => `The headline "${textElementName}" uses the wrong text style for artboard size ${artboardSize}.`;
 export const INVALID_TEXT_COLOR_ERROR = textElementName => `The text "${textElementName}" uses a wrong text color.`;
+export const NO_TEXT_COLOR_ERROR = textElementName => `The text "${textElementName}" does not use a text color.`;
 export const TEXT_TOO_SMALL_ERROR = textElementName => `Font of text "${textElementName}" is smaller than 12px.`;
+export const WRONG_FONT_ERROR = textElementName => `Font of text "${textElementName}" is wrong. You should use Bernina Sans or Bitstream Vera.`;

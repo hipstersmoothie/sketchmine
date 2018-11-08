@@ -45,5 +45,7 @@ export class NoForeignTextStylesError extends ValidationError { }
 export class NoSharedTextStylesError extends ValidationError { }
 export class NoSharedTextStylesOverridesError extends ValidationError { }
 export class WrongHeadlineError extends ValidationError { }
+export class NoTextColorError extends ValidationError { }
 export class InvalidTextColorError extends ValidationError { }
 export class TextTooSmallError extends ValidationError { }
+export class WrongFontError extends ValidationError { }
