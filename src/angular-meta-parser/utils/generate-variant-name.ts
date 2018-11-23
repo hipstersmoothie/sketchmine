@@ -1,5 +1,5 @@
 import { AMP } from '../meta-information';
-import { camelCaseToKebabCase } from '../../utils/camel-case-to-kebab-case';
+import { kebabCase } from 'lodash';
 
 const ACTIONS = ['disabled', 'active', 'hover', 'click'];
 
@@ -36,7 +36,7 @@ export function generateVariantName(base: string, changes: (AMP.VariantMethod | 
 
   const actionPart = actions.length ? `/${actions.sort().join('/')}` : '/default';
   const variantPart = parts.length ? `/${parts.join('/')}` : '';
-  const basePart = camelCaseToKebabCase(base);
+  const basePart = kebabCase(base);
 
   return `${basePart}${variantPart}${actionPart}`;
 }
