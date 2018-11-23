@@ -1,10 +1,11 @@
-import { Component, Type, ViewChild, ViewContainerRef, OnInit, ComponentRef, SimpleChange } from '@angular/core';
+import { Component, Type, ViewChild, ViewContainerRef, OnInit, OnDestroy, ComponentRef, SimpleChange } from '@angular/core';
 import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
-import { ViewData } from '@angular/core/src/view';
+import { ViewData } from '@angular/core/src/view'; // not exported from core (only for POC)
 import { MetaService } from './meta.service';
 import { AMP } from '../../../../src/angular-meta-parser/meta-information.d';
 import { ExamplesRegistry } from './examples-registry';
 import { checkSubComponents } from './check-sub-components';
+import { Subscription } from 'rxjs';
 
 declare var window: any;
 
@@ -30,8 +31,9 @@ export function waitForDraw(): Promise<void> {
   selector: 'app-root',
   template: '<div cdkPortalOutlet></div>',
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit, OnDestroy {
 
+  metaSubscription: Subscription;
   @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
   constructor(
     private _viewContainerRef: ViewContainerRef,
@@ -40,8 +42,8 @@ export class AppComponent implements OnInit{
   ) { }
 
   ngOnInit() {
-    const $meta = this._metaService.getMeta();
-    $meta.subscribe(async (components: AMP.Component[]) => {
+    this.metaSubscription = this._metaService.getMeta()
+    .subscribe(async (components: AMP.Component[]) => {
       await asyncForEach(components, async (componentMeta: AMP.Component) => {
         await asyncForEach(componentMeta.variants, async (variant: AMP.Variant) => {
           await this._applyChange(componentMeta, variant, components);
@@ -52,6 +54,10 @@ export class AppComponent implements OnInit{
         await window.sketchGenerator.emitFinish();
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.metaSubscription.unsubscribe();
   }
 
   private async _applyChange(componentMeta: AMP.Component, variant: AMP.Variant, components: AMP.Component[]) {

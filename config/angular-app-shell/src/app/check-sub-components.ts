@@ -1,7 +1,7 @@
 import { Type } from '@angular/core';
 import { AMP } from '../../../../src/angular-meta-parser/meta-information.d';
 import { generateVariantName } from '../../../../src/angular-meta-parser/utils/generate-variant-name';
-import { ViewData, ElementData } from '@angular/core/src/view';
+import { ViewData, ElementData } from '@angular/core/src/view'; // not exported from core (only for POC)
 
 export function checkSubComponents(viewData: ViewData, components: AMP.Component[], current: AMP.Component) {
   for (const key in viewData.nodes) {
