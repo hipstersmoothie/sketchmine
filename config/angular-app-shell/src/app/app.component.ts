@@ -1,10 +1,11 @@
-import { Component, Type, ViewChild, ViewContainerRef, OnInit, ComponentRef, SimpleChange } from '@angular/core';
-import { DomPortalHost, CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
-import { ViewData } from '@angular/core/src/view';
+import { Component, Type, ViewChild, ViewContainerRef, OnInit, OnDestroy, ComponentRef, SimpleChange } from '@angular/core';
+import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
+import { ViewData } from '@angular/core/src/view'; // not exported from core (only for POC)
 import { MetaService } from './meta.service';
-import { Meta } from './meta.interface';
+import { AMP } from '../../../../src/angular-meta-parser/meta-information.d';
 import { ExamplesRegistry } from './examples-registry';
-import { Observable } from 'rxjs';
+import { checkSubComponents } from './check-sub-components';
+import { Subscription } from 'rxjs';
 
 declare var window: any;
 
@@ -30,8 +31,9 @@ export function waitForDraw(): Promise<void> {
   selector: 'app-root',
   template: '<div cdkPortalOutlet></div>',
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit, OnDestroy {
 
+  metaSubscription: Subscription;
   @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
   constructor(
     private _viewContainerRef: ViewContainerRef,
@@ -40,11 +42,11 @@ export class AppComponent implements OnInit{
   ) { }
 
   ngOnInit() {
-    const $meta = this._metaService.getMeta();
-    $meta.subscribe(async (components: Meta.Component[]) => {
-      await asyncForEach(components, async (componentMeta: Meta.Component) => {
-        await asyncForEach(componentMeta.variants, async (variant: Meta.Variant) => {
-          await this._applyChange(componentMeta, variant);
+    this.metaSubscription = this._metaService.getMeta()
+    .subscribe(async (components: AMP.Component[]) => {
+      await asyncForEach(components, async (componentMeta: AMP.Component) => {
+        await asyncForEach(componentMeta.variants, async (variant: AMP.Variant) => {
+          await this._applyChange(componentMeta, variant, components);
         });
       });
 
@@ -54,7 +56,11 @@ export class AppComponent implements OnInit{
     });
   }
 
-  private async _applyChange(componentMeta: Meta.Component, variant: Meta.Variant) {
+  ngOnDestroy(): void {
+    this.metaSubscription.unsubscribe();
+  }
+
+  private async _applyChange(componentMeta: AMP.Component, variant: AMP.Variant, components: AMP.Component[]) {
     const exampleType = this._registry.getExampleByName(componentMeta.component);
     if (!exampleType) {
       return;
@@ -64,7 +70,7 @@ export class AppComponent implements OnInit{
 
     exampleComponentRef.changeDetectorRef.detectChanges();
 
-    await asyncForEach(variant.changes, async (change: Meta.VariantMethod | Meta.VariantProperty) => {
+    await asyncForEach(variant.changes, async (change: AMP.VariantMethod | AMP.VariantProperty) => {
     if (change.type === 'property') {
         await asyncForEach(componentInstances, async (instance) => {
           const value = (change.value === 'undefined') ? undefined : JSON.parse(change.value);
@@ -86,6 +92,10 @@ export class AppComponent implements OnInit{
 
     exampleComponentRef.changeDetectorRef.detectChanges();
 
+    // detect child angular components and annotate the variant in the tree
+    const view = (exampleComponentRef.hostView as any)._view.nodes[0].componentView as ViewData;
+    checkSubComponents(view, components, componentMeta);
+
     // wait for browser draw
     await waitForDraw();
     if (window.sketchGenerator) {
@@ -93,11 +103,11 @@ export class AppComponent implements OnInit{
     }
   }
 
-  private _getCompInstances<C>(componentMeta: Meta.Component, exampleComponentRef: ComponentRef<C>) {
+  private _getCompInstances<C>(componentMeta: AMP.Component, exampleComponentRef: ComponentRef<C>) {
     const componentInstances = [];
     componentMeta.selector.forEach((selector: string) => {
       const exampleElement = exampleComponentRef.location.nativeElement.querySelector(selector);
-      const compInstance = this._findComponentInstance(exampleComponentRef, exampleElement);
+      const compInstance = findComponentInstance(exampleComponentRef, exampleElement);
       if (compInstance) {
         componentInstances.push(compInstance);
       }
@@ -113,15 +123,16 @@ export class AppComponent implements OnInit{
     const portal = new ComponentPortal(exampleType, this._viewContainerRef);
     return this.portalOutlet.attachComponentPortal(portal);
   }
+}
 
-  /**
+/**
    * find the instance in the hidden view of Angular for an example
    * the button has a wrapper arround and the true button instance where we have to apply
    * the properties is somewhere in the dom
    * @param ref ComponentRef
    * @param element the HTMLelement we should find
    */
-  private _findComponentInstance<E, C>(ref: ComponentRef<E>, element: HTMLElement): Type<C> | null {
+export function findComponentInstance<E, C>(ref: ComponentRef<E>, element: HTMLElement): Type<C> | null {
     const rootView = (ref.hostView as any)._view as ViewData;
 
     function findInNodes(view: ViewData) {
@@ -146,5 +157,3 @@ export class AppComponent implements OnInit{
 
     return null;
   }
-
-}

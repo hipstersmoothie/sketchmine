@@ -1,4 +1,4 @@
-import { arrayFlatten, camelCaseToKebabCase } from '@utils';
+import { arrayFlatten } from '@utils';
 import { AMP } from '../meta-information';
 import { NullVisitor, AstVisitor } from './ast-visitor';
 import { NodeTags, ParseDefinition } from './parse-definition';
@@ -68,6 +68,7 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
       selector: node.selector,
       clickable: node.clickable,
       hoverable: node.hoverable,
+      properties: componentMembers.map(prop => prop.key),
       variants: componentMembers,
       combinedVariants: node.combinedVariants,
     };

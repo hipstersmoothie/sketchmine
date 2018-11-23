@@ -34,6 +34,7 @@ export interface ITraversedDomElement extends ITraversedElement {
   className: string;
   boundingClientRect: DOMRect;
   matchingComponent: string;
+  variant: string;
   children?: ITraversedElement[];
 }
 export interface ITraversedDomTextNode extends ITraversedElement{

@@ -20,6 +20,7 @@ export enum SketchObjectTypes {
   GraphicsContext = 'graphicsContextSettings',
   Group = 'group',
   InnerShadow = 'innerShadow',
+  OverrideValue = 'overrideValue',
   Page = 'page',
   ParagraphStyle = 'paragraphStyle',
   Path = 'path',
@@ -30,6 +31,7 @@ export enum SketchObjectTypes {
   ShapePath = 'shapePath',
   StringAttribute = 'stringAttribute',
   Style = 'style',
+  SymbolInstance = 'symbolInstance',
   SymbolMaster = 'symbolMaster',
   Text = 'text',
   TextStyle = 'textStyle',
@@ -56,6 +58,11 @@ export interface SketchBase {
   rotation: number;
   shouldBreakMaskChain: boolean;
   style: SketchStyle;
+}
+
+export interface SketchClippingMask { // shape-group.interface has to extend from that as well
+  clippingMaskMode: number;
+  hasClippingMask: boolean;
 }
 
 export interface SketchFrame extends IBounding {

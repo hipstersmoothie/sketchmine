@@ -28,6 +28,7 @@ export namespace AMP {
     clickable: boolean;
     hoverable: boolean;
     selector: string[];
+    properties: string[];
     variants: Variant[];
     combinedVariants: boolean; // defines if the variants are combined or not
   }
