@@ -8,6 +8,7 @@ import {
   SketchBitmap,
   SketchText,
   SketchShapeGroup,
+  SketchSymbolInstance,
 } from './sketch-draw/interfaces';
 import {
   ITraversedDomElement,
@@ -22,15 +23,26 @@ import { SvgToSketch } from '@sketch-svg-parser/svg-to-sketch';
 import { Bitmap } from './sketch-draw/models/bitmap';
 import { Logger } from '@utils';
 import { ElementStyle } from './element-style';
+import { SymbolInstance } from './sketch-draw/models/symbol-instance';
 
 const log = new Logger();
 
-type LayerElements = SketchGroup | SketchRectangle | SketchShapePath | SketchShapeGroup | SketchBitmap | SketchText;
+type LayerElements =
+  SketchGroup |
+  SketchRectangle |
+  SketchShapePath |
+  SketchShapeGroup |
+  SketchBitmap |
+  SketchText |
+  SketchSymbolInstance;
 
 export class ElementDrawer {
   layers: LayerElements[] = [];
 
-  constructor(element: ITraversedDomElement | ITraversedDomTextNode | ITraversedDomSvgNode) {
+  constructor(
+    element: ITraversedDomElement | ITraversedDomTextNode | ITraversedDomSvgNode,
+    public drawnSymbols: Map<string, string>,
+  ) {
     if (!element) { return; }
     switch (element.tagName) {
       case 'TEXT':
@@ -100,7 +112,16 @@ export class ElementDrawer {
       log.debug(chalk`Element {cyan ${element.tagName}.${element.className}} has no visual state.`);
       return;
     }
+
     const size = this.getSize(element);
+
+    if (element.matchingComponent && element.variant) {
+      const symbolId = this.drawnSymbols.get(element.variant);
+      const symbolInstance = new SymbolInstance(size, symbolId);
+      this.layers.push(symbolInstance.generateObject());
+      return;
+    }
+
     const group = new Group(size);
     group.name = element.className || element.tagName.toLowerCase();
 
@@ -115,7 +136,7 @@ export class ElementDrawer {
       element.children
       .reverse()
       .forEach((child: ITraversedDomElement | ITraversedDomTextNode | ITraversedDomSvgNode) => {
-        const childNode = new ElementDrawer(child);
+        const childNode = new ElementDrawer(child, this.drawnSymbols);
         if (childNode.layers.length) {
           group.layers.push(...childNode.layers);
         }

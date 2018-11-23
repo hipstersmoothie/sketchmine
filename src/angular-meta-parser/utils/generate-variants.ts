@@ -1,5 +1,5 @@
 import { AMP } from '../meta-information';
-import { camelCaseToKebabCase } from '@utils';
+import { kebabCase } from 'lodash';
 import { Property } from '../ast/json-visitor';
 import { generateVariantName } from './generate-variant-name';
 
@@ -23,7 +23,7 @@ export function generateVariants(component: string, variants: Property[]): AMP.V
         }];
 
         result.push({
-          name: generateVariantName(component, changes).replace('/default', ''),
+          name: generateVariantName(component, changes),
           changes,
         });
       }

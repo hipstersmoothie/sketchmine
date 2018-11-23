@@ -74,6 +74,9 @@ function sortSymbols(symbols: TraversedSymbol[]): SymbolsPage {
 
 export class Drawer {
 
+  /** Map of Symbols that are drawn with name and id */
+  drawnSymbols = new Map<string, string>();
+
   drawSymbols(library: TraversedLibrary): Page {
     const symbolsPage = sortSymbols(library.symbols as TraversedSymbol[]);
     const page = new Page(symbolsPage.size);
@@ -91,6 +94,7 @@ export class Drawer {
         symbolMaster.layers = this.drawElements(symbol.symbol);
       }
 
+      this.drawnSymbols.set(symbolMaster.name, symbolMaster.objectID);
       page.addLayer(symbolMaster.generateObject());
     }
     return page;
@@ -116,7 +120,7 @@ export class Drawer {
   }
 
   private drawElements(element: ITraversedDomElement) {
-    const node = new ElementDrawer(element);
+    const node = new ElementDrawer(element, this.drawnSymbols);
     return [...node.layers];
   }
 }
