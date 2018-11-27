@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import { getSymbolName } from '@angular-meta-parser/utils';
+import { getSymbolName } from '@sketchmine/code-analyzer';
 
 export function componentTransformer(context: ts.TransformationContext) {
   return (rootNode: ts.Node) => {

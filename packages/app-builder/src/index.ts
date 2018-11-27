@@ -1,7 +1,7 @@
 import { main } from './main';
 import { resolve } from 'path';
-import { AMP } from '../angular-meta-parser/meta-information';
-import { readFile } from '@utils';
+import { AMP } from '@sketchmine/code-analyzer';
+import { readFile } from '@sketchmine/helpers'
 import { parseCommandlineArgs } from './utils';
 
 export async function commandLineExecutor(): Promise<number> {

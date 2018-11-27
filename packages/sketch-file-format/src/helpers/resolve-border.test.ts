@@ -1,5 +1,5 @@
 // import { Style } from '../models/style';
-import { StyleDeclaration } from '../../../dom-traverser/dom-visitor';
+import { StyleDeclaration } from '@sketchmine/dom-agent';
 import { resolveBorder } from './resolve-border';
 
 describe('[sketch-generator] › add border to styles', () => {

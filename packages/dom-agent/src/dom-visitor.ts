@@ -1,4 +1,4 @@
-import { UUID } from '@sketch-draw/helpers/uuid';
+import { UUID } from '@sketchmine/sketch-file-format';
 import {
   ITraversedDomSvgNode,
   ITraversedDomImageNode,

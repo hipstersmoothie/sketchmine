@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import { getSymbolName, resolveModuleFilename } from '@angular-meta-parser/utils';
+import { getSymbolName, resolveModuleFilename } from '@sketchmine/code-analyzer';
 import { join, basename } from 'path';
 import { readFileSync } from 'fs';
 import { MemoryCompiler } from '../memory-compiler';

@@ -1,6 +1,6 @@
 import * as path from 'path';
-import { AMP } from '../angular-meta-parser/meta-information';
-import { readDirRecursively } from '@utils';
+import { AMP } from '@sketchmine/code-analyzer';
+import { readDirRecursively } from '@sketchmine/helpers';
 import { MemoryCompiler } from './memory-compiler';
 import { generateExample } from './generate-example';
 

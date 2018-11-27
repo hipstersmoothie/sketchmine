@@ -1,4 +1,5 @@
-import { generateSketchFile, readFile, zipToBuffer as unzip, Logger  } from '@sketchmine/helpers';
+import { readFile, zipToBuffer as unzip, Logger  } from '@sketchmine/helpers';
+import { generateSketchFile } from '@sketchmine/sketch-file-format';
 import * as path from 'path';
 import minimist from 'minimist';
 import { ColorReplacer } from './color-replacer';

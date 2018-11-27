@@ -1,10 +1,8 @@
-import { bytesToSize } from '@sketch-draw/helpers/util';
-import { createDir } from '@utils/create-dir';
-import { FileBuffer } from '@utils/zip-to-buffer';
+import { bytesToSize } from './util';
+import { createDir, FileBuffer, Logger } from '@sketchmine/helpers';
 import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
-import { Logger } from '@utils/logger';
 
 const archiver = require('archiver');
 const log = new Logger();

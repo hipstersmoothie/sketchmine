@@ -2,13 +2,13 @@ import { main } from './main';
 import { join } from 'path';
 import { readFile } from '@sketchmine/helpers';
 import { parseCommandlineArgs } from './utils';
-import minimist, { ParsedArgs } from 'minimist';
+import * as minimist from 'minimist';
 import { displayHelp } from './utils/display-help';
 
 const DEFAULT_CONFIG = join(__dirname, 'config.json');
 
 export async function commandLineExecutor(): Promise<number> {
-  const args: ParsedArgs = minimist(process.argv.slice(2));
+  const args: minimist.ParsedArgs = minimist(process.argv.slice(2));
   if (args.help || args.h) {
     displayHelp();
     return 0;

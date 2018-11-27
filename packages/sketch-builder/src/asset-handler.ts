@@ -1,8 +1,8 @@
-import { delDir, createDir } from '@utils';
-import * as fs from 'fs';
+import { delDir, createDir } from '@sketchmine/helpers';
+import { IAsset } from '@sketchmine/dom-agent';
 import * as path from 'path';
+import * as fs from 'fs';
 import axios from 'axios';
-import { IAsset } from '../../dom-traverser/traversed-dom';
 import chalk from 'chalk';
 
 export class AssetHandler {

@@ -28,8 +28,12 @@
     "build": "tsc",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
+  "dependencies": {
+    "@sketchmine/helpers": "^1.3.0",
+    "@sketchmine/sketch-validator": "^1.3.0"
+  },
   "peerDependencies": {
-    "@sketchmine/sketch-validator": "^1.3.0",
-    "@sketchmine/helpers": "^1.3.0"
+    "@sketchmine/helpers": "^1.3.0",
+    "@sketchmine/sketch-validator": "^1.3.0"
   }
 }

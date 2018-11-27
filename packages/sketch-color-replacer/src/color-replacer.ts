@@ -1,7 +1,6 @@
-import { ColorDefinition } from '@color-replacer/interfaces/color-definition.interface';
-import { rgbToHex } from '@utils';
-import { round, cssToRGBA } from '@sketch-draw/helpers/util';
-import { SketchColor, SketchBase } from '../sketch-generator/sketch-draw/interfaces';
+import { ColorDefinition } from './interfaces/color-definition.interface';
+import { rgbToHex } from '@sketchmine/helpers';
+import { round, cssToRGBA, SketchColor, SketchBase } from '@sketchmine/sketch-file-format';
 
 export class ColorReplacer {
   private _oldColors: string[];

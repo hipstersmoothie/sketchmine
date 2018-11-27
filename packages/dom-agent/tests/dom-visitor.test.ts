@@ -1,13 +1,13 @@
 import { JSDOM } from 'jsdom';
 import * as path from 'path';
 import { readFileSync } from 'fs';
-import { DomVisitor, StyleDeclaration } from './dom-visitor';
+import { DomVisitor, StyleDeclaration } from '../src/dom-visitor';
 import {
   ITraversedDomElement,
   ITraversedDomTextNode,
   ITraversedDomImageNode,
   ITraversedDomSvgNode,
-} from './traversed-dom';
+} from '../src/traversed-dom';
 
 const TEST_FILE = path.join(process.cwd(), 'tests', 'fixtures', 'test-page.html');
 const ROOT_ELEMENT = 'app-root';

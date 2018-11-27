@@ -1,5 +1,5 @@
 import { createBorder } from './create-border';
-import { StyleDeclaration } from '../../../dom-traverser/dom-visitor';
+import { StyleDeclaration } from '@sketchmine/dom-agent';
 import { IBounding } from '../interfaces';
 import { FillType } from './sketch-constants';
 

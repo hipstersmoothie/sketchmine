@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import { getSymbolName } from '@angular-meta-parser/utils';
+import { getSymbolName } from '@sketchmine/code-analyzer/src/utils';
 
 /**
  * Find all nodes from the AST in the subtree of node of SyntaxKind kind.

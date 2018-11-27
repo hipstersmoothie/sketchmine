@@ -3,6 +3,7 @@
 node_modules
 
 packages/*/lib
+packages/*/bin
 
 # generated files
 dt-asset-lib

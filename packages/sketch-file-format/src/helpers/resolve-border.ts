@@ -1,4 +1,4 @@
-import { StyleDeclaration } from '../../../dom-traverser/dom-visitor';
+import { StyleDeclaration } from '@sketchmine/dom-agent';
 
 export type BorderStyle  =
   'none' |

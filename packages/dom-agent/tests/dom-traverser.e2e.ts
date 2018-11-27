@@ -1,6 +1,6 @@
 import * as path from 'path';
 import puppeteer from 'puppeteer';
-import { ITraversedElement } from './traversed-dom';
+import { ITraversedElement } from '../src/traversed-dom';
 import { readFile } from '@sketchmine/helpers';
 
 const config = require(`${process.cwd()}/config/app.json`);

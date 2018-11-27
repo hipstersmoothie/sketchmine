@@ -1,5 +1,5 @@
 import { Border, resolveBorder } from './resolve-border';
-import { StyleDeclaration } from '../../../dom-traverser/dom-visitor';
+import { StyleDeclaration } from '@sketchmine/dom-agent';
 import { CurvePoint } from '../models/curve-point';
 import { CurvePointMode } from './sketch-constants';
 import { ShapePath } from '../models/shape-path';

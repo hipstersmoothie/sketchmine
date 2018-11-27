@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import { AMP } from '@angular-meta-parser/meta-information';
+import { AMP } from '@sketchmine/code-analyzer';
 import { componentTransformer, importTransformer } from './transformers';
 import { readFileSync } from 'fs';
 import { dirname } from 'path';

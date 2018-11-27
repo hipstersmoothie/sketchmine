@@ -28,7 +28,13 @@
     "build": "tsc",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
+  "dependencies": {
+    "@sketchmine/dom-agent": "^1.3.0",
+    "@sketchmine/helpers": "^1.3.0",
+    "archiver": "^2.1.1"
+  },
   "peerDependencies": {
-    "@sketchmine/dom-agent": "^1.3.0"
+    "@sketchmine/dom-agent": "^1.3.0",
+    "@sketchmine/helpers": "^1.3.0"
   }
 }
