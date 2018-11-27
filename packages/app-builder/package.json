@@ -1,14 +1,13 @@
 {
-  "name": "@sketchmine/sketch-file-format",
+  "name": "@sketchmine/app-builder",
   "version": "1.3.0",
-  "description": "Abstract layer on top of the sketch file format.",
-  "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
+  "description": "Generates the example library out of the angular components",
   "keywords": [
-    "sketch",
-    "file",
-    "format",
+    "angular",
+    "angular-components",
     "dynatrace"
   ],
+  "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
   "homepage": "",
   "license": "",
   "main": "lib/index.js",
@@ -22,13 +21,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/sketch-file-format"
+    "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/app-builder"
   },
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "typescript": "^2.9.2"
+  },
   "peerDependencies": {
-    "@sketchmine/dom-agent": "^1.3.0"
+    "@sketchmine/helpers": "^1.3.0"
   }
 }

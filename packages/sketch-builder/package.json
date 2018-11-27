@@ -1,14 +1,14 @@
 {
-  "name": "@sketchmine/sketch-file-format",
+  "name": "@sketchmine/sketch-builder",
   "version": "1.3.0",
-  "description": "Abstract layer on top of the sketch file format.",
-  "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
+  "description": "Injects the dom-agent to fetch the properties of a webpage and generates a .sketch file out of the webpage.",
   "keywords": [
     "sketch",
-    "file",
-    "format",
+    "web2sketch",
+    "html2sketch",
     "dynatrace"
   ],
+  "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
   "homepage": "",
   "license": "",
   "main": "lib/index.js",
@@ -22,13 +22,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/sketch-file-format"
+    "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/sketch-builder"
   },
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "peerDependencies": {
+    "@sketchmine/sketch-file-format": "^1.3.0",
     "@sketchmine/dom-agent": "^1.3.0"
   }
 }

@@ -1,0 +1,27 @@
+{
+  "name": "@sketchmine/library",
+  "version": "1.3.0",
+  "description": "Generates the whole dynatrace sketch library.",
+  "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
+  "homepage": "",
+  "license": "",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/library"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error no tests specified\" && exit 1"
+  },
+  "peerDependencies": {
+    "@sketchmine/app-builder": "^1.3.0",
+    "@sketchmine/code-analyzer": "^1.3.0",
+    "@sketchmine/helpers": "^1.3.0",
+    "@sketchmine/sketch-builder": "^1.3.0"
+  }
+}

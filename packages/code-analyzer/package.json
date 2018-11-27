@@ -1,0 +1,38 @@
+{
+  "name": "@sketchmine/code-analyzer",
+  "version": "1.3.0",
+  "description": "Pulls out the information from a source code and provides an abstract representation in JSON format about the code.",
+  "keywords": [
+    "angular",
+    "angular-components",
+    "dynatrace"
+  ],
+  "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
+  "homepage": "",
+  "license": "",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/code-analyzer"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "minimatch": "^3.0.4",
+    "typescript": "^2.9.2"
+  },
+  "peerDependencies": {
+    "@sketchmine/helpers": "^1.3.0"
+  }
+}
