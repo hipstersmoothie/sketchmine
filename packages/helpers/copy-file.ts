@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import chalk from 'chalk';
-import { createDir } from '@utils/create-dir';
+import { createDir } from './create-dir';
 
 /**
  * Copy file from one destination to another destination

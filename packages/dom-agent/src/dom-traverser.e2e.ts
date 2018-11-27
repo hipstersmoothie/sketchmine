@@ -1,7 +1,7 @@
 import * as path from 'path';
 import puppeteer from 'puppeteer';
 import { ITraversedElement } from './traversed-dom';
-import { readFile } from '@utils';
+import { readFile } from '@sketchmine/helpers';
 
 const config = require(`${process.cwd()}/config/app.json`);
 const TEST_FILE = `file:${path.join(process.cwd(), 'tests', 'fixtures', 'tile-default.html')}`;

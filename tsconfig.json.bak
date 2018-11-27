@@ -1,0 +1,41 @@
+
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "baseUrl": "src",
+    "forceConsistentCasingInFileNames": true,
+    "lib": [ "es2015", "es2016", "es2017", "dom" ], // we need dom for the traverser in the headless chrome (pupeteer)
+    "noImplicitAny": false,
+    "noUnusedParameters": false,
+    "moduleResolution": "node",
+    "outDir": "dist/lib",
+    "esModuleInterop": true,
+    "paths": {
+      "@angular-meta-parser/*": ["angular-meta-parser/*"],
+      "@angular-meta-parser": ["angular-meta-parser/index"],
+      "@sketch-draw/*": ["sketch-generator/sketch-draw/*"],
+      "@sketch-draw": ["sketch-generator/sketch-draw/index"],
+      "@sketch-svg-parser/*": ["sketch-generator/sketch-svg-parser/*"],
+      "@color-replacer/*": ["color-replacer/*"],
+      "@utils/*": ["utils/*"],
+      "@utils": ["utils/index"]
+    },
+    "sourceMap": true,
+    "target": "es2017",
+    "types": [ "jest" ],
+    "typeRoots": [
+      "src/**/*.d.ts"
+    ]
+  },
+  "include": [
+    "tests/**/*.test.ts",
+    "src/**/*.ts",
+  ],
+  "exclude": [
+    "node_modules/",
+    "src/angular-library-generator/_tmp",
+    "src/angular-meta-parser/_tmp",
+    "tests/fixtures"
+  ],
+}
