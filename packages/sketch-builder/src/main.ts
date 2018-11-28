@@ -1,9 +1,9 @@
 import { ElementFetcher } from './element-fetcher';
-import { SketchGenerator } from './sketch-generator';
+import { SketchBuilderConfig } from './config.interface';
 import { exec } from 'child_process';
-import { AMP } from '../angular-meta-parser/meta-information';
+import { Result as MetaResult } from '@sketchmine/code-analyzer';
 
-export async function main(config: SketchGenerator.Config, meta?: AMP.Result): Promise<number> {
+export async function main(config: SketchBuilderConfig, meta?: MetaResult): Promise<number> {
   /** close sketch */
   if (process.env.SKETCH === 'open-close') {
     exec(`osascript -e 'quit app "Sketch"'`);

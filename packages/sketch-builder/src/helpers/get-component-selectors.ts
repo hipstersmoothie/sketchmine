@@ -1,6 +1,6 @@
-import { AMP } from '@sketchmine/code-analyzer';
+import { Result as MetaResult } from '@sketchmine/code-analyzer';
 
-export function getComponentSelectors(meta: AMP.Result): string[] {
+export function getComponentSelectors(meta: MetaResult): string[] {
   const selectors = [];
 
   if (!meta) {

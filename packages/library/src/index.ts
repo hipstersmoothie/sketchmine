@@ -1,4 +1,4 @@
-import { main as AngularMetaParser, AMP } from '@sketchmine/code-analyzer';
+import { main as AngularMetaParser, Result as MetaResult } from '@sketchmine/code-analyzer';
 import { main as AngularLibraryGenerator } from '@sketchmine/app-builder';
 import { main as SketchGenerator } from '@sketchmine/sketch-builder';
 import { writeJSON, Logger } from '@sketchmine/helpers';
@@ -41,7 +41,7 @@ export default async function main() {
     'meta-information.json',
     'index.ts',
     true,
-  ) as AMP.Result;
+  ) as MetaResult;
 
   log.info(chalk`{blue ==>} generating the angular app from the meta-information\n\n`);
   await AngularLibraryGenerator(meta, '_tmp/src/docs/components', 'dist/sketch-library');

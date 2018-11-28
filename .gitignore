@@ -21,7 +21,7 @@ out-tsc
 .env
 
 # IDEs and editors
-/.idea
+.idea
 .project
 .classpath
 .c9/
@@ -37,10 +37,10 @@ out-tsc
 !.vscode/extensions.json
 
 # misc
-/.rpt2_cache
-/.sass-cache
-/connect.lock
-/coverage
+.rpt2_cache
+.sass-cache
+connect.lock
+coverage
 
 # debug logs
 lerna-debug.log

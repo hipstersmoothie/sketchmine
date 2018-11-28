@@ -6,6 +6,7 @@ export * from './del-folder';
 export * from './read-file';
 export * from './rgb-to-hex';
 export * from './is-file';
+export * from './uuid';
 export * from './write-file';
 export * from './write-json';
 export * from './zip-to-buffer';

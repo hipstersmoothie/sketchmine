@@ -1,4 +1,5 @@
-import { UUID, resolveTransform } from '../helpers';
+import { UUID } from '@sketchmine/helpers'
+import { resolveTransform } from '../helpers';
 import {
   IBounding,
   SketchFrame,

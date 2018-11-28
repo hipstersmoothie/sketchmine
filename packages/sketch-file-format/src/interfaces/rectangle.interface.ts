@@ -1,4 +1,4 @@
-import { SketchShapePath } from '@sketch-draw/interfaces/shape-path.interface';
+import { SketchShapePath } from './shape-path.interface';
 
 export interface SketchRectangle extends SketchShapePath {
   fixedRadius: number;

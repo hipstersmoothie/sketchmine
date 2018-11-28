@@ -1,5 +1,5 @@
 import { DomVisitor } from './dom-visitor';
-import { ITraversedElement, ITraversedDomElement } from './traversed-dom';
+import { ITraversedElement, ITraversedDomElement } from './typings';
 
 export enum NodeType {
   Text = 'Text',

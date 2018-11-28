@@ -1,5 +1,5 @@
 import { JSONVisitor, ParseResult } from './ast';
-import { AMP } from './meta-information';
+import * as AMP from './meta-information';
 
 /**
  * Uses the transformed AST and represent it in our final JSON format

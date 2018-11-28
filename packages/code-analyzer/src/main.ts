@@ -6,7 +6,7 @@ import { writeJSON } from '@sketchmine/helpers';
 import { ValuesResolver } from './values-resolver';
 import { parseFile } from './parse-file';
 import { renderASTtoJSON } from './render-ast-to-json';
-import { AMP } from './meta-information';
+import * as AMP from './meta-information';
 /**
  * The Main function that takes command line args build the AST and transforms the AST,
  * generate a JSON representation from it and write it to the outFile.
@@ -42,10 +42,10 @@ export async function main(
     new ValuesResolver(),
   ];
   /** applies the transformers on the AST */
-  for (const transfomer of transformers) {
+  for (const transformer of transformers) {
     const transformedResults = new Map<string, ParseResult>();
     parseResults.forEach((result, fileName) => {
-      transformedResults.set(fileName, result.visit(transfomer));
+      transformedResults.set(fileName, result.visit(transformer));
     });
     parseResults = transformedResults;
   }

@@ -1,12 +1,10 @@
-import chalk from 'chalk';
+import { SketchFill, SketchBorder, round } from '@sketchmine/sketch-file-format';
+import { Logger, rgbToHex } from '@sketchmine/helpers';
 import { ValidationError, ColorNotInPaletteError } from '../../error/validation-error';
-import { round } from '@sketch-draw/helpers/util';
-import { rgbToHex } from '@utils/rgb-to-hex';
-import { Logger } from '@utils/logger';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
-import { SketchFill, SketchBorder } from '@sketch-draw/interfaces';
 import { generateMasterColors } from './generate-master-colors';
 import { COLOR_ERROR_MESSAGE } from '../../error/error-messages';
+import chalk from 'chalk';
 
 const log = new Logger();
 

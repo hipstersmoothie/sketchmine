@@ -25,7 +25,8 @@
     "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/sketch-file-format"
   },
   "scripts": {
-    "build": "tsc",
+    "clean": "rm -rf lib",
+    "build": " npm run clean && tsc",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {

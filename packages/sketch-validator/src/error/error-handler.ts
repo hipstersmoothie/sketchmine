@@ -1,6 +1,6 @@
 import { ValidationError, ColorNotInPaletteError, FileNameError } from './validation-error';
 import chalk from 'chalk';
-import { IErrorHandler } from '../interfaces/error-handler.interface';
+import { RulesStack, Rule } from '../interfaces/error-handler.interface';
 import { IValidationRule } from '../interfaces/validation-rule.interface';
 import { Logger } from '@sketchmine/helpers';
 
@@ -9,7 +9,7 @@ const log = new Logger();
 export class ErrorHandler {
 
   private static instance: ErrorHandler;
-  private _rulesStack: IErrorHandler.RulesStack = {};
+  private _rulesStack: RulesStack = {};
   private _colors: Set<string> = new Set();
 
   // Singelton pattern Constructor returning instance if it exists
@@ -104,7 +104,7 @@ export class ErrorHandler {
    * @param element The Error
    * @param type Type as number { 0 = success, 1 = warning, 2 = error }
    */
-  printErrorStatus(element: IErrorHandler.Rule, rule: string, type: number): string {
+  printErrorStatus(element: Rule, rule: string, type: number): string {
     switch (type) {
       case 0:
         return chalk`\n\n{green ✅\t${rule}} {grey — passed ${element.succeeding.toString()} times.}`;

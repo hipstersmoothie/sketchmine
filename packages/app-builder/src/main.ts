@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { AMP } from '@sketchmine/code-analyzer';
+import { Result as MetaResult } from '@sketchmine/code-analyzer';
 import { readDirRecursively } from '@sketchmine/helpers';
 import { MemoryCompiler } from './memory-compiler';
 import { generateExample } from './generate-example';
@@ -10,7 +10,7 @@ import { generateExample } from './generate-example';
  * @param dir path to the pure examples
  * @param appShell path to the angular app alias appshell that should be modified
  */
-export async function main(meta: AMP.Result, dir: string, appShell: string): Promise<number> {
+export async function main(meta: MetaResult, dir: string, appShell: string): Promise<number> {
   /** RegEx for detecting the pure default examples */
   const files = await readDirRecursively(dir, /.*?examples\/.*?pure-example.*?\.ts$/);
   const compiler = new MemoryCompiler();

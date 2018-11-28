@@ -1,13 +1,11 @@
+import { SketchFill, round } from '@sketchmine/sketch-file-format';
+import { rgbToHex, readFile } from '@sketchmine/helpers';
 import { generateMasterColors } from './generate-master-colors';
 import { ColorNotInPaletteError } from '../../error/validation-error';
 import { colorInPalette } from './color-validation';
-import { SketchFill } from '@sketch-draw/interfaces';
-import { round } from '@sketch-draw/helpers/util';
-import chalk from 'chalk';
 import { resolve } from 'path';
-import { rgbToHex } from '@utils/rgb-to-hex';
-import { readFile } from '../../../utils';
 import { DYNATRACE_LOGO_COLORS } from '../../config';
+import chalk from 'chalk';
 
 const COLORS_FILE = resolve('_tmp/src/lib/core/style/_colors.scss');
 /**

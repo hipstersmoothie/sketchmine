@@ -1,6 +1,7 @@
+import { UUID } from '@sketchmine/helpers'
 import { Base } from './base';
 import { SketchObjectTypes, SketchGroup, SketchBase, IBounding } from '../interfaces';
-import { BooleanOperation, UUID } from '../helpers';
+import { BooleanOperation } from '../helpers';
 import { Style } from './style';
 
 export class Group extends Base {

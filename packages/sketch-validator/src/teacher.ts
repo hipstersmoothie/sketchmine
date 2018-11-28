@@ -1,10 +1,7 @@
+import { SketchObjectTypes } from '@sketchmine/sketch-file-format';
 import { IValidationContext, IValidationRule } from './interfaces/validation-rule.interface';
 import { ErrorHandler } from './error/error-handler';
 import { ValidationError } from './error/validation-error';
-import { Logger } from '@utils/logger';
-import { SketchObjectTypes } from '@sketch-draw/interfaces';
-
-const log = new Logger();
 
 /**
  * The teacher that applies the rules to the homeworks.

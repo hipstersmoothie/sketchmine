@@ -1,0 +1,48 @@
+{
+  "name": "@sketchmine/sketch-svg-parser",
+  "version": "1.3.0",
+  "description": "Parse svg to sketch shapes with points",
+  "keywords": [
+    "sketch",
+    "svg",
+    "svg2points",
+    "dynatrace"
+  ],
+  "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
+  "homepage": "",
+  "license": "",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/sketch-svg-parser"
+  },
+  "scripts": {
+    "clean": " rm -rf lib",
+    "build": "npm run clean && tsc",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "peerDependencies": {
+    "@sketchmine/dom-agent": "^1.3.0",
+    "@sketchmine/helpers": "^1.3.0",
+    "@sketchmine/sketch-file-format": "^1.3.0"
+  },
+  "devDependencies": {
+    "@types/xmldom": "^0.1.29"
+  },
+  "dependencies": {
+    "@sketchmine/dom-agent": "^1.3.0",
+    "@sketchmine/helpers": "^1.3.0",
+    "@sketchmine/sketch-file-format": "^1.3.0",
+    "svg-arc-to-cubic-bezier": "^3.1.0",
+    "svg-path-parser": "^1.1.0",
+    "xmldom": "^0.1.27"
+  }
+}

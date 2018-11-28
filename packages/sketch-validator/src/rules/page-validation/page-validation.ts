@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { ValidationError, PageNamingError } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
-import { Logger } from '@utils/logger';
+import { Logger } from '@sketchmine/helpers';
 import { PAGE_NAME_ERROR_MESSAGE } from '../../error/error-messages';
 
 const log = new Logger();

@@ -1,10 +1,10 @@
-import { UUID } from '@sketchmine/sketch-file-format';
+import { UUID } from '@sketchmine/helpers';
 import {
   ITraversedDomSvgNode,
   ITraversedDomImageNode,
   ITraversedDomTextNode,
   ITraversedDomElement,
-} from './traversed-dom';
+} from './typings';
 
 /**
  * The property keys that are used to identify if the element

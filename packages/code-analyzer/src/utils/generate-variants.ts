@@ -1,5 +1,4 @@
-import { AMP } from '../meta-information';
-import { kebabCase } from 'lodash';
+import * as AMP from '../meta-information';
 import { Property } from '../ast/json-visitor';
 import { generateVariantName } from './generate-variant-name';
 

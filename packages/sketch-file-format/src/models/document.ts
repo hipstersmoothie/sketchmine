@@ -1,6 +1,6 @@
-import { UUID } from '@sketch-draw/helpers/uuid';
-import { SketchDocument, SketchDocumentAssets, SketchDocumentPage } from '@sketch-draw/interfaces';
-import { Page } from '@sketch-draw/models/page';
+import { UUID } from '@sketchmine/helpers'
+import { SketchDocument, SketchDocumentAssets, SketchDocumentPage } from '../interfaces';
+import { Page } from './page';
 
 export class Document {
   private static _instance: Document;

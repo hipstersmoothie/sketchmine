@@ -1,5 +1,5 @@
-import { Base } from '@sketch-draw/models/base';
-import { SketchBase, SketchColor, IBounding, SketchObjectTypes, SketchSymbolMaster } from '@sketch-draw/interfaces';
+import { Base } from './base';
+import { SketchBase, IBounding, SketchObjectTypes, SketchSymbolMaster } from '../interfaces';
 import { Style } from './style';
 import { addBackgroundColor } from './artboard';
 

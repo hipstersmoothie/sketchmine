@@ -1,29 +1,29 @@
-import { Group } from './sketch-draw/models/group';
-import { boundingClientRectToBounding, calcPadding } from './sketch-draw/helpers/util';
 import {
-  SketchRectangle,
-  SketchGroup,
+  Bitmap,
+  boundingClientRectToBounding,
+  calcPadding,
+  Group,
   IBounding,
-  SketchShapePath,
   SketchBitmap,
-  SketchText,
+  SketchGroup,
+  SketchRectangle,
   SketchShapeGroup,
+  SketchShapePath,
   SketchSymbolInstance,
-} from './sketch-draw/interfaces';
+  SketchText,
+  SymbolInstance,
+  Text,
+} from '@sketchmine/sketch-file-format';
 import {
   ITraversedDomElement,
-  ITraversedDomTextNode,
-  ITraversedDomSvgNode,
   ITraversedDomImageNode,
-} from '../dom-traverser/traversed-dom';
-import { Text } from './sketch-draw/models/text';
+  ITraversedDomSvgNode,
+  ITraversedDomTextNode,
+} from '@sketchmine/dom-agent';
 import chalk from 'chalk';
-import { SvgParser } from '@sketch-svg-parser/svg-parser';
-import { SvgToSketch } from '@sketch-svg-parser/svg-to-sketch';
-import { Bitmap } from './sketch-draw/models/bitmap';
-import { Logger } from '@utils';
+import { SvgParser, SvgToSketch } from '@sketchmine/sketch-svg-parser';
+import { Logger } from '@sketchmine/helpers';
 import { ElementStyle } from './element-style';
-import { SymbolInstance } from './sketch-draw/models/symbol-instance';
 
 const log = new Logger();
 

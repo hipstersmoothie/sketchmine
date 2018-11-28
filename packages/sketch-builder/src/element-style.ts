@@ -1,11 +1,16 @@
-import { ITraversedDomElement } from '../dom-traverser/traversed-dom';
-import { StyleDeclaration } from '../dom-traverser/dom-visitor';
-import { IBounding, SketchRectangle, SketchShapeGroup, SketchShapePath } from './sketch-draw/interfaces';
-import { resolveBorder, Border } from './sketch-draw/helpers';
-import { Rectangle } from './sketch-draw/models/rectangle';
-import { Style } from './sketch-draw/models/style';
-import { createBorder } from './sketch-draw/helpers/create-border';
-import { ShapeGroup } from './sketch-draw/models/shape-group';
+import { ITraversedDomElement, StyleDeclaration } from '@sketchmine/dom-agent';
+import {
+  Border,
+  createBorder,
+  IBounding,
+  Rectangle,
+  resolveBorder,
+  ShapeGroup,
+  SketchRectangle,
+  SketchShapeGroup,
+  SketchShapePath,
+  Style,
+} from '@sketchmine/sketch-file-format';
 
 export type ElementStyleObjects = SketchShapePath | SketchRectangle | SketchShapeGroup;
 

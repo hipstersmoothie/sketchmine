@@ -1,4 +1,5 @@
-import { copyFile, createDir, delDir, generateSketchFile, writeJSON } from '@sketchmine/helpers';
+import { copyFile, createDir, delDir, writeJSON } from '@sketchmine/helpers';
+import { generateSketchFile } from './helpers';
 import { Document } from './models/document';
 import { Meta } from './models/meta';
 import { Page } from './models/page';

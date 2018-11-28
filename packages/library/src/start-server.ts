@@ -3,10 +3,10 @@ import chalk from 'chalk';
 import * as path from 'path';
 import { Logger } from '@sketchmine/helpers';
 import axios from 'axios';
-import { SketchGenerator } from '@sketchmine/sketch-builder';
+import { SketchBuilderConfig } from '@sketchmine/sketch-builder';
 const log = new Logger();
 
-export function startServer(config: SketchGenerator.Config): Promise<ChildProcess> {
+export function startServer(config: SketchBuilderConfig): Promise<ChildProcess> {
   log.notice('\n\n');
   log.notice(chalk`{cyan start angular app:}{grey ...}\n`, '⚒');
   const url = new URL(`${config.host.protocol}://${config.host.name}:${config.host.port}`);

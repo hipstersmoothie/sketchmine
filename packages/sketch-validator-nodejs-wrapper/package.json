@@ -35,5 +35,8 @@
   "peerDependencies": {
     "@sketchmine/helpers": "^1.3.0",
     "@sketchmine/sketch-validator": "^1.3.0"
+  },
+  "bin": {
+    "skm-sketch-validation": "./lib/bin.js"
   }
 }

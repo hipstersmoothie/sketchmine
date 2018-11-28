@@ -1,4 +1,4 @@
-import { SketchObjectTypes } from '@sketch-draw/interfaces';
+import { SketchObjectTypes } from '@sketchmine/sketch-file-format';
 import { IValidationRule, ValidationRequirements } from './interfaces/validation-rule.interface';
 import { artboardValidation } from './rules/artboard-validation';
 import { colorValidation } from './rules/color-validation';

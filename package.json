@@ -8,7 +8,13 @@
     "build:code-analyzer": "npm run build --prefix packages/code-analyzer",
     "build:dom-agent": "npm run build --prefix packages/dom-agent",
     "build:helpers": "npm run build --prefix packages/helpers",
-    "build:library": "npm run build --prefix packages/library"
+    "build:library": "npm run build --prefix packages/library",
+    "build:sketch-builder": "npm run build --prefix packages/sketch-builder",
+    "build:sketch-color-replacer": "npm run build --prefix packages/sketch-color-replacer",
+    "build:sketch-file-format": "npm run build --prefix packages/sketch-file-format",
+    "build:sketch-svg-parser": "npm run build --prefix packages/sketch-svg-parser",
+    "build:sketch-validator": "npm run build --prefix packages/sketch-validator",
+    "build:sketch-validator-nodejs-wrapper": "npm run build --prefix packages/sketch-validator-nodejs-wrapper"
   },
   "dependencies": {
     "chalk": "^2.4.1",

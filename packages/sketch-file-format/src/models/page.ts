@@ -1,5 +1,5 @@
-import { Base } from '@sketch-draw/models/base';
-import { IBounding, SketchBase, SketchPage, SketchObjectTypes } from '@sketch-draw/interfaces';
+import { Base } from './base';
+import { IBounding, SketchBase, SketchPage, SketchObjectTypes } from '../interfaces';
 import { Style } from './style';
 
 export class Page extends Base {

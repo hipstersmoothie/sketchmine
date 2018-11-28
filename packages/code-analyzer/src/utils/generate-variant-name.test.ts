@@ -1,5 +1,5 @@
 import { generateVariantName } from './generate-variant-name';
-import { AMP } from '../meta-information';
+import * as AMP from '../meta-information';
 
 type Porperty = AMP.VariantMethod | AMP.VariantProperty;
 

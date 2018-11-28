@@ -1,6 +1,6 @@
 import { SketchBase, IBounding, SketchObjectTypes, SketchShapeGroup } from '../interfaces';
 import { Base } from './base';
-import { Logger } from '../../../utils';
+import { Logger } from '@sketchmine/helpers';
 
 const log = new Logger();
 

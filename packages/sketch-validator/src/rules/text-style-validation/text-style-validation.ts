@@ -1,7 +1,5 @@
-import { SketchAttribute } from '@sketch-draw/interfaces';
-import { round } from '@sketch-draw/helpers/util';
-import { Logger } from '@utils/logger';
-import { rgbToHex } from '@utils/rgb-to-hex';
+import { SketchAttribute, round } from '@sketchmine/sketch-file-format';
+import { Logger, rgbToHex } from '@sketchmine/helpers'
 import chalk from 'chalk';
 import {
   NO_FOREIGN_TEXT_STYLES_ERROR_MESSAGE,
@@ -25,7 +23,7 @@ import {
   WrongFontError,
 } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'lodash';
 
 const log = new Logger();
 

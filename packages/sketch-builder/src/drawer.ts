@@ -1,10 +1,19 @@
-import { Page, Artboard, boundingClientRectToBounding } from '@sketchmine/sketch-file-format';
-import { IBounding } from './sketch-draw/interfaces';
-import { SymbolMaster } from './sketch-draw/models/symbol-master';
-import { ITraversedDomElement, TraversedLibrary, TraversedSymbol, TraversedPage } from '@sketchmine/dom-agent';
+import {
+  Artboard,
+  boundingClientRectToBounding,
+  IBounding,
+  Page,
+  SymbolMaster,
+} from '@sketchmine/sketch-file-format';
+import {
+  ITraversedDomElement,
+  TraversedLibrary,
+  TraversedPage,
+  TraversedSymbol,
+} from '@sketchmine/dom-agent';
+import { Logger } from '@sketchmine/helpers';
 import { ElementDrawer } from './element-drawer';
 import chalk from 'chalk';
-import { Logger } from '@sketchmine/helpers';
 
 const log = new Logger();
 const SYMBOL_ARTBOARD_MARGIN: number = 40;

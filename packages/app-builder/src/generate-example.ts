@@ -1,10 +1,10 @@
 import * as ts from 'typescript';
-import { AMP } from '@sketchmine/code-analyzer';
+import { Component as MetaComponent } from '@sketchmine/code-analyzer';
 import { componentTransformer, importTransformer } from './transformers';
 import { readFileSync } from 'fs';
 import { dirname } from 'path';
 
-export function generateExample(file: string, component: AMP.Component): ts.SourceFile {
+export function generateExample(file: string, component: MetaComponent): ts.SourceFile {
   const source = readFileSync(file, { encoding: 'utf8' }).toString();
   const sourceFile = ts.createSourceFile(
     `./examples/${component.component}.component.ts`,

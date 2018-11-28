@@ -1,5 +1,5 @@
 import { ValidationError } from '../error/validation-error';
-import { SketchStyle, SketchFrame, SketchObjectTypes, SketchBase, SketchAttribute } from '@sketch-draw/interfaces';
+import { SketchStyle, SketchFrame, SketchObjectTypes } from '@sketchmine/sketch-file-format';
 
 export type ValidationFunction = (homework: IValidationContext[], currentTask: number) => (ValidationError | boolean)[];
 

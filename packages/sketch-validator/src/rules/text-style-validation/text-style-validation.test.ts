@@ -1,5 +1,5 @@
-import { SketchBase } from '@sketch-draw/interfaces';
-import { readFile } from '@utils';
+import { SketchBase } from '@sketchmine/sketch-file-format';
+import { readFile } from '@sketchmine/helpers';
 import {
   NoForeignTextStylesError,
   NoSharedTextStylesError,
@@ -8,7 +8,7 @@ import {
   InvalidTextColorError,
   TextTooSmallError,
 } from '../../error/validation-error';
-import { getFakeHomeworks } from '../../../../tests/fixtures/fake-homeworks';
+import { getFakeHomeworks } from '../../../tests/fixtures/fake-homeworks';
 import { textStyleValidation } from './text-style-validation';
 
 describe('[sketch-validator] › Text Style Validation › Tests usage of text styles defined in global library.', () => {

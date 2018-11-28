@@ -10,8 +10,8 @@
   "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
   "homepage": "",
   "license": "",
-  "main": "lib/main.js",
-  "typings": "lib/main.d.ts",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "tests"
@@ -24,9 +24,8 @@
     "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/code-analyzer"
   },
   "scripts": {
-    "build": "npm run build:lib && npm run build:bin",
-    "build:lib": "rm -rf lib && tsc",
-    "build:bin": "rm -rf bin && tsc --project ./tsconfig.bin.json",
+    "clean": " rm -rf lib",
+    "build": "npm run clean && tsc",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
@@ -39,6 +38,6 @@
     "@sketchmine/helpers": "^1.3.0"
   },
   "bin": {
-    "code-analyzer": "./bin/bin.js"
+    "skm-code-analyzer": "./lib/bin.js"
   }
 }

@@ -1,20 +1,21 @@
 import * as path from 'path';
 import chalk from 'chalk';
 import puppeteer from 'puppeteer';
-import { Sketch } from '@sketch-draw/sketch';
+import { Sketch } from '@sketchmine/sketch-file-format';
 import { Drawer } from './drawer';
 import {
   ITraversedElement,
   TraversedLibrary,
   TraversedPage,
   TraversedSymbol,
-} from '../dom-traverser/traversed-dom';
+} from '@sketchmine/dom-agent';
 import { exec } from 'child_process';
-import { SketchGenerator } from './sketch-generator';
-import { readFile, Logger } from '@utils';
-import { sketchGeneratorApi } from './sketch-generator-api';
-import { AMP } from '../angular-meta-parser/meta-information';
+import { SketchBuilderConfig } from './config.interface';
+import { readFile, Logger } from '@sketchmine/helpers';
+import { sketchGeneratorApi } from './builder-api';
+import { Result as MetaResult, Component as MetaComponent } from '@sketchmine/code-analyzer';
 
+declare var window: any;
 const log = new Logger();
 const config = require(`${process.cwd()}/config/app.json`);
 const TRAVERSER = path.join(process.cwd(), config.sketchGenerator.traverser);
@@ -29,7 +30,7 @@ export class ElementFetcher {
   // private _assetHsandler: AssetHandler = new AssetHandler();
   result: (TraversedPage | TraversedLibrary)[] = [];
 
-  constructor(public conf: SketchGenerator.Config, public meta?: AMP.Result) { }
+  constructor(public conf: SketchBuilderConfig, public meta?: MetaResult) { }
 
   async generateSketchFile(): Promise<number> {
     this.sortSymbols();
@@ -113,7 +114,7 @@ export class ElementFetcher {
       comp.hasNestedSymbols.forEach((symbol) => {
         // TODO: @lukas.holzer make this more efficient
         const comp = Object.values(this.meta.components)
-          .find((comp: AMP.Component) => comp.selector.includes(symbol));
+          .find((comp: MetaComponent) => comp.selector.includes(symbol));
         const pos = sorted.indexOf(comp.component);
 
         // if nested component is not in the order list

@@ -1,5 +1,5 @@
 import { Property } from '../ast/json-visitor';
-import { AMP } from '../meta-information';
+import * as AMP from '../meta-information';
 import { generateVariantName } from './generate-variant-name';
 
 /**
