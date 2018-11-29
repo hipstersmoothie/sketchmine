@@ -10,9 +10,9 @@ export interface InjectedWindow extends Window {
   sketchGenerator: SketchGenerator;
   page?: TraversedPage;
   library?: TraversedLibrary;
-  AssetHelper: AssetHelper,
-  DomTraverser: DomTraverser,
-  DomVisitor: DomVisitor,
+  AssetHelper: AssetHelper;
+  DomTraverser: DomTraverser;
+  DomVisitor: DomVisitor;
   _handleClick: (fn: (...args: any[]) => void, ...args: any[]) => Promise<{}>;
   _handleHover: (fn: (...args: any[]) => void, ...args: any[]) => Promise<{}>;
   _handleFocus: (fn: (...args: any[]) => void, ...args: any[]) => Promise<{}>;

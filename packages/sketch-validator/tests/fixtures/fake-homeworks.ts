@@ -1,5 +1,5 @@
-import { SketchObjectTypes, SketchStyle } from '@sketch-draw/interfaces';
-import { IValidationContextParents, IValidationContext } from 'validate/interfaces/validation-rule.interface';
+import { SketchObjectTypes, SketchStyle } from '@sketchmine/sketch-file-format';
+import { IValidationContextParents, IValidationContext } from '../../src/interfaces';
 
 const artboardSizes: String[] = [
   '360',

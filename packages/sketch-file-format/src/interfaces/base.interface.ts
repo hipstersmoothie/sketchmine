@@ -1,6 +1,5 @@
 import { SketchStyle } from './style.interface';
 import { SketchForeignTextStyles } from './text-style.interface';
-import { SketchAttributedString } from './text.interface';
 
 export enum SketchObjectTypes {
   Artboard = 'artboard',

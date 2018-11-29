@@ -4,6 +4,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import json from 'rollup-plugin-json'
 import pkg from './package.json';
 
+const NODE_NATIVES = ['path', 'fs', 'os', 'buffer', 'crypto', 'util', 'child_process', 'perf_hooks'];
 const DEPENDENCIES = Object.keys(pkg.dependencies);
 
 export default [
@@ -27,13 +28,13 @@ export default [
       },
     ],
     external: [
-      ...DEPENDENCIES,
+      ...NODE_NATIVES,
     ],
     plugins: [
       json(),
       typescript({ tsconfig: './tsconfig.json', useTsconfigDeclarationDir: true, }),
+      commonjs(), // so Rollup can convert `ms` to an ES module
       resolve(), // so Rollup can find `ms`
-      commonjs() // so Rollup can convert `ms` to an ES module
     ]
   },
 	// {

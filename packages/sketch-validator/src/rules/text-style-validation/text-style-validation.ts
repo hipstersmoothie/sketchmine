@@ -1,5 +1,5 @@
 import { SketchAttribute, round } from '@sketchmine/sketch-file-format';
-import { Logger, rgbToHex } from '@sketchmine/helpers'
+import { Logger, rgbToHex } from '@sketchmine/helpers';
 import chalk from 'chalk';
 import {
   NO_FOREIGN_TEXT_STYLES_ERROR_MESSAGE,

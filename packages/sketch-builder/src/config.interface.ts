@@ -30,4 +30,3 @@ export interface DefaultViewport {
 export interface Chrome {
   defaultViewport: DefaultViewport;
 }
-

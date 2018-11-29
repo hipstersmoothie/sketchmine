@@ -1,5 +1,5 @@
 import { lstatSync } from 'fs';
-import { resolve, join } from 'path';
+import { resolve } from 'path';
 import { Validator, ErrorHandler, filenameValidation, IValidationRule } from '@sketchmine/sketch-validator';
 import { zipToBuffer as unzip, Logger, readFile } from '@sketchmine/helpers';
 import chalk from 'chalk';

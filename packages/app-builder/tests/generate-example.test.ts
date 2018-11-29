@@ -1,8 +1,8 @@
 import * as ts from 'typescript';
 import { generateExample } from '../src/generate-example';
-import { join } from 'path';
+import { resolve } from 'path';
 
-const FILE = join(process.cwd(), 'tests', 'fixtures', 'button.pure.example.ts');
+const FILE = resolve('tests', 'fixtures', 'button.pure.example.ts');
 
 test('remove OriginalClassName decorator and input with transformers', () => {
   const transformed = generateExample(FILE, { component: 'button' } as any);

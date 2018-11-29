@@ -1,7 +1,7 @@
 import { main } from './main';
 import { resolve } from 'path';
 import { Result as MetaResult } from '@sketchmine/code-analyzer';
-import { readFile } from '@sketchmine/helpers'
+import { readFile } from '@sketchmine/helpers';
 import { parseCommandlineArgs } from './utils';
 
 export async function commandLineExecutor(): Promise<number> {

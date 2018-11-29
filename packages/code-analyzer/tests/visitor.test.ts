@@ -1,7 +1,6 @@
 import * as ts from 'typescript';
 import { ParseResult, ParseComponent, ParseProperty, ParseReferenceType, ParseDependency } from '../src/ast';
 import { tsVisitorFactory } from '../src/visitor';
-import { getSymbolName } from '../src/utils';
 
 import * as fs from 'fs';
 

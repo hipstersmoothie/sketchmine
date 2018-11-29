@@ -1,4 +1,4 @@
-import { UUID } from '@sketchmine/helpers'
+import { UUID } from '@sketchmine/helpers';
 import { Base } from './base';
 import { SketchObjectTypes, SketchGroup, SketchBase, IBounding } from '../interfaces';
 import { BooleanOperation } from '../helpers';

@@ -7,7 +7,7 @@ import {
   ITraversedDomTextNode,
   ITraversedDomImageNode,
   ITraversedDomSvgNode,
-} from '../src/traversed-dom';
+} from '../src/typings';
 
 const TEST_FILE = path.join(process.cwd(), 'tests', 'fixtures', 'test-page.html');
 const ROOT_ELEMENT = 'app-root';

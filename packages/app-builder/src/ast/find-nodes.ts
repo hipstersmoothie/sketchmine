@@ -1,5 +1,4 @@
 import * as ts from 'typescript';
-import { getSymbolName } from '@sketchmine/code-analyzer';
 
 /**
  * Find all nodes from the AST in the subtree of node of SyntaxKind kind.

@@ -1,11 +1,10 @@
 
-import { rules } from '@sketchmine/sketch-validator';
+import { rules, IValidationRule } from '@sketchmine/sketch-validator';
 import * as minimist from 'minimist';
 import { main } from './main';
 import { displayHelp } from './help';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
-import { IValidationRule } from '@sketchmine/sketch-validator';
 
 const DEFAULT_LINT_FILE = resolve('sketchlint.json');
 const DEFAULT_TEST_FILE = resolve('tests', 'fixtures', 'name-validation-test.sketch');

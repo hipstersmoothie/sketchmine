@@ -20,14 +20,14 @@ export async function zipToBuffer(pathToZip: string, filter?: RegExp): Promise<F
     if (filter) {
       files = await files.filter(file => file.path.match(filter)) as any;
     }
-    const promises = files.map<FileBuffer>(async (file) => {
+    const promises = files.map(async (file) => {
       const buffer = await file.buffer();
       return {
         path: file.path,
         buffer,
       } as FileBuffer;
     });
-    return Promise.all<FileBuffer>(promises);
+    return Promise.all(promises);
   } catch (error) {
     console.log(chalk`{bgRed Error unzipping File:\n}{grey ${pathToZip}}`);
     throw Error(error);

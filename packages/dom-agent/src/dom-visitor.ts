@@ -1,4 +1,4 @@
-import { UUID } from '@sketchmine/helpers';
+import { UUID } from '@sketchmine/helpers/lib/uuid';
 import {
   ITraversedDomSvgNode,
   ITraversedDomImageNode,

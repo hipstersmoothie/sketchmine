@@ -9,8 +9,8 @@
     "dynatrace"
   ],
   "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
-  "homepage": "",
-  "license": "",
+  "homepage": "https://www.dynatrace.com/",
+  "license": "MIT",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "directories": {
@@ -25,12 +25,28 @@
     "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/sketch-validator-nodejs-wrapper"
   },
   "scripts": {
-    "build": "tsc",
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "clean": "rm -rf lib",
+    "build": "yarn clean && tsc",
+    "dev": "yarn build -- -w",
+    "lint": "tslint -p tsconfig.json",
+    "test": "echo \"No tests specified for sketch-validator-nodejs-wrapper yet! 😢\""
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.9",
+    "@types/minimist": "^1.2.0",
+    "@types/node": "^10.6.0",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.5",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "typescript": "^2.9.2"
   },
   "dependencies": {
     "@sketchmine/helpers": "^1.3.0",
-    "@sketchmine/sketch-validator": "^1.3.0"
+    "@sketchmine/sketch-validator": "^1.3.0",
+    "chalk": "^2.4.1",
+    "minimist": "^1.2.0"
   },
   "peerDependencies": {
     "@sketchmine/helpers": "^1.3.0",

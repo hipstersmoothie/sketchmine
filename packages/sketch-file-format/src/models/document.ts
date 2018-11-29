@@ -1,4 +1,4 @@
-import { UUID } from '@sketchmine/helpers'
+import { UUID } from '@sketchmine/helpers';
 import { SketchDocument, SketchDocumentAssets, SketchDocumentPage } from '../interfaces';
 import { Page } from './page';
 

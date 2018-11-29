@@ -1,5 +1,5 @@
 import { CurvePoint } from './curve-point';
-import { CurvePointMode,SketchObjectTypes, SketchCurvePoint } from '@sketchmine/sketch-file-format';
+import { CurvePointMode, SketchObjectTypes, SketchCurvePoint } from '@sketchmine/sketch-file-format';
 
 export class QuadraticCurveTo extends CurvePoint {
 

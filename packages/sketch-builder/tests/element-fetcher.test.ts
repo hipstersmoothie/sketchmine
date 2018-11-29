@@ -1,7 +1,7 @@
-import { ElementFetcher } from './element-fetcher';
-import { SketchGenerator } from './sketch-generator';
-import { TraversedLibrary } from '../dom-traverser/traversed-dom';
-import { readFile } from '../utils';
+import { readFile } from '@sketchmine/helpers';
+import { TraversedLibrary } from '@sketchmine/dom-agent';
+import { ElementFetcher } from '../src/element-fetcher';
+import { SketchBuilderConfig } from '../src/config.interface';
 
 // tslint:disable:max-line-length
 describe('[sketch-generator] › element fetcher', () => {
@@ -10,7 +10,7 @@ describe('[sketch-generator] › element fetcher', () => {
   beforeEach(async () => {
     process.env.TRAVERSER = 'skip-traverser';
     const meta = JSON.parse(await readFile('tests/fixtures/meta-information.json'));
-    fetcher = new ElementFetcher({} as SketchGenerator.Config, meta);
+    fetcher = new ElementFetcher({} as SketchBuilderConfig, meta);
   });
 
   test('Sorting of tile has nested button', async () => {

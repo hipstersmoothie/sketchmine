@@ -1,5 +1,4 @@
 import * as path from 'path';
-import * as ts from 'typescript';
 import { isFile, readFile } from '@sketchmine/helpers';
 
 export const READ_TSCONFIG_ERROR = config => `Failed parsing ${config} as ts.CompilerOptions.`;

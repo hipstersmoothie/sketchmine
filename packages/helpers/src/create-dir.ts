@@ -1,6 +1,5 @@
 import * as path from 'path';
 import { mkdirSync, existsSync } from 'fs';
-import chalk from 'chalk';
 
 /**
  * Creates synchroneous a folder

@@ -1,12 +1,14 @@
-import * as path from 'path';
-import puppeteer from 'puppeteer';
-import { ITraversedElement } from '../src/traversed-dom';
+import * as puppeteer from 'puppeteer';
+import { ITraversedElement } from '../src/typings';
 import { readFile } from '@sketchmine/helpers';
+import { resolve, join } from 'path';
 
-const config = require(`${process.cwd()}/config/app.json`);
-const TEST_FILE = `file:${path.join(process.cwd(), 'tests', 'fixtures', 'tile-default.html')}`;
-const TRAVERSER = path.join(process.cwd(), config.sketchGenerator.traverser);
+declare var window: any;
+
+const TEST_FILE = `file:${join(process.cwd(), 'tests', 'fixtures', 'tile-default.html')}`;
+const DOM_AGENT = resolve('lib', 'index.js');
 const ROOT_ELEMENT = 'app-root > * ';
+
 
 function findObjects(o: Object, targetProp: string, targetValue: any, finalResults) {
   function getObject(obj: Object) {
@@ -36,13 +38,14 @@ describe('E2E Dom Traverser', () => {
 
   beforeAll(async () => {
     const options = { headless: true, devtools: false };
-    const traverser = await readFile(TRAVERSER);
+    const domAgent = await readFile(DOM_AGENT);
+    console.log(domAgent)
     browser = await puppeteer.launch(options);
 
     const page = await browser.newPage();
     await page.goto(TEST_FILE, { waitUntil: 'networkidle2' });
     // await page.evaluateOnNewDocument(traverser);
-    await page.addScriptTag({ content: traverser });
+    await page.addScriptTag({ content: domAgent });
     await page.addScriptTag({ content: `
         const hostElement = document.querySelector('${ROOT_ELEMENT}');
         const visitor = new DomVisitor(hostElement, []);

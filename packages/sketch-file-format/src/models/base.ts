@@ -1,4 +1,4 @@
-import { UUID } from '@sketchmine/helpers'
+import { UUID } from '@sketchmine/helpers';
 import { resolveTransform } from '../helpers';
 import {
   IBounding,
@@ -10,8 +10,7 @@ import {
   SketchBase,
 } from '../interfaces';
 
-export
-class Base {
+export class Base {
   objectID = UUID.generate();
   layers = [];
   breakMaskChain = false;
