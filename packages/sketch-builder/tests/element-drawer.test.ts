@@ -1,7 +1,8 @@
 // tslint:disable:max-line-length
 import { ElementDrawer } from '../src/element-drawer';
-import { ITraversedDomElement, StyleDeclaration } from '@sketchmine/dom-agent';
+import { ITraversedDomElement } from '@sketchmine/dom-agent';
 import { SketchObjectTypes } from '@sketchmine/sketch-file-format';
+import { StyleDeclaration } from '@sketchmine/helpers';
 
 describe('[sketch-generator] › draw sketch elements', () => {
   let baseTraversedElement: ITraversedDomElement;

@@ -1,5 +1,5 @@
 import { createBorder, FillType } from '../src/helpers';
-import { StyleDeclaration } from '@sketchmine/dom-agent';
+import { StyleDeclaration } from '@sketchmine/helpers';
 import { IBounding } from '../src/interfaces';
 
 describe('[sketch-generator] › helpers › create manual border with points', () => {

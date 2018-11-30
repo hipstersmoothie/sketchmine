@@ -1,4 +1,4 @@
-import { StyleDeclaration } from '@sketchmine/dom-agent';
+import { StyleDeclaration } from '@sketchmine/helpers';
 import { resolveBorder } from '../src/helpers';
 
 describe('[sketch-generator] › add border to styles', () => {

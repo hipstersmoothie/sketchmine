@@ -1,4 +1,4 @@
-import { StyleDeclaration } from '@sketchmine/dom-agent';
+import { StyleDeclaration } from '@sketchmine/helpers';
 
 export type BorderStyle  =
   'none' |

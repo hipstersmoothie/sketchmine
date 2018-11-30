@@ -16,16 +16,16 @@ export default [
         file: pkg.browser,
         format: 'umd'
       },
-      // {
-      //   name: 'sketch-validation',
-      //   file: pkg.main,
-      //   format: 'cjs'
-      // },
-      // {
-      //   name: 'sketch-validation',
-      //   file: pkg.module,
-      //   format: 'es'
-      // },
+      {
+        name: 'sketch-validation',
+        file: pkg.main,
+        format: 'cjs'
+      },
+      {
+        name: 'sketch-validation',
+        file: pkg.module,
+        format: 'es'
+      },
     ],
     // external: [
     //   ...NODE_NATIVES,
@@ -37,11 +37,4 @@ export default [
       commonjs(), // so Rollup can convert `ms` to an ES module
     ]
   },
-	// {
-	// 	input: 'src/index.ts',
-	// 	output: [
-	// 		{ file: pkg.main, format: 'cjs' },
-	// 		{ file: pkg.module, format: 'es' }
-	// 	]
-	// }
 ]

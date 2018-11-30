@@ -1,6 +1,5 @@
 import { SketchStyle, Style } from '@sketchmine/sketch-file-format';
-import { StyleDeclaration } from '@sketchmine/dom-agent';
-import { Logger } from '@sketchmine/helpers';
+import { Logger, StyleDeclaration } from '@sketchmine/helpers';
 import { SvgStyle, ISvgShape, ISvgView } from '../interfaces';
 
 const log = new Logger();

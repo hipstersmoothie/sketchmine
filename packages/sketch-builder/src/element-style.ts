@@ -1,4 +1,4 @@
-import { ITraversedDomElement, StyleDeclaration } from '@sketchmine/dom-agent';
+import { ITraversedDomElement } from '@sketchmine/dom-agent';
 import {
   Border,
   createBorder,
@@ -11,6 +11,7 @@ import {
   SketchShapePath,
   Style,
 } from '@sketchmine/sketch-file-format';
+import { StyleDeclaration } from '@sketchmine/helpers';
 
 export type ElementStyleObjects = SketchShapePath | SketchRectangle | SketchShapeGroup;
 

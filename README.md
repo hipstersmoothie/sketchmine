@@ -176,9 +176,9 @@ describe('[${package}] › ${folder} › ${description of the suite}', () => {
 <table>
   <tr>
     <td style="width: 50px; height: 50px;">
-      <img src="https://dev-jira.dynatrace.org/secure/useravatar?&ownerId=lukas.holzer" style="border-radius: 50%; width: 100%;">
+      <img src="https://avatars2.githubusercontent.com/u/11156362?s=460&v=4" style="border-radius: 50%; width: 100%;">
     </td>
-    <td style="line-height: 50px;"><a href="mailto:lukas.holzer@dynatrace.com">Lukas Holzer</a></td>
+    <td style="line-height: 50px;"><a href="https://github.com/lukasholzer">Lukas Holzer</a></td>
   </tr>
 </table>
 

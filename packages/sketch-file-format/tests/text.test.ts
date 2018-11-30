@@ -1,6 +1,6 @@
 import { Text } from '../src/models';
 import { IBounding, SketchObjectTypes, SketchColor } from '../src/interfaces';
-import { StyleDeclaration } from '@sketchmine/dom-agent';
+import { StyleDeclaration } from '@sketchmine/helpers';
 import { TextBehaviour, StrikethroughStyle, UnderlineStyle, TextAlignment } from '../src/helpers';
 
 const TEXT = 'New Text for the test';

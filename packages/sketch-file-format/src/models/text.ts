@@ -22,7 +22,7 @@ import {
   TextBehaviour,
   kerningTableBernina,
 } from '../helpers';
-import { StyleDeclaration } from '@sketchmine/dom-agent';
+import { StyleDeclaration } from '@sketchmine/helpers';
 import { resolveTextDecoration, TextDecoration } from '../helpers/resolve-text-decoration';
 import { resolveTextAlign } from '../helpers/resolve-text-align';
 import { colorToSketchColor } from '../helpers/color-to-sketch-color';

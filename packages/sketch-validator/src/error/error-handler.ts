@@ -2,7 +2,7 @@ import { ValidationError, ColorNotInPaletteError, FileNameError } from './valida
 import chalk from 'chalk';
 import { RulesStack, Rule } from '../interfaces/error-handler.interface';
 import { IValidationRule } from '../interfaces/validation-rule.interface';
-import { Logger } from '@sketchmine/helpers';
+import { Logger } from '@sketchmine/helpers/lib/logger';
 
 const log = new Logger();
 

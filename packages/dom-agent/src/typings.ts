@@ -1,4 +1,4 @@
-import { StyleDeclaration } from './dom-visitor';
+import { StyleDeclaration } from '@sketchmine/helpers';
 
 export * from './dom-traverser';
 export * from './dom-visitor';
