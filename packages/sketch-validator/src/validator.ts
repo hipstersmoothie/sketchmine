@@ -5,7 +5,7 @@ import {
   SketchText,
 } from '@sketchmine/sketch-file-format';
 import chalk from 'chalk';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import {
   IValidationContext,
   IValidationRule,

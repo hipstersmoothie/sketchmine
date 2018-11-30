@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@types/jest": "^23.3.0",
-    "@types/lodash": "^4.14.118",
+    "@types/lodash-es": "^4.14.118",
     "@types/minimist": "^1.2.0",
     "@types/node": "^10.6.0",
     "jest": "^23.6.0",

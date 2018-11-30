@@ -1,5 +1,3 @@
-import * as minimist from 'minimist';
-
 /**
  * Configuration arguments for the command line args
  */
@@ -16,5 +14,5 @@ export interface ConfigArguments {
  * @return {ConfigArguments}
  */
 export function parseCommandlineArgs(args: string[], config: any): ConfigArguments {
-  return Object.assign(config, minimist(args));
+  return Object.assign(config, require('minimist')(args));
 }

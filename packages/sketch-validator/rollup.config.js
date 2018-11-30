@@ -16,25 +16,25 @@ export default [
         file: pkg.browser,
         format: 'umd'
       },
-      {
-        name: 'sketch-validation',
-        file: pkg.main,
-        format: 'cjs'
-      },
-      {
-        name: 'sketch-validation',
-        file: pkg.module,
-        format: 'es'
-      },
+      // {
+      //   name: 'sketch-validation',
+      //   file: pkg.main,
+      //   format: 'cjs'
+      // },
+      // {
+      //   name: 'sketch-validation',
+      //   file: pkg.module,
+      //   format: 'es'
+      // },
     ],
-    external: [
-      ...NODE_NATIVES,
-    ],
+    // external: [
+    //   ...NODE_NATIVES,
+    // ],
     plugins: [
       json(),
       typescript({ tsconfig: './tsconfig.json', useTsconfigDeclarationDir: true, }),
-      commonjs(), // so Rollup can convert `ms` to an ES module
       resolve(), // so Rollup can find `ms`
+      commonjs(), // so Rollup can convert `ms` to an ES module
     ]
   },
 	// {

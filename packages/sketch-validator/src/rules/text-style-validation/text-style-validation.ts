@@ -23,7 +23,7 @@ import {
   WrongFontError,
 } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 
 const log = new Logger();
 

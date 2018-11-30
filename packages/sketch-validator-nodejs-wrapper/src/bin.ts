@@ -1,6 +1,5 @@
 
 import { rules, IValidationRule } from '@sketchmine/sketch-validator';
-import * as minimist from 'minimist';
 import { main } from './main';
 import { displayHelp } from './help';
 import { resolve } from 'path';
@@ -32,7 +31,7 @@ function configureRules(config: string): IValidationRule[] {
 }
 
 export async function commandLineExecutor(): Promise<number> {
-  const args = minimist(process.argv.slice(2));
+  const args = require('minimist')(process.argv.slice(2));
 
   if (args.help || args.h) {
     displayHelp();

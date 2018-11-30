@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "module": "es2015",
     "declaration": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,

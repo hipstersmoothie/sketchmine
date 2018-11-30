@@ -1,5 +1,5 @@
 import * as AMP from '../meta-information';
-import { kebabCase } from 'lodash';
+import { kebabCase } from 'lodash-es';
 
 const ACTIONS = ['disabled', 'active', 'hover', 'click'];
 

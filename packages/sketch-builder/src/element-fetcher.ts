@@ -1,6 +1,6 @@
 import * as path from 'path';
 import chalk from 'chalk';
-import puppeteer from 'puppeteer';
+import * as puppeteer from 'puppeteer';
 import { Sketch } from '@sketchmine/sketch-file-format';
 import { Drawer } from './drawer';
 import {

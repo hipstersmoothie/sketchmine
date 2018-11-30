@@ -1,7 +1,6 @@
 import { readFile, zipToBuffer as unzip, Logger  } from '@sketchmine/helpers';
 import { generateSketchFile } from '@sketchmine/sketch-file-format';
 import * as path from 'path';
-import * as minimist from 'minimist';
 import { ColorReplacer } from './color-replacer';
 import { exec } from 'child_process';
 
@@ -14,7 +13,8 @@ if (process.env.SKETCH === 'open-close') {
 }
 
 export async function main(args: string[]) {
-  const { colors, file } = minimist(args);
+  // minimist has no es module exports
+  const { colors, file } = require('minimist')(args);
 
   if (!file || !colors) {
     throw Error(
