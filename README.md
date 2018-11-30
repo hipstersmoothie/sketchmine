@@ -1,33 +1,59 @@
-<img src="https://cdn.worldvectorlogo.com/logos/sketch-1.svg" alt="Sketch Logo" width="150"/>
+<h1 align="center">sketchmine 💎</h1>
 
-# Dynatrace Sketch Library
-
-[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
-[![Build Status](https://webkins.lab.dynatrace.org/job/barista/job/sketch-generator/job/master/badge/icon)](https://webkins.lab.dynatrace.org/job/barista/job/sketch-generator/job/master/)
+<p style="text-align: center">
+<a href="https://lernajs.io/"><img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg"></a>
+<a href="https://github.com/facebook/jest"><img src="https://img.shields.io/badge/tested_with-jest-99424f.svg"></a>
+<a href="https://webkins.lab.dynatrace.org/job/barista/job/sketch-generator/job/master/"><img src="https://webkins.lab.dynatrace.org/job/barista/job/sketch-generator/job/master/badge/icon"></a>
+</p>
 
 * [The Parts](#the-parts)
-* [Sketch Generator](#sketch-generator)
+* [Dependency graph](#dependency-graph)
+* [Getting started 🚀](#installation)
 * [Validator](#validator)
 * [Useful bash scripts](#useful-bash-scripts)
 
-![Infrastructure for the sketch-library](https://dt-cdn.net/images/infrastructure-1920-5387b3da7d.png)
-
 ## The Parts
 
-* **AMP**: angular-meta-parser — *creates a JSON representation of the angular components*
-* **ALG** angular-library-generator — *generates the angular app with the library*
-* **DT** dom-traverser — *traverses and visits all HTML*
-* **SG** sketch-generator — *generates the .sketch from HTML*
-* **SL** sketch-library — *the library with all variants to draw*
+* [**app-builder**](./packages/app-builder/README.md) generates an angular app with the information of the *code-analyzer*.
+* [**code-analyzer**](./packages/code-analyzer/README.md) creates a JSON representation of the provided code *(supported: <a href="https://angular.io/">angular</a>)*.
+* [**dom-agent**](./packages/dom-agent/README.md) a dom traverser that gets injected by the browser to scrape the information out of the page.
+* [**helpers**](./packages/helpers/README.md) collection of Node.js and general helpers.
+* [**library**](./packages/library/README.md) the orchestration of the executeable parts – generates the whole .sketch libraty out of the dynatrace angular components.
+* [**sketch-builder**](./packages/sketch-builder/README.md) scrapes a webpage and generates .sketch file.
+* [**sketch-color-replacer**](./packages/sketch-color-replacer/README.md) replaces a set of colors in a .sketch file.
+* [**sketch-file-format**](./packages/sketch-file-format/README.md) AST of the .sketch file format with all functionality to generate a .sketch file.
+* [**sketch-svg-parser**](./packages/sketch-svg-parser/README.md) Parses SVG elements and converts it to Sketch shapes
+* [**sketch-validator**](./packages/sketch-validator/README.md) Validates Sketch JSON's with the provided rules. *Available in umd, cjs and esm formats*.
+* [**sketch-validator-nodejs-wrapper**](./packages/sketch-validator-nodejs-wrapper/README.md) A Node.js wrapper around the sketch validator package that uses a .sketch file to validate it.
 
-### Other Tools in the Sketch Library
+## Getting started
 
-* **SCR** sketch-color-replacer
-* **SV** sketch-validator
+### Architecture
 
-## Sketch Generator
+Sketchmine follows a monorepo approach and all officially maintained modules and dependencies are in the same repository.
 
-Generates a Sketch App Symbol library out of the *Dynatrace Angular Components Library*.
+> The tool for managing the monorepo @sketchmine has been extracted out as [Lerna](https://github.com/lerna/lerna)
+
+
+### Dependency graph
+
+<ul style="list-style-type: none; padding: 0;">
+  <li><span style="border: 1px solid black; width: 10px; height: 10px; display: inline-block;  margin-right: 7px; background: #7fffd4"></span>Executeable entrypoint</li>
+  <li><span style="border: 1px solid black; width: 10px; height: 10px; display: inline-block;  margin-right: 7px; background: #f0ffff"></span>library that orchestrates the entry points</li>
+  <li><span style="border: 1px solid black; width: 10px; height: 10px; display: inline-block;  margin-right: 7px; background: #fafad2"></span>Helper functions for browser and Node.js</li>
+  <li><span style="border: 1px solid black; width: 10px; height: 10px; display: inline-block;  margin-right: 7px; background: #add8e6"></span>UMD browserbundles compiled with <a href="https://rollupjs.org/guide/en">rollup.js</a></li>
+</ul>
+
+![Dependency Graph](https://dt-cdn.net/images/sketchmine-dependency-graph-1060-0cf4774fe9.png)
+
+
+### Installation
+
+To start contributing and developing you have to run `yarn install` to install all the necessary dependencies.
+after that you can switch to any package in the `./packages` folder and start to get the hands dirty 👷🏼‍.
+
+If you want to run [tasks](https://docs.npmjs.com/misc/scripts) across all packages [lerna](https://lernajs.io/) comes to the rescue. You can use the npm scripts in the root package folder or you can execute all tasks with the `lerna run build` command to execute the `yarn build` command in every package. For further information check out the lerna documentation site.
+
 
 ### How to get running
 
@@ -122,92 +148,27 @@ Open and close sketch.app on MacOS for easier development.
 process.env.SKETCH = 'open-close';
 ```
 
-### Testing
+## Testing
 
-Tests are done with **JEST**
+For us, tests are very important to ensure a good coding quality. Therefore we choose [jest](https://github.com/facebook/jest) as our testing library. In case that it comes with a mocking library built in. To get confident with the testing syntax visit the Jest Documentation. Jest follows the Jasmine convention.
 
-The files have to contain the pattern `**/*.test.ts` in the folder `src` and `tests` for unit tests and
-for end 2 end testing `**/*.e2e.ts`
+The files have to contain the pattern `**/*.test.ts`, for unit tests and
+for end 2 end testing `**/*.e2e.ts`. All tests should stay in the `tests` folder. Even though it is possible to place tests in the `src` folder if there is a good reason.
 
-Just run `npm run test`
-for test-coverage analysis run `npm run test:coverage`
+To execute the tests run `yarn test`. That will run the jest test and provides you with a coverage for the package.
 
 **Important!**
 
-All tests according to this space should be wrapped in a describe with the prefix of the part like : `[sketch-generator] › ...` like the following:
+All tests should be wrapped in a describe with the prefix of the package: `[sketch-builder] › ...` like the following example:
 
 ```typescript
 //... import statements
 
-describe('[${part}] › ${folder} › ${description of the suite}', () => {
+describe('[${package}] › ${folder} › ${description of the suite}', () => {
 
 // .. your tests should place here.
 
 });
-```
-
-## Useful bash scripts
-
-convert a folder to a .sketch file
-
-``` bash
-declare filename=dt-asset-lib
-# rm -rf ${filename}.sketch
-cd ${filename}
-zip -r -X ../${filename}.zip *
-cd ..
-mv ${filename}.zip ${filename}.sketch
-rm -rf ${filename}.zip
-open ${filename}.sketch
-
-```
-
-convert .sketch file to folder:
-
-``` bash
-declare filename=dt-asset-lib
-# rm -rf ${filename}.sketch
-# cp ./${filename}.bak.sketch ${filename}.sketch
-mv ${filename}.sketch ${filename}.zip
-unzip ${filename}.zip -d ./${filename}
-rm -rf ${filename}.zip
-```
-
-## Validator
-
-This tool is found in `src/validate`
-run `node dist/sketch-validator --file=path/to/file.sketch`
-
-### Configuration
-
-the selector can be `'document' | 'page' | 'symbolMaster' | 'group' | 'path' | 'shapeGroup' | 'rectangle'`
-
-``` typescript
-export const rules: IValidationRule[] = [
-  {
-    selector: ['symbolMaster','rectangle', 'path', ...], // all kind of sketch instances
-    name: 'name-of-the-rule',
-    description: `Description of the rule to display in output`,
-    ignoreArtboards: ['artbord-name-to-be-ignored],
-    validation: functionThatValidates,
-  },
-];
-```
-
-## Color Replacer to change a set of unused legacy colors
-
-run `node dist/sketch-color-replacer --file=path/to/file.sketch --colors=path/to/colors.json`
-The script creates a `./_tmp`dir in the current workdir with the canged file.
-
-All colors have to be provided as **HEX** colors
-The **colors.json** file follows following convention:
-
-```json
-{
-  "oldcolor": "newcolor",
-  "#AJ54K0": "#333333",
-  ...
-}
 ```
 
 ## Maintainer
@@ -220,3 +181,7 @@ The **colors.json** file follows following convention:
     <td style="line-height: 50px;"><a href="mailto:lukas.holzer@dynatrace.com">Lukas Holzer</a></td>
   </tr>
 </table>
+
+## License
+
+[MIT license](LICENSE) — copyright 2018 Dynatrace Austria GmbH

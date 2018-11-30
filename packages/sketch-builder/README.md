@@ -1,4 +1,4 @@
-# Sketch Generator – sketch-generator
+# @sketchmine/sketch-builder
 
 The sketch-generator is the heart pice of this library. It takes control over generating **.sketch** files from any html that is provided to the library. It can draw a symbol Library or just a plain page. The orchestration for drawing a hole library is done by the library itself.
 

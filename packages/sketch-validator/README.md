@@ -1,4 +1,4 @@
-# Sketch Validator (sketch-validator)
+# @sketchmine/sketch-validator
 
 The Sketch Validator helps to improve the quality of Sketch files by validating the naming and structure of files, the usage of colors and text styles and much more.
 
@@ -52,6 +52,23 @@ It can be locked to a fix version like `1.2.2` or simply `latest`
 
 ```
 
+
+### Configuration of the rules
+
+the selector can be `'document' | 'page' | 'symbolMaster' | 'group' | 'path' | 'shapeGroup' | 'rectangle'`
+
+``` typescript
+export const rules: IValidationRule[] = [
+  {
+    selector: ['symbolMaster','rectangle', 'path', ...], // all kind of sketch instances
+    name: 'name-of-the-rule',
+    description: `Description of the rule to display in output`,
+    ignoreArtboards: ['artbord-name-to-be-ignored],
+    validation: functionThatValidates,
+  },
+];
+```
+
 ### Validation environments
 
 Currently the following validation environments are defined:
@@ -103,4 +120,4 @@ describe('[sketch-validator] › ${folder} › ${description of the suite}', () 
 
 For tests the **jest** Framework was chosen, see [jestjs.io](https://jestjs.io/) for details.
 
-Run `npm run test` to run all tests specified for the Sketch validation rules. Run `npx jest -f validation-rule-name.test` to run tests for the specified rule only.
+Run `yarn test` to run all tests specified for the Sketch validation rules. Run `npx jest -f validation-rule-name.test` to run tests for the specified rule only.

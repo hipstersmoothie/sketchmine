@@ -1,4 +1,4 @@
-# Code Analyzer – @sketchmine/code-analyzer
+# @sketchmine/code-analyzer
 
 The angular-meta-parser is a compiler, that generates an abstract syntax tree short AST from the
 Angular Components library and transforms the AST to a JSON format that represents all components,
