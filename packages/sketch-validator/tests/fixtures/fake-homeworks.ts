@@ -1,4 +1,4 @@
-import { SketchObjectTypes, SketchStyle } from '@sketchmine/sketch-file-format';
+import { SketchObjectTypes, SketchStyle } from '@sketchmine/sketch-file-format/src/interfaces';
 import { IValidationContextParents, IValidationContext } from '../../src/interfaces';
 
 const artboardSizes: String[] = [

@@ -1,5 +1,5 @@
 import { SketchAttribute, round } from '@sketchmine/sketch-file-format';
-import { Logger, rgbToHex } from '@sketchmine/helpers';
+import { rgbToHex } from '@sketchmine/helpers';
 import chalk from 'chalk';
 import {
   NO_FOREIGN_TEXT_STYLES_ERROR_MESSAGE,
@@ -24,8 +24,6 @@ import {
 } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import { isEqual } from 'lodash-es';
-
-const log = new Logger();
 
 /**
  * Checks if string attributes are identical except for color attribute;
@@ -72,7 +70,7 @@ export function textStyleValidation(
   };
 
   if (!task) {
-    log.error(
+    console.error(
       chalk`{bgRed [text-style-validation.ts]} -> textStyleValidation needs a valid task` +
       chalk`{cyan IValdiationContext[]} parameter with index!\n`,
       );
@@ -82,7 +80,7 @@ export function textStyleValidation(
   const errors: (ValidationError | boolean)[] = [];
 
   if (!task.ruleOptions.document) {
-    log.error('document.json is needed for text style validation');
+    console.error('document.json is needed for text style validation');
     return;
   }
 
@@ -169,17 +167,17 @@ export function textStyleValidation(
     .find(textstyle => textstyle.localSharedStyle.do_objectID === task.ruleOptions.sharedStyleID);
 
   if (!foreignTextStyle) {
-    log.error(`No foreign text style given that can be compared with ${task.ruleOptions.sharedStyleID}.`);
+    console.error(`No foreign text style given that can be compared with ${task.ruleOptions.sharedStyleID}.`);
     return errors;
   }
 
   if (!foreignTextStyle.localSharedStyle.value.textStyle) {
-    log.error(`No text style given for ID ${foreignTextStyle.localSharedStyle.do_objectID} in document.json`);
+    console.error(`No text style given for ID ${foreignTextStyle.localSharedStyle.do_objectID} in document.json`);
     return errors;
   }
 
   if (!task.style || !task.style.textStyle) {
-    log.error(`No text style given for ${task.ruleOptions.sharedStyleID} in current task.`);
+    console.error(`No text style given for ${task.ruleOptions.sharedStyleID} in current task.`);
     return errors;
   }
 

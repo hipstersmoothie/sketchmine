@@ -33,7 +33,7 @@ import {
   checkNodeTags,
   visitJsDoc,
 } from './utils';
-import { Logger } from '@sketchmine/helpers';
+import { Logger } from '@sketchmine/node-helpers';
 
 const log = new Logger();
 

@@ -9,9 +9,10 @@ export default [
     input: 'src/index.ts',
     output: [
       {
-        name: 'index',
+        name: 'dom-agent',
         file: pkg.main,
-        format: 'umd'
+        format: 'esm',
+        sourcemap: true,
       }
     ],
     plugins: [

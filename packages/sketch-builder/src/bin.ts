@@ -1,6 +1,6 @@
 import { main } from './main';
 import { SketchBuilderConfig } from './config.interface';
-import { readFile } from '@sketchmine/helpers';
+import { readFile } from '@sketchmine/node-helpers';
 import * as AMP from '@sketchmine/code-analyzer';
 
 export async function commandLineExecutor(): Promise<number> {

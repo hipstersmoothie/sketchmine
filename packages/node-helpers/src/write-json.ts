@@ -1,8 +1,5 @@
 import { extname, dirname } from 'path';
-import { Logger } from './logger';
 import { writeFile } from './write-file';
-
-const log = new Logger();
 
 /**
  * Safely writes Object or string as JSON file

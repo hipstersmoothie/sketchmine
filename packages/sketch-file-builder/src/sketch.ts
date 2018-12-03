@@ -1,8 +1,6 @@
-import { copyFile, createDir, delDir, writeJSON } from '@sketchmine/helpers';
-import { generateSketchFile } from './helpers';
-import { Document } from './models/document';
-import { Meta } from './models/meta';
-import { Page } from './models/page';
+import { copyFile, createDir, delDir, writeJSON } from '@sketchmine/node-helpers';
+import { generateSketchFile } from './generate-sketch-file';
+import { Document, Meta, Page } from '@sketchmine/sketch-file-format';
 import { dirname, resolve, basename, join } from 'path';
 import chalk from 'chalk';
 

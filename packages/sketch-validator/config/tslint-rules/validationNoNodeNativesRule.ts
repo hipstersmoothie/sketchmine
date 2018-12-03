@@ -1,13 +1,12 @@
 import { IOptions, IRuleMetadata, RuleFailure, Rules, RuleWalker } from 'tslint';
-import chalk from 'chalk';
 import * as ts from 'typescript';
 
 const NODE_NATIVES = ['path', 'fs', 'os', 'buffer', 'crypto', 'util', 'child_process', 'perf_hooks'];
-const FAILURE_UTILS = chalk`
+const FAILURE_UTILS = `
 The {blue import ... from '@utils'} is a barrel file which exports node natives,
 like fs. Specify the import to a file where no node natives are used!`;
 
-const FAILURE_NODE_NATIVES = (m: string) => chalk`
+const FAILURE_NODE_NATIVES = (m: string) => `
 The use of importing node natives like {blue ${m}} is forbidden in the validation except in the {grey run.ts} file,
 in case it has to work cross plattform.
 {yellow This rules are going to be used in a 💎 .sketch plugin as well!}

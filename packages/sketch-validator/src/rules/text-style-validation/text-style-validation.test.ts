@@ -1,5 +1,5 @@
 import { SketchBase } from '@sketchmine/sketch-file-format';
-import { readFile } from '@sketchmine/helpers';
+import { readFile } from '@sketchmine/node-helpers';
 import {
   NoForeignTextStylesError,
   NoSharedTextStylesError,

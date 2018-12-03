@@ -12,7 +12,7 @@ import * as ts from 'typescript';
  * @param {ts.Node} node Node to check
  * @returns {booleand}
  */
-export function hasExportModifier(node: ts.Node): boolean {
+export function hasExportModifier(node: ts.Declaration): boolean {
   return (
     (ts.getCombinedModifierFlags(node) & ts.ModifierFlags.Export) !== 0 ||
     (!!node.parent && node.parent.kind === ts.SyntaxKind.SourceFile)

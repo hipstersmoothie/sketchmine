@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { isFile } from '@sketchmine/helpers';
+import { isFile } from '@sketchmine/node-helpers';
 
 /**
  * Resolve a typescript Module to a file in the filesystem.

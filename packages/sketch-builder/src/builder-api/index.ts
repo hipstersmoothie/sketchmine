@@ -1,6 +1,6 @@
 import { DomVisitor, DomTraverser, ITraversedElement, TraversedSymbol } from '@sketchmine/dom-agent';
 import { Result as MetaResult } from '@sketchmine/code-analyzer';
-import { Logger } from '@sketchmine/helpers';
+import { Logger } from '@sketchmine/node-helpers';
 import { getComponentSelectors } from '../helpers/get-component-selectors';
 import { InjectedWindow } from './api.interface';
 import * as puppeteer from 'puppeteer';

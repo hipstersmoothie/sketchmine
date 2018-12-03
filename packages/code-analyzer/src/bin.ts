@@ -1,6 +1,6 @@
 import { main } from './main';
 import { join } from 'path';
-import { readFile } from '@sketchmine/helpers';
+import { readFile } from '@sketchmine/node-helpers';
 import { parseCommandlineArgs } from './utils';
 import { ParsedArgs } from 'minimist';
 import { displayHelp } from './utils/display-help';

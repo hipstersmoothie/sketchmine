@@ -1,5 +1,4 @@
-import { UUID } from '@sketchmine/helpers/lib/uuid';
-import { StyleDeclaration } from '@sketchmine/helpers/lib/style-declaration';
+import { UUID, StyleDeclaration } from '@sketchmine/helpers';
 import {
   ITraversedDomSvgNode,
   ITraversedDomImageNode,

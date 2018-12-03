@@ -5,7 +5,7 @@ import { TextBehaviour, StrikethroughStyle, UnderlineStyle, TextAlignment } from
 
 const TEXT = 'New Text for the test';
 
-describe('[sketch-generator] › models › generate text', () => {
+describe('[sketch-file-format] › models › generate text', () => {
   let size: IBounding;
   let styles: StyleDeclaration;
 

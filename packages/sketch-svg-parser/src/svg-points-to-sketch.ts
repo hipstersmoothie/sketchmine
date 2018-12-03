@@ -1,5 +1,5 @@
 import { IBounding, ShapePath } from '@sketchmine/sketch-file-format';
-import { Logger } from '@sketchmine/helpers';
+import { Logger } from '@sketchmine/node-helpers';
 import { CurveTo } from './models/curve-to';
 import { isActionPoint } from './util/point';
 import { ISvgPoint, ISvgShape } from './interfaces';

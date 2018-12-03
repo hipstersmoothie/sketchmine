@@ -1,5 +1,4 @@
-import { bytesToSize } from './util';
-import { createDir, FileBuffer, Logger } from '@sketchmine/helpers';
+import { createDir, FileBuffer, Logger, bytesToSize } from '@sketchmine/node-helpers';
 import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';

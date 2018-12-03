@@ -1,7 +1,7 @@
 import { main as AngularMetaParser, Result as MetaResult } from '@sketchmine/code-analyzer';
 import { main as AngularLibraryGenerator } from '@sketchmine/app-builder';
 import { main as SketchGenerator } from '@sketchmine/sketch-builder';
-import { writeJSON, Logger } from '@sketchmine/helpers';
+import { writeJSON, Logger } from '@sketchmine/node-helpers';
 import { startServer } from './start-server';
 import chalk from 'chalk';
 

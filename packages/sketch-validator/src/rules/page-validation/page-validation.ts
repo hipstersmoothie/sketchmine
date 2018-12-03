@@ -1,10 +1,7 @@
 import chalk from 'chalk';
 import { ValidationError, PageNamingError } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
-import { Logger } from '@sketchmine/helpers';
 import { PAGE_NAME_ERROR_MESSAGE } from '../../error/error-messages';
-
-const log = new Logger();
 
 /**
  * Takes a homework and corrects it like a teacher 👩🏼‍🏫
@@ -19,7 +16,7 @@ export function pageValidation(
   ): (ValidationError | boolean)[] {
   const filteredHomeworks = homeworks.filter(h => h._class === 'page');
   if (!filteredHomeworks) {
-    log.error(
+    console.error(
       chalk`{bgRed [page-validation.ts]} -> pageValidation needs a valid task` +
       chalk`{cyan IValdiationContext[]} parameter with index!\n`,
     );

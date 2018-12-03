@@ -4,7 +4,7 @@ import { BooleanOperation, PatternFillType, FillType } from '../src/helpers';
 
 const rotate90deg = 'matrix(6.12323e-17, 1, -1, 6.12323e-17, 0, 0)';
 
-describe('[sketch-generator] › models › create rectangle', () => {
+describe('[sketch-file-format] › models › create rectangle', () => {
   let size: IBounding;
 
   beforeEach(() => {

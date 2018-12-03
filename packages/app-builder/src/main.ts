@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { Result as MetaResult } from '@sketchmine/code-analyzer';
-import { readDirRecursively } from '@sketchmine/helpers';
+import { readDirRecursively } from '@sketchmine/node-helpers';
 import { MemoryCompiler } from './memory-compiler';
 import { generateExample } from './generate-example';
 

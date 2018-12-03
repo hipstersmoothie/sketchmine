@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 // tslint:disable:max-line-length
 export const ARTBOARD_SIZE_ERROR_MESSAGE = 'Every page needs to have at least one artboard with a valid width (360, 1280, 1920), that is not empty.';
 export const ARTBOARD_EMPTY_ERROR_MESSAGE = 'Artboards should not be left empty.';
@@ -10,7 +8,7 @@ export const FILE_NAME_ERROR_MESSAGE = (filename: string) => `File name ${filena
 export const DUPLICATE_SYMBOL_ERROR_MESSAGE = taskname => `Duplicated Symbol!\nThe Symbol {${taskname}} already exists!`;
 export const THEME_NAME_ERROR_MESSAGE = themeNames => `The symbol name has to include a theme name: {${Object.values(themeNames).join(', ')}}`;
 export const SYMBOL_NAME_ERROR_MESSAGE = 'The symbolname should contain at least 1 backslash / so that it is correct grouped!';
-export const COLOR_ERROR_MESSAGE = (hex: string) => chalk`The Color {hex('${hex}') ███} ${hex} is not in the Dynatrace Color Palette!\nTake a look at {grey https://styles.lab.dynatrace.org/resources/colors}\n`;
+export const COLOR_ERROR_MESSAGE = (hex: string) => `The Color {hex('${hex}') ███} ${hex} is not in the Dynatrace Color Palette!\nTake a look at {grey https://styles.lab.dynatrace.org/resources/colors}\n`;
 export const NO_FOREIGN_TEXT_STYLES_ERROR_MESSAGE = 'The Sketch file must include text files from a shared library.';
 export const NO_SHARED_TEXT_STYLES_ERROR_MESSAGE = textElementName => `The text "${textElementName}" must use text styles from a shared library only, no custom text styles are allowed.`;
 export const NO_SHARED_TEXT_STYLES_OVERRIDES_ERROR_MESSAGE = textElementName => `The shared text style for "${textElementName}" has been modified.`;

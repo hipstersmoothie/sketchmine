@@ -22,7 +22,7 @@ import {
 } from '@sketchmine/dom-agent';
 import chalk from 'chalk';
 import { SvgParser, SvgToSketch } from '@sketchmine/sketch-svg-parser';
-import { Logger } from '@sketchmine/helpers';
+import { Logger } from '@sketchmine/node-helpers';
 import { ElementStyle } from './element-style';
 
 const log = new Logger();

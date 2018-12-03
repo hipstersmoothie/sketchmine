@@ -12,7 +12,7 @@ import {
 import { Circle } from './models/circle';
 import { Rect } from './models/rect';
 import { addStyles } from './util';
-import { Logger } from '@sketchmine/helpers';
+import { Logger } from '@sketchmine/node-helpers';
 
 const { parseSVG, makeAbsolute } = require('svg-path-parser');
 const log = new Logger();

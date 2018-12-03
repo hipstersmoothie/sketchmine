@@ -1,4 +1,4 @@
-import { readFile } from '@sketchmine/helpers';
+import { readFile } from '@sketchmine/node-helpers';
 import { TraversedLibrary } from '@sketchmine/dom-agent';
 import { ElementFetcher } from '../src/element-fetcher';
 import { SketchBuilderConfig } from '../src/config.interface';

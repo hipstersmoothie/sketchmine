@@ -11,7 +11,7 @@ import {
   TraversedPage,
   TraversedSymbol,
 } from '@sketchmine/dom-agent';
-import { Logger } from '@sketchmine/helpers';
+import { Logger } from '@sketchmine/node-helpers';
 import { ElementDrawer } from './element-drawer';
 import chalk from 'chalk';
 

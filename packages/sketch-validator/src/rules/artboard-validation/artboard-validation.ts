@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import {
   ValidationError,
   ArtboardNamingError,
@@ -6,14 +5,11 @@ import {
   ArtboardEmptyError,
 } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
-import { Logger } from '@sketchmine/helpers/lib/logger';
 import {
   ARTBOARD_SIZE_ERROR_MESSAGE,
   ARTBOARD_EMPTY_ERROR_MESSAGE,
   ARTBOARD_NAME_ERROR_MESSAGE,
 } from '../../error/error-messages';
-
-const log = new Logger();
 
 /**
  * Takes a homework and corrects it like a teacher 👩🏼‍🏫
@@ -30,10 +26,9 @@ export function artboardValidation(
   ): (ValidationError | boolean)[] {
   const task = homeworks[currentTask];
   if (!task) {
-    log.error(
-      chalk`{bgRed [artboard-validation.ts]} -> artboardValidation needs a valid task` +
-      chalk`{cyan IValdiationContext[]} parameter with index!\n`,
-    );
+    console.error(`{bgRed [artboard-validation.ts]} -> artboardValidation needs a valid task
+    {cyan IValdiationContext[]} parameter with index!
+    `);
     return;
   }
 

@@ -1,5 +1,6 @@
 import { Style, ShapeGroup, IBounding, SketchStyle } from '@sketchmine/sketch-file-format';
-import { Logger, StyleDeclaration } from '@sketchmine/helpers';
+import { StyleDeclaration } from '@sketchmine/helpers';
+import { Logger } from '@sketchmine/node-helpers';
 import { ISvgPointGroup, ISvg } from './interfaces';
 import { SvgPointsToSketch } from './svg-points-to-sketch';
 import { addCssStyleToSvg } from './util';

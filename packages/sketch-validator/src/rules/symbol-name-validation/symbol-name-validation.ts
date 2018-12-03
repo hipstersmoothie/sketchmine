@@ -1,14 +1,11 @@
 import chalk from 'chalk';
 import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
-import { Logger } from '@sketchmine/helpers';
 import {
   SYMBOL_NAME_ERROR_MESSAGE,
   THEME_NAME_ERROR_MESSAGE,
   DUPLICATE_SYMBOL_ERROR_MESSAGE,
 } from '../../error/error-messages';
-
-const log = new Logger();
 
 /** Components that do not need a theme name */
 export enum ThemeLess {
@@ -38,7 +35,7 @@ export function symbolNameValidation(
   ): (ValidationError | boolean)[] {
   const task = homeworks[currentTask];
   if (!task) {
-    log.error(
+    console.error(
       chalk`{bgRed [symbol-name-validation.ts]} -> symbolNameValidation needs a valid task` +
       chalk`{cyan IValdiationContext[]} parameter with index!\n`,
     );

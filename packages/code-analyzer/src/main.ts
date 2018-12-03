@@ -2,7 +2,7 @@ import { join, resolve, dirname } from 'path';
 import { ParseResult, AstVisitor } from './ast';
 import { adjustPathAliases, readTsConfig } from './utils';
 import { ReferenceResolver } from './reference-resolver';
-import { writeJSON } from '@sketchmine/helpers';
+import { writeJSON } from '@sketchmine/node-helpers';
 import { ValuesResolver } from './values-resolver';
 import { parseFile } from './parse-file';
 import { renderASTtoJSON } from './render-ast-to-json';

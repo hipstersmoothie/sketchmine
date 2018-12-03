@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import chalk from 'chalk';
-import { Logger } from '@sketchmine/helpers';
+import { Logger } from '@sketchmine/node-helpers';
 
 const log = new Logger();
 

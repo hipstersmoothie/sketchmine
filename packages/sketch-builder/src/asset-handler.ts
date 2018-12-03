@@ -1,4 +1,4 @@
-import { delDir, createDir } from '@sketchmine/helpers';
+import { delDir, createDir } from '@sketchmine/node-helpers';
 import { IAsset } from '@sketchmine/dom-agent';
 import * as path from 'path';
 import * as fs from 'fs';

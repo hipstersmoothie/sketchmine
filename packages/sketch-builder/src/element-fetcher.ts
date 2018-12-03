@@ -1,7 +1,7 @@
 import * as path from 'path';
 import chalk from 'chalk';
 import * as puppeteer from 'puppeteer';
-import { Sketch } from '@sketchmine/sketch-file-format';
+import { Sketch } from '@sketchmine/sketch-file-builder';
 import { Drawer } from './drawer';
 import {
   ITraversedElement,
@@ -11,7 +11,7 @@ import {
 } from '@sketchmine/dom-agent';
 import { exec } from 'child_process';
 import { SketchBuilderConfig } from './config.interface';
-import { readFile, Logger } from '@sketchmine/helpers';
+import { readFile, Logger } from '@sketchmine/node-helpers';
 import { sketchGeneratorApi } from './builder-api';
 import { Result as MetaResult, Component as MetaComponent } from '@sketchmine/code-analyzer';
 
@@ -113,7 +113,7 @@ export class ElementFetcher {
 
       comp.hasNestedSymbols.forEach((symbol) => {
         // TODO: @lukas.holzer make this more efficient
-        const comp = Object.values(this.meta.components)
+        const comp: MetaComponent = Object.values(this.meta.components)
           .find((comp: MetaComponent) => comp.selector.includes(symbol));
         const pos = sorted.indexOf(comp.component);
 

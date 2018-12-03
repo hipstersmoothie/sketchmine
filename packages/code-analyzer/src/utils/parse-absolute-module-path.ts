@@ -1,5 +1,5 @@
-import minimatch from 'minimatch';
 import * as path from 'path';
+const minimatch = require('minimatch');
 
 /**
  * Resolve the `export` and `import` paths to absolute paths and resolves path aliases from

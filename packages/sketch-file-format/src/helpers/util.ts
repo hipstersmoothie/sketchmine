@@ -64,15 +64,6 @@ export function parseBorderRadius(borderRadius, width, height) {
   return parseInt(borderRadius, 10);
 }
 
-export function bytesToSize(bytes: number): string {
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  if (bytes === 0) {
-    return '0 Byte';
-  }
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  const pow = bytes / Math.pow(1024, i);
-  return `${Math.round(pow)} ${sizes[i]}`;
-}
 
 export function calcPadding(padding: string, bcr: IBounding): IBounding {
   const spaces = padding.split(' ');

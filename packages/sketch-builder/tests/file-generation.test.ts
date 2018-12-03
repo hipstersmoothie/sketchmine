@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { promisify } from 'util';
 
-import { delDir, createDir } from '@sketchmine/helpers';
+import { delDir, createDir } from '@sketchmine/node-helpers';
 import { fileValidations } from './file-validations';
 import { ElementFetcher } from '../src/element-fetcher';
 

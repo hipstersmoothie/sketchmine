@@ -1,7 +1,7 @@
 import { lstatSync } from 'fs';
 import { resolve } from 'path';
 import { Validator, ErrorHandler, filenameValidation, IValidationRule } from '@sketchmine/sketch-validator';
-import { zipToBuffer as unzip, Logger, readFile } from '@sketchmine/helpers';
+import { zipToBuffer as unzip, Logger, readFile } from '@sketchmine/node-helpers';
 import chalk from 'chalk';
 
 const log = new Logger();

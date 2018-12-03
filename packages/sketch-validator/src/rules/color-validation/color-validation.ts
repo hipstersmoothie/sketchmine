@@ -1,12 +1,10 @@
 import { SketchFill, SketchBorder, round } from '@sketchmine/sketch-file-format';
-import { Logger, rgbToHex } from '@sketchmine/helpers';
+import { rgbToHex } from '@sketchmine/helpers';
 import { ValidationError, ColorNotInPaletteError } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import { generateMasterColors } from './generate-master-colors';
 import { COLOR_ERROR_MESSAGE } from '../../error/error-messages';
 import chalk from 'chalk';
-
-const log = new Logger();
 
 /**
  * Takes a homework and corrects it like a teacher 👩🏼‍🏫
@@ -24,7 +22,7 @@ export function colorValidation(
 
   const task = homeworks[currentTask];
   if (!task) {
-    log.error(
+    console.error(
       chalk`{bgRed [color-validation.ts]} -> colorValdiation needs a valid task` +
       chalk`{cyan IValdiationContext[]} parameter with index!\n`,
     );

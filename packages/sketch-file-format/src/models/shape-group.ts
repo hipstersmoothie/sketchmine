@@ -1,8 +1,5 @@
 import { SketchBase, IBounding, SketchObjectTypes, SketchShapeGroup } from '../interfaces';
 import { Base } from './base';
-import { Logger } from '@sketchmine/helpers';
-
-const log = new Logger();
 
 export class ShapeGroup extends Base {
 

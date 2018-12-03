@@ -1,5 +1,5 @@
-import { readFile, zipToBuffer as unzip, Logger  } from '@sketchmine/helpers';
-import { generateSketchFile } from '@sketchmine/sketch-file-format';
+import { readFile, zipToBuffer as unzip, Logger  } from '@sketchmine/node-helpers';
+import { generateSketchFile } from '@sketchmine/sketch-file-builder';
 import * as path from 'path';
 import { ColorReplacer } from './color-replacer';
 import { exec } from 'child_process';

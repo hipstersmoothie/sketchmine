@@ -1,5 +1,6 @@
 import { SketchFill, round } from '@sketchmine/sketch-file-format';
-import { rgbToHex, readFile } from '@sketchmine/helpers';
+import { rgbToHex } from '@sketchmine/helpers';
+import { readFile } from '@sketchmine/node-helpers';
 import { generateMasterColors } from './generate-master-colors';
 import { ColorNotInPaletteError } from '../../error/validation-error';
 import { colorInPalette } from './color-validation';

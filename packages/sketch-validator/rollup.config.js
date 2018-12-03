@@ -25,14 +25,11 @@ export default [
         name: 'sketch-validation',
         file: pkg.module,
         format: 'es'
-      },
+      }
     ],
-    // external: [
-    //   ...NODE_NATIVES,
-    // ],
     plugins: [
       json(),
-      typescript({ tsconfig: './tsconfig.json', useTsconfigDeclarationDir: true, }),
+      typescript({tsconfig: './tsconfig.json', useTsconfigDeclarationDir: true, }),
       resolve(), // so Rollup can find `ms`
       commonjs(), // so Rollup can convert `ms` to an ES module
     ]

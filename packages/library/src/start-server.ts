@@ -1,7 +1,7 @@
 import { spawn, ChildProcess } from 'child_process';
 import chalk from 'chalk';
 import * as path from 'path';
-import { Logger } from '@sketchmine/helpers';
+import { Logger } from '@sketchmine/node-helpers';
 import axios from 'axios';
 import { SketchBuilderConfig } from '@sketchmine/sketch-builder';
 const log = new Logger();

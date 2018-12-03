@@ -2,7 +2,7 @@ import * as ts from 'typescript';
 import * as path from 'path';
 import { findNode, createExamplesMap, createSketchLibraryModule, createImportDeclaration } from './ast';
 import { getSymbolName } from '@sketchmine/code-analyzer';
-import { writeFile, Logger } from '@sketchmine/helpers';
+import { writeFile, Logger } from '@sketchmine/node-helpers';
 import chalk from 'chalk';
 
 const log = new Logger();
