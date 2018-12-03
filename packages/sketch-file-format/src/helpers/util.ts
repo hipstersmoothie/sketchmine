@@ -64,7 +64,6 @@ export function parseBorderRadius(borderRadius, width, height) {
   return parseInt(borderRadius, 10);
 }
 
-
 export function calcPadding(padding: string, bcr: IBounding): IBounding {
   const spaces = padding.split(' ');
   const bounding = { ...bcr, x: 0, y: 0 };
