@@ -1,5 +1,5 @@
 import { IPoint, SketchObjectTypes, SketchCurvePoint } from '../interfaces';
-import { CurvePointMode } from '../helpers';
+import { CurvePointMode } from '../helpers/sketch-constants';
 
 export class CurvePoint {
 

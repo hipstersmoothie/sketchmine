@@ -7,7 +7,7 @@ const BUTTON_VARIANTS: Property[] = [
   { type: 'property', key: 'variant', value: ['"primary"', '"secondary"'] },
 ];
 
-describe('[angular-meta-parser] › utils › generate variants', () => {
+describe('[code-analyzer] › utils › generate variants', () => {
 
   test('mutating two properties', () => {
 

@@ -13,5 +13,4 @@ module.exports = {
   testRegex: "(/(tests|src)/.*.(test|e2e)).ts$",
   moduleFileExtensions: ['ts', 'js', 'json', 'node'],
   collectCoverage: true,
-  coveragePathIgnorePatterns: ['(tests/.*.mock).(js|ts)$'],
 };

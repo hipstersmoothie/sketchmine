@@ -35,7 +35,7 @@
     "@sketchmine/helpers": "^1.3.0",
     "@sketchmine/node-helpers": "^1.3.0",
     "chalk": "^2.4.0",
-    "lodash-es": "^4.17.0",
+    "lodash": "^4.17.0",
     "minimist": "^1.2.0",
     "typescript": "^3.2.1"
   },

@@ -4,7 +4,8 @@ import {
   ITraversedDomImageNode,
   ITraversedDomTextNode,
   ITraversedDomElement,
-} from './typings';
+  Visitor,
+} from './public-api';
 
 /**
  * The property keys that are used to identify if the element
@@ -18,14 +19,6 @@ const DEFAULT_STYLING_VALUES = [
   'boxShadow',
   'padding',
 ];
-
-/**
- * @description abstract class that a visitor has to implement
- */
-export abstract class Visitor {
-  abstract visitElement(element: HTMLElement): ITraversedDomElement;
-  abstract visitText(text: Node): ITraversedDomTextNode;
-}
 
 type elementNode = HTMLElement | SVGSVGElement | HTMLImageElement;
 

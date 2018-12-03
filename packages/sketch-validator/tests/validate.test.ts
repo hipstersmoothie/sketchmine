@@ -4,7 +4,7 @@ import { Teacher } from '../src/teacher';
 import { colorValidation } from '../src/rules/color-validation';
 import { IValidationRule } from '../src/interfaces/validation-rule.interface';
 
-const fixture = require('fixtures/validation-fixture.json');
+const fixture = require('./fixtures/validation-fixture.json');
 const RULE_FIXTURE: IValidationRule = {
   selector: [SketchObjectTypes.ShapeGroup, SketchObjectTypes.Rectangle, SketchObjectTypes.Path],
   name: 'color-palette-validation',

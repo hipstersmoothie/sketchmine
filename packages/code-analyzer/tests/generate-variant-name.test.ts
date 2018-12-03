@@ -3,7 +3,7 @@ import * as AMP from '../src/meta-information';
 
 type Porperty = AMP.VariantMethod | AMP.VariantProperty;
 
-describe('[angular-meta-parser] › utils › generate variant name', () => {
+describe('[code-analyzer] › utils › generate variant name', () => {
 
   test('generate name for button primary', () => {
     const variants: Porperty[] =  [{ type: 'property', key: 'variant', value: '"primary"' }];

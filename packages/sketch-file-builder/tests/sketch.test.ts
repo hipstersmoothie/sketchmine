@@ -7,7 +7,7 @@ describe('Sketch file format generation', () => {
     let sketch: Sketch;
 
     beforeEach(() => {
-      sketch = new Sketch();
+      sketch = new Sketch('tests/fixtures/preview.png');
     });
 
     it('should have created the Sketch class and called the write function', async () => {

@@ -4,13 +4,16 @@ import { ElementFetcher } from '../src/element-fetcher';
 import { SketchBuilderConfig } from '../src/config.interface';
 
 // tslint:disable:max-line-length
-describe('[sketch-generator] › element fetcher', () => {
+describe('[sketch-builder] › element fetcher', () => {
   let fetcher: ElementFetcher;
 
   beforeEach(async () => {
     process.env.TRAVERSER = 'skip-traverser';
     const meta = JSON.parse(await readFile('tests/fixtures/meta-information.json'));
-    fetcher = new ElementFetcher({} as SketchBuilderConfig, meta);
+    const config = {
+      agent: '../../../node_modules/@sketchmine/dom-agent/lib/index.esm.js',
+    } as SketchBuilderConfig;
+    fetcher = new ElementFetcher(config , meta);
   });
 
   test('Sorting of tile has nested button', async () => {

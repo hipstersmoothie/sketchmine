@@ -5,7 +5,8 @@ import { readFileSync } from 'fs';
 import * as path from 'path';
 import { JSDOM } from 'jsdom';
 import { DomTraverser, NodeType } from '../src/dom-traverser';
-import { DomVisitor, StyleDeclaration } from '../src/dom-visitor';
+import { DomVisitor } from '../src/dom-visitor';
+import { StyleDeclaration } from '@sketchmine/helpers';
 
 const TEST_FILE = path.join(process.cwd(), 'tests', 'fixtures', 'test-page.html');
 const ROOT_ELEMENT = 'app-root';

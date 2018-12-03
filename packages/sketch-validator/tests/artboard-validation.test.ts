@@ -1,6 +1,6 @@
-import { artboardValidation } from './artboard-validation';
-import { ArtboardNamingError, ArtboardSizeError, ArtboardEmptyError } from '../../error/validation-error';
-import { IValidationContext } from '../../interfaces/validation-rule.interface';
+import { artboardValidation } from '../src/rules/artboard-validation';
+import { ArtboardNamingError, ArtboardSizeError, ArtboardEmptyError } from '../src/error/validation-error';
+import { IValidationContext } from '../src/interfaces/validation-rule.interface';
 
 describe('Artboard Validation', () => {
   let fakeHomework: IValidationContext;

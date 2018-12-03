@@ -4,7 +4,7 @@ import { ITraversedDomElement } from '@sketchmine/dom-agent';
 import { SketchObjectTypes } from '@sketchmine/sketch-file-format';
 import { StyleDeclaration } from '@sketchmine/helpers';
 
-describe('[sketch-generator] › draw sketch elements', () => {
+describe('[sketch-builder] › draw sketch elements', () => {
   let baseTraversedElement: ITraversedDomElement;
 
   beforeEach(() => {

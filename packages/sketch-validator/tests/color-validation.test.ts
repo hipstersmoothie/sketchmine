@@ -1,14 +1,13 @@
 import { SketchFill, round } from '@sketchmine/sketch-file-format';
 import { rgbToHex } from '@sketchmine/helpers';
 import { readFile } from '@sketchmine/node-helpers';
-import { generateMasterColors } from './generate-master-colors';
-import { ColorNotInPaletteError } from '../../error/validation-error';
-import { colorInPalette } from './color-validation';
+import { generateMasterColors, colorInPalette } from '../src/rules/color-validation';
+import { ColorNotInPaletteError } from '../src/error/validation-error';
 import { resolve } from 'path';
-import { DYNATRACE_LOGO_COLORS } from '../../config';
+import { DYNATRACE_LOGO_COLORS } from '../src/config';
 import chalk from 'chalk';
 
-const COLORS_FILE = resolve('_tmp/src/lib/core/style/_colors.scss');
+const COLORS_FILE = resolve('./tests/fixtures/_colors.scss');
 /**
  * Sketch converts rgb colors from 0 to 1 so 255 equals 1
  * So convert ${rgb-color}/255 = sketch color

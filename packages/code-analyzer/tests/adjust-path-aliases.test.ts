@@ -1,7 +1,7 @@
 import { adjustPathAliases, readTsConfig, READ_TSCONFIG_ERROR } from '../src/utils/adjust-path-aliases';
 import { resolve } from 'path';
 
-describe('[angular-meta-parser] › utils › adjusting path aliases from tsconfig', () => {
+describe('[code-analyzer] › utils › adjusting path aliases from tsconfig', () => {
   let config;
   beforeEach(() => {
     config = {

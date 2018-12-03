@@ -1,5 +1,5 @@
-import { pageValidation } from './page-validation';
-import { PageNamingError } from '../../error/validation-error';
+import { pageValidation } from '../src/rules/page-validation';
+import { PageNamingError } from '../src/error/validation-error';
 
 describe('Page Validation', () => {
   const artboardSizes: String[] = [

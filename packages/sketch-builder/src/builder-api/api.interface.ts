@@ -1,18 +1,18 @@
 import {
   TraversedLibrary,
   TraversedPage,
-  AssetHelper,
-  DomTraverser,
-  DomVisitor,
-} from '@sketchmine/dom-agent';
+  Traverser,
+  Visitor,
+} from '@sketchmine/dom-agent/lib/@types/public-api';
 
+export type Constructor<T> = new(...args: any[]) => T;
 export interface InjectedWindow extends Window {
   sketchGenerator: SketchGenerator;
   page?: TraversedPage;
   library?: TraversedLibrary;
-  AssetHelper: AssetHelper;
-  DomTraverser: DomTraverser;
-  DomVisitor: DomVisitor;
+  AssetHelper: Constructor<any>;
+  DomTraverser: Constructor<Traverser>;
+  DomVisitor: Constructor<Visitor>;
   _handleClick: (fn: (...args: any[]) => void, ...args: any[]) => Promise<{}>;
   _handleHover: (fn: (...args: any[]) => void, ...args: any[]) => Promise<{}>;
   _handleFocus: (fn: (...args: any[]) => void, ...args: any[]) => Promise<{}>;

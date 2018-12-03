@@ -1,9 +1,9 @@
-import { DomVisitor, DomTraverser, ITraversedElement, TraversedSymbol } from '@sketchmine/dom-agent';
+import { ITraversedElement, TraversedSymbol } from '@sketchmine/dom-agent/lib/@types/public-api';
 import { Result as MetaResult } from '@sketchmine/code-analyzer';
 import { Logger } from '@sketchmine/node-helpers';
 import { getComponentSelectors } from '../helpers/get-component-selectors';
 import { InjectedWindow } from './api.interface';
-import * as puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer';
 
 export interface SketchGeneratorApiConfig {
   browser: puppeteer.Browser;
@@ -49,8 +49,8 @@ export async function sketchGeneratorApi(config: SketchGeneratorApiConfig): Prom
     await page.evaluate(
       (rootSelector: string, symbolName: string, selectors: string[]) => {
         const hostElement = document.querySelector(rootSelector) as HTMLElement;
-        const visitor = new DomVisitor(hostElement, selectors);
-        const traverser = new DomTraverser();
+        const visitor = new window.DomVisitor(hostElement, selectors);
+        const traverser = new window.DomTraverser();
         const symbol = {
           name: symbolName,
           symbol: traverser.traverse(hostElement, visitor),

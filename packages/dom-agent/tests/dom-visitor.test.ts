@@ -1,7 +1,8 @@
 import { JSDOM } from 'jsdom';
 import * as path from 'path';
 import { readFileSync } from 'fs';
-import { DomVisitor, StyleDeclaration } from '../src/dom-visitor';
+import { DomVisitor } from '../src/dom-visitor';
+import { StyleDeclaration } from '@sketchmine/helpers';
 import {
   ITraversedDomElement,
   ITraversedDomTextNode,

@@ -1,6 +1,5 @@
-import * as path from 'path';
 import chalk from 'chalk';
-import * as puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer';
 import { Sketch } from '@sketchmine/sketch-file-builder';
 import { Drawer } from './drawer';
 import {
@@ -14,28 +13,27 @@ import { SketchBuilderConfig } from './config.interface';
 import { readFile, Logger } from '@sketchmine/node-helpers';
 import { sketchGeneratorApi } from './builder-api';
 import { Result as MetaResult, Component as MetaComponent } from '@sketchmine/code-analyzer';
+import { resolve } from 'path';
 
-declare var window: any;
+declare const window: any;
 const log = new Logger();
-const config = require(`${process.cwd()}/config/app.json`);
-const TRAVERSER = path.join(process.cwd(), config.sketchGenerator.traverser);
 
 /**
  * For debugging reasons the result of the dom Traverser can be stored in a file,
  * then the traversing in the browser gets skiped and uses the result from the json.
  */
-const LOCAL_RESULT_PATH = 'tests/fixtures/library.json';
+const LOCAL_RESULT_PATH = resolve('tests/fixtures/library.json');
 
 export class ElementFetcher {
   // private _assetHsandler: AssetHandler = new AssetHandler();
   result: (TraversedPage | TraversedLibrary)[] = [];
 
-  constructor(public conf: SketchBuilderConfig, public meta?: MetaResult) { }
+  constructor(public conf: SketchBuilderConfig, public meta?: MetaResult) {}
 
   async generateSketchFile(): Promise<number> {
     this.sortSymbols();
     const drawer = new Drawer();
-    const sketch = new Sketch(this.conf.outFile);
+    const sketch = new Sketch(this.conf.previewImage || 'lib/assets/preview.png', this.conf.outFile);
     const pages = [];
     let symbolsMaster = drawer.drawSymbols({ symbols: [] } as any);
 
@@ -142,7 +140,7 @@ export class ElementFetcher {
   }
 
   async getPage(browser: puppeteer.Browser, url: string): Promise<TraversedPage | TraversedLibrary> {
-    const traverser = await readFile(TRAVERSER);
+    const traverser = await readFile(this.conf.agent);
     let result: any;
 
     if (this.conf.library) {
@@ -159,22 +157,25 @@ export class ElementFetcher {
       await page.goto(url, { waitUntil: 'networkidle0' });
       await page.addScriptTag({ content: traverser });
       await page.addScriptTag({ content: `
-          const images = new AssetHelper();
           window.page = {
             type: 'page',
             pageUrl: window.location.pathname.substr(1),
             pageTitle: document.title,
-            assets: images.assets,
+            assets: [], //images.assets,
             element: null,
           };
           const hostElement = document.querySelector('${this.conf.rootElement}');
           if (!hostElement) {
             throw new Error(\`Could not select hostElement with selector: ${this.conf.rootElement}\`);
           }
-          const visitor = new DomVisitor(hostElement, []);
-          const traverser = new DomTraverser();
+          const visitor = new window.DomVisitor(hostElement, []);
+          const traverser = new window.DomTraverser();
           window.page.element = traverser.traverse(hostElement, visitor);` });
+      console.log('here', result);
       result = await page.evaluate(() => window.page) as ITraversedElement[];
+    }
+    if (result.element === null) {
+      throw new Error('Something happened while traversing the DOM! check the dom-agent! 🧙🏻‍♂');
     }
     log.debug(JSON.stringify(result), 'dom-traverser');
     return result;

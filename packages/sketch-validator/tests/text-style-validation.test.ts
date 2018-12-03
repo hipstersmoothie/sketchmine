@@ -7,9 +7,9 @@ import {
   WrongHeadlineError,
   InvalidTextColorError,
   TextTooSmallError,
-} from '../../error/validation-error';
-import { getFakeHomeworks } from '../../../tests/fixtures/fake-homeworks';
-import { textStyleValidation } from './text-style-validation';
+} from '../src/error/validation-error';
+import { getFakeHomeworks } from './fixtures/fake-homeworks';
+import { textStyleValidation } from '../src/rules/text-style-validation';
 
 describe('[sketch-validator] › Text Style Validation › Tests usage of text styles defined in global library.', () => {
   let sketchDocument: SketchBase;

@@ -1,11 +1,24 @@
 import typescript from 'rollup-plugin-typescript2';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
+import copy from 'rollup-plugin-copy';
 import json from 'rollup-plugin-json'
 import pkg from './package.json';
 
 const NODE_NATIVES = ['path', 'fs', 'os', 'buffer', 'crypto', 'util', 'child_process', 'perf_hooks'];
 const DEPENDENCIES = Object.keys(pkg.dependencies);
+
+const plugins = [
+  json(),
+  typescript({ tsconfig: './tsconfig.json', useTsconfigDeclarationDir: true }),
+  resolve(), // so Rollup can find `ms`
+  commonjs(), // so Rollup can convert `ms` to an ES module
+];
+
+const external = [
+  ...NODE_NATIVES,
+  ...DEPENDENCIES,
+];
 
 export default [
   {
@@ -18,15 +31,25 @@ export default [
         sourcemap: true,
       },
     ],
-    external: [
-      ...NODE_NATIVES,
-      ...DEPENDENCIES,
+    external,
+    plugins,
+  },
+  {
+    input: 'src/bin.ts',
+    output: [
+      {
+        name: 'sketch-builder-executeable',
+        file: 'lib/bin.js',
+        format: 'cjs',
+        sourcemap: true,
+      },
     ],
+    external,
     plugins: [
-      json(),
-      typescript({ tsconfig: './tsconfig.json', useTsconfigDeclarationDir: true }),
-      resolve(), // so Rollup can find `ms`
-      commonjs(), // so Rollup can convert `ms` to an ES module
+      ...plugins,
+      copy({
+        'src/assets/preview.png': 'lib/assets/preview.png',
+      }),
     ]
   },
 ]

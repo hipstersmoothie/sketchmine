@@ -3,7 +3,7 @@ import chalk from 'chalk';
 export function displayHelp() {
   console.log(chalk`
 
-The angular-meta-parser is a compiler, that generates an abstract syntax tree short AST from the
+The code-analyzer is a compiler, that generates an abstract syntax tree short AST from the
 Angular Components library and transforms the AST to a JSON format that represents all components,
 that are related for the components library in sketch with all possible variants
 

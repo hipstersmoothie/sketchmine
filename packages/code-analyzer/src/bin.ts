@@ -18,7 +18,7 @@ export async function commandLineExecutor(): Promise<number> {
   try {
     JSON.parse(config);
   } catch (error) {
-    throw Error(`Please provide a default config.json in the root for the angular-meta-parser:\n${error.message}`);
+    throw Error(`Please provide a default config.json in the root for the code-analyzer:\n${error.message}`);
   }
   const { rootDir, library, inFile, outFile } = parseCommandlineArgs(args, JSON.parse(config));
   return await main(rootDir, library, outFile, inFile, false) as number;

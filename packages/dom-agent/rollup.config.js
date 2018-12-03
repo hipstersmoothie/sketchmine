@@ -22,4 +22,20 @@ export default [
       commonjs(), // so Rollup can convert `ms` to an ES module
     ]
   },
+  {
+    input: 'src/public-api.ts',
+    output: [
+      {
+        name: 'dom-agent-api',
+        file: 'lib/public-api.js',
+        format: 'esm',
+        sourcemap: true,
+      }
+    ],
+    plugins: [
+      json(),
+      typescript({ tsconfig: './tsconfig.json', useTsconfigDeclarationDir: true}),
+      resolve(), // so Rollup can find `ms`
+    ]
+  },
 ]

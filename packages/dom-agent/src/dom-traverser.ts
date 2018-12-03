@@ -1,5 +1,5 @@
 import { DomVisitor } from './dom-visitor';
-import { ITraversedElement, ITraversedDomElement } from './typings';
+import { ITraversedElement, ITraversedDomElement, Traverser } from './public-api';
 
 export enum NodeType {
   Text = 'Text',
@@ -11,7 +11,7 @@ export enum NodeType {
  * @description
  * Traverser that runs through the DOM and visits every node with a visitor
  */
-export class DomTraverser {
+export class DomTraverser implements Traverser {
   nodeCount = 0;
   elementCount = 0;
   attributeCount = 0;
@@ -35,7 +35,7 @@ export class DomTraverser {
     }
   }
 
-  traverse(node, visitor: DomVisitor): ITraversedElement {
+  traverse(node: any, visitor: DomVisitor): ITraversedElement {
     if (!node) {
       throw new Error('No node was passed to the traverse function, maybe the root Element does not exist!');
     }

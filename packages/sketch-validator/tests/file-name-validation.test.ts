@@ -1,6 +1,6 @@
-import { filenameValidation, RULE_NAME } from './file-name-validation';
-import { FileNameError } from '../../error/validation-error';
-import { ErrorHandler } from '../../error/error-handler';
+import { filenameValidation, RULE_NAME } from '../src/rules/file-name-validation';
+import { FileNameError } from '../src/error/validation-error';
+import { ErrorHandler } from '../src/error/error-handler';
 
 describe('Filename Validation', () => {
 

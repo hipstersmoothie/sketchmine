@@ -1,14 +1,13 @@
-import * as puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer';
 import { ITraversedElement } from '../src/typings';
-import { readFile } from '@sketchmine/helpers';
+import { readFile } from '@sketchmine/node-helpers';
 import { resolve, join } from 'path';
 
 declare var window: any;
 
 const TEST_FILE = `file:${join(process.cwd(), 'tests', 'fixtures', 'tile-default.html')}`;
-const DOM_AGENT = resolve('lib', 'index.js');
+const DOM_AGENT = resolve('lib', 'index.esm.js');
 const ROOT_ELEMENT = 'app-root > * ';
-
 
 function findObjects(o: Object, targetProp: string, targetValue: any, finalResults) {
   function getObject(obj: Object) {
@@ -39,7 +38,6 @@ describe('E2E Dom Traverser', () => {
   beforeAll(async () => {
     const options = { headless: true, devtools: false };
     const domAgent = await readFile(DOM_AGENT);
-    console.log(domAgent)
     browser = await puppeteer.launch(options);
 
     const page = await browser.newPage();

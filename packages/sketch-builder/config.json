@@ -12,6 +12,7 @@
   "pages": [
     ""
   ],
+  "previewImage": "lib/assets/preview.png",
   "outFile": "_library/dt-asset-lib.sketch",
   "chrome": {
     "defaultViewport": {

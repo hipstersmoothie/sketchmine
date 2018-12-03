@@ -4,14 +4,15 @@ import { Document, Meta, Page } from '@sketchmine/sketch-file-format';
 import { dirname, resolve, basename, join } from 'path';
 import chalk from 'chalk';
 
-const config = require(`${process.cwd()}/config/app.json`);
-
 export class Sketch {
   private static TMP_PATH = resolve('_sketch_tmp');
   private _outDir: string;
   private _fileName: string;
 
-  constructor(outFile?: string) {
+  constructor(
+    public previewImage: string,
+    outFile?: string,
+  ) {
     this._outDir = dirname(outFile) || './';
     this._fileName = basename(outFile, '.sketch') || 'dt-asset-lib';
   }
@@ -63,7 +64,7 @@ export class Sketch {
       await writeJSON(join(Sketch.TMP_PATH, 'pages', page.objectID), page.generateObject());
     });
 
-    const preview = join(process.cwd(), config.sketchGenerator.previewImage);
+    const preview = join(process.cwd(), this.previewImage);
     await copyFile(preview, join(Sketch.TMP_PATH, 'previews'));
   }
 }

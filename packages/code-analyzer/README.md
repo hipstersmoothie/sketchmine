@@ -1,18 +1,18 @@
 # @sketchmine/code-analyzer
 
-The angular-meta-parser is a compiler, that generates an abstract syntax tree short AST from the
+The code-analyzer is a compiler, that generates an abstract syntax tree short AST from the
 Angular Components library and transforms the AST to a JSON format that represents all components,
 that are related for the components library in sketch with all possible variants
 
 ## Development
 
-First you need the **Angular Components Library** source code. You can easily run a `sh ./src/angular-meta-parser/prepare.sh` script,
+First you need the **Angular Components Library** source code. You can easily run a `sh ./src/code-analyzer/prepare.sh` script,
 that takes control of that for you.
 
 Afterwards just run in one window the rollup build: `npm run build:dev` this will start rollup in watch mode
 with cokidar to compile the `.ts` files on the file in the specified dist folder *(specified in `./config/build.js`).
-The compiled output can easy started with `node dist/angular-meta-parser`. The possible command line args for the application
-are written as default values in the `./src/angular-meta-parser/config.json`. The commandline args overwrite the defaults from the JSON
+The compiled output can easy started with `node dist/code-analyzer`. The possible command line args for the application
+are written as default values in the `./src/code-analyzer/config.json`. The commandline args overwrite the defaults from the JSON
 
 ### command line args
 
@@ -54,7 +54,7 @@ Just run `npm i` in the root.
 
 ### How to dev
 
-For debbugging, you can specify specific debug spaces with `DEBUG=${space1},${space2},${space3}... node angular-meta-parser`
+For debbugging, you can specify specific debug spaces with `DEBUG=${space1},${space2},${space3}... node code-analyzer`
 or just set `DEBUG` to `true`.
 
 #### Available debug spaces for granular logging:
@@ -76,4 +76,4 @@ Just run `npm run test`
 
 ## Architecture
 
-This angular-meta-parser is part of the .sketch generation ecosystem
+This code-analyzer is part of the .sketch generation ecosystem

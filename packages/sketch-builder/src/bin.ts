@@ -2,9 +2,11 @@ import { main } from './main';
 import { SketchBuilderConfig } from './config.interface';
 import { readFile } from '@sketchmine/node-helpers';
 import * as AMP from '@sketchmine/code-analyzer';
+import { resolve } from 'path';
 
 export async function commandLineExecutor(): Promise<number> {
-  const config = require('./config.json') as SketchBuilderConfig;
+  const confPath = resolve('./config.json');
+  const config = require(confPath) as SketchBuilderConfig;
   let meta: AMP.Result;
 
   if (config.metaInformation) {

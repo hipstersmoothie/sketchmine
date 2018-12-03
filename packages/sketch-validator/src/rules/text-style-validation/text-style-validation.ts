@@ -23,7 +23,7 @@ import {
   WrongFontError,
 } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
-import { isEqual } from 'lodash-es';
+import isEqual from 'lodash/isEqual';
 
 /**
  * Checks if string attributes are identical except for color attribute;

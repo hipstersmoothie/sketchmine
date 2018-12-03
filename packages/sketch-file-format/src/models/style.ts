@@ -3,18 +3,16 @@ import {
   SketchShadow,
   SketchFill,
   SketchObjectTypes,
-  SketchColor,
   SketchGraphicsContext,
   SketchStyle,
 } from '../interfaces';
 import {
-  cssToRGBA,
-  BlendingMode,
   BorderPosition,
   NoiseFillType,
   FillType,
   PatternFillType,
-} from '../helpers';
+  BlendingMode,
+} from '../helpers/sketch-constants';
 import { colorToSketchColor } from '../helpers/color-to-sketch-color';
 
 export interface Shadow {

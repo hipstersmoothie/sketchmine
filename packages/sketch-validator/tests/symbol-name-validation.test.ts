@@ -1,5 +1,5 @@
-import { checkThemeInName, symbolNameValidation } from './symbol-name-validation';
-import { WrongSymbolNamingError, DuplicatedSymbolError } from '../../error/validation-error';
+import { checkThemeInName, symbolNameValidation } from '../src/rules/symbol-name-validation';
+import { WrongSymbolNamingError, DuplicatedSymbolError } from '../src/error/validation-error';
 
 describe('Symbol Name Validation', () => {
 

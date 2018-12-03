@@ -1,6 +1,6 @@
 # @sketchmine/sketch-builder
 
-The sketch-generator is the heart pice of this library. It takes control over generating **.sketch** files from any html that is provided to the library. It can draw a symbol Library or just a plain page. The orchestration for drawing a hole library is done by the library itself.
+The sketch-builder is the heart pice of this library. It takes control over generating **.sketch** files from any html that is provided to the library. It can draw a symbol Library or just a plain page. The orchestration for drawing a hole library is done by the library itself.
 
 ## Development
 
@@ -8,7 +8,7 @@ You need to adjust the `config.json` up to your needs like described in the [Pre
 
 Afterwards just run in one window the rollup build: `npm run build:dev` this will start rollup in watch mode
 with cokidar to compile the `.ts` files on the file in the specified dist folder *(specified in `./config/build.js`).
-The compiled outup can easy started with `node dist/sketch-generator`.
+The compiled outup can easy started with `node dist/sketch-builder`.
 
 ### Prerequisites
 
@@ -24,7 +24,7 @@ there are two options to configure.
 
 ### General configuration
 
-The general configuaration has to match the typings from `./sketch-generator.d.ts`
+The general configuaration has to match the typings from `./sketch-builder.d.ts`
 It has to include following properties:
 
 ```json
@@ -39,6 +39,7 @@ It has to include following properties:
     "support/doc/appmon/",
     "support/doc/appmon/getting-started/architecture/"
   ],
+  "agent": "path/to/the/dom-agent.js",
   "outFile": "start-page.sketch",
   "chrome": {
     "defaultViewport": {
@@ -89,10 +90,10 @@ Just run `npm i` in the root.
 
 ### How to dev
 
-For debbugging, you can specify specific debug spaces with `DEBUG=${space1},${space2},${space3}... node dist/sketch-generator`
+For debbugging, you can specify specific debug spaces with `DEBUG=${space1},${space2},${space3}... node dist/sketch-builder`
 or just set `DEBUG` to `true`.
 
-If you want to speed up the sketch-generator you can skip the headless chrome part and use a static json file from the fixtures.
+If you want to speed up the sketch-builder you can skip the headless chrome part and use a static json file from the fixtures.
 The fixture file is located under `/tests/fixtures/library.json`.
 
 If you pass the Node environement `TRAVERSER=skip-traverser node ...` to the node command the fixture file is used.
@@ -106,12 +107,12 @@ If you pass the Node environement `TRAVERSER=skip-traverser node ...` to the nod
 
 **Important!**
 
-All tests according to this space should be wrapped in a describe with the prefix: `[sketch-generator] › ...` like the following:
+All tests according to this space should be wrapped in a describe with the prefix: `[sketch-builder] › ...` like the following:
 
 ```typescript
 //... import statements
 
-describe('[sketch-generator] › ${folder} › ${description of the suite}', () => {
+describe('[sketch-builder] › ${folder} › ${description of the suite}', () => {
 
 // .. your tests should place here.
 
@@ -127,8 +128,8 @@ Just run `npm run test`
 
 ### Urls
 
-* [webkins tests](https://webkins.lab.dynatrace.org/job/barista/job/sketch-generator/)
+* [webkins tests](https://webkins.lab.dynatrace.org/job/barista/job/sketch-builder/)
 
 ## Architecture
 
-This sketch-generator is part of the .sketch generation ecosystem
+This sketch-builder is part of the .sketch generation ecosystem

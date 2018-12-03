@@ -1,11 +1,13 @@
 export interface SketchBuilderConfig {
-  metaInformation?: string;
-  host: Host;
-  rootElement: string;
-  library?: Library;
-  pages: string[];
-  outFile: string;
   chrome: Chrome;
+  host: Host;
+  outFile: string;
+  pages: string[];
+  rootElement: string;
+  agent: string; // path to the dom-agent that should be injected
+  previewImage?: string;
+  library?: Library;
+  metaInformation?: string;
 }
 
 export interface Library {
