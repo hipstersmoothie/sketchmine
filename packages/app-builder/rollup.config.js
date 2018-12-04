@@ -7,6 +7,18 @@ import pkg from './package.json';
 const NODE_NATIVES = ['path', 'fs', 'os', 'buffer', 'crypto', 'util', 'child_process', 'perf_hooks'];
 const DEPENDENCIES = Object.keys(pkg.dependencies);
 
+const plugins = [
+  json(),
+  typescript({ tsconfig: './tsconfig.json', useTsconfigDeclarationDir: true }),
+  resolve(), // so Rollup can find `ms`
+  commonjs(), // so Rollup can convert `ms` to an ES module
+];
+
+const external = [
+  ...NODE_NATIVES,
+  ...DEPENDENCIES,
+];
+
 export default [
   {
     input: 'src/index.ts',
@@ -18,15 +30,20 @@ export default [
         sourcemap: true,
       },
     ],
-    external: [
-      ...NODE_NATIVES,
-      ...DEPENDENCIES,
+    external,
+    plugins,
+  },
+  {
+    input: 'src/bin.ts',
+    output: [
+      {
+        name: 'app-builder-executeable',
+        file: 'lib/bin.js',
+        format: 'cjs',
+        sourcemap: true,
+      },
     ],
-    plugins: [
-      json(),
-      typescript({ tsconfig: './tsconfig.json', useTsconfigDeclarationDir: true }),
-      resolve(), // so Rollup can find `ms`
-      commonjs(), // so Rollup can convert `ms` to an ES module
-    ]
+    external,
+    plugins,
   },
 ]

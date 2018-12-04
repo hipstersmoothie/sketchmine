@@ -3,6 +3,7 @@ export * from './bytes-to-size';
 export * from './copy-file';
 export * from './create-dir';
 export * from './del-folder';
+export * from './display-help';
 export * from './is-file';
 export * from './logger';
 export * from './read-dir-recursivly';

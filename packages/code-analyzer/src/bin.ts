@@ -26,7 +26,7 @@ export async function commandLineExecutor(): Promise<number> {
 
 commandLineExecutor().then((code: number) => {
   process.exit(code);
-}).then((err) => {
+}).catch((err) => {
   console.error(err);
   process.exit(1);
 });

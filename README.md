@@ -35,15 +35,7 @@ Sketchmine follows a monorepo approach and all officially maintained modules and
 
 > The tool for managing the monorepo @sketchmine has been extracted out as [Lerna](https://github.com/lerna/lerna)
 
-
 ### Dependency graph
-
-<ul style="list-style-type: none; padding: 0;">
-  <li><span style="border: 1px solid black; width: 10px; height: 10px; display: inline-block;  margin-right: 7px; background: #7fffd4"></span>Executeable entrypoint</li>
-  <li><span style="border: 1px solid black; width: 10px; height: 10px; display: inline-block;  margin-right: 7px; background: #f0ffff"></span>library that orchestrates the entry points</li>
-  <li><span style="border: 1px solid black; width: 10px; height: 10px; display: inline-block;  margin-right: 7px; background: #fafad2"></span>Helper functions for browser and Node.js</li>
-  <li><span style="border: 1px solid black; width: 10px; height: 10px; display: inline-block;  margin-right: 7px; background: #add8e6"></span>UMD browserbundles compiled with <a href="https://rollupjs.org/guide/en">rollup.js</a></li>
-</ul>
 
 ![Dependency graph of the sketchmine mono repository](https://dt-cdn.net/images/dependency-graph-3920-82e93eaddf.png)
 

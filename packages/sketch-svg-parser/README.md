@@ -7,19 +7,16 @@
   - [Linting](#linting)
   - [Testing the package](#testing-the-package)
 
-
 The sketch-svg-parser is used to get an SVG image and convert it to [Curve Points](https://sketchapp.com/docs/vector-editing/points-and-paths).
-SVG Images consist out of Curve definitions. So an SVG describes a curve from point A to point B.
-On the opposite Sketch only defines the points with their anchors and handles for the curve.
+SVG Images consist of Curve definitions. As the SVG syntax for paths differs from the Sketch syntax, this package handles the conversion between them.
 
 ## Dependency graph
 
 ![Dependency graph of the sketchmine sketch-svg-parser](https://dt-cdn.net/images/sketch-svg-parser-3920-8bde931eda.png)
 
-
 ## The SVG parser
 
-The `src/svg-parser.ts` is the entry point to this package that receives the input of the SVG as HTML string and the width and the height of the provided SVG.
+The `src/svg-parser.ts` is the entry point to this package that receives the input of the SVG as string and the width and the height of the provided SVG.
 
 The width and the height can be received in a browser through the `$0.getBoundingClientRect()` that provides a DOMRect with the actual width and height of the SVG Element.
 
@@ -30,17 +27,15 @@ export class SvgParser {
 }
 ```
 
-In the case of the library, the *sketch-svg-parser* gets called by the *sketch-builder* in the `element-drawer.ts` with the following code.
+In a library context, the *sketch-svg-parser* gets called by the *sketch-builder* in the `element-drawer.ts` with the following code.
 
 First of all, the **SvgParser** parses the SVGElement and then the object gets converted by the **SvgToSketch** class that returns the Sketch-AST of an SVG Element.
 
 ```typescript
+// the function that calls the SvgParser
 private generateSVG(element: ITraversedDomSvgNode) {
-  log.debug(chalk`\tAdd SVG 📈  ${element.className}`);
   const size = this.getSize(element);
   const svgObject = SvgParser.parse(element.html, size.width, size.height);
-  // svgObject.shapes.map(shape => overrideSvgStyle(shape.style, element.styles));
-  // const styles = this.addStyles(element);
 
   const svg = new SvgToSketch(svgObject, size);
   svg.styles = element.styles;
@@ -51,23 +46,23 @@ private generateSVG(element: ITraversedDomSvgNode) {
 
 ## Building the package
 
-For building the package [Rollup.js](https://rollupjs.org/guide/en) is used as a module bundler. The configuration can be found in the `rollup.config.js` and is orchestrated by the [yarn](https://yarnpkg.com/en/) package manager.
-The package bundle is in the **commonjs** format and meant to be consumed only be node.js applications.
+To build the package [Rollup.js](https://rollupjs.org/guide/en) is used as a module bundler. The configuration can be found in the `rollup.config.js` file and is orchestrated by the [yarn](https://yarnpkg.com/en/) package manager.
+The package bundle is formatted **commonjs** and is meant to be consumed only by node.js applications.
 
 The build can be started with the following two commands:
 
 - `yarn build` for building the package.
-- `yarn dev` for building and watching the sources of the package. *(rebuilds after safe)*
+- `yarn dev` for building and watching the sources of the package *(rebuilds after safe)*.
 
 ## Linting
 
 The source code of this package is going to be linted by our CI environment. To ensure a coding standard and quality use the configured linter [tslint](https://palantir.github.io/tslint/). This package extends from the `tslint-config-airbnb` and the linting configuration extends from the root `tslint.json`.
 
-run `yarn lint` to execute the linter.
+Run `yarn lint` to execute the linter.
 
 ## Testing the package
 
-To ensure that the svg-parser is working, write tests and put them in a proper named file.
+To ensure that the sketch-svg-parser is working, write tests and put them in proper named file.
 
 **Important!**
 
@@ -83,4 +78,4 @@ describe('[sketch-svg-parser] › ${folder} › ${description of the suite}', ()
 
 > For tests the **jest** Framework was chosen, see [jestjs.io](https://jestjs.io/) for details.
 
-Run `yarn test` to run all tests specified for SVG parser. Run `yarn test -f filename.test` to run only tests that matches the provided RegExp for the filename.
+Run `yarn test` to execute all tests specified for the Sketch SVG parser. Run `yarn test -f filename.test` to execute only tests that match the provided RegExp for the filename.
