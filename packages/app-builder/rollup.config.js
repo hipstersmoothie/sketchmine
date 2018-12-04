@@ -3,6 +3,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import json from 'rollup-plugin-json'
 import pkg from './package.json';
+import { banner } from '../../config/banner';
 
 const NODE_NATIVES = ['path', 'fs', 'os', 'buffer', 'crypto', 'util', 'child_process', 'perf_hooks'];
 const DEPENDENCIES = Object.keys(pkg.dependencies);
@@ -28,6 +29,7 @@ export default [
         file: pkg.main,
         format: 'cjs',
         sourcemap: true,
+        banner: banner(pkg),
       },
     ],
     external,
@@ -41,6 +43,7 @@ export default [
         file: 'lib/bin.js',
         format: 'cjs',
         sourcemap: true,
+        banner: banner(pkg),
       },
     ],
     external,

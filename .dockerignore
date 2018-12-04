@@ -3,4 +3,6 @@ _tmp
 .rpt2_cache
 .vscode
 dist
+lib
+coverage
 tests
