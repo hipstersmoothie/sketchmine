@@ -1,5 +1,9 @@
 # @sketchmine/sketch-file-builder
 
+## Dependency graph
+
+![Dependency graph of the sketchmine sketch-file-builder](https://dt-cdn.net/images/sketch-file-builder-3920-aaa3e21a95.png)
+
 ### Useful bash scripts
 
 convert a folder to a .sketch file

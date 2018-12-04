@@ -9,7 +9,7 @@ const writeFileAsync = promisify(write);
 const log = new Logger();
 
 /**
- * Safely writes Object or string as JSON file
+ * Safely writes content to file. can create one directory to store file.
  *
  * @param {string} filename filename
  * @param {string} content text to bewritten

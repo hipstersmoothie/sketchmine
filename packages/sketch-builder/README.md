@@ -2,6 +2,10 @@
 
 The sketch-builder is the heart pice of this library. It takes control over generating **.sketch** files from any html that is provided to the library. It can draw a symbol Library or just a plain page. The orchestration for drawing a hole library is done by the library itself.
 
+## Dependency graph
+
+![Dependency graph of the sketchmine sketch-builder](https://dt-cdn.net/images/sketch-builder-3920-3cec01ab5f.png)
+
 ## Development
 
 You need to adjust the `config.json` up to your needs like described in the [Prerequisites](#Prerequisites) section.

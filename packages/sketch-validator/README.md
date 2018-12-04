@@ -2,7 +2,25 @@
 
 The Sketch Validator helps to improve the quality of Sketch files by validating the naming and structure of files, the usage of colors and text styles and much more.
 
+- [@sketchmine/sketch-validator](#sketchminesketch-validator)
+  - [Dependency graph](#dependency-graph)
+  - [How to run the Sketch file validation?](#how-to-run-the-sketch-file-validation)
+  - [Validation configuration](#validation-configuration)
+    - [Configuration of the rules](#configuration-of-the-rules)
+    - [Validation environments](#validation-environments)
+    - [Validation options](#validation-options)
+  - [The validator](#the-validator)
+  - [Validation rules](#validation-rules)
+    - [The rule](#the-rule)
+    - [Error handling](#error-handling)
+    - [How to write and run tests?](#how-to-write-and-run-tests)
+
+
 The file validation works like a teacher that is correcting homeworks of their students. The collection of homeworks is a collection of data (parts of a given Sketch file) that must meet the defined validation rules. Running tests means asking the teacher to correct all homeworks following those rules.
+
+## Dependency graph
+
+![Dependency graph of the sketchmine sketch-validator-nodejs-wrapper](https://dt-cdn.net/images/sketch-validator-nodejs-wrapper-3920-bda7b02d9d.png)
 
 ## How to run the Sketch file validation?
 

@@ -1,5 +1,5 @@
 /**
- * flattens an array with depths
+ * Flattens an array with depths
  * @param arr array with arrays inside
  */
 export function arrayFlatten(arr: any[]) {

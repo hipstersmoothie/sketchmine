@@ -3,14 +3,14 @@
 <p style="text-align: center">
 <a href="https://lernajs.io/"><img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg"></a>
 <a href="https://github.com/facebook/jest"><img src="https://img.shields.io/badge/tested_with-jest-99424f.svg"></a>
-<a href="https://webkins.lab.dynatrace.org/job/barista/job/sketch-generator/job/master/"><img src="https://webkins.lab.dynatrace.org/job/barista/job/sketch-generator/job/master/badge/icon"></a>
 </p>
 
 * [The Parts](#the-parts)
 * [Dependency graph](#dependency-graph)
 * [Getting started 🚀](#installation)
-* [Validator](#validator)
-* [Useful bash scripts](#useful-bash-scripts)
+* [Testing](#testing)
+* [Maintainers](#maintainers)
+* [License](#license)
 
 ## The Parts
 
@@ -45,7 +45,7 @@ Sketchmine follows a monorepo approach and all officially maintained modules and
   <li><span style="border: 1px solid black; width: 10px; height: 10px; display: inline-block;  margin-right: 7px; background: #add8e6"></span>UMD browserbundles compiled with <a href="https://rollupjs.org/guide/en">rollup.js</a></li>
 </ul>
 
-![Dependency Graph](https://dt-cdn.net/images/sketchmine-dependency-graph-1060-0cf4774fe9.png)
+![Dependency graph of the sketchmine mono repository](https://dt-cdn.net/images/dependency-graph-3920-82e93eaddf.png)
 
 
 ### Installation
@@ -172,7 +172,7 @@ describe('[${package}] › ${folder} › ${description of the suite}', () => {
 });
 ```
 
-## Maintainer
+## Maintainers
 
 <table>
   <tr>

@@ -1,8 +1,27 @@
 # @sketchmine/code-analyzer
 
+> Important: [Dynatrace](https://www.dynatrace.com/) internal tool. May not fit your needs.
+
+- [@sketchmine/code-analyzer](#sketchminecode-analyzer)
+  - [Dependency graph](#dependency-graph)
+  - [Development](#development)
+    - [command line args](#command-line-args)
+    - [Prerequisites](#prerequisites)
+  - [Annotations for the code](#annotations-for-the-code)
+    - [How to install](#how-to-install)
+    - [How to dev](#how-to-dev)
+      - [Available debug spaces for granular logging:](#available-debug-spaces-for-granular-logging)
+    - [How to run tests?](#how-to-run-tests)
+  - [Deployment](#deployment)
+    - [Urls](#urls)
+  - [Architecture](#architecture)
+
 The code-analyzer is a compiler, that generates an abstract syntax tree short AST from the
-Angular Components library and transforms the AST to a JSON format that represents all components,
-that are related for the components library in sketch with all possible variants
+[Angular Components library](https://barista.dynatrace.com/components/) and transforms the AST to a JSON format that represents all components, that are related for the components library in sketch with all possible variants.
+
+## Dependency graph
+
+![Dependency graph of the sketchmine code-analyzer](https://dt-cdn.net/images/code-analyzer-3920-6b87ae5efe.png)
 
 ## Development
 

@@ -5,6 +5,12 @@ import { promisify } from 'util';
 const readdirAsync = promisify(readdir);
 const statAsync = promisify(stat);
 
+/**
+ * Lists all children of a directory recursively. Is filterable
+ * @param dir directory to list
+ * @param regex Regular Expression to filter the items
+ * @param allFiles List of files that can be passed optional to append the result.
+ */
 export async function readDirRecursively(
   dir: string,
   regex: RegExp = null,

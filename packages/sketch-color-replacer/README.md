@@ -10,3 +10,7 @@ The **colors.json** file follows following convention:
   ...
 }
 ```
+
+## Dependency graph
+
+![Dependency graph of the sketchmine sketch-color-replacer](https://dt-cdn.net/images/sketch-color-replacer-3920-0a2d6ceb84.png)
