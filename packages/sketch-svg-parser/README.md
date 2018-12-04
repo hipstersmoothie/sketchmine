@@ -3,6 +3,8 @@
 - [@sketchmine/sketch-svg-parser](#sketchminesketch-svg-parser)
   - [Dependency graph](#dependency-graph)
   - [The SVG parser](#the-svg-parser)
+  - [Building the package](#building-the-package)
+  - [Linting](#linting)
   - [Testing the package](#testing-the-package)
 
 
@@ -46,6 +48,22 @@ private generateSVG(element: ITraversedDomSvgNode) {
   this.layers.push(...svg.generateObject());
 }
 ```
+
+## Building the package
+
+For building the package [Rollup.js](https://rollupjs.org/guide/en) is used as a module bundler. The configuration can be found in the `rollup.config.js` and is orchestrated by the [yarn](https://yarnpkg.com/en/) package manager.
+The package bundle is in the **commonjs** format and meant to be consumed only be node.js applications.
+
+The build can be started with the following two commands:
+
+- `yarn build` for building the package.
+- `yarn dev` for building and watching the sources of the package. *(rebuilds after safe)*
+
+## Linting
+
+The source code of this package is going to be linted by our CI environment. To ensure a coding standard and quality use the configured linter [tslint](https://palantir.github.io/tslint/). This package extends from the `tslint-config-airbnb` and the linting configuration extends from the root `tslint.json`.
+
+run `yarn lint` to execute the linter.
 
 ## Testing the package
 
