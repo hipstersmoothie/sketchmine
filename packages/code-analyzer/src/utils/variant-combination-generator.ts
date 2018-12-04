@@ -1,5 +1,5 @@
 import { Property } from '../ast/json-visitor';
-import * as AMP from '../meta-information';
+import { VariantMethod, Variant, VariantProperty } from '../meta-information';
 import { generateVariantName } from './generate-variant-name';
 
 /**
@@ -7,11 +7,11 @@ import { generateVariantName } from './generate-variant-name';
  * @param baseName name of the component for example button, or alert, ...
  * @param variants the Porperty or methods that can be applied
  */
-export function variantCombinationGenerator(baseName: string, ...variants: Property[]): AMP.Variant[] {
+export function variantCombinationGenerator(baseName: string, ...variants: Property[]): Variant[] {
   if (!variants || !Array.isArray(variants) || !variants.length) {
     return [];
   }
-  const result: AMP.Variant[] = [];
+  const result: Variant[] = [];
   const length = variants.length - 1;
 
   // add undefined to mutate single values as well
@@ -22,7 +22,7 @@ export function variantCombinationGenerator(baseName: string, ...variants: Prope
     }
   });
 
-  function helper(changes: (AMP.VariantMethod | AMP.VariantProperty)[], i: number) {
+  function helper(changes: (VariantMethod | VariantProperty)[], i: number) {
     const variant = variants[i];
 
     for (let j = 0, l = variant.value.length; j < l; j += 1) {

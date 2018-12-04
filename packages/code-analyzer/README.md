@@ -16,8 +16,10 @@
     - [Urls](#urls)
   - [Architecture](#architecture)
 
-The code-analyzer is a compiler, that generates an abstract syntax tree short AST from the
-[Angular Components library](https://barista.dynatrace.com/components/) and transforms the AST to a JSON format that represents all components, that are related for the components library in sketch with all possible variants.
+The code-analyzer works like a compiler that is analyzing the provided source code of the [Angular Components library](https://barista.dynatrace.com/components/) and generates an abstract syntax tree
+short AST from the Angular Components. The output of the meta information is provided in the JSON format and contains all information about all the components in a library and their variants.
+
+This solution is currently tailored for the dynatrace angular components library, feel free to commit pull request with your solution for your company!
 
 ## Dependency graph
 

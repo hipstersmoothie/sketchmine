@@ -1,5 +1,5 @@
 import { arrayFlatten } from '@sketchmine/helpers';
-import * as AMP from '../meta-information';
+import { Component as MetaComponent } from '../meta-information';
 import { NullVisitor, AstVisitor } from './ast-visitor';
 import { NodeTags, ParseDefinition } from './parse-definition';
 import { ParseValueType } from './parse-value-type';
@@ -10,7 +10,9 @@ import { ParseComponent } from './parse-component';
 import { ParseResult } from './parse-result';
 import { ParseNode } from './parse-node';
 import { ParseInterface } from './parse-interface';
-import { mergeClassMembers, variantCombinationGenerator, generateVariants } from '../utils';
+import { generateVariants } from '../utils/generate-variants';
+import { mergeClassMembers } from '../utils/merge-class-members';
+import { variantCombinationGenerator } from '../utils/variant-combination-generator';
 
 const EXIT_TAGS: NodeTags[] = ['internal', 'unrelated', 'private', 'hasUnderscore'];
 
@@ -49,7 +51,7 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
       value: node.values,
     };
   }
-  visitComponent(node: ParseComponent): AMP.Component {
+  visitComponent(node: ParseComponent): MetaComponent {
     const extending = this.visitAll(node.extending)
       .map(ext => ext.variants);
     const implementing = this.visitAll(node.implementing)
@@ -74,7 +76,7 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
     };
   }
 
-  visitResult(node: ParseResult): AMP.Component[] {
+  visitResult(node: ParseResult): MetaComponent[] {
     const nodes = this.visitAll(node.nodes)
       .filter(node => node.className);
 

@@ -6,7 +6,7 @@ import { writeJSON } from '@sketchmine/node-helpers';
 import { ValuesResolver } from './values-resolver';
 import { parseFile } from './parse-file';
 import { renderASTtoJSON } from './render-ast-to-json';
-import * as AMP from './meta-information';
+import { Result as MetaResult } from './meta-information';
 /**
  * The Main function that takes command line args build the AST and transforms the AST,
  * generate a JSON representation from it and write it to the outFile.
@@ -19,7 +19,7 @@ export async function main(
   outFile: string = 'meta-information.json',
   inFile: string = 'index.ts',
   inMemory: boolean = false,
-): Promise<number | AMP.Result> {
+): Promise<number | MetaResult> {
 
   if (!rootDir || !library) {
     throw new Error('The --rootDir and the --library, to the angular components has to be specified!');

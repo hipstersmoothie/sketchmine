@@ -1,7 +1,7 @@
 import { generateVariantName } from '../src/utils/generate-variant-name';
-import * as AMP from '../src/meta-information';
+import { VariantMethod, VariantProperty } from '../src/meta-information';
 
-type Porperty = AMP.VariantMethod | AMP.VariantProperty;
+type Porperty = VariantMethod | VariantProperty;
 
 describe('[code-analyzer] › utils › generate variant name', () => {
 

@@ -19,7 +19,6 @@ import {
   ParseTypeAliasDeclaration,
   ParseUnionType,
   ParseValueType,
-  NodeTags,
   Primitives,
   ParseObjectType,
 } from './ast';
@@ -32,16 +31,13 @@ import {
   getDecoratorOfType,
   checkNodeTags,
   visitJsDoc,
+  JSDOC_ANNOTATION_CLICKABLE,
+  JSDOC_ANNOTATION_HOVERABLE,
+  JSDOC_ANNOTATION_NO_COMBINATIONS,
 } from './utils';
 import { Logger } from '@sketchmine/node-helpers';
 
 const log = new Logger();
-
-export const JSDOC_ANNOTATION_INTERNAL = '@internal';
-export const JSDOC_ANNOTATION_UNRELATED = '@design-unrelated';
-export const JSDOC_ANNOTATION_CLICKABLE = '@design-clickable';
-export const JSDOC_ANNOTATION_HOVERABLE = '@design-hoverable';
-export const JSDOC_ANNOTATION_NO_COMBINATIONS = '@no-design-combinations';
 
 /**
  * The factory that visits the source Files

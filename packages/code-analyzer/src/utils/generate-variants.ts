@@ -1,4 +1,4 @@
-import * as AMP from '../meta-information';
+import { Variant } from '../meta-information';
 import { Property } from '../ast/json-visitor';
 import { generateVariantName } from './generate-variant-name';
 
@@ -8,8 +8,8 @@ import { generateVariantName } from './generate-variant-name';
  * @param component needed for the variant name
  * @param variants Array of Variants
  */
-export function generateVariants(component: string, variants: Property[]): AMP.Variant[] {
-  const result: AMP.Variant[] = [];
+export function generateVariants(component: string, variants: Property[]): Variant[] {
+  const result: Variant[] = [];
 
   variants.forEach((variant) => {
     variant.value.forEach((val: string) => {

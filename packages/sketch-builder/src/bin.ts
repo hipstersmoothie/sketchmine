@@ -1,13 +1,13 @@
 import { main } from './main';
 import { SketchBuilderConfig } from './config.interface';
 import { readFile } from '@sketchmine/node-helpers';
-import * as AMP from '@sketchmine/code-analyzer';
+import { Result } from '@sketchmine/code-analyzer';
 import { resolve } from 'path';
 
 export async function commandLineExecutor(): Promise<number> {
   const confPath = resolve('./config.json');
   const config = require(confPath) as SketchBuilderConfig;
-  let meta: AMP.Result;
+  let meta: Result;
 
   if (config.metaInformation) {
     meta = JSON.parse(await readFile(config.metaInformation));

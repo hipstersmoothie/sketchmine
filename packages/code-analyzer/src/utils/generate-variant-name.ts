@@ -1,4 +1,4 @@
-import * as AMP from '../meta-information';
+import { VariantMethod, VariantProperty } from '../meta-information';
 import { kebabCase } from 'lodash';
 
 const ACTIONS = ['disabled', 'active', 'hover', 'click'];
@@ -13,22 +13,22 @@ const ACTIONS = ['disabled', 'active', 'hover', 'click'];
  * button/warning
  * ...
  */
-export function generateVariantName(base: string, changes: (AMP.VariantMethod | AMP.VariantProperty)[]): string {
+export function generateVariantName(base: string, changes: (VariantMethod | VariantProperty)[]): string {
 
   const parts = [];
   const actions = [];
 
-  changes.forEach((change: AMP.VariantMethod | AMP.VariantProperty) => {
+  changes.forEach((change: VariantMethod | VariantProperty) => {
 
     if (change.type === 'property') {
-      const name = parseBooleanValue(change as AMP.VariantProperty);
+      const name = parseBooleanValue(change as VariantProperty);
       if (ACTIONS.includes(change.key)) {
         actions.push(name);
       } else {
         parts.push(name);
       }
     } else {
-      throw Error(`The AMP.Variant with the type: ${change.type} is not handled yet!`);
+      throw Error(`The Variant with the type: ${change.type} is not handled yet!`);
     }
   });
 
@@ -47,7 +47,7 @@ export function generateVariantName(base: string, changes: (AMP.VariantMethod | 
  * if it is a string than return just the value like "main", "primary" or "secondary"
  * @param change the change as property
  */
-function parseBooleanValue(change: AMP.VariantProperty): string {
+function parseBooleanValue(change: VariantProperty): string {
   if (change.value === 'undefined') {
     throw Error('Value have to be defined for name generation!');
   }

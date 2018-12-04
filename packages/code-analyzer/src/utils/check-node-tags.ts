@@ -1,12 +1,12 @@
 import * as ts from 'typescript';
 import { getSymbolName } from './get-symbol-name';
 import { visitJsDoc } from './visit-jsdoc';
-import { NodeTags } from '../ast';
+import { NodeTags } from '../ast/parse-definition';
 import {
   JSDOC_ANNOTATION_INTERNAL,
   JSDOC_ANNOTATION_UNRELATED,
   JSDOC_ANNOTATION_NO_COMBINATIONS,
-} from '../visitor';
+} from './jsdoc-annotations';
 
 /**
  * Check if a node has an **@internal** or **@design-unrelated** identifier in the jsDoc comment
