@@ -15,12 +15,12 @@ This package is a collection of plattform independend helpers that have to work 
 
 ## List of Helpers
 
-- **[arrayFlatten](./src/array-flatten)** Flattens an array with depths
-- **[capitalizeFirstLetter](./src/capitalize-first-letter)** Capitalizes the first letter of a word.
-- **[kebabCaseToCamelCase](./src/kebab-case-to-camel-case)** Converts kebab-case-words to camelCase
-- **[rgbToHex](./src/rgb-to-hex)** converts rgb color to HEX.
-- **[StyleDeclaration](./src/style-declaration)** Subset Class of the CSSStyleDeclaration with Browser default values.
-- **[UUID](./src/uuid)** Fast UUID generator, RFC4122 version 4 compliant.
+- **[arrayFlatten](./src/array-flatten.ts)** Flattens an array with depths
+- **[capitalizeFirstLetter](./src/capitalize-first-letter.ts)** Capitalizes the first letter of a word.
+- **[kebabCaseToCamelCase](./src/kebab-case-to-camel-case.ts)** Converts kebab-case-words to camelCase
+- **[rgbToHex](./src/rgb-to-hex.ts)** converts rgb color to HEX.
+- **[StyleDeclaration](./src/style-declaration.ts)** Subset Class of the CSSStyleDeclaration with Browser default values.
+- **[UUID](./src/uuid.ts)** Fast UUID generator, RFC4122 version 4 compliant.
 
 ## Building the package
 
