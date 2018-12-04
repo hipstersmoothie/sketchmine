@@ -19,7 +19,7 @@
 * [**dom-agent**](./packages/dom-agent/README.md) a dom traverser that gets injected by the browser to scrape the information out of the page.
 * [**helpers**](./packages/helpers/README.md) collection of plattform independend helpers.
 * [**library**](./packages/library/README.md) the orchestration of the executeable parts – generates the whole .sketch library out of the dynatrace angular components.
-* * [**node-helpers**](./packages/node-helpers/README.md) collection of Node.js helpers.
+* [**node-helpers**](./packages/node-helpers/README.md) collection of Node.js helpers.
 * [**sketch-builder**](./packages/sketch-builder/README.md) scrapes a webpage and generates .sketch file.
 * [**sketch-color-replacer**](./packages/sketch-color-replacer/README.md) replaces a set of colors in a .sketch file.
 * [**sketch-file-format**](./packages/sketch-file-format/README.md) AST of the .sketch file format with all functionality to generate a .sketch file.
