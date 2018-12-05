@@ -1,5 +1,5 @@
 {
-  "metaInformation": "../../node_modules/@sketchmine/code-analyzer/dist/meta-information.json",
+  "metaInformation": "path/to/meta-information.json",
   "agent": "../../node_modules/@sketchmine/dom-agent/lib/index.esm.js",
   "host": {
     "protocol": "http",
