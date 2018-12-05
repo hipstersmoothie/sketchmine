@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
 import { waitForDraw } from './app.component';
 import { MetaService } from './meta.service';
-import { Component as MetaComponent } from '@sketchmine/code-analyzer';
+import { Component as MetaComponent } from '@sketchmine/code-analyzer/lib/@types';
 import { ViewData } from '@angular/core/src/view'; // not exported from core (only for POC)
 import { checkSubComponents } from './check-sub-components';
 import { Subscription } from 'rxjs';

@@ -1,8 +1,9 @@
-import { Type } from '@angular/core';import {
+import { Type } from '@angular/core';
+import {
   Component as MetaComponent,
   VariantProperty as MetaVariantProperty,
-  generateVariantName
-} from '@sketchmine/code-analyzer';
+} from '@sketchmine/code-analyzer/lib/@types';
+import { generateVariantName } from './generate-variant-name';
 import { ViewData, ElementData } from '@angular/core/src/view'; // not exported from core (only for POC)
 
 export function checkSubComponents(viewData: ViewData, components: MetaComponent[], current: MetaComponent) {

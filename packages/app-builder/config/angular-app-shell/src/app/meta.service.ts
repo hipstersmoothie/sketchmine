@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import {
   Result as MetaResult,
   Component as MetaComponent,
-} from '@sketchmine/code-analyzer';
+} from '@sketchmine/code-analyzer/lib/@types';
 
 @Injectable({ providedIn: 'root' })
 export class MetaService {

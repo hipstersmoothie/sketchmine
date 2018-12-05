@@ -7,7 +7,7 @@ import {
   Variant as MetaVariant,
   VariantMethod as MetaVariantMethod,
   VariantProperty as MetaVariantProperty,
-} from '@sketchmine/code-analyzer';
+} from '@sketchmine/code-analyzer/lib/@types';
 import { ExamplesRegistry } from './examples-registry';
 import { checkSubComponents } from './check-sub-components';
 import { Subscription } from 'rxjs';

@@ -13,7 +13,7 @@ function clean() {
 
 function copy() {
   const srcDir = resolve(APP_SHELL);
-  return src([`${srcDir}/**/*`, `${srcDir}/.npmrc*`])
+  return src([`${srcDir}/**/*`, `${srcDir}/.npmrc`])
     .pipe(dest(destDir));
 }
 
@@ -27,10 +27,16 @@ function install() {
     installing.stdout.on('data', (data) => {
       process.stdout.write(data);
     });
-    installing.on('error', err => reject(err));
-    installing.on('exit', () => {
-      console.log('Installing the dependencies completed! ✅');
-      resolve();
+    installing.on('error', (err) => {
+      console.error(err)
+      reject(err);
+    });
+    installing.on('exit', (code) => {
+      if (code < 1) {
+        console.log('Installing the dependencies completed! ✅');
+        resolve();
+      }
+      reject('Something happened while installing the dependencies 🔥');
     });
   });
 }
