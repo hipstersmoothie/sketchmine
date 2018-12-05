@@ -1,5 +1,5 @@
 const { src, dest, series } = require('gulp');
-const { resolve } = require('path');
+const { resolve, join } = require('path');
 const { spawn } = require('child_process');
 const del = require('del');
 const config = require('./config.json');
@@ -15,6 +15,11 @@ function copy() {
   const srcDir = resolve(APP_SHELL);
   return src([`${srcDir}/**/*`, `${srcDir}/.npmrc`])
     .pipe(dest(destDir));
+}
+
+function copyMeta() {
+  return src(config.meta)
+    .pipe(dest(join(destDir, 'src', 'assets')));
 }
 
 function install() {
@@ -43,5 +48,6 @@ function install() {
 
 exports.clean = clean;
 exports.copy = copy;
+exports.copyMeta = copyMeta;
 exports.install = install;
-exports.default = series(clean, copy, install);
+exports.default = series(clean, copy, copyMeta, install);
