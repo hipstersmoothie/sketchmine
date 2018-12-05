@@ -1,3 +1,5 @@
+![Github banner for sketchmine](https://dt-cdn.net/images/github-banner-2x-1777-2b23e499af.png)
+
 # @sketchmine/dom-agent
 
 The Dom Agent is a heart piece of the whole library. This package takes responsibility to scrape the Style information from a Webpage and output an abstract format with the DOM representation and the styling. According to this information later on the **[sketch-builder](../sketch-builder)** can be used to draw the Sketch file.

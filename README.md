@@ -1,4 +1,4 @@
-<h1 align="center">sketchmine 💎</h1>
+![Github banner for sketchmine](https://dt-cdn.net/images/github-banner-2x-1777-2b23e499af.png)
 
 <p style="text-align: center">
 <a href="https://lernajs.io/"><img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg"></a>

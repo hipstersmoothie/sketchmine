@@ -1,3 +1,5 @@
+![Github banner for sketchmine](https://dt-cdn.net/images/github-banner-2x-1777-2b23e499af.png)
+
 # @sketchmine/sketch-builder
 
 The sketch-builder is the heart pice of this library. It takes control over generating **.sketch** files from any html that is provided to the library. It can draw a symbol Library or just any plain web page. The orchestration for drawing the whole library is done by the library itself.

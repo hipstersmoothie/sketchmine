@@ -1,3 +1,5 @@
+![Github banner for sketchmine](https://dt-cdn.net/images/github-banner-2x-1777-2b23e499af.png)
+
 # @sketchmine/code-analyzer
 
 > Important: [Dynatrace](https://www.dynatrace.com/) internal tool. May not fit your needs.

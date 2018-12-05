@@ -1,3 +1,5 @@
+![Github banner for sketchmine](https://dt-cdn.net/images/github-banner-2x-1777-2b23e499af.png)
+
 # @sketchmine/sketch-color-replacer
 
 All colors have to be provided as **HEX** colors

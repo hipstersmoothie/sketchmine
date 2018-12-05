@@ -1,3 +1,5 @@
+![Github banner for sketchmine](https://dt-cdn.net/images/github-banner-2x-1777-2b23e499af.png)
+
 # @sketchmine/node-helpers
 
 This package is a collection of [Node.js](https://nodejs.org/en/) specific helpers.

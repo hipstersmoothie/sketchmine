@@ -1,3 +1,5 @@
+![Github banner for sketchmine](https://dt-cdn.net/images/github-banner-2x-1777-2b23e499af.png)
+
 # @sketchmine/sketch-file-builder
 
 This package provides a [Node.js](https://nodejs.org/en/) layer of creating .sketch files with the open file format. You have to Provide an array of Pages *(Sketch JSON objects)* that should be written in the file. Furthermore this package takes care of creating all the boilerplate files and folder structures inside a Sketch file.

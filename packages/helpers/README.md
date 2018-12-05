@@ -1,3 +1,5 @@
+![Github banner for sketchmine](https://dt-cdn.net/images/github-banner-2x-1777-2b23e499af.png)
+
 # @sketchmine/helpers
 
 This package is a collection of plattform independend helpers that have to work in the browser and on [Node.js](https://nodejs.org/en/).

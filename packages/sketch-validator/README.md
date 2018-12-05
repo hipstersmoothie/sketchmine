@@ -1,3 +1,5 @@
+![Github banner for sketchmine](https://dt-cdn.net/images/github-banner-2x-1777-2b23e499af.png)
+
 # @sketchmine/sketch-validator
 
 The Sketch Validator helps to improve the quality of Sketch files by validating the naming and structure of files, the usage of colors and text styles and much more.
