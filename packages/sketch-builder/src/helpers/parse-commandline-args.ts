@@ -3,10 +3,14 @@ import { displayHelp } from '@sketchmine/node-helpers';
 import { SketchBuilderConfig } from '../config.interface';
 import { resolve } from 'path';
 
-const helpText = `
-This package is only meant for internal use @Dynatrace.
-The app-builder builds the example angular application out of our
-pure examples to generate the dynatrace components library.
+const helpText = chalk`
+The sketch-builder is the heart pice of this library.
+It takes control over generating {grey .sketch} files from any html
+that is provided to the library. It can draw a symbol Library or just
+any plain web page.
+
+The orchestration for drawing the whole library is done by the {grey @sketchmine/library} itself.
+For further documentation about how to configure the {grey config.json} please visit the {grey README.md}
 `;
 
 const cmdFlags = [
@@ -20,30 +24,17 @@ const cmdFlags = [
   },
 ];
 
-const DEFAULT_CONFIG = 'config.json';
-
 /**
- * Merges the default config arguments with the command line inputs
+ * Reads the provided config or return the help page
  * @param args Merged config arguments
  * @return {SketchBuilderConfig}
  */
 export function parseCommandlineArgs(args: string[]): SketchBuilderConfig {
   const parsedArgs = require('minimist')(args);
 
-  if (parsedArgs.hasOwnProperty('h') || parsedArgs.hasOwnProperty('help') || args.length === 0) {
-    displayHelp(helpText, cmdFlags);
-  }
-
-  const defaultConfig = require(resolve(DEFAULT_CONFIG));
-  let conf = {};
-
   if (parsedArgs.hasOwnProperty('c') || parsedArgs.hasOwnProperty('config')) {
-    conf = require(resolve(parsedArgs.c || parsedArgs.config));
+    return require(resolve(parsedArgs.c || parsedArgs.config));
   }
 
-  if (parsedArgs.hasOwnProperty('appShell')) { conf['appShell'] = parsedArgs.appShell; }
-  if (parsedArgs.hasOwnProperty('meta')) { conf['meta'] = parsedArgs.meta; }
-  if (parsedArgs.hasOwnProperty('examples')) { conf['examples'] = parsedArgs.examples; }
-
-  return Object.assign(defaultConfig, conf);
+  displayHelp(helpText, cmdFlags);
 }

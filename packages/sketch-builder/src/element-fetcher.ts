@@ -171,7 +171,6 @@ export class ElementFetcher {
           const visitor = new window.DomVisitor(hostElement, []);
           const traverser = new window.DomTraverser();
           window.page.element = traverser.traverse(hostElement, visitor);` });
-      console.log('here', result);
       result = await page.evaluate(() => window.page) as ITraversedElement[];
     }
     if (result.element === null) {

@@ -6,7 +6,7 @@
     "name": "localhost",
     "port": 4200
   },
-  "rootElement": "app-root > * ",
+  "rootElement": "ng-component > * ",
   "library": {
     "app": "/path/to/angular-app/from/app-builder"
   },
@@ -14,7 +14,7 @@
     ""
   ],
   "previewImage": "lib/assets/preview.png",
-  "outFile": "out/dir/library.sketch",
+  "outFile": "_library/library.sketch",
   "chrome": {
     "defaultViewport": {
       "width": 1200,

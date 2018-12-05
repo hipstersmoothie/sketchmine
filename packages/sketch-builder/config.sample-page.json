@@ -6,7 +6,7 @@
   },
   "rootElement": "body",
   "pages": [
-    "/components/button"
+    "components/button"
   ],
   "previewImage": "lib/assets/preview.png",
   "outFile": "_library/barista-dynatrace.sketch",

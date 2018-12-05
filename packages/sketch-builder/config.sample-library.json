@@ -6,7 +6,7 @@
     "name": "localhost",
     "port": 4200
   },
-  "rootElement": "app-root > * ",
+  "rootElement": "ng-component > * ",
   "library": {
     "app": "/path/to/angular-app/from/app-builder"
   },
