@@ -2,7 +2,12 @@ import { Component, Type, ViewChild, ViewContainerRef, OnInit, OnDestroy, Compon
 import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { ViewData } from '@angular/core/src/view'; // not exported from core (only for POC)
 import { MetaService } from './meta.service';
-import { AMP } from '../../../../src/angular-meta-parser/meta-information.d';
+import {
+  Component as MetaComponent,
+  Variant as MetaVariant,
+  VariantMethod as MetaVariantMethod,
+  VariantProperty as MetaVariantProperty,
+} from '@sketchmine/code-analyzer';
 import { ExamplesRegistry } from './examples-registry';
 import { checkSubComponents } from './check-sub-components';
 import { Subscription } from 'rxjs';
@@ -43,9 +48,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.metaSubscription = this._metaService.getMeta()
-    .subscribe(async (components: AMP.Component[]) => {
-      await asyncForEach(components, async (componentMeta: AMP.Component) => {
-        await asyncForEach(componentMeta.variants, async (variant: AMP.Variant) => {
+    .subscribe(async (components: MetaComponent[]) => {
+      await asyncForEach(components, async (componentMeta: MetaComponent) => {
+        await asyncForEach(componentMeta.variants, async (variant:MetaVariant) => {
           await this._applyChange(componentMeta, variant, components);
         });
       });
@@ -60,7 +65,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.metaSubscription.unsubscribe();
   }
 
-  private async _applyChange(componentMeta: AMP.Component, variant: AMP.Variant, components: AMP.Component[]) {
+  private async _applyChange(componentMeta: MetaComponent, variant: MetaVariant, components: MetaComponent[]) {
     const exampleType = this._registry.getExampleByName(componentMeta.component);
     if (!exampleType) {
       return;
@@ -70,7 +75,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     exampleComponentRef.changeDetectorRef.detectChanges();
 
-    await asyncForEach(variant.changes, async (change: AMP.VariantMethod | AMP.VariantProperty) => {
+    await asyncForEach(variant.changes, async (change: MetaVariantMethod | MetaVariantProperty) => {
     if (change.type === 'property') {
         await asyncForEach(componentInstances, async (instance) => {
           const value = (change.value === 'undefined') ? undefined : JSON.parse(change.value);
@@ -103,7 +108,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  private _getCompInstances<C>(componentMeta: AMP.Component, exampleComponentRef: ComponentRef<C>) {
+  private _getCompInstances<C>(componentMeta: MetaComponent, exampleComponentRef: ComponentRef<C>) {
     const componentInstances = [];
     componentMeta.selector.forEach((selector: string) => {
       const exampleElement = exampleComponentRef.location.nativeElement.querySelector(selector);

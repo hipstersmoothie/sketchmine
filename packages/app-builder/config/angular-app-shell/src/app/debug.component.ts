@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
 import { waitForDraw } from './app.component';
 import { MetaService } from './meta.service';
-import { AMP } from '../../../../src/angular-meta-parser/meta-information.d';
+import { Component as MetaComponent } from '@sketchmine/code-analyzer';
 import { ViewData } from '@angular/core/src/view'; // not exported from core (only for POC)
 import { checkSubComponents } from './check-sub-components';
 import { Subscription } from 'rxjs';
@@ -23,7 +23,7 @@ export class DebugComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.metaSubscription = this._metaService.getMeta()
-    .subscribe(async (components: AMP.Component[]) => {
+    .subscribe(async (components: MetaComponent[]) => {
       const view = (this._viewContainerRef as any)._data.componentView as ViewData;
       checkSubComponents(view, components, components[0]);
       handleDraw('button').then();

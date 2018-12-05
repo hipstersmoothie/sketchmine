@@ -1,9 +1,11 @@
-import { Type } from '@angular/core';
-import { AMP } from '../../../../src/angular-meta-parser/meta-information.d';
-import { generateVariantName } from '../../../../src/angular-meta-parser/utils/generate-variant-name';
+import { Type } from '@angular/core';import {
+  Component as MetaComponent,
+  VariantProperty as MetaVariantProperty,
+  generateVariantName
+} from '@sketchmine/code-analyzer';
 import { ViewData, ElementData } from '@angular/core/src/view'; // not exported from core (only for POC)
 
-export function checkSubComponents(viewData: ViewData, components: AMP.Component[], current: AMP.Component) {
+export function checkSubComponents(viewData: ViewData, components: MetaComponent[], current: MetaComponent) {
   for (const key in viewData.nodes) {
     if (!viewData.nodes.hasOwnProperty(key) || !viewData.nodes[key]) {
       continue;
@@ -30,7 +32,7 @@ export function checkSubComponents(viewData: ViewData, components: AMP.Component
     }
 
 
-    const changes: AMP.VariantProperty[] = []
+    const changes: MetaVariantProperty[] = []
     comp.properties.forEach((prop) => {
 
       const value = node.componentView.component[prop];

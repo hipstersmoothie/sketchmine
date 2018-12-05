@@ -35,5 +35,7 @@ function install() {
   });
 }
 
+exports.clean = clean;
 exports.copy = copy;
+exports.install = install;
 exports.default = series(clean, copy, install);
