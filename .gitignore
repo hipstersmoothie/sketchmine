@@ -4,6 +4,7 @@ node_modules
 
 packages/*/lib
 packages/*/bin
+packages/*/sketchmine*.tgz
 
 # generated files
 dt-asset-lib

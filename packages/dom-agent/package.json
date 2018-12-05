@@ -21,6 +21,9 @@
     "lint": "tslint -p tsconfig.json",
     "test": "yarn build && jest --detectOpenHandles --verbose --forceExit"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "@sketchmine/helpers": "^1.3.0"
   },
@@ -44,5 +47,6 @@
   },
   "dependencies": {
     "@sketchmine/helpers": "^2.0.1-alpha.0"
-  }
+  },
+  "gitHead": "e68a441a334fa1134af0ac8e5bb9ac3c58021c75"
 }

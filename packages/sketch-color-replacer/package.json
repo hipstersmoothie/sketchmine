@@ -23,6 +23,9 @@
     "type": "git",
     "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/sketch-color-replacer"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "clean": "rm -rf lib coverage",
     "build": "yarn clean && rollup -c",
@@ -59,5 +62,6 @@
   },
   "bin": {
     "skm-color-replacer": "./lib/main.js"
-  }
+  },
+  "gitHead": "e68a441a334fa1134af0ac8e5bb9ac3c58021c75"
 }

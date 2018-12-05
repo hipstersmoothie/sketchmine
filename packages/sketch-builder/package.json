@@ -24,6 +24,9 @@
     "type": "git",
     "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/sketch-builder"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "clean": " rm -rf lib coverage",
     "build": "yarn clean && rollup -c",
@@ -72,5 +75,6 @@
   "bin": {
     "skm-sketch-builder": "./lib/bin.js"
   },
-  "preferGlobal": true
+  "preferGlobal": true,
+  "gitHead": "e68a441a334fa1134af0ac8e5bb9ac3c58021c75"
 }
