@@ -24,9 +24,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "peerDependencies": {
-    "@sketchmine/helpers": "^1.3.0"
-  },
   "devDependencies": {
     "@sketchmine/node-helpers": "^2.0.1-alpha.1",
     "@types/jest": "^23.3.0",
