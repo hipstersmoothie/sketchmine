@@ -1,6 +1,6 @@
 {
   "name": "@sketchmine/app-builder",
-  "version": "2.0.1-alpha.0",
+  "version": "2.0.1-alpha.1",
   "description": "Generates the example library out of the angular components",
   "keywords": [
     "angular",
@@ -35,9 +35,9 @@
     "test": "jest --detectOpenHandles --verbose --forceExit"
   },
   "dependencies": {
-    "@sketchmine/code-analyzer": "^2.0.1-alpha.0",
-    "@sketchmine/helpers": "^2.0.1-alpha.0",
-    "@sketchmine/node-helpers": "^2.0.1-alpha.0",
+    "@sketchmine/code-analyzer": "^2.0.1-alpha.1",
+    "@sketchmine/helpers": "^2.0.1-alpha.1",
+    "@sketchmine/node-helpers": "^2.0.1-alpha.1",
     "chalk": "^2.4.0",
     "lodash": "^4.17.0",
     "minimist": "^1.2.0",

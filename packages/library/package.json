@@ -1,6 +1,6 @@
 {
   "name": "@sketchmine/library",
-  "version": "2.0.1-alpha.0",
+  "version": "2.0.1-alpha.1",
   "description": "Generates the whole dynatrace sketch library.",
   "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
   "homepage": "https://github.com/dynatrace/sketchmine#readme",
@@ -46,10 +46,10 @@
     "typescript": "^3.2.1"
   },
   "dependencies": {
-    "@sketchmine/app-builder": "^2.0.1-alpha.0",
-    "@sketchmine/code-analyzer": "^2.0.1-alpha.0",
-    "@sketchmine/node-helpers": "^2.0.1-alpha.0",
-    "@sketchmine/sketch-builder": "^2.0.1-alpha.0",
+    "@sketchmine/app-builder": "^2.0.1-alpha.1",
+    "@sketchmine/code-analyzer": "^2.0.1-alpha.1",
+    "@sketchmine/node-helpers": "^2.0.1-alpha.1",
+    "@sketchmine/sketch-builder": "^2.0.1-alpha.1",
     "axios": "^0.18.0",
     "chalk": "^2.4.0"
   },
