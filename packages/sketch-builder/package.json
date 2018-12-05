@@ -1,6 +1,6 @@
 {
   "name": "@sketchmine/sketch-builder",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.1-alpha.0",
   "description": "Injects the dom-agent to fetch the properties of a webpage and generates a .sketch file out of the webpage.",
   "keywords": [
     "sketch",
@@ -58,13 +58,13 @@
     "@sketchmine/sketch-svg-parser": "^1.3.0"
   },
   "dependencies": {
-    "@sketchmine/code-analyzer": "^2.0.0-alpha.0",
-    "@sketchmine/dom-agent": "^2.0.0-alpha.0",
-    "@sketchmine/helpers": "^2.0.0-alpha.0",
-    "@sketchmine/node-helpers": "^2.0.0-alpha.0",
-    "@sketchmine/sketch-file-builder": "^2.0.0-alpha.0",
-    "@sketchmine/sketch-file-format": "^2.0.0-alpha.0",
-    "@sketchmine/sketch-svg-parser": "^2.0.0-alpha.0",
+    "@sketchmine/code-analyzer": "^2.0.1-alpha.0",
+    "@sketchmine/dom-agent": "^2.0.1-alpha.0",
+    "@sketchmine/helpers": "^2.0.1-alpha.0",
+    "@sketchmine/node-helpers": "^2.0.1-alpha.0",
+    "@sketchmine/sketch-file-builder": "^2.0.1-alpha.0",
+    "@sketchmine/sketch-file-format": "^2.0.1-alpha.0",
+    "@sketchmine/sketch-svg-parser": "^2.0.1-alpha.0",
     "axios": "^0.18.0",
     "chalk": "^2.4.0",
     "puppeteer": "1.4.0"

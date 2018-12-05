@@ -1,6 +1,6 @@
 {
   "name": "@sketchmine/sketch-file-builder",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.1-alpha.0",
   "description": "generates a .sketch file from an AST",
   "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
   "homepage": "https://github.com/dynatrace/sketchmine#readme",
@@ -32,8 +32,8 @@
     "test": "jest --detectOpenHandles --verbose --forceExit"
   },
   "dependencies": {
-    "@sketchmine/node-helpers": "^2.0.0-alpha.0",
-    "@sketchmine/sketch-file-format": "^2.0.0-alpha.0",
+    "@sketchmine/node-helpers": "^2.0.1-alpha.0",
+    "@sketchmine/sketch-file-format": "^2.0.1-alpha.0",
     "archiver": "^2.1.1",
     "chalk": "^2.4.0"
   },
