@@ -1,6 +1,6 @@
 {
   "name": "@sketchmine/sketch-file-format",
-  "version": "1.3.0",
+  "version": "2.0.0-alpha.0",
   "description": "Abstract layer on top of the sketch file format.",
   "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
   "homepage": "https://github.com/dynatrace/sketchmine#readme",
@@ -32,7 +32,7 @@
     "test": "jest --detectOpenHandles --verbose --forceExit"
   },
   "dependencies": {
-    "@sketchmine/helpers": "^1.3.0",
+    "@sketchmine/helpers": "^2.0.0-alpha.0",
     "normalize-css-color": "^1.0.0"
   },
   "devDependencies": {
