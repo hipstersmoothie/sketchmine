@@ -2,5 +2,5 @@
   "rootDir": "/path/to/components/library/",
   "library": "src/lib",
   "inFile": "index.ts",
-  "outFile": "lib/meta-information.json"
+  "outFile": "dist/meta-information.json"
 }

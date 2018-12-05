@@ -24,6 +24,7 @@
     "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/app-builder"
   },
   "scripts": {
+    "postinstall": "gulp",
     "clean": " rm -rf lib coverage",
     "build": "yarn clean && rollup -c",
     "dev": "yarn build -w",
@@ -44,6 +45,8 @@
     "@types/lodash": "^4.14.118",
     "@types/minimist": "^1.2.0",
     "@types/node": "^10.6.0",
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
     "jest": "^23.6.0",
     "rollup": "^0.67.3",
     "rollup-plugin-commonjs": "^9.2.0",
