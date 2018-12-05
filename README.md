@@ -1,9 +1,7 @@
 ![Github banner for sketchmine](https://dt-cdn.net/images/github-banner-2x-1777-2b23e499af.png)
 
-<p style="text-align: center">
-<a href="https://lernajs.io/"><img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg"></a>
-<a href="https://github.com/facebook/jest"><img src="https://img.shields.io/badge/tested_with-jest-99424f.svg"></a>
-</p>
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/) [![jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
+[![made with sketchmine](https://dt-cdn.net/images/made-with-sketchmine-a27f1dfce3.svg)](https://github.com/Dynatrace/sketchmine/)
 
 * [The Parts](#the-parts)
 * [Dependency graph](#dependency-graph)
