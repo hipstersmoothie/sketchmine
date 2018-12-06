@@ -56,7 +56,7 @@
     "minimist": "^1.2.0"
   },
   "bin": {
-    "skm-color-replacer": "./lib/main.js"
+    "skm-color-replacer": "./lib/index.cjs.js"
   },
   "gitHead": "e68a441a334fa1134af0ac8e5bb9ac3c58021c75"
 }
