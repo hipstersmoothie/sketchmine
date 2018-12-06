@@ -43,7 +43,7 @@ export default [
         file: 'lib/bin.js',
         format: 'cjs',
         sourcemap: true,
-        banner: banner(pkg),
+        banner: `#!/usr/bin/env node\n\n${banner(pkg)}`,
       },
     ],
     external,

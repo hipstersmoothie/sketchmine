@@ -2,6 +2,7 @@ import typescript from 'rollup-plugin-typescript2';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import copy from 'rollup-plugin-copy';
+import { banner } from '../../config/banner';
 import json from 'rollup-plugin-json'
 import pkg from './package.json';
 
@@ -29,6 +30,7 @@ export default [
         file: pkg.main,
         format: 'cjs',
         sourcemap: true,
+        banner: banner(pkg),
       },
     ],
     external,
@@ -42,6 +44,7 @@ export default [
         file: 'lib/bin.js',
         format: 'cjs',
         sourcemap: true,
+        banner: `#!/usr/bin/env node\n\n${banner(pkg)}`,
       },
     ],
     external,

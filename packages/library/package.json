@@ -48,7 +48,7 @@
     "chalk": "^2.4.0"
   },
   "bin": {
-    "skm-generate-library": "./lib/index.js"
+    "skm-generate-library": "./lib/index.cjs.js"
   },
   "preferGlobal": true,
   "gitHead": "e68a441a334fa1134af0ac8e5bb9ac3c58021c75"

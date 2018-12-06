@@ -4,34 +4,11 @@ import { main as SketchGenerator } from '@sketchmine/sketch-builder';
 import { writeJSON, Logger } from '@sketchmine/node-helpers';
 import { startServer } from './start-server';
 import chalk from 'chalk';
+import { resolve } from 'path';
 
 const log = new Logger();
-const config = {
-  metaInformation: 'dist/sketch-library/src/assets/meta-information.json',
-  host: {
-    protocol: 'http',
-    name: 'localhost',
-    port: 4200,
-  },
-  rootElement: 'ng-component > * ',
-  library: {
-    app: 'dist/sketch-library',
-  },
-  pages: [
-    '',
-  ],
-  outFile: '_library/dt-asset-lib.sketch',
-  chrome: {
-    defaultViewport: {
-      width: 800,
-      height: 600,
-      deviceScaleFactor: 1,
-      isMobile: false,
-      hasTouch: false,
-      isLandscape: false,
-    },
-  },
-};
+
+const config = require(resolve('./config.json'));
 
 export default async function main() {
   log.info(chalk`{blue ==>} start generating the meta-information.json\n\n`);
@@ -48,7 +25,7 @@ export default async function main() {
   await writeJSON(config.metaInformation, meta);
   const server = await startServer(config);
   log.info(chalk`{blue ==>} generate the .sketch file\n\n`);
-  await SketchGenerator(config, meta);
+  await SketchGenerator(config['sketch-builder'], meta);
   server.kill();
 }
 
