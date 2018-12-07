@@ -1,0 +1,5 @@
+{
+  "appShell": "dist/sketch-library",
+  "meta": "../../node_modules/@sketchmine/code-analyzer/dist/meta-information.json",
+  "examples": "/Users/lukas.holzer/Sites/angular-components/src/docs/components"
+}

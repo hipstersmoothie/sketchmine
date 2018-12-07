@@ -1,0 +1,71 @@
+{
+  "name": "@sketchmine/sketch-builder",
+  "version": "2.0.1-alpha.2",
+  "description": "Injects the dom-agent to fetch the properties of a webpage and generates a .sketch file out of the webpage.",
+  "keywords": [
+    "sketch",
+    "web2sketch",
+    "html2sketch",
+    "dynatrace"
+  ],
+  "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
+  "homepage": "https://github.com/dynatrace/sketchmine#readme",
+  "license": "MIT",
+  "main": "lib/index.cjs.js",
+  "typings": "lib/@types/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/sketch-builder"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": " rm -rf lib coverage",
+    "build": "yarn clean && rollup -c",
+    "dev": "yarn build -w",
+    "lint": "tslint -p tsconfig.json",
+    "test": "jest --detectOpenHandles --verbose --forceExit"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.0",
+    "@types/node": "^10.6.0",
+    "@types/puppeteer": "^1.6.0",
+    "extract-zip": "^1.6.7",
+    "jest": "^23.6.0",
+    "rollup": "^0.67.3",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-typescript2": "^0.18.0",
+    "ts-jest": "^23.10.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.11.0",
+    "typescript": "^3.2.1"
+  },
+  "dependencies": {
+    "@sketchmine/code-analyzer": "^2.0.1-alpha.2",
+    "@sketchmine/dom-agent": "^2.0.1-alpha.2",
+    "@sketchmine/helpers": "^2.0.1-alpha.2",
+    "@sketchmine/node-helpers": "^2.0.1-alpha.2",
+    "@sketchmine/sketch-file-builder": "^2.0.1-alpha.2",
+    "@sketchmine/sketch-file-format": "^2.0.1-alpha.2",
+    "@sketchmine/sketch-svg-parser": "^2.0.1-alpha.2",
+    "axios": "^0.18.0",
+    "chalk": "^2.4.0",
+    "puppeteer": "1.4.0"
+  },
+  "bin": {
+    "skm-sketch-builder": "./lib/bin.js"
+  },
+  "preferGlobal": true,
+  "gitHead": "e68a441a334fa1134af0ac8e5bb9ac3c58021c75"
+}

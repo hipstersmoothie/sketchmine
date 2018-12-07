@@ -1,6 +1,0 @@
-{
-  "rootDir": "_tmp/",
-  "library": "src/lib",
-  "inFile": "index.ts",
-  "outFile": "dist/sketch-library/src/assets/meta-information.json"
-}

@@ -1,0 +1,23 @@
+{
+  "agent": "../../node_modules/@sketchmine/dom-agent/lib/index.esm.js",
+  "host": {
+    "protocol": "https",
+    "name": "barista.dynatrace.com"
+  },
+  "rootElement": "body",
+  "pages": [
+    "components/button"
+  ],
+  "previewImage": "lib/assets/preview.png",
+  "outFile": "_library/barista-dynatrace.sketch",
+  "chrome": {
+    "defaultViewport": {
+      "width": 1200,
+      "height": 600,
+      "deviceScaleFactor": 1,
+      "isMobile": false,
+      "hasTouch": false,
+      "isLandscape": false
+    }
+  }
+}

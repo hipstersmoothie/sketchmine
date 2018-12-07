@@ -10,7 +10,7 @@ To ensure consistency through our sourcecode we have some rules that you should 
 
 * All features or bug fixes have to be tested (jest unit tests)
 * Keep your functions documentated with JSDoc comments
-* Lint your code with the ts-lint `npm run lint`
+* Lint your code with the ts-lint `yarn lint`
 
 ## Branch name format
 
@@ -62,7 +62,7 @@ const regex = /[A-Z]{2,4}-[0-9]{4,5}\s(?:build|ci|docs|feat|fix|perf|refactor|st
 
 #### Available types for commit messages
 
-* **build**: Changes that affect the build system or external dependencies (rollup, npm)
+* **build**: Changes that affect the build system or external dependencies (rollup, yarn)
 * **ci**: Changes to our CI configuration files and scripts (webkins, jenkins)
 * **docs**: Documentation only changes
 * **feat**: A new feature

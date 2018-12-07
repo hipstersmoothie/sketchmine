@@ -1,0 +1,221 @@
+$turquoise-100: #e1f7f9;
+$turquoise-200: #aeebf0;
+$turquoise-300: #74dee6;
+$turquoise-400: #4fd5e0;
+$turquoise-500: #00b9cc;
+$turquoise-600: #00a1b2;
+$turquoise-700: #00848e;
+$turquoise-800: #006d75;
+$turquoise-900: #005559;
+
+$green-100: #e8f9dc;
+$green-200: #d2efbe;
+$green-300: #bee5a3;
+$green-400: #9cd575;
+$green-500: #7dc540;
+$green-600: #5ead35;
+$green-700: #3f962a;
+$green-800: #1f7e1e;
+$green-900: #006613;
+
+$blue-100: #e0f4fc;
+$blue-200: #b4e5f9;
+$blue-300: #74cff7;
+$blue-400: #2ab6f4;
+$blue-500: #14a8f5;
+$blue-600: #008cdb;
+$blue-700: #006bba;
+$blue-800: #004999;
+$blue-900: #003a8a;
+
+$royalblue-100: #e6eaff;
+$royalblue-200: #b9c5ff;
+$royalblue-300: #97a9ff;
+$royalblue-400: #748cff;
+$royalblue-500: #526cff;
+$royalblue-600: #4556d7;
+$royalblue-700: #393db0;
+$royalblue-800: #31339c;
+$royalblue-900: #231874;
+
+$purple-100: #eedbfd;
+$purple-200: #debbf3;
+$purple-300: #c396e0;
+$purple-400: #a972cc;
+$purple-500: #9355b7;
+$purple-600: #7c38a1;
+$purple-700: #612c85;
+$purple-800: #522273;
+$purple-900: #471e64;
+
+$red-100: #ffeaea;
+$red-200: #f9acaf;
+$red-300: #f28289;
+$red-400: #e74d59;
+$red-500: #dc172a;
+$red-600: #c41425;
+$red-700: #ab0c17;
+$red-800: #93060e;
+$red-900: #7a0004;
+
+$orange-100: #fff5e4;
+$orange-200: #ffd0ab;
+$orange-300: #ffa86c;
+$orange-400: #fd8232;
+$orange-500: #ef651f;
+$orange-600: #c95218;
+$orange-700: #b64915;
+$orange-800: #8d380f;
+$orange-900: #742d0b;
+
+$yellow-100: #fff9d5;
+$yellow-200: #fff29a;
+$yellow-300: #ffee7c;
+$yellow-400: #ffe11c;
+$yellow-500: #f5d30f;
+$yellow-600: #e6be00;
+$yellow-700: #c9a000;
+$yellow-800: #ab8300;
+$yellow-900: #8e6500;
+
+$shamrockgreen-100: #e1f7dc;
+$shamrockgreen-200: #bbeac0;
+$shamrockgreen-300: #99dea8;
+$shamrockgreen-400: #6bcb8b;
+$shamrockgreen-500: #54c27d;
+$shamrockgreen-600: #2ab06f;
+$shamrockgreen-700: #009e60;
+$shamrockgreen-800: #048855;
+$shamrockgreen-900: #087249;
+
+$gray-100: #f8f8f8;
+$gray-130: #f2f2f2;
+$gray-200: #e6e6e6;
+$gray-300: #ccc;
+$gray-400: #b7b7b7;
+$gray-500: #898989;
+$gray-600: #6d6d6d;
+$gray-640: #525252;
+$gray-700: #454646;
+$gray-800: #353535;
+$gray-860: #242424;
+$gray-900: #191919;
+
+$logolime: #b4dc00;
+
+$full-color-palette: (
+  'turquoise': (
+    100: $turquoise-100,
+    200: $turquoise-200,
+    300: $turquoise-300,
+    400: $turquoise-400,
+    500: $turquoise-500,
+    600: $turquoise-600,
+    700: $turquoise-700,
+    800: $turquoise-800,
+    900: $turquoise-900,
+  ),
+  'green': (
+    100: $green-100,
+    200: $green-200,
+    300: $green-300,
+    400: $green-400,
+    500: $green-500,
+    600: $green-600,
+    700: $green-700,
+    800: $green-800,
+    900: $green-900,
+  ),
+  'blue': (
+    100: $blue-100,
+    200: $blue-200,
+    300: $blue-300,
+    400: $blue-400,
+    500: $blue-500,
+    600: $blue-600,
+    700: $blue-700,
+    800: $blue-800,
+    900: $blue-900,
+  ),
+  'royalblue': (
+    100: $royalblue-100,
+    200: $royalblue-200,
+    300: $royalblue-300,
+    400: $royalblue-400,
+    500: $royalblue-500,
+    600: $royalblue-600,
+    700: $royalblue-700,
+    800: $royalblue-800,
+    900: $royalblue-900,
+  ),
+  'purple': (
+    100: $purple-100,
+    200: $purple-200,
+    300: $purple-300,
+    400: $purple-400,
+    500: $purple-500,
+    600: $purple-600,
+    700: $purple-700,
+    800: $purple-800,
+    900: $purple-900,
+  ),
+  'red': (
+    100: $red-100,
+    200: $red-200,
+    300: $red-300,
+    400: $red-400,
+    500: $red-500,
+    600: $red-600,
+    700: $red-700,
+    800: $red-800,
+    900: $red-900,
+  ),
+  'orange': (
+    100: $orange-100,
+    200: $orange-200,
+    300: $orange-300,
+    400: $orange-400,
+    500: $orange-500,
+    600: $orange-600,
+    700: $orange-700,
+    800: $orange-800,
+    900: $orange-900,
+  ),
+  'yellow': (
+    100: $yellow-100,
+    200: $yellow-200,
+    300: $yellow-300,
+    400: $yellow-400,
+    500: $yellow-500,
+    600: $yellow-600,
+    700: $yellow-700,
+    800: $yellow-800,
+    900: $yellow-900,
+  ),
+  'shamrockgreen': (
+    100: $shamrockgreen-100,
+    200: $shamrockgreen-200,
+    300: $shamrockgreen-300,
+    400: $shamrockgreen-400,
+    500: $shamrockgreen-500,
+    600: $shamrockgreen-600,
+    700: $shamrockgreen-700,
+    800: $shamrockgreen-800,
+    900: $shamrockgreen-900,
+  ),
+  'gray': (
+    100: $gray-100,
+    200: $gray-200,
+    300: $gray-300,
+    400: $gray-400,
+    500: $gray-500,
+    600: $gray-600,
+    700: $gray-700,
+    800: $gray-800,
+    900: $gray-900,
+  ),
+);
+
+@function get-color($color, $shade) {
+  @return map-get(map-get($full-color-palette, $color), $shade);
+}

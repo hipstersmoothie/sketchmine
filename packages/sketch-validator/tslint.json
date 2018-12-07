@@ -1,0 +1,11 @@
+{
+  "extends": "../../tslint.json",
+  "rulesDirectory": [
+    "./config/tslint-rules/"
+  ],
+  "rules": {
+    // Custom Rules
+    "ts-loader": true,
+    "validation-no-node-natives": true
+  }
+}

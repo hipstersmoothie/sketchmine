@@ -2,6 +2,10 @@
 # packages
 node_modules
 
+packages/*/lib
+packages/*/bin
+packages/*/sketchmine*.tgz
+
 # generated files
 dt-asset-lib
 dt-asset-lib.sketch
@@ -18,7 +22,7 @@ out-tsc
 .env
 
 # IDEs and editors
-/.idea
+.idea
 .project
 .classpath
 .c9/
@@ -34,15 +38,18 @@ out-tsc
 !.vscode/extensions.json
 
 # misc
-/.rpt2_cache
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
+.rpt2_cache
+.sass-cache
+connect.lock
+coverage
+
+# debug logs
+lerna-debug.log
 npm-debug.log
 yarn-error.log
 testem.log
-/typings
+libpeerconnection.log
+
 
 # System Files
 .DS_Store

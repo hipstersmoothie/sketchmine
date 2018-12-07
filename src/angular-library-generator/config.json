@@ -1,5 +1,0 @@
-{
-  "appShell": "dist/sketch-library",
-  "meta": "dist/sketch-library/src/assets/meta-information.json",
-  "examples": "_tmp/src/docs/components"
-}

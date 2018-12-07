@@ -1,0 +1,28 @@
+{
+  "metaInformation": "../../node_modules/@sketchmine/code-analyzer/dist/meta-information.json",
+  "agent": "../../node_modules/@sketchmine/dom-agent/lib/index.esm.js",
+  "host": {
+    "protocol": "http",
+    "name": "localhost",
+    "port": 4200
+  },
+  "rootElement": "ng-component > * ",
+  "library": {
+    "app": "/path/to/angular-app/from/app-builder"
+  },
+  "pages": [
+    ""
+  ],
+  "previewImage": "lib/assets/preview.png",
+  "outFile": "_library/library.sketch",
+  "chrome": {
+    "defaultViewport": {
+      "width": 1200,
+      "height": 600,
+      "deviceScaleFactor": 1,
+      "isMobile": false,
+      "hasTouch": false,
+      "isLandscape": false
+    }
+  }
+}

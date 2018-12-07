@@ -1,0 +1,5 @@
+{
+  "appShell": "dist/sketch-library",
+  "meta": "path/to/meta-information.json",
+  "examples": "path/to/pure/examples"
+}

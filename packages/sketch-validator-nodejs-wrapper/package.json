@@ -1,0 +1,63 @@
+{
+  "name": "@sketchmine/sketch-validator-nodejs-wrapper",
+  "version": "2.0.1-alpha.2",
+  "description": "A node wrapper for the validation that unzips the sketchfile and run the validation.",
+  "keywords": [
+    "sketch",
+    "validation",
+    "nodejs",
+    "dynatrace"
+  ],
+  "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
+  "homepage": "https://github.com/dynatrace/sketchmine#readme",
+  "license": "MIT",
+  "main": "lib/index.cjs.js",
+  "typings": "lib/@types/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/sketch-validator-nodejs-wrapper"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rm -rf lib",
+    "build": "yarn clean && rollup -c",
+    "dev": "yarn build -w",
+    "lint": "tslint -p tsconfig.json",
+    "test": "echo \"No tests specified for sketch-validator-nodejs-wrapper yet! 😢\""
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.9",
+    "@types/minimist": "^1.2.0",
+    "@types/node": "^10.6.0",
+    "jest": "^23.6.0",
+    "rollup": "^0.67.3",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-typescript2": "^0.18.0",
+    "ts-jest": "^23.10.5",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "typescript": "^3.2.1"
+  },
+  "dependencies": {
+    "@sketchmine/node-helpers": "^2.0.1-alpha.2",
+    "@sketchmine/sketch-validator": "^2.0.1-alpha.2",
+    "chalk": "^2.4.1",
+    "minimist": "^1.2.0"
+  },
+  "bin": {
+    "skm-sketch-validation": "./lib/bin.js"
+  },
+  "gitHead": "e68a441a334fa1134af0ac8e5bb9ac3c58021c75"
+}

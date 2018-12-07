@@ -1,0 +1,6 @@
+{
+  "sketchGenerator": {
+    "previewImage": "dist/sketch-builder/assets/preview.png",
+    "traverser": "dist/dom-traverser/index.js"
+  }
+}
