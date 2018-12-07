@@ -40,7 +40,7 @@ point can be imported like `import { main } from '@sketchmine/app-builder';`.
 ### how to build
 
 For building the package [Rollup.js](https://rollupjs.org/guide/en) is used as a module bundler. The configuration can be found in the `rollup.config.js` and is orchestrated by the [yarn](https://yarnpkg.com/en/) package manager.
-The package bundle is in the **commonjs** format and meant to be consumed only be node.js applications.
+The package bundle is in the **commonjs** format and meant to be consumed only by node.js applications.
 
 The build can be started with the following two commands:
 
