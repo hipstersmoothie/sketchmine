@@ -3,14 +3,14 @@
 [![Build Status](https://dev.azure.com/sketchmine/sketchmine/_apis/build/status/Dynatrace.sketchmine)](https://dev.azure.com/sketchmine/sketchmine/_build/latest?definitionId=1) [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/) [![jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
 [![made with sketchmine](https://dt-cdn.net/images/made-with-sketchmine-a27f1dfce3.svg)](https://github.com/Dynatrace/sketchmine/)
 
-* [The Parts](#the-parts)
+* [The parts](#the-parts)
 * [Dependency graph](#dependency-graph)
 * [Getting started 🚀](#installation)
 * [Testing](#testing)
 * [Maintainers](#maintainers)
 * [License](#license)
 
-## The Parts
+## The parts
 
 * [**app-builder**](./packages/app-builder/README.md) generates an angular app with the information of the *code-analyzer*.
 * [**code-analyzer**](./packages/code-analyzer/README.md) creates a JSON representation of the provided code *(supported: <a href="https://angular.io/">angular</a>)*.
@@ -41,18 +41,18 @@ Sketchmine follows a monorepo approach and all officially maintained modules and
 ### Installation
 
 To start contributing and developing you have to run `yarn install` to install all the necessary dependencies.
-after that you can switch to any package in the `./packages` folder and start to get the hands dirty 👷🏼‍.
+after that you can switch to any package in the `./packages` folder and start to get your hands dirty 👷🏼‍.
 
-If you want to run [tasks](https://docs.npmjs.com/misc/scripts) across all packages [lerna](https://lernajs.io/) comes to the rescue. You can use the npm scripts in the root package folder or you can execute all tasks with the `lerna run build` command to execute the `yarn build` command in every package. For further information check out the lerna documentation site.
+If you want to run [tasks](https://docs.npmjs.com/misc/scripts) across all packages, you'll find [Lerna](https://lernajs.io/) to be very useful. You can use the NPM scripts in the root package folder or you can execute all tasks with the `lerna run build` command to execute the `yarn build` command in every package. For further information, check out the [Lerna documentation](https://lernajs.io/). <!-- CT: I've inserted a link to Lerna docs. Is there a better page to link to? -->
 
 
-### How to get running
+### How to get up and running
 
-There are several options to get running with the library if you want to develop locally you can skip to the section [Run without docker](#run-without-docker). If you need to develop something with the docker image for the **CI/CD** you can decide if you want to [get running with docker-compose](#run-with-docker-compose) — the easy way or plain docker without composer. *(that is the way jenkins is using docker)*
+You have several options for getting started with the library. If you want to develop locally, skip ahead to the [Run without Docker](#run-without-docker) section. If you need to develop something on the **CI/CD** Docker image, decide if you want to use [docker-compose](#run-with-docker-compose), which is the easy way, or if you want to use plain Docker without composer (this is how Jenkins uses Docker).
 
-### Docker *the jenkins way* 🐳
+### Docker *the Jenkins way* 🐳
 
-1. you have to build the image
+1. Build the image
 
   ```bash
   docker build \
@@ -63,9 +63,9 @@ There are several options to get running with the library if you want to develop
     .
   ```
 
-2. run the image
+2. Run the image
 
-It is **important** to set the environment variable `-e DOCKER=true` for the headless chrome tasks like the *sketch-generator* and the *library* in addition you can set a second variable like `-e DEBUG=true` to see verbose logging.
+It's important that you set the environment variable `-e DOCKER=true` for the headless Chrome tasks like the *sketch-generator* and the *library*. Additionally, you can set a second variable like `-e DEBUG=true` to see verbose logging.
 
   ```bash
   # mount angular components into docker image
@@ -80,33 +80,32 @@ It is **important** to set the environment variable `-e DOCKER=true` for the hea
 
 #### Run with docker-compose
 
-To get started with docker-compose please create following file:
+To get started with docker-compose, create following file:
 
 ```bash
 touch .env
 echo 'GIT_PASS=${password}\nGIT_USER\n=${user}\nGIT_BRANCH=feat/poc-sketch' > .env
 ```
 
-then just run `docker-compose up`
+Then run `docker-compose up`.
 
-#### Run without docker
+#### Run without Docker
 
-To run without docker in a local development environment run first
+To run without Docker in a local development environment, begin by running:
 
 ```bash
 sh postinstall.sh
 ```
 
-It will prepare everything for you so you can start developing.
-The angular components will be checked out into `_tmp` and the library app shell will be moved in the correct place.
+This step will prepare everything for you so you can start developing.
+The Angular components will be checked out into `_tmp` directory and the library app shell will be moved in the correct location.
 
-If you want to run the library `node dist/library` and the **.sketch** file will be generated 🤘🏻
+If you run the library, `node dist/library` and the **.sketch** file will be generated automatically. 🤘🏻
 
-#### Docker Registry
+#### Docker registry
 
-
-On every successfull master build a new Docker Image of the library is generated and deployed to the Dockerregistry.
-You can see the list of all available tags here: [Docker Registry Tag List](https://webkins.lab.dynatrace.org:5000/v2/ng-sketch/tags/list).
+Following each successful master build of a new Docker image, the library is generated and deployed to the Docker registry.
+You can view the list of available tags here: [Docker registry tag list](https://webkins.lab.dynatrace.org:5000/v2/ng-sketch/tags/list).
 
 
 ### Available commands
@@ -121,8 +120,8 @@ node dist/${part}       | run the specified part of the library
 
 ### Debugging
 
-There are some debugging variables specified to modify the console output.
-They are specefied in the `.vscode/launch.json` to be parsed while debugging with VSCode.
+There are some debugging variables you can use to modify console output.
+They're specified in the `.vscode/launch.json` file, to be parsed while debugging with VSCode.
 The environment Variable of `process.env.SKETCH = 'open-close'` opens and closes the Sketch app automatically on a MacOS machine.
 
 ``` javascript
@@ -141,14 +140,13 @@ process.env.SKETCH = 'open-close';
 
 ## Testing
 
-For us, tests are very important to ensure a good coding quality. Therefore we choose [jest](https://github.com/facebook/jest) as our testing library. In case that it comes with a mocking library built in. To get confident with the testing syntax visit the Jest Documentation. Jest follows the Jasmine convention.
+Because testing is so important and ensures good quality code, we at Dynatrace use [jest](https://github.com/facebook/jest) as our testing library. Jest ships with a built-in mocking library. To gain confidence with the testing syntax, see the [Jest documentation](https://jestjs.io/docs/en/jest-platform). Jest follows the Jasmine convention. <!-- CT: I've inserted a link to Jest documentation, but I suspect you can find a better page to link to -->
 
-The files have to contain the pattern `**/*.test.ts`, for unit tests and
-for end 2 end testing `**/*.e2e.ts`. All tests should stay in the `tests` folder. Even though it is possible to place tests in the `src` folder if there is a good reason.
+The files must contain the pattern `**/*.test.ts` for unit tests and, for end-to-end testing, `**/*.e2e.ts`. All tests should stay in the `tests` folder. Even though it's possible to place tests in the `src` folder if there's good reason.
 
-To execute the tests run `yarn test`. That will run the jest test and provides you with a coverage for the package.
+To execute the tests, run `yarn test`. This will run the jest test and provide you with coverage for the package.
 
-**Important!**
+**Important**
 
 All tests should be wrapped in a describe with the prefix of the package: `[sketch-builder] › ...` like the following example:
 
@@ -157,7 +155,7 @@ All tests should be wrapped in a describe with the prefix of the package: `[sket
 
 describe('[${package}] › ${folder} › ${description of the suite}', () => {
 
-// .. your tests should place here.
+// .. your tests should be placed here.
 
 });
 ```
@@ -175,7 +173,7 @@ describe('[${package}] › ${folder} › ${description of the suite}', () => {
     <td style="width: 50px; height: 50px;">
       <img src="https://avatars2.githubusercontent.com/u/1374451?s=50&v=4" style="border-radius: 50%; width: 100%;">
     </td>
-    <td style="line-height: 50px;"><a href="https://github.com/ddprrt">Baumir</a></td>
+    <td style="line-height: 50px;"><a href="https://github.com/ddprrt">Baumi</a></td>
   </tr>
 </table>
 
