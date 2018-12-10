@@ -2,7 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declarationDir": "./lib/@types",
-    "outDir": "./lib"
+    "outDir": "./lib",
+    "resolveJsonModule": true
   },
   "include": [
     "./src"

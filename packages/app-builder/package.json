@@ -27,12 +27,13 @@
     "access": "public"
   },
   "scripts": {
-    "postinstall": "gulp",
-    "clean": " rm -rf lib coverage",
+    "clean": "rm -rf lib coverage dist",
     "build": "yarn clean && rollup -c",
     "dev": "yarn build -w",
     "lint": "tslint -p tsconfig.json",
-    "test": "jest --detectOpenHandles --verbose --forceExit"
+    "test": "jest --detectOpenHandles --verbose --forceExit",
+    "gulp": "gulp",
+    "copyMeta": "gulp copyMeta"
   },
   "dependencies": {
     "@sketchmine/code-analyzer": "^2.1.0",

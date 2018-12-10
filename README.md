@@ -1,6 +1,6 @@
 ![Github banner for sketchmine](https://dt-cdn.net/images/github-banner-2x-1777-2b23e499af.png)
 
-[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/) [![jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
+[![Build Status](https://dev.azure.com/sketchmine/sketchmine/_apis/build/status/Dynatrace.sketchmine)](https://dev.azure.com/sketchmine/sketchmine/_build/latest?definitionId=1) [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/) [![jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
 [![made with sketchmine](https://dt-cdn.net/images/made-with-sketchmine-a27f1dfce3.svg)](https://github.com/Dynatrace/sketchmine/)
 
 * [The Parts](#the-parts)
@@ -167,9 +167,15 @@ describe('[${package}] › ${folder} › ${description of the suite}', () => {
 <table>
   <tr>
     <td style="width: 50px; height: 50px;">
-      <img src="https://avatars2.githubusercontent.com/u/11156362?s=460&v=4" style="border-radius: 50%; width: 100%;">
+      <img src="https://avatars2.githubusercontent.com/u/11156362?s=50&v=4" style="border-radius: 50%; width: 100%;">
     </td>
     <td style="line-height: 50px;"><a href="https://github.com/lukasholzer">Lukas Holzer</a></td>
+  </tr>
+  <tr>
+    <td style="width: 50px; height: 50px;">
+      <img src="https://avatars2.githubusercontent.com/u/1374451?s=50&v=4" style="border-radius: 50%; width: 100%;">
+    </td>
+    <td style="line-height: 50px;"><a href="https://github.com/ddprrt">Baumir</a></td>
   </tr>
 </table>
 

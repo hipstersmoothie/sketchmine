@@ -18,7 +18,7 @@ function copy() {
 }
 
 function copyMeta() {
-  return src(config.meta)
+  return src(resolve(config.meta))
     .pipe(dest(join(destDir, 'src', 'assets')));
 }
 
@@ -50,4 +50,4 @@ exports.clean = clean;
 exports.copy = copy;
 exports.copyMeta = copyMeta;
 exports.install = install;
-exports.default = series(clean, copy, copyMeta, install);
+exports.default = series(clean, copy, install);

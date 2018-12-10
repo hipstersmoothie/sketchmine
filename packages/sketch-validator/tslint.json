@@ -4,8 +4,7 @@
     "./config/tslint-rules/"
   ],
   "rules": {
-    // Custom Rules
     "ts-loader": true,
-    "validation-no-node-natives": true
+    "validation-no-node-natives": false
   }
 }
