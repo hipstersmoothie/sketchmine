@@ -3,12 +3,19 @@
 [![Build Status](https://dev.azure.com/sketchmine/sketchmine/_apis/build/status/Dynatrace.sketchmine)](https://dev.azure.com/sketchmine/sketchmine/_build/latest?definitionId=1) [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/) [![jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
 [![made with sketchmine](https://dt-cdn.net/images/made-with-sketchmine-2a0b31-1-3d32502b89.svg)](https://github.com/Dynatrace/sketchmine/)
 
+* [What is it about?](#what-is-it-about)
 * [The parts](#the-parts)
 * [Dependency graph](#dependency-graph)
 * [Getting started 🚀](#installation)
 * [Testing](#testing)
 * [Maintainers](#maintainers)
 * [License](#license)
+
+## What is it about?
+
+Sketchmine is a toolset on creating, validating and maintaining Sketch and Sketch symbol files. See our talk at Angular connect to know more about our workflow, and what we are aiming for:
+
+[![Youtube](https://img.youtube.com/vi/3_XvaSD_0xo/0.jpg)](https://www.youtube.com/watch?v=3_XvaSD_0xo)
 
 ## The parts
 
