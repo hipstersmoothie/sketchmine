@@ -39,6 +39,7 @@ export function adjustPathAliases(tsconfig: any | null, rootDir: string): Map<st
       }
     }
   }
+  console.log(adjustedPaths)
   return adjustedPaths;
 }
 

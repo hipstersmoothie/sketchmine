@@ -18,6 +18,7 @@ export async function main(
   library: string,
   outFile: string = 'meta-information.json',
   inFile: string = 'index.ts',
+  tsConfig: string = 'tsconfig.json',
   inMemory: boolean = false,
 ): Promise<number | MetaResult> {
 
@@ -26,7 +27,7 @@ export async function main(
   }
 
   const pkg = resolve(rootDir, 'package.json');
-  const tsconfig = resolve(rootDir, 'tsconfig.json');
+  const tsconfig = resolve(rootDir, tsConfig);
   const nodeModules = join(dirname(pkg), 'node_modules');
   const entryFile = resolve(rootDir, library, inFile);
   let parseResults = new Map<string, ParseResult>();

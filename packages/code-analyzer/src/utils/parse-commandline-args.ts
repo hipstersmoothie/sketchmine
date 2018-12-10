@@ -9,6 +9,7 @@ export interface ConfigArguments {
   rootDir: string;
   library: string; /** path to library realitve fromm rootDir */
   inFile: string;
+  tsConfig: string;
   outFile: string;
 }
 
@@ -50,6 +51,10 @@ const cmdFlags = [
     text: 'Starting point for the code analysis default: {grey index.ts}',
   },
   {
+    flags: ['tsConfig'],
+    text: 'Path to the tsconfig, defaults to {grey <rootDir>/tsconfig.json}',
+  },
+  {
     flags: ['outFile'],
     text: chalk`The resulting JSON file for the meta information like: {grey meta-info.json}`,
   },
@@ -79,6 +84,7 @@ export function parseCommandlineArgs(args: string[]): ConfigArguments {
   if (parsedArgs.hasOwnProperty('rootDir')) { conf['rootDir'] = parsedArgs.rootDir; }
   if (parsedArgs.hasOwnProperty('library')) { conf['library'] = parsedArgs.library; }
   if (parsedArgs.hasOwnProperty('inFile')) { conf['inFile'] = parsedArgs.inFile; }
+  if (parsedArgs.hasOwnProperty('tsConfig')) { conf['tsConfig'] = parsedArgs.tsConfig; }
   if (parsedArgs.hasOwnProperty('outFile')) { conf['outFile'] = parsedArgs.outFile; }
 
   return Object.assign(defaultConfig, conf);
