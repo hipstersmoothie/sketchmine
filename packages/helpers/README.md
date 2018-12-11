@@ -17,7 +17,6 @@ This package is a collection of platform independent helpers that have to work i
 
 ## List of helpers
 
-- **[arrayFlatten](./src/array-flatten.ts)** Flattens an array with depths
 - **[capitalizeFirstLetter](./src/capitalize-first-letter.ts)** Capitalizes the first letter of a word.
 - **[kebabCaseToCamelCase](./src/kebab-case-to-camel-case.ts)** Converts kebab-case-words to camelCase
 - **[rgbToHex](./src/rgb-to-hex.ts)** converts rgb color to HEX.
