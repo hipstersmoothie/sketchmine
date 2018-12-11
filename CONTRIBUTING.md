@@ -1,23 +1,31 @@
-# Contribute to the Sketch generation ecosystem
+![Github banner for sketchmine](https://dt-cdn.net/images/github-banner-2x-1777-2b23e499af.png)
 
-* [Coding rules](#coding-rules)
-* [Branch name format](#branch-name-format)
-* [Commit message guidelines](#commit-message-guideline)
+# How to Contribute
+
+- [How to Contribute](#how-to-contribute)
+  - [Coding rules](#coding-rules)
+  - [Branch name format](#branch-name-format)
+    - [available branch prefixes](#available-branch-prefixes)
+  - [Commit message guideline](#commit-message-guideline)
+    - [Commit message format](#commit-message-format)
+      - [Issue Referencing](#issue-referencing)
+      - [Available scopes for commit messages](#available-scopes-for-commit-messages)
+      - [Available types for commit messages](#available-types-for-commit-messages)
 
 ## Coding rules
 
-To ensure consistency through our sourcecode we have some rules that you should kept in mind:
+To ensure consistency through our source code we have some rules that you should keep in mind:
 
 * All features or bug fixes have to be tested (jest unit tests)
-* Keep your functions documentated with JSDoc comments
+* Keep your functions documented with JSDoc comments
 * Lint your code with the ts-lint `yarn lint`
 
 ## Branch name format
 
-The branch name has to include a JIRA ticket and a prefix. Furthermore the lenght of a branch name can only be up to 50 characters.
-please use the following pattern: `${prefix}/${name}-${JIRA-ticket-number}`
-
-The Branch name can only consist out of uppercase letters, lowercase letters, numbers and dashes.
+The Branch name can only consist out of uppercase letters, lowercase letters, numbers and dashes and has
+to contain a specific prefix about the purpose. The prefixes are listed below.
+Furthermore the length of a branch name can only be up to 50 characters.
+please use the following pattern: `<prefix>/<descriptive-name>`
 
 ### available branch prefixes
 
@@ -26,39 +34,39 @@ The Branch name can only consist out of uppercase letters, lowercase letters, nu
 * hotfix
 * release
 
-and have to match the following regular expression
-
-```typescript
-const regex = /develop|master|(?:(?:fix|feat|hotfix|release)\/[A-Za-z0-9\-]+?-[A-Z]{2,4}-[0-9]{4,5})$/gm;
-```
-
 ## Commit message guideline
 
-This project follows a precice rule of git commit message. This leads to more readable messages and enables a change log generation later.
+This project follows the angular commit style guide. This leads to more readable messages and enables us to generate a CHANGELOG out of the messages.
 
 ### Commit message format
 
 The commit message format follows a strict pattern:
 
-`${JIRA-ticket-number} ${type}(${scope}): ${subject}`
+`<issue> <type>(<scope>): <subject>`
 
-for example: `UX-8220 feat(angular-meta-parser): Added new feature`
+The `<issue>` is only used by members of the @Dynatrace company, to reference internal issues.
 
-it is going to be validated with this regular expression:
+**Feature:**
 
-```typescript
-const regex = /[A-Z]{2,4}-[0-9]{4,5}\s(?:build|ci|docs|feat|fix|perf|refactor|style|test)\(.+?\):\s.+/gm;
-```
+`feat(sketch-builder): Added new feature ...`
+
+**Fix:**
+
+`fix(sketch-builder): fixed the ...`
+
+if the commit affects the whole repository like a general update of the README.md in the root, the scope can be skipped.
+
+`docs: update Readme...`
+
+#### Issue Referencing
+
+If you work on a [Github Issue](https://github.com/Dynatrace/sketchmine/issues) you should reference the issue in your commit message via the `#<issue number>`.
+To provide our changelog generation with the necessary information about the commit.
 
 #### Available scopes for commit messages
 
-* library *(if it affects every component)*
-* angular-meta-parser
-* angular-library-generator
-* dom-traverser
-* sketch-color-replacer
-* sketch-generator
-* sketch-validator
+The scopes are the packages of the Monorepo, every folder inside the [packages](./packages/) folder is a scope.
+Try to separate commits by scopes if possible. If this is not possible scopes can be comma separated.
 
 #### Available types for commit messages
 
@@ -71,3 +79,4 @@ const regex = /[A-Z]{2,4}-[0-9]{4,5}\s(?:build|ci|docs|feat|fix|perf|refactor|st
 * **refactor**: A code change that neither fixes a bug nor adds a feature
 * **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
 * **test**: Adding missing tests or correcting existing tests
+* **chore**: Other changes that don't modify src or test files

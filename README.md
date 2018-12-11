@@ -10,6 +10,7 @@
 * [Testing](#testing)
 * [Maintainers](#maintainers)
 * [License](#license)
+* [How to Contribute](./CONTRIBUTING.md)
 
 ## What is Sketchmine?
 
