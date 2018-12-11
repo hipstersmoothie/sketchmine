@@ -1,4 +1,4 @@
-import { adjustPathAliases, readTsConfig, READ_TSCONFIG_ERROR } from '../src/utils/adjust-path-aliases';
+import { adjustPathAliases, readTsConfig, READ_TSCONFIG_ERROR } from '../src/utils';
 import { resolve } from 'path';
 
 describe('[code-analyzer] › utils › adjusting path aliases from tsconfig', () => {
@@ -38,24 +38,16 @@ describe('[code-analyzer] › utils › adjusting path aliases from tsconfig', 
     expect(paths.size).toEqual(2);
   });
 
-  test('if the root path does not end with the path of the tsconfig it should be the key', () => {
+  test('if the root path does not end with the path of the tsconfig it should be appended', () => {
     const paths = adjustPathAliases(config, '_tmp/');
-    const values = Array.from(paths.values());
-    const keys = Array.from(paths.keys());
-    expect(keys).toHaveLength(2);
-    expect(values).toEqual(keys);
+    expect(paths.get('@dynatrace/angular-components')).toEqual('_tmp/src/lib');
+    expect(paths.get('@dynatrace/angular-components/*')).toEqual('_tmp/src/lib/*');
   });
 
   test('the root equals the path in the tsconfig it should be resolved', () => {
     const paths = adjustPathAliases(config, 'src/lib');
-    const values = Array.from(paths.values());
-    const keys = Array.from(paths.keys());
-    expect(values).toHaveLength(2);
-    expect(keys).toHaveLength(2);
-    expect(keys).toContain('@dynatrace/angular-components');
-    expect(keys).toContain('@dynatrace/angular-components/*');
-    expect(values).toContain('src/lib');
-    expect(values).toContain('src/lib/*');
+    expect(paths.get('@dynatrace/angular-components')).toEqual('src/lib');
+    expect(paths.get('@dynatrace/angular-components/*')).toEqual('src/lib/*');
   });
 
   test('the root dir ends with the path in the tsconfig it should be resolved', () => {
@@ -68,5 +60,20 @@ describe('[code-analyzer] › utils › adjusting path aliases from tsconfig', 
     expect(keys).toContain('@dynatrace/angular-components/*');
     expect(values).toContain('<root>/any/else/src/lib');
     expect(values).toContain('<root>/any/else/src/lib/*');
+  });
+
+  test('test if the path does not include the src/lib folder like material tsconfig', () => {
+    config = {
+      compilerOptions: {
+        paths: {
+          '@angular/cdk/*': ['../cdk/*'],
+          '@angular/material/*': ['./*'],
+        },
+      },
+    };
+    const paths = adjustPathAliases(config, '/User/test-user/Sites/material2/src/lib');
+    expect(paths.get('@angular/material/*')).toEqual('/User/test-user/Sites/material2/src/lib/*');
+    expect(paths.get('@angular/cdk/*')).toEqual('/User/test-user/Sites/material2/src/cdk/*');
+
   });
 });

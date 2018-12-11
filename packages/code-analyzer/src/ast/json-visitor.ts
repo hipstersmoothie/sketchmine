@@ -1,4 +1,4 @@
-import { arrayFlatten } from '@sketchmine/helpers';
+import { flatten } from 'lodash';
 import { Component as MetaComponent } from '../meta-information';
 import { NullVisitor, AstVisitor } from './ast-visitor';
 import { NodeTags, ParseDefinition } from './parse-definition';
@@ -42,7 +42,7 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
   visitPrimitiveType(node: ParsePrimitiveType): any { return node.type; }
 
   visitUnionType(node: ParseUnionType): any[] {
-    return arrayFlatten(this.visitAll(node.types));
+    return flatten(this.visitAll(node.types));
   }
   visitProperty(node: ParseProperty): Property {
     return {
@@ -58,10 +58,11 @@ export class JSONVisitor extends NullVisitor implements AstVisitor {
       .filter(impl => impl.members.length)
       .map(impl => impl.members);
 
-    let componentMembers = mergeClassMembers(this.visitAll(node.members), arrayFlatten(implementing));
+    let componentMembers = mergeClassMembers(this.visitAll(node.members), flatten(implementing));
     /** merge the extends from the heritageClause */
-    componentMembers = mergeClassMembers(componentMembers, arrayFlatten(extending));
+    componentMembers = mergeClassMembers(componentMembers, flatten(extending));
 
+    // console.log(componentMembers)
     return {
       className: node.name,
       /** @example https://regex101.com/r/YduQlF/1 */

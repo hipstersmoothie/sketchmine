@@ -9,7 +9,10 @@ import {
   Primitives,
   ParseTypeAliasDeclaration,
 } from './ast';
-import { arrayFlatten } from '@sketchmine/helpers';
+import { flatten } from 'lodash';
+import { Logger } from '@sketchmine/node-helpers';
+
+const log = new Logger();
 
 /**
  * @class
@@ -42,6 +45,11 @@ function resolveTypeValues(node: ParseProperty) {
  * @param nodeType Type to be resolved
  */
 function resolveType(nodeType: ParseType): (string | null)[] {
+  if (!nodeType) {
+    log.error('ValuesResolver: resolveType() no nodeType Provided!');
+    return [];
+  }
+
   switch (nodeType.constructor) {
     case ParseValueType:
       const value = (nodeType as ParseValueType).value;
@@ -49,10 +57,11 @@ function resolveType(nodeType: ParseType): (string | null)[] {
     case ParsePrimitiveType:
       return [resolvePrimitiveType(nodeType as ParsePrimitiveType)];
     case ParseUnionType:
-      return arrayFlatten((nodeType as ParseUnionType).types.map(t => resolveType(t)));
+      const types = (nodeType as ParseUnionType).types.map(t => resolveType(t));
+      return flatten(types);
     case ParseTypeAliasDeclaration:
       const aliasNode = resolveTypeValues(nodeType as ParseTypeAliasDeclaration);
-      return arrayFlatten(aliasNode.values);
+      return flatten(aliasNode.values);
     default:
       return [];
   }
