@@ -5,6 +5,7 @@ import { ParseResult } from './ast';
 import { resolveModuleFilename } from './utils';
 
 /**
+ * Get Initial the index barrel file then visit file -> build ast and cycle again over the imports.
  * parses all the files in the file system and visits them with our visitor to generate the AST.
  * @param fileName inFile where to start building the AST, should be the index.ts from the components library
  * @param paths a Map with the adjusted path aliases.

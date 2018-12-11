@@ -341,7 +341,11 @@ export function tsVisitorFactory(
     const relativePath = getSymbolName(node.moduleSpecifier);
     if (relativePath) {
       const absolutePath = parseAbsoluteModulePath(
-        path.dirname(currentLocation.path), relativePath, paths, nodeModulesPath);
+        path.dirname(currentLocation.path),
+        relativePath,
+        paths,
+        nodeModulesPath,
+      );
       /** if absolutePath is null then it is a node_module so we can skip it! */
       if (absolutePath !== null) {
         const values = new Set<string>();
