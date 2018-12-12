@@ -2,7 +2,7 @@
 
 # @sketchmine/helpers
 
-This package is a collection of plattform independend helpers that have to work in the browser and on [Node.js](https://nodejs.org/en/).
+This package is a collection of platform independent helpers that have to work in the browser and on [Node.js](https://nodejs.org/en/).
 
 - [@sketchmine/helpers](#sketchminehelpers)
   - [Dependency graph](#dependency-graph)
@@ -15,7 +15,7 @@ This package is a collection of plattform independend helpers that have to work 
 
 ![Dependency graph of the sketchmine helpers](https://dt-cdn.net/images/helpers-3920-bdf2b6b640.png)
 
-## List of Helpers
+## List of helpers
 
 - **[arrayFlatten](./src/array-flatten.ts)** Flattens an array with depths
 - **[capitalizeFirstLetter](./src/capitalize-first-letter.ts)** Capitalizes the first letter of a word.
@@ -38,15 +38,13 @@ The build can be started with the following two commands:
 
 The source code of this package is going to be linted by our CI environment. To ensure a coding standard and quality use the configured linter [tslint](https://palantir.github.io/tslint/). This package extends from the `tslint-config-airbnb` and the linting configuration extends from the root `tslint.json`.
 
-run `yarn lint` to execute the linter.
+Run `yarn lint` to execute the linter.
 
 ## Testing the package
 
 To ensure that the helpers are working, write tests and put them in a proper named file.
 
-**Important!**
-
-All tests according to this package should be wrapped in a describe with the prefix: `[helpers] › ...` like the following:
+**Note**: All tests according to this package should be wrapped in a `describe` with the prefix: `[helpers] › ...` like the following:
 
 ```typescript
 // import statements
@@ -56,6 +54,6 @@ describe('[helpers] › ${description of the functionality that should be tested
 });
 ```
 
-> For tests the **jest** Framework was chosen, see [jestjs.io](https://jestjs.io/) for details.
+> For tests the Jest Framework was selected. See [jestjs.io](https://jestjs.io/) for details.
 
 Run `yarn test` to run all tests specified for the helpers. Run `yarn test -f filename.test` to run only tests that matches the provided RegExp for the filename.

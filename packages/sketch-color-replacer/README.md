@@ -2,7 +2,7 @@
 
 # @sketchmine/sketch-color-replacer
 
-The sketch-color-replacer is a CLI tool to replace a set of legacy colors with new colors.
+The sketch-color-replacer is a CLI tool for replacing a set of legacy colors with new colors.
 We had the need @Dynatrace to replace over 80 colors, over multiple files with the new brand colors.
 
 - [@sketchmine/sketch-color-replacer](#sketchminesketch-color-replacer)
@@ -41,12 +41,11 @@ Installing the package can be performed with yarn or npm. `yarn add @sketchmine/
 
 To execute the colors replacer you can go ahead with the .bin like `npx skm-color-replacer --colors /path/to/colors.json --file /path/to/file.sketch`.
 
-## Want to Contribute?
+## Want to contribute?
 
-We would be glad if you find a bug or a missing feature and contribute your solution.
-To archive that some things are necessary to know.
+If you find a bug or a missing feature, please let us know your solution so that we can document it
 
-### building the package
+### Building the package
 
 For building the package [Rollup.js](https://rollupjs.org/guide/en) is used as a module bundler. The configuration can be found in the `rollup.config.js` and is orchestrated by the [yarn](https://yarnpkg.com/en/) package manager.
 The package bundle is in the **commonjs** format and meant to be consumed only be node.js applications.
@@ -56,13 +55,13 @@ The build can be started with the following two commands:
 - `yarn build` for building the package.
 - `yarn dev` for building and watching the sources of the package. *(rebuilds after safe)*
 
-### linting
+### Linting
 
 The source code of this package is going to be linted by our CI environment. To ensure a coding standard and quality use the configured linter [tslint](https://palantir.github.io/tslint/). This package extends from the `tslint-config-airbnb` and the linting configuration extends from the root `tslint.json`.
 
 run `yarn lint` to execute the linter.
 
-### testing
+### Testing
 
 Sorry but currently there are no tests specified. 😭
 Feel free to add some! 💪🏻

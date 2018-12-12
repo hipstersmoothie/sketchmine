@@ -2,7 +2,7 @@
 
 # @sketchmine/code-analyzer
 
-> Important: [Dynatrace](https://www.dynatrace.com/) internal tool. May not fit your needs.
+> **Note**: This is a [Dynatrace](https://www.dynatrace.com/) internal tool that may not fit your needs.
 
 - [@sketchmine/code-analyzer](#sketchminecode-analyzer)
   - [Dependency graph](#dependency-graph)
@@ -18,10 +18,9 @@
     - [Urls](#urls)
   - [Architecture](#architecture)
 
-The code-analyzer works like a compiler that is analyzing the provided source code of the [Angular Components library](https://barista.dynatrace.com/components/) and generates an abstract syntax tree
-short AST from the Angular Components. The output of the meta information is provided in the JSON format and contains all information about all the components in a library and their variants.
+The code-analyzer works like a compiler, analyzing the provided source code of the [Angular Component Libraries](https://barista.dynatrace.com/components/) and generating an abstract syntax tree (AST) from the Angular components. The output of the meta information is provided in JSON format and contains all information about all the components in the library and their variants.
 
-This solution is currently tailored for the dynatrace angular components library, feel free to commit pull request with your solution for your company!
+This solution is currently tailored for the Dynatrace Angular Component Libraries. Feel free to commit a pull request with your solution for your company.
 
 ## Dependency graph
 
@@ -29,15 +28,14 @@ This solution is currently tailored for the dynatrace angular components library
 
 ## Development
 
-First you need the **Angular Components Library** source code. You can easily run a `sh ./src/code-analyzer/prepare.sh` script,
-that takes control of that for you.
+First, you need the **Angular Component Libraries** source code. You can easily run a `sh ./src/code-analyzer/prepare.sh` script,
+which takes care of this for you.
 
-Afterwards just run in one window the rollup build: `npm run build:dev` this will start rollup in watch mode
-with cokidar to compile the `.ts` files on the file in the specified dist folder *(specified in `./config/build.js`).
-The compiled output can easy started with `node dist/code-analyzer`. The possible command line args for the application
-are written as default values in the `./src/code-analyzer/config.json`. The commandline args overwrite the defaults from the JSON
+Afterward, run the rollup build in one window: `npm run build:dev` this will start rollup in watch mode with cokidar to compile the `.ts` files on the file in the specified dist folder (specified in `./config/build.js`).
+The compiled output can easily be started with `node dist/code-analyzer`. The possible command line arguments for the application
+are written as default values in the `./src/code-analyzer/config.json`. The commandline arguments overwrite the defaults from the JSON.
 
-### command line args
+### Command line arguments
 
 ```
 -h, --help              | display help
@@ -56,7 +54,7 @@ are written as default values in the `./src/code-analyzer/config.json`. The comm
 
 ## Annotations for the code
 
-It is possible to add JSDoc annotatins that are specifc for the generation of the meta information abstraction of the library in case that some properties can be filled with values or classes can be ignored for design unrelated stuff.
+It's possible to add JSDoc annotations that are specific for the generation of the meta information abstraction of the library in case some properties are filled with values or classes that can be ignored for design unrelated stuff. <!-- I do not understand this previous sentence -->
 
 // TODO: add optional selector to click and hoverable, to specify a trigger for clicking!
 
@@ -75,7 +73,7 @@ It is possible to add JSDoc annotatins that are specifc for the generation of th
 
 Just run `npm i` in the root.
 
-### How to dev
+### How to develop
 
 For debbugging, you can specify specific debug spaces with `DEBUG=${space1},${space2},${space3}... node code-analyzer`
 or just set `DEBUG` to `true`.
@@ -84,19 +82,19 @@ or just set `DEBUG` to `true`.
 
 * annotations
 
-### How to run tests?
+### How to run tests
 
-There are **ts-lint** and **compiler** rules just run `npm run lint`
+There are **ts-lint** and **compiler** rules. Just run `npm run lint`.
 
-For tests the **jest** Framework was choosen [jestjs.io](https://jestjs.io/).
+For tests, the [Jest framework](https://jestjs.io/) was selected.
 Just run `npm run test`
 
 ## Deployment
 
-### Urls
+### URLs
 
-* [webkins tests](https://webkins.lab.dynatrace.org/job/barista/job/sketch-generator/)
+* [Webkins tests](https://webkins.lab.dynatrace.org/job/barista/job/sketch-generator/)
 
 ## Architecture
 
-This code-analyzer is part of the .sketch generation ecosystem
+This code-analyzer is part of the .sketch generation ecosystem.

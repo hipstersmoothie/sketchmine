@@ -2,7 +2,7 @@
 
 # @sketchmine/dom-agent
 
-The Dom Agent is a heart piece of the whole library. This package takes responsibility to scrape the Style information from a Webpage and output an abstract format with the DOM representation and the styling. According to this information later on the **[sketch-builder](../sketch-builder)** can be used to draw the Sketch file.
+The DOM agent is at the heart of the entire library. This package takes responsibility for scraping the style information from a Webpage and outputing an abstract format with the DOM representation and the styling. Based on this information, **[sketch-builder](../sketch-builder)** can be used to later draw the Sketch file.
 
 - [@sketchmine/dom-agent](#sketchminedom-agent)
   - [Dependency graph](#dependency-graph)
@@ -17,7 +17,7 @@ The Dom Agent is a heart piece of the whole library. This package takes responsi
 
 ### About
 
-The dom agent consists out of three parts:
+The DOM agent consists of three parts:
 
 - **[dom traverser](./src/dom-traverser.ts)** Traverses the Dom nodes recursively and applies the visitor on each node.
 - **[dom visitor](./src/dom-visitor.ts)** Visits a DOM Node and extracts the style-information.
@@ -26,7 +26,7 @@ The dom agent consists out of three parts:
 ## Building the package
 
 For building the package [Rollup.js](https://rollupjs.org/guide/en) is used as a module bundler. The configuration can be found in the `rollup.config.js` and is orchestrated by the [yarn](https://yarnpkg.com/en/) package manager.
-The package bundle is in the **ecmascript module** format and meant to be consumed only by the browser.
+The package bundle is in the **ecmascript module** format and is meant to be consumed only by the browser.
 
 The build can be started with the following two commands:
 
@@ -35,25 +35,23 @@ The build can be started with the following two commands:
 
 ## Linting
 
-The source code of this package is going to be linted by our CI environment. To ensure a coding standard and quality use the configured linter [tslint](https://palantir.github.io/tslint/). This package extends from the `tslint-config-airbnb` and the linting configuration extends from the root `tslint.json`.
+The source code of this package is going to be linted by our CI environment. To ensure a coding standard and quality, use the configured linter [tslint](https://palantir.github.io/tslint/). This package extends from the `tslint-config-airbnb` and the linting configuration extends from the root `tslint.json`.
 
-run `yarn lint` to execute the linter.
+Run `yarn lint` to execute the linter.
 
 ## Testing the package
 
-To ensure that the dom-agent is properly working, writing tests is necessary!
+To ensure that the DOM agent is properly working, it's necessary that you write tests.
 There are two types of tests:
 
 - Unit tests for testing functionality
-- End to end tests for testing the dom-agent in a headless chrome.
+- End-to-end tests for testing the DOM agent in a headless Chrome browser.
 
-End2End tests have to end with `filename.e2e.ts` and unit tests with `filename.test.ts`.
+End to end tests have to end with `filename.e2e.ts` and unit tests with `filename.test.ts`.
 
-For the end 2 end tests [Puppeteer](https://github.com/GoogleChrome/puppeteer) is used as a headless chrome.
+For the end to end tests, [Puppeteer](https://github.com/GoogleChrome/puppeteer) is used as a headless Chrome browser.
 
-**Important!**
-
-All tests according to this package should be wrapped in a describe with the prefix: `[dom-agent] › ...` like the following:
+**Note**: All tests based on this package should be wrapped in a `describe` method with the prefix: `[dom-agent] › ...` like the following:
 
 ```typescript
 // import statements
@@ -63,6 +61,6 @@ describe('[dom-agent]› ${folder} › ${description of the suite}', () => {
 });
 ```
 
-> For tests the **jest** Framework was chosen, see [jestjs.io](https://jestjs.io/) for details.
+> The [Jest framework](https://jestjs.io/) has been selected for tests.
 
 Run `yarn test` to run all tests specified for this package. Run `yarn test -f filename.test` to run only tests that matches the provided RegExp for the filename.
