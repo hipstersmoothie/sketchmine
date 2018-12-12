@@ -1,5 +1,32 @@
 {
-  "appShell": "dist/sketch-library",
-  "meta": "../../node_modules/@sketchmine/code-analyzer/dist/meta-information.json",
-  "examples": "/Users/lukas.holzer/Sites/angular-components/src/docs/components"
+  "name": "angular-app-shell",
+  "directory": "sketch-library",
+  "examples": {
+    "dir": "/Users/lukas.holzer/Sites/material2/src/material-examples/"
+  },
+  "dependencies": [
+    {
+      "type": "dependencies",
+      "name": "@dynatrace/angular-components",
+      "version": "latest"
+    },
+    {
+      "type": "dependencies",
+      "name": "@dynatrace/dt-iconpack",
+      "version": "latest"
+    },
+    {
+      "type": "dependencies",
+      "name": "highcharts",
+      "version": "^6.1.0"
+    },
+    {
+      "type": "devDependencies",
+      "name": "@types/highcharts",
+      "version": "^5.0.22"
+    }
+  ],
+  "styles": [
+    "@import '~@dynatrace/angular-components/style/index';"
+  ]
 }

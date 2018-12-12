@@ -17,6 +17,7 @@ export default async function main() {
     'src/lib',
     'meta-information.json',
     'index.ts',
+    'tsconfig.json',
     true,
   ) as MetaResult;
 

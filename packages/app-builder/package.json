@@ -28,17 +28,17 @@
   },
   "scripts": {
     "clean": "rm -rf lib coverage dist",
-    "build": "yarn clean && rollup -c",
-    "dev": "yarn build -w",
+    "build": "gulp",
+    "dev": "gulp dev",
     "lint": "tslint -p tsconfig.json",
     "test": "jest --detectOpenHandles --verbose --forceExit",
-    "gulp": "gulp",
-    "copyMeta": "gulp copyMeta"
+    "schematics": "schematics ./lib/collection.json:angular-app-shell"
   },
   "dependencies": {
+    "@angular-devkit/core": "^7.1.2",
+    "@angular-devkit/schematics": "^7.1.2",
+    "@angular/cli": "^7.1.2",
     "@sketchmine/code-analyzer": "^2.1.0",
-    "@sketchmine/helpers": "^2.1.0",
-    "@sketchmine/node-helpers": "^2.1.0",
     "chalk": "^2.4.0",
     "lodash": "^4.17.0",
     "minimist": "^1.2.0",

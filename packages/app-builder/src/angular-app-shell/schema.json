@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "angularAppShell",
+  "title": "Generates the angular-app-shell for the @sketchmine/app-builder",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "Angular app-shell generator",
+      "$default": {
+        "$source": "angular-app-shell"
+      }
+    }
+  }
+}
