@@ -1,6 +1,7 @@
 import { Tree, SchematicsException } from '@angular-devkit/schematics';
+import { Schema } from '../angular-app-shell/schema';
 
-export function setupOptions(host: Tree, options: any): Tree {
+export function setupOptions(host: Tree, options: Schema): Tree {
   if (!options.name) {
     throw new SchematicsException('Invalid options, "name" is required');
   }

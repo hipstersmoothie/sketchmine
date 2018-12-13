@@ -1,8 +1,15 @@
 {
   "name": "angular-app-shell",
-  "directory": "sketch-library",
+  "directory": "dist/sketch-library",
+  "skipInstall": true,
+  "meta": "../../node_modules/@sketchmine/code-analyzer/dist/meta-information.json",
   "examples": {
-    "dir": "/Users/lukas.holzer/Sites/material2/src/material-examples/"
+    "dir": "/Users/lukas.holzer/Sites/angular-components/src/docs/barista-examples/",
+    "entry": "pure.module.ts",
+    "list": {
+      "button": "ButtonPureExampleComponent",
+      "tile": "TilePureExampleComponent"
+    }
   },
   "dependencies": [
     {
@@ -27,6 +34,11 @@
     }
   ],
   "styles": [
-    "@import '~@dynatrace/angular-components/style/index';"
+    "@import '~@dynatrace/angular-components/style/index';",
+    "",
+    "html,",
+    "body {",
+    "  margin: 0;\n  padding: 0;",
+    "}"
   ]
 }

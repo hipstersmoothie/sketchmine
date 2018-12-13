@@ -47,7 +47,7 @@ export function addPkgJsonDependency(tree: Tree, dependency: NodeDependency, pat
         depsNode,
         dependency.name,
         dependency.version,
-        INDENT_SIZE * 4,
+        INDENT_SIZE * 2,
       );
     } else if (dependency.overwrite) {
       // Package found, update version if overwrite.

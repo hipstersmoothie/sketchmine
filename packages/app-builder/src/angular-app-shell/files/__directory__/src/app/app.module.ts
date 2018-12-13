@@ -6,14 +6,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { PortalModule } from '@angular/cdk/portal';
 import { EXAMPLES_MAP } from './examples-registry';
 import { AppComponent } from './app.component';
-import { DebugComponent } from './debug.component';
 
-import { ExampleModule, EXAMPLES } from './examples/example.module';
+import { ExampleModule, EXAMPLES } from './examples/<%= examples.entry %>';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DebugComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,6 +25,6 @@ import { ExampleModule, EXAMPLES } from './examples/example.module';
   providers: [
     { provide: EXAMPLES_MAP, useValue: EXAMPLES }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

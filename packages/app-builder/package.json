@@ -32,7 +32,7 @@
     "dev": "gulp dev",
     "lint": "tslint -p tsconfig.json",
     "test": "jest --detectOpenHandles --verbose --forceExit",
-    "schematics": "schematics ./lib/collection.json:angular-app-shell"
+    "schematics": "rm -rf dist && schematics ./lib/collection.json:angular-app-shell"
   },
   "dependencies": {
     "@angular-devkit/core": "^7.1.2",

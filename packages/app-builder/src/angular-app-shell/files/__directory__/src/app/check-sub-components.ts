@@ -32,12 +32,11 @@ export function checkSubComponents(viewData: ViewData, components: MetaComponent
       continue;
     }
 
-
     const changes: MetaVariantProperty[] = []
     comp.properties.forEach((prop) => {
 
       const value = node.componentView.component[prop];
-  
+
       if (value) {
         changes.push({
           type: 'property',
@@ -49,7 +48,6 @@ export function checkSubComponents(viewData: ViewData, components: MetaComponent
     node.renderElement.setAttribute('symbol-variant', generateVariantName(comp.component, changes));
   }
 }
-
 
 /** TODO: This is only for the POC needs to be rewritten cleanly later */
 export function getComponentInstanceSelector<C>(component: Type<C>): string[] {
