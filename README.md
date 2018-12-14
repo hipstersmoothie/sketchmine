@@ -13,7 +13,7 @@
 
 ## What is Sketchmine?
 
-Sketchmine is a toolset for creating, validating, and maintaining Sketch and Sketch symbol files. Most parts are used to generate [Sketch symbol libraries] out of Angular components. See [Stefan Baumgartner and Katrin Freihofner's talk at AngularConnect](https://www.youtube.com/watch?v=3_XvaSD_0xo) to learn more about our workflow and what you can do with Sketchmine.
+Sketchmine is a toolset for creating, validating, and maintaining Sketch and Sketch symbol files. Most parts are used to generate [Sketch symbol libraries](https://sketchapp.com/docs/libraries/library-symbols) out of Angular components. See [Stefan Baumgartner and Katrin Freihofner's talk at AngularConnect](https://www.youtube.com/watch?v=3_XvaSD_0xo) to learn more about our workflow and what you can do with Sketchmine.
 
 [![Youtube](https://img.youtube.com/vi/3_XvaSD_0xo/0.jpg)](https://www.youtube.com/watch?v=3_XvaSD_0xo)
 
