@@ -14,7 +14,10 @@ export const EXAMPLES = new Map<string, any>([
 ```
  *
  */
-export function createExamplesMap(examplesList: { [key: string]: string }, name = 'EXAMPLES'): ts.VariableStatement {
+export function createExamplesMap(
+  examplesList: { [key: string]: string },
+  name = 'EXAMPLES',
+): ts.VariableStatement {
   const examples: ts.ArrayLiteralExpression[] = [];
 
   for (const component in examplesList) {

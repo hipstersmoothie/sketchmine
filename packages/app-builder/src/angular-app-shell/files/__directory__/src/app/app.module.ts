@@ -7,8 +7,6 @@ import { PortalModule } from '@angular/cdk/portal';
 import { EXAMPLES_MAP } from './examples-registry';
 import { AppComponent } from './app.component';
 
-import { ExampleModule, EXAMPLES } from './examples/<%= examples.entry %>';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,11 +18,8 @@ import { ExampleModule, EXAMPLES } from './examples/<%= examples.entry %>';
     PortalModule,
     FormsModule,
     ReactiveFormsModule,
-    ExampleModule,
   ],
-  providers: [
-    { provide: EXAMPLES_MAP, useValue: EXAMPLES }
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

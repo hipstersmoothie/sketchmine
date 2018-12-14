@@ -3,8 +3,8 @@ import { join } from 'path';
 
 const NPMRC_FILE = '.npmrc';
 
-export function addFile(tree: Tree, filename: string, content: Buffer | string) {
-  tree.create(filename, content);
+export function addFile(tree: Tree, filePath: string, content: Buffer | string) {
+  tree.create(filePath, content);
 }
 
 export function addDynatraceNpmRc(tree: Tree, path: string) {

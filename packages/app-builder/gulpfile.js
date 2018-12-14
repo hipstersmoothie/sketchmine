@@ -4,6 +4,7 @@ const { spawn } = require('child_process');
 const { red } = require('chalk');
 const del = require('del');
 
+const config = require('./config.json');
 const destDir = resolve('lib')
 const SCHEMATICS_ROOT = resolve('src');
 
@@ -28,6 +29,11 @@ function clean() {
   return del([destDir]);
 }
 
+function copyMeta() {
+  return src([config.meta])
+  .pipe(dest(join(config.directory, 'src', 'assets')))
+}
+
 function copy() {
   return src([
     join(SCHEMATICS_ROOT, '**/*.json'),
@@ -50,6 +56,7 @@ function dev() {
 
 exports.clean = clean;
 exports.copy = copy;
+exports.copyMeta = copyMeta;
 exports.compile = compile;
 exports.dev = dev;
 exports.default = series(clean, compile, copy);
