@@ -1,0 +1,34 @@
+{
+  "name": "angular-app-shell",
+  "directory": "dist/sketch-library",
+  "examples": {
+    "dir": "tests/fixtures/examples-folder",
+    "entry": "example-module.ts",
+    "list": {
+      "button": "ButtonExample"
+    }
+  },
+  "dependencies": [
+    {
+      "type": "dependencies",
+      "name": "@dynatrace/angular-components",
+      "version": "latest"
+    },
+    {
+      "type": "dependencies",
+      "name": "highcharts",
+      "version": "^6.1.0"
+    },
+    {
+      "type": "devDependencies",
+      "name": "@types/highcharts",
+      "version": "^5.0.22"
+    }
+  ],
+  "styles": [
+    "html {",
+    "  margin: 0;",
+    "  padding: 0;",
+    "}"
+  ]
+}

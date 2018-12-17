@@ -1,0 +1,245 @@
+{
+  "version": "7.1.1",
+  "components": {
+    "button": {
+      "className": "MatAnchor",
+      "component": "button",
+      "location": "/Users/lukas.holzer/Sites/material2/src/lib/button/button.ts",
+      "selector": [
+        "a[mat-button]",
+        "a[mat-raised-button]",
+        "a[mat-icon-button]",
+        "a[mat-fab]",
+        "a[mat-mini-fab]",
+        "a[mat-stroked-button]",
+        "a[mat-flat-button]"
+      ],
+      "clickable": false,
+      "hoverable": false,
+      "properties": [
+        "disabled",
+        "disableRipple",
+        "color",
+        "tabIndex"
+      ],
+      "variants": [
+        {
+          "name": "button/accent/default",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"accent\""
+            }
+          ]
+        },
+        {
+          "name": "button/accent/disableRipple/default",
+          "changes": [
+            {
+              "type": "property",
+              "key": "disableRipple",
+              "value": "true"
+            },
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"accent\""
+            }
+          ]
+        },
+        {
+          "name": "button/accent/disableRipple/disabled",
+          "changes": [
+            {
+              "type": "property",
+              "key": "disabled",
+              "value": "true"
+            },
+            {
+              "type": "property",
+              "key": "disableRipple",
+              "value": "true"
+            },
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"accent\""
+            }
+          ]
+        },
+        {
+          "name": "button/accent/disabled",
+          "changes": [
+            {
+              "type": "property",
+              "key": "disabled",
+              "value": "true"
+            },
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"accent\""
+            }
+          ]
+        },
+        {
+          "name": "button/disableRipple/default",
+          "changes": [
+            {
+              "type": "property",
+              "key": "disableRipple",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "name": "button/disableRipple/disabled",
+          "changes": [
+            {
+              "type": "property",
+              "key": "disabled",
+              "value": "true"
+            },
+            {
+              "type": "property",
+              "key": "disableRipple",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "name": "button/disableRipple/primary/default",
+          "changes": [
+            {
+              "type": "property",
+              "key": "disableRipple",
+              "value": "true"
+            },
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"primary\""
+            }
+          ]
+        },
+        {
+          "name": "button/disableRipple/primary/disabled",
+          "changes": [
+            {
+              "type": "property",
+              "key": "disabled",
+              "value": "true"
+            },
+            {
+              "type": "property",
+              "key": "disableRipple",
+              "value": "true"
+            },
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"primary\""
+            }
+          ]
+        },
+        {
+          "name": "button/disableRipple/warn/default",
+          "changes": [
+            {
+              "type": "property",
+              "key": "disableRipple",
+              "value": "true"
+            },
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"warn\""
+            }
+          ]
+        },
+        {
+          "name": "button/disableRipple/warn/disabled",
+          "changes": [
+            {
+              "type": "property",
+              "key": "disabled",
+              "value": "true"
+            },
+            {
+              "type": "property",
+              "key": "disableRipple",
+              "value": "true"
+            },
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"warn\""
+            }
+          ]
+        },
+        {
+          "name": "button/disabled",
+          "changes": [
+            {
+              "type": "property",
+              "key": "disabled",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "name": "button/primary/default",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"primary\""
+            }
+          ]
+        },
+        {
+          "name": "button/primary/disabled",
+          "changes": [
+            {
+              "type": "property",
+              "key": "disabled",
+              "value": "true"
+            },
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"primary\""
+            }
+          ]
+        },
+        {
+          "name": "button/warn/default",
+          "changes": [
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"warn\""
+            }
+          ]
+        },
+        {
+          "name": "button/warn/disabled",
+          "changes": [
+            {
+              "type": "property",
+              "key": "disabled",
+              "value": "true"
+            },
+            {
+              "type": "property",
+              "key": "color",
+              "value": "\"warn\""
+            }
+          ]
+        }
+      ],
+      "combinedVariants": true
+    }
+  }
+}

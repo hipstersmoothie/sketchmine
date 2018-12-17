@@ -1,3 +1,4 @@
+// tslint:disable:prefer-template
 import { JsonAstObject, JsonAstNode, JsonValue, JsonAstKeyValue } from '@angular-devkit/core';
 import { UpdateRecorder } from '@angular-devkit/schematics';
 
@@ -83,7 +84,7 @@ export function findPropertyInAstObject(
 ): JsonAstNode | null {
   let maybeNode: JsonAstNode | null = null;
   for (const property of node.properties) {
-    if (property.key.value == propertyName) {
+    if (property.key.value === propertyName) {
       maybeNode = property.value;
     }
   }
@@ -92,5 +93,6 @@ export function findPropertyInAstObject(
 }
 
 function buildIndent(count: number): string {
+  // tslint:disable-next-line:prefer-array-literal
   return '\n' + new Array(count + 1).join(' ');
 }
