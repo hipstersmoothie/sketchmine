@@ -6,9 +6,9 @@
     "name": "localhost",
     "port": 4200
   },
-  "rootElement": "ng-component > * ",
+  "rootElement": "body > *:nth-child(2)",
   "library": {
-    "app": "/path/to/angular-app/from/app-builder"
+    "app": "../../node_modules/@sketchmine/app-builder/dist/sketch-library"
   },
   "pages": [
     ""

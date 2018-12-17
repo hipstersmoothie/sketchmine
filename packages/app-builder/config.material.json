@@ -17,12 +17,12 @@
     {
       "type": "dependencies",
       "name": "@angular/material",
-      "version": "^7.0.0"
+      "version": "7.1.1"
     },
     {
       "type": "dependencies",
       "name": "@angular/material-moment-adapter",
-      "version": "^7.0.0"
+      "version": "7.1.1"
     },
     {
       "type": "dependencies",

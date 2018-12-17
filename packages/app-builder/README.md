@@ -4,14 +4,19 @@
 
 > **Note**: This is a [Dynatrace](https://www.dynatrace.com/) internal tool that may not fit your needs.
 
-The app-builder builds the example Angular application out of our »pure example components« to generate the Dynatrace components library.
+The app-builder builds the example Angular application out of our »pure example components« to generate the dynatrace components library. We've added support for [Angular Material](https://material.angular.io) as well but keep in mind that it is optimized for the dynatrace components library.
+
+We are using the [Angular devkit Schematics](https://material.angular.io/guide/schematics) for generating the app-shell.
 
 - [@sketchmine/app-builder](#sketchmineapp-builder)
   - [Dependency graph](#dependency-graph)
   - [The purpose](#the-purpose)
   - [Building the package](#building-the-package)
-    - [Prerequisites](#prerequisites)
-    - [how to build](#how-to-build)
+    - [Get running with material2](#get-running-with-material2)
+      - [Prerequisites](#prerequisites)
+      - [Build the application](#build-the-application)
+      - [Run the application](#run-the-application)
+    - [How to build](#how-to-build)
   - [Linting](#linting)
   - [Testing the package](#testing-the-package)
 
@@ -25,21 +30,35 @@ As a brief overview of this package, please note that this package doesn't make 
 
 ## Building the package
 
-### Prerequisites
+### Get running with material2
 
-This package has a `postinstall` task defined in the NPM scripts that takes responsibility to move the app shell to the destination where it can be modified. The default path is defined in the `config.sample.json`.
+#### Prerequisites
+To get started it is necessary to checkout the material2 github repository in a separate folder. Then checkout a specific version with `git checkout 7.1.1` for example.
 
-> You must create the `config.json` before you run the `yarn install` task.
+After that perform a `npm install` and generate the examples module file with `npx gulp build-examples-module`. Now everything should be ready to go ahead.
 
-To work properly, the `./config.sample.json` must be adapted to the correct paths. If you need help, the CLI will provide you with feedback about the available options.
-You will see the CLI help page if the executeable (`./lib/bin.js`) is executed without any arguments.
+Now it is time to generate the meta information from the library for that use the **@sketchmine/code-analyzer** – see further information about how to generate this information in the [README.md from the code-analyzer](../code-analyzer/README.md). Come back if the meta information was generated.
 
-If you already know how to configure the `config.json`, you can execute the builder with `node lib/bin -c config.json` or if you need it in your library process, the main entry point can be imported like `import { main } from '@sketchmine/app-builder';`.
+Now it is time to prepare the configuration. Therefore you will find the `config.material.json` in the package root. Please update the paths to the `src/material-examples/` folders and the path to the meta-information.json file.
+
+After that you can map which library component like (button, card, grid-list) should match which examples Component in the examples folder. *Notice that it is important to lock the version of `@angular/material` to the same that was checked out with git!*
+
+#### Build the application
+
+Now it is time to execute the schematics that will build the examples-library.
+Please run `yarn build` to build the [angular schematics](https://material.angular.io/guide/schematics) that are written in TypeScript. After you have built them perform the `yarn schematics --dryRun=false --config=config.material.json` command where you provide the configuration to the schematics.
+
+After this a folder according to the `directory` property in the `config.material.json` is generated with your app shell.
+
+#### Run the application
+
+The last step before running the application is to copy the generated **meta-information** to the needed destination. For this a gulp task is prepared for you. Execute `npx gulp copyMeta` and after this you can go ahead!
+
+This is mostly done by the **@sketchmine/library** but you can navigate in the generated directory and execute `ng serve`. If you want to build the library with the sketch-builder by hand.
 
 ### How to build
 
-To build the package [Rollup.js](https://rollupjs.org/guide/en) is used as a module bundler. The configuration can be found in the `rollup.config.js` and is orchestrated by the [Yarn package manager](https://yarnpkg.com/en/).
-The package bundle is in the **commonjs** format and is meant to be consumed only by Node.js applications.
+For building the package [Gulp](https://gulpjs.com/) is used in combination with the `tsc`. The configuration can be found in the `gulpfile.js` and is orchestrated by the [yarn](https://yarnpkg.com/en/) package manager.
 
 The build can be started with the following two commands:
 
