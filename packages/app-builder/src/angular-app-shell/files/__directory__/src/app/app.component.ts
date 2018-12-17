@@ -47,11 +47,16 @@ export class AppComponent implements OnInit, OnDestroy {
         map((comps: MetaComponent[]) => comps.filter(comp => availableExamples.includes(comp.component))),
       )
       .subscribe(async (components: MetaComponent[]) => {
-        console.log(components)
         await asyncForEach(components, async (componentMeta: MetaComponent) => {
-          await asyncForEach(componentMeta.variants, async (variant: MetaVariant) => {
+          if (componentMeta.variants.length) {
+            await asyncForEach(componentMeta.variants, async (variant: MetaVariant) => {
+              await this._applyChange(componentMeta, variant, components);
+            });
+          } else {
+            // if there are no variants from the parser instance it with the defaults
+            const variant = { name: `${componentMeta.component}/default`, changes: [] };
             await this._applyChange(componentMeta, variant, components);
-          });
+          }
         });
 
         if (window.sketchGenerator) {

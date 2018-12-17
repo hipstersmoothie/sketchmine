@@ -8,7 +8,9 @@
     "entry": "example-module.ts",
     "list": {
       "button": "ButtonOverviewExample",
-      "card": "CardFancyExample"
+      "card": "CardFancyExample",
+      "grid-list": "GridListDynamicExample",
+      "stepper": "StepperVerticalExample"
     }
   },
   "dependencies": [
