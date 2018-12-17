@@ -1,0 +1,38 @@
+{
+  "name": "angular-app-shell",
+  "directory": "dist/sketch-library",
+  "meta": "tests/fixtures/material-meta-information.json",
+  "skipInstall": false,
+  "examples": {
+    "dir": "tests/fixtures/examples-folder",
+    "entry": "example-module.ts",
+    "list": {
+      "button": "ButtonExample"
+    }
+  },
+  "dependencies": [
+    {
+      "type": "dependencies",
+      "name": "@angular/material",
+      "version": "7.1.1"
+    },
+    {
+      "type": "dependencies",
+      "name": "@angular/material-moment-adapter",
+      "version": "7.1.1"
+    },
+    {
+      "type": "dependencies",
+      "name": "moment",
+      "version": "^2.18.1"
+    },
+    {
+      "type": "dependencies",
+      "name": "hammerjs",
+      "version": "^2.0.8"
+    }
+  ],
+  "styles": [
+    "@import '~@angular/material/prebuilt-themes/indigo-pink.css';"
+  ]
+}
