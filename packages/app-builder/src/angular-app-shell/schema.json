@@ -4,12 +4,17 @@
   "title": "Generates the angular-app-shell for the @sketchmine/app-builder",
   "type": "object",
   "properties": {
-    "project": {
+    "config": {
       "type": "string",
-      "description": "Angular app-shell generator",
+      "format": "path",
+      "description": "Path to the config.json",
       "$default": {
-        "$source": "angular-app-shell"
+        "$source": "argv",
+        "index": 0
       }
     }
-  }
+  },
+  "required": [
+    "config"
+  ]
 }

@@ -5,7 +5,7 @@
   "meta": "../../node_modules/@sketchmine/code-analyzer/dist/meta-information.json",
   "examples": {
     "dir": "/Users/lukas.holzer/Sites/angular-components/src/docs/barista-examples/",
-    "entry": "pure.module.ts",
+    "entry": "app.module.ts",
     "list": {
       "button": "ButtonPureExampleComponent",
       "tile": "TilePureExampleComponent"

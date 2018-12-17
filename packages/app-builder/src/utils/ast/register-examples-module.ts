@@ -1,8 +1,5 @@
 import * as ts from 'typescript';
-import { findNodes } from './find-nodes';
-import { hasExportModifier, getSymbolName } from '@sketchmine/code-analyzer';
 import { updateNgModuleDecoratorProperties, NgModuleProperties } from './update-ng-module-decorator-properties';
-import { createIdentifierArray } from './create-identifier-array';
 import { addImportToModule } from './add-import-to-module';
 import { createPropertyAssignment } from './create-property-assignment';
 
@@ -28,17 +25,17 @@ export function registerExamplesModule(
 
   // Somehow the modified source file has to be converted to text and back to sf (somehow a bug…)
   // TODO: label:investigation
-  const modifiedImport = addImportToModule(sourceFile, [moduleName, mapName], modulePath);
+  const modifiedImport: ts.SourceFile = addImportToModule(sourceFile, [moduleName, mapName], modulePath);
   const modInputText = printer.printNode(ts.EmitHint.SourceFile, modifiedImport, modifiedImport);
   const updatedSf = ts.createSourceFile(sourceFile.fileName, modInputText, ts.ScriptTarget.Latest, true);
 
-  const updated = updateNgModuleDecoratorProperties(
+  const updated: ts.SourceFile = updateNgModuleDecoratorProperties(
     updatedSf,
     NgModuleProperties.Imports,
     ts.createIdentifier(moduleName),
   );
 
-  const updatedProvider = updateNgModuleDecoratorProperties(
+  const updatedProvider: ts.SourceFile = updateNgModuleDecoratorProperties(
     updated,
     NgModuleProperties.Providers,
     ts.createObjectLiteral([

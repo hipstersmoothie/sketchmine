@@ -55,13 +55,13 @@ export function getComponentInstanceSelector<C>(component: Type<C>): string[] {
   const decorators = (component as any).__proto__.constructor.decorators;
   if (decorators.length) {
 
-    decorators.forEach(decorator => {
+    decorators.forEach((decorator) => {
       if (decorator.hasOwnProperty('args')) {
-        decorator.args.forEach(props => {
+        decorator.args.forEach((props) => {
           if (props.hasOwnProperty('selector')) {
             selectors.push(...props.selector.split(',').map(sel => sel.trim()));
           }
-        })
+        });
       }
 
     });

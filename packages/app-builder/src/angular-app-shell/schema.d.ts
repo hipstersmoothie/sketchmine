@@ -1,13 +1,12 @@
 import { Path } from '@angular-devkit/core';
 import { NodeDependency }from '../utils/dependencies';
 
-export interface BaseSchema {
-  name: string;
-  path?: Path;
-  project?: string;
+export interface Config {
+  config: string; // path to the configuration json
 }
 
-export interface Schema extends BaseSchema {
+export interface Schema {
+  name: string;
   dependencies?: NodeDependency[];
   directory: string;
   examples: Examples;

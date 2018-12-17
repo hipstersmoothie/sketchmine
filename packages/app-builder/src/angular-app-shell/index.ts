@@ -13,18 +13,18 @@ import {
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { strings } from '@angular-devkit/core';
 import { resolve, join } from 'path';
-import { Schema } from './schema';
+import { Schema, Config } from './schema';
 import { setupOptions } from '../utils/setup';
 import { addExamplesListToModule, addDependencies, addStylesToTree } from './rules';
 
-const OPTIONS = require(resolve('./config.json')) as Schema;
 const TREE_ROOT = join('/', '__directory__');
 const STYLES_FILE = join(TREE_ROOT, 'src', 'styles.scss');
 const DEFAULT_PKG_MANAGER = 'yarn';
 
-export default function (options: Schema): Rule {
+export default function (configOptions: Config): Rule {
   // merge schematics options with options from a config file.
-  Object.assign(options, OPTIONS);
+  // --config has to be provided with the schema
+  const options = require(resolve(configOptions.config)) as Schema;
 
   return (host: Tree, context: SchematicContext) => {
     setupOptions(host, options);
@@ -32,6 +32,7 @@ export default function (options: Schema): Rule {
     const sourcePath = join(options.directory, 'src');
     const appPath = join(sourcePath, 'app');
     const examplesPath = join(appPath, 'examples');
+    const appBuilderModule = join(appPath, 'app-builder.module.ts');
 
     addTasks(options, context);
 
@@ -53,7 +54,7 @@ export default function (options: Schema): Rule {
     return chain([
       mergeWith(templateSource),
       mergeWith(examples),
-      addExamplesListToModule(options, examplesPath, join(appPath, 'app.module.ts')),
+      addExamplesListToModule(options, examplesPath, appBuilderModule),
     ])(
       host,
       context,

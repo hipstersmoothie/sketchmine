@@ -2,10 +2,9 @@ import * as ts from 'typescript';
 import { findNodes } from './find-nodes';
 import { hasExportModifier, getSymbolName } from '@sketchmine/code-analyzer';
 import { createPropertyAssignment } from './create-property-assignment';
-import { source } from '@angular-devkit/schematics';
 
 // tslint:disable-next-line:max-line-length
-const NO_DECORATORS_ERROR = (name: string, filename: string) => `The <{name}> property cannot be updated, in case there is no @NgModule in this file!\n${filename}`;
+const NO_DECORATORS_ERROR = (name: string, filename: string) => `The <${name}> property cannot be updated, in case there is no @NgModule in this file!\n${filename}`;
 
 // tslint:disable:max-line-length
 export const enum NgModuleProperties {
@@ -26,12 +25,12 @@ export const enum NgModuleProperties {
  * @see https://angular.io/guide/ngmodules
  * @see https://angular.io/api/core/NgModule
  * @param sourceFile The sourceFile that should be modified
- * @param {NgModuleProperties} propertyType enum of the property type
+ * @param {NgModuleProperties | undefined} propertyType enum of the property type or undefined if you want to delete it!
  */
 export function updateNgModuleDecoratorProperties(
   sourceFile: ts.SourceFile,
   propertyType: NgModuleProperties,
-  propertyValue: ts.Expression,
+  propertyValue: ts.Expression | undefined,
 ): ts.SourceFile {
 
   // find all decorators in the provided source file
@@ -63,7 +62,7 @@ export function updateNgModuleDecoratorProperties(
           return false;
         }) as ts.PropertyAssignment;
 
-        if (prop) {
+        if (prop && propertyValue) {
           // if we found the property append the value to the array if it is an array
           if (ts.isArrayLiteralExpression(prop.initializer)) {
 
@@ -81,14 +80,22 @@ export function updateNgModuleDecoratorProperties(
           }
 
         } else {
+          const propertiesArr = [];
+          if (propertyValue) {
+            propertiesArr.push(...argument.properties);
+            propertiesArr.push(createPropertyAssignment(propertyType, propertyValue));
+          } else {
+            // if the propertyValue is undefined then we want to delete it!
+            argument.properties.forEach((prop: ts.PropertyAssignment) => {
+              const name = getSymbolName(prop);
+              // only push the properties where the name does not match the provided type
+              if (name !== propertyType) {
+                propertiesArr.push(prop);
+              }
+            });
+          }
           // if the property does not exist in the NgModule we have to create it and append it!
-          updatedProperties = ts.createObjectLiteral(
-            [
-              ...argument.properties,
-              createPropertyAssignment(propertyType, propertyValue),
-            ],
-            true, // multiline
-          );
+          updatedProperties = ts.createObjectLiteral(propertiesArr, true);
         }
 
       });

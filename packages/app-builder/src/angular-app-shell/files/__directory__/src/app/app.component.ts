@@ -1,4 +1,13 @@
-import { Component, Type, ViewChild, ViewContainerRef, OnInit, OnDestroy, ComponentRef, SimpleChange } from '@angular/core';
+import {
+  Component,
+  Type,
+  ViewChild,
+  ViewContainerRef,
+  OnInit,
+  OnDestroy,
+  ComponentRef,
+  SimpleChange,
+} from '@angular/core';
 import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { ViewData } from '@angular/core/src/view'; // not exported from core (only for POC)
 import { MetaService } from './meta.service';
@@ -12,6 +21,7 @@ import { ExamplesRegistry } from './examples-registry';
 import { checkSubComponents } from './check-sub-components';
 import { Subscription } from 'rxjs';
 import { asyncForEach, waitForDraw, findComponentInstance } from './utils';
+import { map } from 'rxjs/operators';
 
 declare var window: any;
 
@@ -30,8 +40,14 @@ export class AppComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    // get list of mapped examples in the examples module file
+    const availableExamples = this._registry.getExamplesList();
     this.metaSubscription = this._metaService.getMeta()
+      .pipe(
+        map((comps: MetaComponent[]) => comps.filter(comp => availableExamples.includes(comp.component))),
+      )
       .subscribe(async (components: MetaComponent[]) => {
+        console.log(components)
         await asyncForEach(components, async (componentMeta: MetaComponent) => {
           await asyncForEach(componentMeta.variants, async (variant: MetaVariant) => {
             await this._applyChange(componentMeta, variant, components);

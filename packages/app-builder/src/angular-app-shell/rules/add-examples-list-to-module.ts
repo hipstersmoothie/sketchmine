@@ -1,9 +1,14 @@
 import * as ts from 'typescript';
 import { Tree, SchematicsException, Rule } from '@angular-devkit/schematics';
 import { Schema } from '../schema';
-import { createExamplesMap, getNgModuleName } from '../../utils/ast';
+import {
+  createExamplesMap,
+  getNgModuleName,
+  NgModuleProperties,
+  registerExamplesModule,
+  updateNgModuleDecoratorProperties,
+} from '../../utils/ast';
 import { join, basename } from 'path';
-import { registerExamplesModule } from '../../utils/ast/register-examples-module';
 
 const EXAMPLES_MAP_VARIABLE_NAME = 'EXAMPLES_MAPPING';
 
@@ -34,8 +39,16 @@ export function addExamplesListToModule(
     const imports: ts.ImportDeclaration[] = [];
     const nodes: ts.Statement[] = [];
 
+    // if a bootstrap property is in the NgModule remove it in case that our
+    // app-builder module will bootstrap it!
+    const removedBootstrap: ts.SourceFile = updateNgModuleDecoratorProperties(
+      sourceFile,
+      NgModuleProperties.Bootstrap,
+      undefined,
+    );
+
     // separate imports from the other nodes, imports have to stay on top
-    sourceFile.statements.forEach((statement: ts.Statement) => {
+    removedBootstrap.statements.forEach((statement: ts.Statement) => {
       if (ts.isImportDeclaration(statement)) {
         imports.push(statement);
       } else {
@@ -43,6 +56,7 @@ export function addExamplesListToModule(
       }
     });
 
+    // add examples map from the examples list in the config to the module file.
     const modified = ts.updateSourceFileNode(sourceFile, [
       ...imports,
       createExamplesMap(options.examples.list, EXAMPLES_MAP_VARIABLE_NAME),
