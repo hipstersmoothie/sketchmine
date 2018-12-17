@@ -13,6 +13,7 @@ We are using the [Angular devkit Schematics](https://material.angular.io/guide/s
   - [The purpose](#the-purpose)
   - [Building the package](#building-the-package)
     - [Get running with material2](#get-running-with-material2)
+      - [TL;DR](#tldr)
       - [Prerequisites](#prerequisites)
       - [Build the application](#build-the-application)
       - [Run the application](#run-the-application)
@@ -32,7 +33,18 @@ As a brief overview of this package, please note that this package doesn't make 
 
 ### Get running with material2
 
+#### TL;DR
+
+1. Checkout [material2](https://github.com/angular/material2), with specific tag like `7.1.1`.
+2. `npm install && npx gulp build-examples-module` inside material2
+3. Move to Sketchmine's **code-analyzer**. Change the config.material.json to suit your folder structure.
+4. Run `skm-code-analyzer -c config.material.json`
+5. Move to the **app-builder** adjust config.material.json to your needs and run `yarn schematics --dryRun=false --config config.material.json`
+6. Now copy the generated meta-information.json with `npx gulp copyMeta`
+7. Navigate to the generated `dist/sketch-library` and serve it with `ng serve`
+
 #### Prerequisites
+
 To get started it is necessary to checkout the material2 github repository in a separate folder. Then checkout a specific version with `git checkout 7.1.1` for example.
 
 After that perform a `npm install` and generate the examples module file with `npx gulp build-examples-module`. Now everything should be ready to go ahead.
@@ -46,7 +58,7 @@ After that you can map which library component like (button, card, grid-list) sh
 #### Build the application
 
 Now it is time to execute the schematics that will build the examples-library.
-Please run `yarn build` to build the [angular schematics](https://material.angular.io/guide/schematics) that are written in TypeScript. After you have built them perform the `yarn schematics --dryRun=false --config=config.material.json` command where you provide the configuration to the schematics.
+Please run `yarn build` to build the [Angular schematics](https://material.angular.io/guide/schematics) that are written in TypeScript. After you have built them perform the `yarn schematics --dryRun=false --config=config.material.json` command where you provide the configuration to the schematics.
 
 After this a folder according to the `directory` property in the `config.material.json` is generated with your app shell.
 

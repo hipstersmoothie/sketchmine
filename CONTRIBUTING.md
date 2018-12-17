@@ -8,7 +8,7 @@
     - [available branch prefixes](#available-branch-prefixes)
   - [Commit message guideline](#commit-message-guideline)
     - [Commit message format](#commit-message-format)
-      - [Issue Referencing](#issue-referencing)
+      - [Issue referencing](#issue-referencing)
       - [Available scopes for commit messages](#available-scopes-for-commit-messages)
       - [Available types for commit messages](#available-types-for-commit-messages)
 
@@ -22,7 +22,7 @@ To ensure consistency through our source code we have some rules that you should
 
 ## Branch name format
 
-The Branch name can only consist out of uppercase letters, lowercase letters, numbers and dashes and has
+The branch name can only consist out of uppercase letters, lowercase letters, numbers and dashes and has
 to contain a specific prefix about the purpose. The prefixes are listed below.
 Furthermore the length of a branch name can only be up to 50 characters.
 please use the following pattern: `<prefix>/<descriptive-name>`
@@ -36,7 +36,7 @@ please use the following pattern: `<prefix>/<descriptive-name>`
 
 ## Commit message guideline
 
-This project follows the angular commit style guide. This leads to more readable messages and enables us to generate a CHANGELOG out of the messages.
+This project follows the Angular commit style guide. This leads to more readable messages and enables us to generate a CHANGELOG out of the messages.
 
 ### Commit message format
 
@@ -58,7 +58,7 @@ if the commit affects the whole repository like a general update of the README.m
 
 `docs: update Readme...`
 
-#### Issue Referencing
+#### Issue referencing
 
 If you work on a [Github Issue](https://github.com/Dynatrace/sketchmine/issues) you should reference the issue in your commit message via the `#<issue number>`.
 To provide our changelog generation with the necessary information about the commit.
