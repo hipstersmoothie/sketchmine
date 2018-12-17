@@ -27,14 +27,14 @@ function line(length: number, char = '-'): string {
 export function displayHelp(helpText: string, cliCommands: CliCommand[]) {
   const padding = '  ';
   const spacer = '|';
-  const lines = [];
+  const lines: string[] = [];
 
   cliCommands.forEach((cmd) => {
     if (cmd.divider) {
       lines.push(`\n${line(110)}\n`);
       lines.push(`${padding}${cmd.text}\n`);
     } else {
-      const flags = cmd.flags.map(flag => flag.length < 2 ? `-${flag}` : `--${flag}`);
+      const flags = cmd.flags ? cmd.flags.map(flag => flag.length < 2 ? `-${flag}` : `--${flag}`) : [];
       const cmdFlags = flags.join(', ');
       lines.push(`${padding}${cmdFlags}\t\t${spacer} ${cmd.text}`);
     }

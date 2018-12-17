@@ -1,5 +1,5 @@
 import { main as AngularMetaParser, Result as MetaResult } from '@sketchmine/code-analyzer';
-import { main as AngularLibraryGenerator } from '@sketchmine/app-builder';
+// import { main as AngularLibraryGenerator } from '@sketchmine/app-builder';
 import { main as SketchGenerator } from '@sketchmine/sketch-builder';
 import { writeJSON, Logger } from '@sketchmine/node-helpers';
 import { startServer } from './start-server';
@@ -22,7 +22,8 @@ export default async function main() {
   ) as MetaResult;
 
   log.info(chalk`{blue ==>} generating the angular app from the meta-information\n\n`);
-  await AngularLibraryGenerator(meta, '_tmp/src/docs/components', 'dist/sketch-library');
+  // TODO: lukasholzer issue: #23
+  // await AngularLibraryGenerator(meta, '_tmp/src/docs/components', 'dist/sketch-library');
   await writeJSON(config.metaInformation, meta);
   const server = await startServer(config);
   log.info(chalk`{blue ==>} generate the .sketch file\n\n`);

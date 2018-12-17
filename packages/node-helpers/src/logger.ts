@@ -91,6 +91,7 @@ ${envs.join('\n')}
       case 3: return `${Logger.EMOJI_SPACE}`;
       case 4: return `ℹ️${Logger.EMOJI_SPACE}`;
       case 5: return `${Logger.EMOJI_SPACE}`;
+      default: return '';
     }
   }
 
@@ -100,7 +101,7 @@ ${envs.join('\n')}
       case 2: return 'WARNING';
       case 3: return 'NOTICE';
       case 4: return 'INFO';
-      case 5: return 'DEBUG';
+      default: return 'DEBUG';
     }
   }
 

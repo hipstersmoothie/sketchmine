@@ -11,7 +11,7 @@ const read = util.promisify(fs.readFile);
  * @param path string
  * @param encoding string
  */
-export async function readFile(path: string, encoding = 'utf8'): Promise<string> {
+export async function readFile(path: string, encoding = 'utf8'): Promise<string | undefined> {
   try {
     return await read(path, encoding);
   } catch (error) {

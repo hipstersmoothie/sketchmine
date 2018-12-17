@@ -88,9 +88,12 @@ export function tsVisitorFactory(
         break;
       case ts.SyntaxKind.TypeAliasDeclaration:
         visitTypeAliasDeclaration(node as ts.TypeAliasDeclaration);
+        break;
       case ts.SyntaxKind.ClassDeclaration:
         visitClassDeclaration(node as ts.ClassDeclaration);
         break;
+      default:
+        log.warning(`Unsupported SyntaxKind to visit: <${ts.SyntaxKind[node.kind]}>`);
     }
   }
 

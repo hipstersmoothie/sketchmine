@@ -1,4 +1,4 @@
-//tslint:disable
+// tslint:disable:prefer-template
 /**
  * Fast UUID generator, RFC4122 version 4 compliant.
  * @author Jeff Ward (jcward.com).
@@ -6,7 +6,7 @@
  * @link http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
  **/
 export class UUID {
-  private lut = [];
+  private lut: string[] = [];
 
   constructor() {
     for (let i = 0; i < 256; i += 1) {
