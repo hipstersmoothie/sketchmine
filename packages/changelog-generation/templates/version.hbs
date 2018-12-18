@@ -1,0 +1,9 @@
+## {{date}}, Version {{version}} {{versionName}}
+
+{{#if commits}}
+### Commits
+
+{{~#each commits}}
+  {{> commit}}
+{{~/each}}
+{{/if}}

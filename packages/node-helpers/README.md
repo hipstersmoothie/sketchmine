@@ -22,6 +22,7 @@ This package is a collection of [Node.js](https://nodejs.org/en/) specific helpe
 - **[createDir](./src/create-dir.ts)** Creates a folder (`sync`).
 - **[delFolder](./src/del-folder.ts)** Deletes a folder recursively (`sync`).
 - **[displayHelp](./src/display-help.ts)** Logs a CLI help page to the console.
+- **[executeCommand](./src/execute-command.ts)** Executes a command on the spawned shell (`async`).
 - **[isFile](./src/is-file.ts)** Checks if the string is a file (`sync`).
 - **[Logger](./src/logger.ts)** Custom Logger for the library with different logging spaces.
 - **[readDirRecursively](./src/read-dir-recursivly.ts)** Lists all children of a directory recursively, (`sync`).

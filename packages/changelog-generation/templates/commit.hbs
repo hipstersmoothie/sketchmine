@@ -1,0 +1,24 @@
+
+* [[`{{hash}}`](https://github.com/Dynatrace/sketchmine/commit/{{hash}})] -
+
+{{~#if scopes}}
+  **{{scopes}}**:
+{{~/if}}
+
+{{~#if type}}
+  {{ type}}
+{{~/if}}
+
+{{~#if message}}
+  {{ message}}
+{{~/if}}
+
+{{~#if author}}
+  ({{>author }})
+{{~/if}}
+
+{{~#if gitIssues}}
+  {{#each gitIssues}}
+  [{{this}}](https://github.com/Dynatrace/sketchmine/issues/{{this}})
+  {{/each}}
+{{~/if}}
