@@ -1,3 +1,5 @@
+import { ChangelogDate } from '../changelog.interface';
+
 export interface GitCommit {
   hash: string;
   abbrevHash: string;
@@ -15,6 +17,7 @@ export interface GitCommit {
 
 export interface GitVersion {
   name?: string;
+  date: ChangelogDate;
   version: string;
   commits: GitCommit[];
 }

@@ -29,8 +29,16 @@ export async function getCommits(startToEnd: string[] = ['HEAD']): Promise<GitVe
     .replace(/[\r?\n](?!\{)/g, '\/n') // replace newlines in commit messages with placeholder
     .slice(0, -1); // remove the last comma
 
+  const commits = JSON.parse(`[${parsed}]`) as GitCommit[];
+  const versionDate = new Date(commits[0].authorDate);
+
   return {
+    date: {
+      y: versionDate.getFullYear(),
+      m: versionDate.getMonth(),
+      d: versionDate.getDay(),
+    },
     version: startToEnd.pop(),
-    commits: JSON.parse(`[${parsed}]`) as GitCommit[],
+    commits,
   };
 }

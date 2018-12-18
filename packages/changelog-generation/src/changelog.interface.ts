@@ -1,11 +1,19 @@
-export interface Commit {
+export interface ChangelogCommit {
+  headline: string;
   hash: string;
   author: CommitAuthor;
+  date: ChangelogDate;
   gitIssues: string[];
   bitbucketIssues: string[];
   scopes: string;
   type: string;
   message: string;
+}
+
+export interface ChangelogDate {
+  y: number;
+  m: number;
+  d: number;
 }
 
 export interface CommitAuthor {
@@ -16,4 +24,11 @@ export interface CommitAuthor {
 export interface CommitIssue {
   number: string;
   url: string;
+}
+
+export interface ChangelogVersion {
+  date: ChangelogDate;
+  version: string;
+  contributors: CommitAuthor[];
+  types: { [key: string]: ChangelogCommit[] };
 }
