@@ -1,12 +1,8 @@
 
-* [[`{{hash}}`](https://github.com/Dynatrace/sketchmine/commit/{{hash}})] -
+* [[`{{hash}}`]({{global "githubUrl"}}commit/{{hash}})] -
 
 {{~#if scopes}}
   **{{scopes}}**:
-{{~/if}}
-
-{{~#if type}}
-  {{ type}}
 {{~/if}}
 
 {{~#if message}}
@@ -17,8 +13,23 @@
   ({{>author }})
 {{~/if}}
 
+
 {{~#if gitIssues}}
-  {{#each gitIssues}}
-  [{{this}}](https://github.com/Dynatrace/sketchmine/issues/{{this}})
-  {{/each}}
+  *issues:*
+{{~else}}
+  {{~#if bitbucketIssues}}
+    *issues:*
+  {{~/if}}
+{{~/if}}
+
+{{~#if gitIssues}}
+  {{~#each gitIssues}}
+    [{{this}}]({{global "githubUrl"}}issues/{{this}})
+  {{~/each}}
+{{~/if}}
+
+{{~#if bitbucketIssues}}
+  {{~#each bitbucketIssues}}
+    [{{this}}]({{global "jiraIssueUrl"}}{{this}})
+  {{~/each}}
 {{~/if}}

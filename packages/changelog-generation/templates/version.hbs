@@ -1,7 +1,7 @@
 ## {{version}} – {{date.y}}.{{date.m}}.{{date.d}}
 
 {{#if contributors}}
-### Contributors
+#### Contributors
 
 {{#each contributors}}
   - [{{name}}](mailto:{{email}})
@@ -9,10 +9,10 @@
 {{/if}}
 
 {{#if types}}
-### Commits
+#### Commits
 {{#each types}}
 
-#### {{@key}}
+##### {{@key}}
 
 {{#if this}}
 {{#each this}}

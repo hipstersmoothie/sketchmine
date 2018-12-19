@@ -32,3 +32,9 @@ export interface ChangelogVersion {
   contributors: CommitAuthor[];
   types: { [key: string]: ChangelogCommit[] };
 }
+
+export interface ChangelogConfig {
+  commitRegex: RegExp;
+  commitTypes?: { [key: string]: string };
+  globals?: { [key: string]: string };
+}

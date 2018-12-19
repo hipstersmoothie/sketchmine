@@ -27,9 +27,7 @@
     "access": "public"
   },
   "scripts": {
-    "clean": " rm -rf lib coverage",
-    "build": "yarn clean && rollup -c",
-    "dev": "ts-node src/index.ts",
+    "changelog": "ts-node src/index.ts",
     "lint": "tslint -p tsconfig.json",
     "test": "jest --detectOpenHandles --verbose --forceExit"
   },

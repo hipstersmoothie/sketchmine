@@ -1,15 +1,12 @@
 import { GitVersion, GitCommit } from './git';
-import config from './config';
-import { ChangelogCommit, ChangelogVersion, CommitAuthor } from './changelog.interface';
+import { ChangelogCommit, ChangelogVersion, CommitAuthor, ChangelogConfig } from './changelog.interface';
 
-export function transformer(versions: GitVersion[]): ChangelogVersion[] {
+export function transformer(versions: GitVersion[], config: ChangelogConfig): ChangelogVersion[] {
   const modified = versions.map((version: GitVersion): ChangelogVersion => {
 
     const commits: ChangelogCommit[] = version.commits
-      .map((commit: GitCommit) => transformCommit(commit))
+      .map((commit: GitCommit) => transformCommit(commit, config))
       .filter(c => c !== undefined);
-
-    const contributors = version.commits.map(c => `${c.authorName}<${c.authorEmail}>`);
 
     const grouped = groupBy(commits, (x: ChangelogCommit) => x.headline);
 
@@ -26,7 +23,7 @@ export function transformer(versions: GitVersion[]): ChangelogVersion[] {
 
 const GITHUB_ISSUE_REGEX = /#\d+/gm;
 
-export function transformCommit(gitCommit: GitCommit): ChangelogCommit | undefined {
+export function transformCommit(gitCommit: GitCommit, config: ChangelogConfig): ChangelogCommit | undefined {
   const matches = gitCommit.subject.trim().match(config.commitRegex);
 
   // only commits that pass the regex should be listed in the changelog
@@ -38,7 +35,7 @@ export function transformCommit(gitCommit: GitCommit): ChangelogCommit | undefin
     return;
   }
 
-  const headline = getCommitType(matches[2]);
+  const headline = getCommitType(matches[2], config);
 
   // if the headline is undefined no matching type found
   // or it is a chore that should not be displayed in the changelog then skip it.
@@ -76,6 +73,10 @@ export function transformCommit(gitCommit: GitCommit): ChangelogCommit | undefin
   return commit;
 }
 
+/**
+ * Get the committers for an array of commits.
+ * @param commits Array of Commits
+ */
 function getComitters(commits: GitCommit[]): CommitAuthor[] {
 
   const contributors = commits.map(c => `{"name":"${c.authorName}","email":"${c.authorEmail}"}`);
@@ -88,19 +89,19 @@ function getComitters(commits: GitCommit[]): CommitAuthor[] {
  * Create a human readable headline out of the commit type
  * @param type the type like fix, feat...
  */
-function getCommitType(type: string): string | undefined {
-  switch (type) {
-    // case 'build': return 'Build Improvements';
-    // case 'ci': return 'Continuous Integration';
-    // case 'docs': return 'Documentation';
-    case 'feat': return 'Features ';
-    case 'fix': return 'Bug Fixes 🐞';
-    case 'perf': return 'Performance Improvements';
-    // case 'refactor': return 'Code Refactoring';
-    // case 'style': return 'Styles';
-    // case 'test': return 'Tests';
-    default: return;
+function getCommitType(type: string, config: ChangelogConfig): string | undefined {
+
+  // if no configuration is provided return the type as headlines
+  if (!config.commitTypes) {
+    return type;
   }
+
+  if (config.commitTypes.hasOwnProperty(type)) {
+    return config.commitTypes[type];
+  }
+  // return undefined if the type is not in the configuration,
+  // then we want to drop it!
+  return undefined;
 }
 
 /**

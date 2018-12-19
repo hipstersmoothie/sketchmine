@@ -3,9 +3,10 @@ import { getCommits, getVersionTags, GitVersion } from './git';
 import { render } from './renderer';
 import { transformer } from './transformer';
 import { resolve } from 'path';
+import config from './config';
 
 const LATEST_TAG_REGEX = /## (v[\S]+?)\s/;
-const CHANGELOG_FILE = resolve('CHANGELOG.md');
+const CHANGELOG_FILE = resolve('../../CHANGELOG.md');
 
 async function main(): Promise<void> {
 
@@ -14,6 +15,12 @@ async function main(): Promise<void> {
   const latestTag = lTag ? lTag[1] : null;
   const versions: GitVersion[] = [];
   const tags = await getVersionTags(latestTag);
+
+  // we are on the latest version
+  if (tags.length === 1 && tags[0] === latestTag) {
+    console.log('\nThe Changelog is already up to date!\nNo need to modify anything.\n\n');
+    return;
+  }
 
   for (let i = 0, max = tags.length; i < max; i += 1) {
     if (i === 0) {
@@ -27,8 +34,9 @@ async function main(): Promise<void> {
   }
 
   const ctx = {
-    versions: transformer(versions).reverse(),
-    oldChangelog: curLog.replace('# Changelog\n\n\n', ''), // remove old headline
+    versions: transformer(versions, config).reverse(),
+    previousChangelog: curLog,
+    globals: config.globals || {},
   };
 
   const result = await render('templates/changelog.hbs', ctx);
