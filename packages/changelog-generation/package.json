@@ -10,33 +10,17 @@
   "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
   "homepage": "https://github.com/dynatrace/sketchmine#readme",
   "license": "MIT",
-  "main": "lib/index.cjs.js",
-  "typings": "lib/@types/index.d.ts",
-  "directories": {
-    "lib": "lib",
-    "test": "tests"
-  },
-  "files": [
-    "lib"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/changelog-generation"
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "changelog": "ts-node src/index.ts",
-    "lint": "tslint -p tsconfig.json",
-    "test": "jest --detectOpenHandles --verbose --forceExit"
+    "lint": "tslint -p tsconfig.json"
   },
   "devDependencies": {
     "@types/handlebars": "^4.0.39",
-    "@types/jest": "^23.3.0",
     "@types/node": "^10.6.0",
-    "jest": "^23.6.0",
-    "ts-jest": "^23.10.0",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.11.0",
@@ -45,8 +29,5 @@
   "dependencies": {
     "@sketchmine/node-helpers": "^2.2.0",
     "handlebars": "^4.0.12"
-  },
-  "bin": {
-    "skm-generate-changelog": "./lib/bin.js"
   }
 }
