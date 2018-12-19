@@ -11,6 +11,7 @@
 * [Maintainers](#maintainers)
 * [License](#license)
 * [How to Contribute](./CONTRIBUTING.md)
+* [Changelog](./CHANGELOG.md)
 
 ## What is Sketchmine?
 
@@ -53,7 +54,7 @@ Sketchmine follows a monorepo approach. All officially maintained modules and de
 To start contributing and developing you have to run `yarn install` to install all the necessary dependencies.
 after that you can switch to any package in the `./packages` folder and start to get your hands dirty 👷🏼‍.
 
-If you want to run [tasks](https://docs.npmjs.com/misc/scripts) across all packages, you'll find [Lerna](https://lernajs.io/) to be very useful. You can use the NPM scripts in the root package folder or you can execute all tasks with the `lerna run build` command to execute the `yarn build` command in every package. For further information, check out the [Lerna documentation](https://lernajs.io/). 
+If you want to run [tasks](https://docs.npmjs.com/misc/scripts) across all packages, you'll find [Lerna](https://lernajs.io/) to be very useful. You can use the NPM scripts in the root package folder or you can execute all tasks with the `lerna run build` command to execute the `yarn build` command in every package. For further information, check out the [Lerna documentation](https://lernajs.io/).
 
 ### How to get up and running
 
