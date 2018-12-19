@@ -44,7 +44,6 @@ export async function getCommits(startToEnd: string[] = ['HEAD']): Promise<GitVe
   const pretty = ` --pretty="format:${format.replace(/\"/g, '\\"')},"`;
 
   const fromTo = startToEnd.length > 1 ? startToEnd.join('..') : startToEnd[0];
-  console.log(fromTo, startToEnd)
   const cmd = `git log ${fromTo}${pretty}`;
   const gitLog = await exec(cmd);
   const parsed = gitLog
