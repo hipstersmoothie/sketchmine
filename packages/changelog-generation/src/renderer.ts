@@ -2,7 +2,7 @@ import { resolve, basename } from 'path';
 import { compile, registerPartial, registerHelper } from 'handlebars';
 import { readDirRecursively, readFile } from '@sketchmine/node-helpers';
 
-const PARTIALS_DIR = 'templates';
+const PARTIALS_DIR = 'templates/partials';
 
 /**
  * Renders a provided .hbs file and returns the string

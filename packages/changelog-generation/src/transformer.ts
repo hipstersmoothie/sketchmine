@@ -24,18 +24,23 @@ export function transformer(versions: GitVersion[], config: ChangelogConfig): Ch
 const GITHUB_ISSUE_REGEX = /#\d+/gm;
 
 export function transformCommit(gitCommit: GitCommit, config: ChangelogConfig): ChangelogCommit | undefined {
-  const matches = gitCommit.subject.trim().match(config.commitRegex);
+  const match = gitCommit.subject.trim().match(config.commitRegex);
+  const fullMatch = match ? match[1] : undefined;
+  const bitbucketIssues = match ? [match[1]] : [];
+  const commitType = match ? match[2] : undefined;
+  const scopes = match ? match[3] : '';
+  const message = match ? match[4] : undefined;
 
   // only commits that pass the regex should be listed in the changelog
   if (
-    !matches ||
-    !matches[2] || // type like (chore, refactor, docs, etc...) is required
-    !matches[4] // message is required for changelog as well
+    !fullMatch ||
+    !commitType || // type like (chore, refactor, docs, etc...) is required
+    !message // message is required for changelog as well
   ) {
     return;
   }
 
-  const headline = getCommitType(matches[2], config);
+  const headline = getCommitType(commitType, config);
 
   // if the headline is undefined no matching type found
   // or it is a chore that should not be displayed in the changelog then skip it.
@@ -58,14 +63,14 @@ export function transformCommit(gitCommit: GitCommit, config: ChangelogConfig): 
       email: gitCommit.authorEmail,
     },
     gitIssues: [],
-    bitbucketIssues: matches[1] ? [matches[1]] : [],
-    scopes: matches[3] ? matches[3] : '',
-    type: matches[2],
-    message: matches[4],
+    bitbucketIssues,
+    scopes,
+    commitType,
+    message,
   };
 
   // check if there are github issues in the message
-  const gitIssues = matches[4].match(GITHUB_ISSUE_REGEX);
+  const gitIssues = message.match(GITHUB_ISSUE_REGEX);
   if (gitIssues) {
     commit.gitIssues = gitIssues;
   }

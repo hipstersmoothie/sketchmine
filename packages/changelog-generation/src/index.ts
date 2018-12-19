@@ -5,6 +5,7 @@ import { transformer } from './transformer';
 import { resolve } from 'path';
 import config from './config';
 
+/** @see https://regex101.com/r/vmlMRx/1 */
 const LATEST_TAG_REGEX = /## (v[\S]+?)\s/;
 const CHANGELOG_FILE = resolve('../../CHANGELOG.md');
 

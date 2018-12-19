@@ -6,7 +6,7 @@ export interface ChangelogCommit {
   gitIssues: string[];
   bitbucketIssues: string[];
   scopes: string;
-  type: string;
+  commitType: string;
   message: string;
 }
 
@@ -19,11 +19,6 @@ export interface ChangelogDate {
 export interface CommitAuthor {
   name: string;
   email: string;
-}
-
-export interface CommitIssue {
-  number: string;
-  url: string;
 }
 
 export interface ChangelogVersion {
