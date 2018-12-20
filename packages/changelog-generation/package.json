@@ -14,6 +14,9 @@
     "type": "git",
     "url": "https://github.com/Dynatrace/sketchmine/tree/master/packages/changelog-generation"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "changelog": "ts-node src/index.ts",
     "lint": "tslint -p tsconfig.json"
