@@ -64,7 +64,6 @@ export class Sketch {
       await writeJSON(join(Sketch.TMP_PATH, 'pages', page.objectID), page.generateObject());
     });
 
-    const preview = join(process.cwd(), this.previewImage);
-    await copyFile(preview, join(Sketch.TMP_PATH, 'previews'));
+    await copyFile(this.previewImage, join(Sketch.TMP_PATH, 'previews'));
   }
 }

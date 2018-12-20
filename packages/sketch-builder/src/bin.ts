@@ -2,9 +2,10 @@ import { main } from './main';
 import { parseCommandlineArgs } from './helpers/parse-commandline-args';
 import { readFile } from '@sketchmine/node-helpers';
 import { Result } from '@sketchmine/code-analyzer';
+import { join } from 'path';
 
 const DEFAULT_AGENT = require.resolve('@sketchmine/dom-agent');
-const DEFAULT_PREVIEW = 'assets/preview.png';
+const DEFAULT_PREVIEW = join(__dirname, '..', 'assets', 'preview.png');
 
 /**
  * @description The CLI entry point. You need to provide a `config.json` with all
