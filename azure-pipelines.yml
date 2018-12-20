@@ -16,7 +16,7 @@ steps:
 - task: NodeTool@0
   inputs:
     versionSpec: $(node_version)
-  displayName: 'Install Node.js'
+  displayName: 'Install Node.js 🐍'
 
 - script: |
     yarn install
