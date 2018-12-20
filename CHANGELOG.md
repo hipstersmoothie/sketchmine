@@ -1,6 +1,43 @@
 # Changelog
 
 
+## v2.3.1 – 2018.11.4
+
+#### Contributors
+
+  - [Lukas Holzer](mailto:lukas.holzer@dynatrace.com)
+  - [Stefan Baumgartner](mailto:sbaumg@gmail.com)
+
+#### Commits
+
+##### Bug Fixes 🐞
+
+
+* [[`6d3f482`](https://github.com/Dynatrace/sketchmine/commit/6d3f482)] -  **sketch-builder**:  adjust paths with dirname and add syntax highlighting for JSON in CLI.  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))
+* [[`b7854ab`](https://github.com/Dynatrace/sketchmine/commit/b7854ab)] -  **sketch-file-builder**:  remove double export  ([**Stefan Baumgartner**](mailto:sbaumg@gmail.com))
+
+
+## v2.3.0 – 2018.11.4
+
+#### Contributors
+
+  - [Lukas Holzer](mailto:lukas.holzer@dynatrace.com)
+
+#### Commits
+
+##### Bug Fixes 🐞
+
+
+* [[`8dae64e`](https://github.com/Dynatrace/sketchmine/commit/8dae64e)] -  **changelog-generation**: needs to be public for publishing with lerna  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))
+* [[`5890078`](https://github.com/Dynatrace/sketchmine/commit/5890078)] -  **node-helpers**:  correct align of multiline help texts in the display-help function.  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))
+
+##### Features
+
+
+* [[`6e1162d`](https://github.com/Dynatrace/sketchmine/commit/6e1162d)] -  **sketch-builder**:  provide default dom-agent and preview.png in sketch-builder. #20  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))  *issues:*    [#20](https://github.com/Dynatrace/sketchmine/issues/#20)
+* [[`6fab58b`](https://github.com/Dynatrace/sketchmine/commit/6fab58b)] -  **changelog-generation**:  add changelog generation  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))    *issues:*    [UX-8794 ](https://dev-jira.dynatrace.org/browse/UX-8794 )
+
+
 ## v2.2.0 – 2018.11.1
 
 #### Contributors
@@ -44,9 +81,9 @@
   - [Lukas Holzer](mailto:lukas.holzer@dynatrace.com)
   - [Lara Aigmueller](mailto:lara.aigmueller@dynatrace.com)
 
-Refactoring to a monorepo approach. All officially maintained modules and dependencies are now in the same repository under the `./packages` folder now.
+  Refactoring to a monorepo approach. All officially maintained modules and dependencies are now in the same repository under the `./packages` folder now.
 
-> The tool for managing the monorepo @sketchmine has been extracted out as [Lerna](https://github.com/lerna/lerna)
+  > The tool for managing the monorepo @sketchmine has been extracted out as [Lerna](https://github.com/lerna/lerna)
 
 #### Commits
 
@@ -227,5 +264,4 @@ Refactoring to a monorepo approach. All officially maintained modules and depend
 * [[`a59b16a`](https://github.com/Dynatrace/sketchmine/commit/a59b16a)] -  **preview**:  add preview png  ([**lukas.holzer**](mailto:lukas.holzer@dynatrace.com))    *issues:*    [UX-7975 ](https://dev-jira.dynatrace.org/browse/UX-7975 )
 * [[`87af580`](https://github.com/Dynatrace/sketchmine/commit/87af580)] -  **jenkinsfile**:  keep last 10 builds  ([**lukas.holzer**](mailto:lukas.holzer@dynatrace.com))    *issues:*    [UX-7975 ](https://dev-jira.dynatrace.org/browse/UX-7975 )
 * [[`c534ac0`](https://github.com/Dynatrace/sketchmine/commit/c534ac0)] -  **tests**:  add tests for this project  ([**lukas.holzer**](mailto:lukas.holzer@dynatrace.com))    *issues:*    [UX-7975 ](https://dev-jira.dynatrace.org/browse/UX-7975 )
-
 
