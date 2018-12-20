@@ -4,10 +4,11 @@ import { fileValidations } from './file-validations';
 import { ElementFetcher } from '../src/element-fetcher';
 import { resolve, dirname, basename, join } from 'path';
 import { statSync } from 'fs';
+import { SketchBuilderConfig } from '../src/config.interface';
 
-const config = {
+const config: SketchBuilderConfig = {
   metaInformation: resolve('tests', 'fixtures', 'meta-information.json'),
-  agent: resolve('../../node_modules/@sketchmine/dom-agent/lib/index.esm.js'),
+  agent: require.resolve('@sketchmine/dom-agent'),
   host: {
     protocol: 'file',
     name: `${resolve('tests', 'fixtures')}`,
@@ -16,6 +17,7 @@ const config = {
   rootElement: 'app-root > * > *',
   pages: ['tile-default.html'],
   outFile: resolve('./tests/_tmp/dt-asset-lib.sketch'),
+  previewImage: 'assets/preview.png',
   chrome: {
     defaultViewport: {
       width: 800,
@@ -40,9 +42,7 @@ describe('[sketch-builder] › element-fetcher › try to generate .sketch file'
     createDir(testTmp);
     const elementFetcher = new ElementFetcher(config);
     await elementFetcher.collectElements();
-    console.log('passed!')
     await elementFetcher.generateSketchFile();
-    console.log(sketchFile);
     await extract(config.outFile, { dir: join(testTmp, fileName) });
   });
 

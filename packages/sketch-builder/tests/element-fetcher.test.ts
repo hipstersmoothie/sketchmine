@@ -11,7 +11,7 @@ describe('[sketch-builder] › element fetcher', () => {
     process.env.TRAVERSER = 'skip-traverser';
     const meta = JSON.parse(await readFile('tests/fixtures/meta-information.json'));
     const config = {
-      agent: '../../../node_modules/@sketchmine/dom-agent/lib/index.esm.js',
+      agent: require.resolve('@sketchmine/dom-agent'),
     } as SketchBuilderConfig;
     fetcher = new ElementFetcher(config , meta);
   });

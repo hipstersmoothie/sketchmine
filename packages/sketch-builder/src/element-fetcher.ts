@@ -33,7 +33,7 @@ export class ElementFetcher {
   async generateSketchFile(): Promise<number> {
     this.sortSymbols();
     const drawer = new Drawer();
-    const sketch = new Sketch(this.conf.previewImage || 'lib/assets/preview.png', this.conf.outFile);
+    const sketch = new Sketch(this.conf.previewImage || 'assets/preview.png', this.conf.outFile);
     const pages = [];
     let symbolsMaster = drawer.drawSymbols({ symbols: [] } as any);
 
