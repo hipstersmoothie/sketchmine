@@ -25,7 +25,7 @@ const GITHUB_ISSUE_REGEX = /#\d+/gm;
 
 export function transformCommit(gitCommit: GitCommit, config: ChangelogConfig): ChangelogCommit | undefined {
   const match = gitCommit.subject.trim().match(config.commitRegex);
-  const fullMatch = match ? match[1] : undefined;
+  const fullMatch = match ? match[0] : undefined;
   const bitbucketIssues = match ? [match[1]] : [];
   const commitType = match ? match[2] : undefined;
   const scopes = match ? match[3] : '';
