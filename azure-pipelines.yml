@@ -24,7 +24,7 @@ steps:
 
 - script: |
     yarn bootstrap
-  displayName: 'Lerna bootstrap'
+  displayName: 'Lerna bootstrap 🥾'
 
 - script: |
     yarn lint
