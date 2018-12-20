@@ -25,15 +25,17 @@ const GITHUB_ISSUE_REGEX = /#\d+/gm;
 
 export function transformCommit(gitCommit: GitCommit, config: ChangelogConfig): ChangelogCommit | undefined {
   const match = gitCommit.subject.trim().match(config.commitRegex);
-  const fullMatch = match ? match[0] : undefined;
-  const bitbucketIssues = match ? [match[1]] : [];
-  const commitType = match ? match[2] : undefined;
-  const scopes = match ? match[3] : '';
-  const message = match ? match[4] : undefined;
+  if (!match) {
+    return;
+  }
+
+  const bitbucketIssues = match[1] ? [match[1]] : [];
+  const commitType = match[2] ? match[2] : undefined;
+  const scopes = match[3] ? match[3] : '';
+  const message = match[4] ? match[4] : undefined;
 
   // only commits that pass the regex should be listed in the changelog
   if (
-    !fullMatch ||
     !commitType || // type like (chore, refactor, docs, etc...) is required
     !message // message is required for changelog as well
   ) {
