@@ -13,7 +13,7 @@
   "pages": [
     ""
   ],
-  "previewImage": "lib/assets/preview.png",
+  "previewImage": "assets/preview.png",
   "outFile": "_library/library.sketch",
   "chrome": {
     "defaultViewport": {

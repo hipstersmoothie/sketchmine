@@ -18,7 +18,10 @@
     "test": "tests"
   },
   "files": [
-    "lib"
+    "lib",
+    "assets",
+    "config.sample-library.json",
+    "config.sample-page.json"
   ],
   "repository": {
     "type": "git",
@@ -35,6 +38,7 @@
     "test": "jest --detectOpenHandles --verbose --forceExit"
   },
   "devDependencies": {
+    "@sketchmine/sketch-builder": "^2.2.0",
     "@types/jest": "^23.3.0",
     "@types/node": "^10.6.0",
     "@types/puppeteer": "^1.6.0",

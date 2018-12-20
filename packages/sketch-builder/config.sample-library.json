@@ -1,6 +1,5 @@
 {
   "metaInformation": "path/to/meta-information.json",
-  "agent": "../../node_modules/@sketchmine/dom-agent/lib/index.esm.js",
   "host": {
     "protocol": "http",
     "name": "localhost",
@@ -13,16 +12,6 @@
   "pages": [
     ""
   ],
-  "previewImage": "lib/assets/preview.png",
-  "outFile": "out/dir/library.sketch",
-  "chrome": {
-    "defaultViewport": {
-      "width": 1200,
-      "height": 600,
-      "deviceScaleFactor": 1,
-      "isMobile": false,
-      "hasTouch": false,
-      "isLandscape": false
-    }
-  }
+  "previewImage": "assets/preview.png",
+  "outFile": "out/dir/library.sketch"
 }

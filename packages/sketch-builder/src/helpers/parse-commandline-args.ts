@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import { displayHelp } from '@sketchmine/node-helpers';
 import { SketchBuilderConfig } from '../config.interface';
 import { resolve } from 'path';
+import { readFileSync } from 'fs';
 
 const helpText = chalk`
 The sketch-builder is the heart pice of this library.
@@ -13,14 +14,20 @@ The orchestration for drawing the whole library is done by the {grey @sketchmine
 For further documentation about how to configure the {grey config.json} please visit the {grey README.md}
 `;
 
+const sampleConfig = readFileSync('config.sample-page.json').toString();
+
 const cmdFlags = [
   {
     flags: ['h', 'help'],
-    text: 'displays the help page 📓',
+    text: 'displays the help page 📓\n',
   },
   {
     flags: ['c', 'config'],
-    text: chalk`path to the configuration file {grey (config.json)} – take a look at the README.md`,
+    text: chalk`path to the configuration file {grey (config.json)} – take a look at the README.md
+
+{grey The <config.json> should have at least following properties:}
+
+${sampleConfig}`,
   },
 ];
 

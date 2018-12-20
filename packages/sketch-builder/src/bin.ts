@@ -3,6 +3,9 @@ import { parseCommandlineArgs } from './helpers/parse-commandline-args';
 import { readFile } from '@sketchmine/node-helpers';
 import { Result } from '@sketchmine/code-analyzer';
 
+const DEFAULT_AGENT = require.resolve('@sketchmine/dom-agent');
+const DEFAULT_PREVIEW = 'assets/preview.png';
+
 /**
  * @description The CLI entry point. You need to provide a `config.json` with all
  * the necessary configuration.
@@ -10,7 +13,22 @@ import { Result } from '@sketchmine/code-analyzer';
  */
 export async function commandLineExecutor(): Promise<number> {
   const args = process.argv.slice(2);
-  const config = parseCommandlineArgs(args);
+  const defaultConfig = {
+    agent: DEFAULT_AGENT,
+    previewImage: DEFAULT_PREVIEW,
+    chrome: {
+      defaultViewport: {
+        width: 1200,
+        height: 600,
+        deviceScaleFactor: 1,
+        isMobile: false,
+        hasTouch: false,
+        isLandscape: false,
+      },
+    },
+  };
+
+  const config = Object.assign(defaultConfig, parseCommandlineArgs(args));
 
   // the meta option is optional in the main function
   let meta: Result;
