@@ -1,5 +1,8 @@
 import chalk from 'chalk';
 
+// detect new lines with this regex.
+const NEW_LINE_REGEX = /[\r?\n]/gm;
+
 export interface CliCommand {
   flags?: string[];
   text: string;
@@ -36,7 +39,7 @@ export function displayHelp(helpText: string, cliCommands: CliCommand[]) {
     } else {
       const flags = cmd.flags ? cmd.flags.map(flag => flag.length < 2 ? `-${flag}` : `--${flag}`) : [];
       const cmdFlags = flags.join(', ');
-      lines.push(`${padding}${cmdFlags}\t\t${spacer} ${cmd.text.replace(/[\r?\n]/gm, `\n\t\t\t${spacer} `)}`);
+      lines.push(`${padding}${cmdFlags}\t\t${spacer} ${cmd.text.replace(NEW_LINE_REGEX, `\n\t\t\t${spacer} `)}`);
     }
   });
 
