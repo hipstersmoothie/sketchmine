@@ -30,9 +30,9 @@ export function transformCommit(gitCommit: GitCommit, config: ChangelogConfig): 
   }
 
   const bitbucketIssues = match[1] ? [match[1]] : [];
-  const commitType = match[2] ? match[2] : undefined;
-  const scopes = match[3] ? match[3] : '';
-  const message = match[4] ? match[4] : undefined;
+  const commitType = match[2];
+  const scopes = match[3] || '';
+  const message = match[4];
 
   // only commits that pass the regex should be listed in the changelog
   if (
