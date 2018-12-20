@@ -36,7 +36,7 @@ export function displayHelp(helpText: string, cliCommands: CliCommand[]) {
     } else {
       const flags = cmd.flags ? cmd.flags.map(flag => flag.length < 2 ? `-${flag}` : `--${flag}`) : [];
       const cmdFlags = flags.join(', ');
-      lines.push(`${padding}${cmdFlags}\t\t${spacer} ${cmd.text}`);
+      lines.push(`${padding}${cmdFlags}\t\t${spacer} ${cmd.text.replace(/[\r?\n]/gm, `\n\t\t\t${spacer} `)}`);
     }
   });
 
