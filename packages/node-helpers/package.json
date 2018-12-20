@@ -1,6 +1,6 @@
 {
   "name": "@sketchmine/node-helpers",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "A collection of node.js helpers",
   "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
   "homepage": "https://github.com/dynatrace/sketchmine#readme",

@@ -1,6 +1,6 @@
 {
   "name": "@sketchmine/changelog-generation",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Generates the changelog for the sketchmine according to the Angular commit style",
   "keywords": [
     "angular",
@@ -30,7 +30,7 @@
     "typescript": "^3.2.1"
   },
   "dependencies": {
-    "@sketchmine/node-helpers": "^2.2.0",
+    "@sketchmine/node-helpers": "^2.3.0",
     "handlebars": "^4.0.12"
   }
 }
