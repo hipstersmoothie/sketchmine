@@ -1,17 +1,10 @@
 {
   "metaInformation": "path/to/meta-information.json",
-  "host": {
-    "protocol": "http",
-    "name": "localhost",
-    "port": 4200
-  },
+  "url": "htt://localhost:4200",
   "rootElement": "ng-component > * ",
   "library": {
     "app": "/path/to/angular-app/from/app-builder"
   },
-  "pages": [
-    ""
-  ],
   "previewImage": "assets/preview.png",
   "outFile": "out/dir/library.sketch"
 }

@@ -1,18 +1,11 @@
 {
   "metaInformation": "../../node_modules/@sketchmine/code-analyzer/dist/meta-information.json",
   "agent": "../../node_modules/@sketchmine/dom-agent/lib/index.esm.js",
-  "host": {
-    "protocol": "http",
-    "name": "localhost",
-    "port": 4200
-  },
+  "url": "http://localhost:4200",
   "rootElement": "body > *:nth-child(2)",
   "library": {
     "app": "../../node_modules/@sketchmine/app-builder/dist/sketch-library"
   },
-  "pages": [
-    ""
-  ],
   "previewImage": "assets/preview.png",
   "outFile": "_library/library.sketch",
   "chrome": {

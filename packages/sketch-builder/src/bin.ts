@@ -1,5 +1,5 @@
 import { main } from './main';
-import { parseCommandlineArgs } from './helpers/parse-commandline-args';
+import { parseCommandlineArgs } from './cli';
 import { readFile } from '@sketchmine/node-helpers';
 import { Result } from '@sketchmine/code-analyzer';
 import { join } from 'path';
@@ -17,6 +17,7 @@ export async function commandLineExecutor(): Promise<number> {
   const defaultConfig = {
     agent: DEFAULT_AGENT,
     previewImage: DEFAULT_PREVIEW,
+    rootElement: 'body',
     chrome: {
       defaultViewport: {
         width: 1200,
@@ -29,7 +30,8 @@ export async function commandLineExecutor(): Promise<number> {
     },
   };
 
-  const config = Object.assign(defaultConfig, parseCommandlineArgs(args));
+  const loadedConfig = await parseCommandlineArgs(args);
+  const config = { ...defaultConfig, ...loadedConfig };
 
   // the meta option is optional in the main function
   let meta: Result;

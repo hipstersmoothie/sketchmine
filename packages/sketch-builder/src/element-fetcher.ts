@@ -12,7 +12,10 @@ import { exec } from 'child_process';
 import { SketchBuilderConfig } from './config.interface';
 import { readFile, Logger } from '@sketchmine/node-helpers';
 import { sketchGeneratorApi } from './builder-api';
-import { Result as MetaResult, Component as MetaComponent } from '@sketchmine/code-analyzer';
+import {
+  Result as MetaResult,
+  Component as MetaComponent,
+} from '@sketchmine/code-analyzer';
 import { resolve } from 'path';
 
 declare const window: any;
@@ -33,7 +36,10 @@ export class ElementFetcher {
   async generateSketchFile(): Promise<number> {
     this.sortSymbols();
     const drawer = new Drawer();
-    const sketch = new Sketch(this.conf.previewImage || 'assets/preview.png', this.conf.outFile);
+    const sketch = new Sketch(
+      this.conf.previewImage || 'assets/preview.png',
+      this.conf.outFile,
+    );
     const pages = [];
     let symbolsMaster = drawer.drawSymbols({ symbols: [] } as any);
 
@@ -44,7 +50,8 @@ export class ElementFetcher {
             pages.push(drawer.drawPage(result));
             break;
           case 'library':
-            symbolsMaster = drawer.drawSymbols(this.result[0] as TraversedLibrary);
+            symbolsMaster = drawer.drawSymbols(this
+              .result[0] as TraversedLibrary);
             break;
         }
       });
@@ -89,9 +96,13 @@ export class ElementFetcher {
    */
   sortSymbols() {
     const sorted = [];
-    const lib = this.result.find(page => page.type === 'library') as TraversedLibrary;
+    const lib = this.result.find(
+      page => page.type === 'library',
+    ) as TraversedLibrary;
 
-    if (!lib) { return; }
+    if (!lib) {
+      return;
+    }
 
     for (let i = 0, max = lib.symbols.length; i < max; i += 1) {
       const comp = lib.symbols[i];
@@ -111,8 +122,9 @@ export class ElementFetcher {
 
       comp.hasNestedSymbols.forEach((symbol) => {
         // TODO: @lukas.holzer make this more efficient
-        const comp: MetaComponent = Object.values(this.meta.components)
-          .find((comp: MetaComponent) => comp.selector.includes(symbol));
+        const comp: MetaComponent = Object.values(this.meta.components).find(
+          (comp: MetaComponent) => comp.selector.includes(symbol),
+        );
         const pos = sorted.indexOf(comp.component);
 
         // if nested component is not in the order list
@@ -133,13 +145,20 @@ export class ElementFetcher {
     }
 
     // sort the symbols according to the sorted array
-    lib.symbols.sort((a: TraversedSymbol, b: TraversedSymbol): number => {
-      return sorted.indexOf(a.name.split('/')[0]) -
-            sorted.indexOf(b.name.split('/')[0]);
-    });
+    lib.symbols.sort(
+      (a: TraversedSymbol, b: TraversedSymbol): number => {
+        return (
+          sorted.indexOf(a.name.split('/')[0]) -
+          sorted.indexOf(b.name.split('/')[0])
+        );
+      },
+    );
   }
 
-  async getPage(browser: puppeteer.Browser, url: string): Promise<TraversedPage | TraversedLibrary> {
+  async getPage(
+    browser: puppeteer.Browser,
+    url: string,
+  ): Promise<TraversedPage | TraversedLibrary> {
     const traverser = await readFile(this.conf.agent);
     let result: any;
 
@@ -156,7 +175,8 @@ export class ElementFetcher {
       page.setViewport(this.conf.chrome.defaultViewport);
       await page.goto(url, { waitUntil: 'networkidle0' });
       await page.addScriptTag({ content: traverser });
-      await page.addScriptTag({ content: `
+      await page.addScriptTag({
+        content: `
           window.page = {
             type: 'page',
             pageUrl: window.location.pathname.substr(1),
@@ -164,54 +184,67 @@ export class ElementFetcher {
             assets: [], //images.assets,
             element: null,
           };
-          const hostElement = document.querySelector('${this.conf.rootElement}');
+          const hostElement = document.querySelector('${
+            this.conf.rootElement
+          }');
           if (!hostElement) {
-            throw new Error(\`Could not select hostElement with selector: ${this.conf.rootElement}\`);
+            throw new Error(\`Could not select hostElement with selector: ${
+              this.conf.rootElement
+            }\`);
           }
           const visitor = new window.DomVisitor(hostElement, []);
           const traverser = new window.DomTraverser();
-          window.page.element = traverser.traverse(hostElement, visitor);` });
-      result = await page.evaluate(() => window.page) as ITraversedElement[];
+          window.page.element = traverser.traverse(hostElement, visitor);`,
+      });
+      result = (await page.evaluate(() => window.page)) as ITraversedElement[];
     }
     if (result.element === null) {
-      throw new Error('Something happened while traversing the DOM! check the dom-agent! 🧙🏻‍♂');
+      throw new Error(
+        'Something happened while traversing the DOM! check the dom-agent! 🧙🏻‍♂',
+      );
     }
     log.debug(JSON.stringify(result), 'dom-traverser');
     return result;
   }
 
   async collectElements() {
-    if (process.env.TRAVERSER && process.env.TRAVERSER.includes('skip-traverser')) {
+    if (
+      process.env.TRAVERSER &&
+      process.env.TRAVERSER.includes('skip-traverser')
+    ) {
       const result = JSON.parse(await readFile(LOCAL_RESULT_PATH));
       this.result.push(result);
       return;
     }
 
-    const options = process.env.DOCKER ?  {
-      ...this.conf.chrome,
-      /**
-       * shared memory space 64MB. Cause chrome to crash when rendering large pages
-       * @see https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#tips
-       */
-      args: ['--disable-dev-shm-usage', '--no-sandbox'],
-      executablePath: '/usr/bin/chromium-browser',
-    } : {
-      ...this.conf.chrome,
-      headless: process.env.DEBUG ? false : true,
-      devtools: process.env.DEBUG ? true : false,
-    };
+    const options = process.env.DOCKER
+      ? {
+        ...this.conf.chrome,
+          /**
+           * shared memory space 64MB. Cause chrome to crash when rendering large pages
+           * @see https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#tips
+           */
+        args: ['--disable-dev-shm-usage', '--no-sandbox'],
+        executablePath: '/usr/bin/chromium-browser',
+      }
+      : {
+        ...this.conf.chrome,
+        headless: process.env.DEBUG ? false : true,
+        devtools: process.env.DEBUG ? true : false,
+      };
     const browser = await puppeteer.launch(options);
-    const confPages = this.conf.pages || [''];
+    const host = new URL(this.conf.url);
+    const confPages = this.conf.pages || [host.pathname];
 
     for (let i = 0, max = confPages.length; i < max; i += 1) {
       const page = confPages[i];
 
-      const host = this.conf.host;
+      const port =
+        host.port.length && host.protocol.match(/^https?/)
+          ? `:${host.port}`
+          : '';
 
-      const port = (host.port && host.protocol.match(/^https?/)) ?
-        `:${host.port}` : '';
-
-      const url = `${host.protocol}://${host.name}${port}/${page}`;
+      const url = `${host.protocol}://${host.hostname}${port}/${page}`;
 
       log.debug(chalk`🛬\t{cyanBright Fetching Page}: ${url}`);
       this.result.push(await this.getPage(browser, url));

@@ -1,8 +1,5 @@
 {
-  "host": {
-    "protocol": "https",
-    "name": "barista.dynatrace.com"
-  },
+  "url": "https://barista.dynatrace.com",
   "rootElement": "body",
   "pages": ["components/button"],
   "outFile": "_library/barista-dynatrace.sketch"

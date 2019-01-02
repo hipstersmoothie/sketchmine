@@ -3,6 +3,8 @@ import { displayHelp, CliCommand } from '@sketchmine/node-helpers';
 import { SketchBuilderConfig } from '../config.interface';
 import { resolve, join } from 'path';
 import { readFileSync } from 'fs';
+import { questioner } from './questioner';
+import { saveConfig } from './save-config';
 const helpText = chalk`
 The sketch-builder is the heart pice of this library.
 It takes control over generating {grey .sketch} files from any html
@@ -37,8 +39,15 @@ ${jsonSyntaxHighlight(sampleConfig)}`,
  * @param args Merged config arguments
  * @return {SketchBuilderConfig}
  */
-export function parseCommandlineArgs(args: string[]): SketchBuilderConfig {
+export async function parseCommandlineArgs(args: string[]): Promise<SketchBuilderConfig> {
   const parsedArgs = require('minimist')(args);
+
+  // display walk through questioner guide
+  if (!args.length) {
+    const answers = await questioner();
+    const config = answers.hasOwnProperty('config') ? answers.config : await saveConfig(answers);
+    return require(config);
+  }
 
   if (parsedArgs.hasOwnProperty('c') || parsedArgs.hasOwnProperty('config')) {
     return require(resolve(parsedArgs.c || parsedArgs.config));

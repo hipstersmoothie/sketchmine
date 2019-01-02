@@ -65,7 +65,10 @@
     "@sketchmine/sketch-svg-parser": "^2.3.0",
     "axios": "^0.18.0",
     "chalk": "^2.4.0",
-    "puppeteer": "1.4.0"
+    "inquirer": "^6.2.1",
+    "inquirer-fuzzy-path": "^1.0.0",
+    "puppeteer": "1.4.0",
+    "rxjs": "^6.3.3"
   },
   "bin": {
     "skm-sketch-builder": "./lib/bin.js"
