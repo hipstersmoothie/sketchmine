@@ -51,7 +51,7 @@ export class SvgPointsToSketch {
           shapePath.close();
           break;
         default:
-          log.error(
+          log.debug(
             chalk`{red The SVG command: "${cur.code}" is not implemented yet!} 😢 Sorry 🙁
             Try to render without this Point...`,
           );

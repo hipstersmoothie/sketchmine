@@ -2,6 +2,8 @@ import { ElementFetcher } from './element-fetcher';
 import { SketchBuilderConfig } from './config.interface';
 import { exec } from 'child_process';
 import { Result as MetaResult } from '@sketchmine/code-analyzer';
+import ora from 'ora';
+import chalk from 'chalk';
 
 /**
  * @description the main entry point of this package
@@ -21,6 +23,7 @@ export async function main(config: SketchBuilderConfig, meta?: MetaResult | unde
     exec(`osascript -e 'quit app "Sketch"'`);
   }
 
+  const spinner = ora(chalk`Start scraping the provided site {grey ${config.url}} ⛏\n`).start();
   const elementFetcher = new ElementFetcher(config, meta);
   /**
    * starts the headless chrome to collect all the information from the provided site.
@@ -29,7 +32,10 @@ export async function main(config: SketchBuilderConfig, meta?: MetaResult | unde
    * if that variable is set it will fallback to a .json fixture located in the test fixtures under
    * `./tests/fixtures/library.json` that represents a development fixture from the fetcher.
    */
-  await elementFetcher.collectElements();
+  await elementFetcher.fetchElements();
   // generates the .sketch file from the information that was provided from the `collectElements()` function.
-  return await elementFetcher.generateSketchFile();
+  spinner.text = 'Start writing your Sketch file 💎\n';
+  const exitCode = await elementFetcher.generateSketchFile();
+  spinner.stop();
+  return exitCode;
 }

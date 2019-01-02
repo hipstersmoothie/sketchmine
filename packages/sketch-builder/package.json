@@ -41,6 +41,7 @@
     "@sketchmine/sketch-builder": "^2.3.1",
     "@types/jest": "^23.3.0",
     "@types/node": "^10.6.0",
+    "@types/ora": "^3.0.0",
     "@types/puppeteer": "^1.6.0",
     "extract-zip": "^1.6.7",
     "jest": "^23.6.0",
@@ -67,6 +68,7 @@
     "chalk": "^2.4.0",
     "inquirer": "^6.2.1",
     "inquirer-fuzzy-path": "^1.0.0",
+    "ora": "^3.0.0",
     "puppeteer": "1.4.0",
     "rxjs": "^6.3.3"
   },

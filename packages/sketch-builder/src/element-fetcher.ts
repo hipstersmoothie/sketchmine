@@ -207,7 +207,7 @@ export class ElementFetcher {
     return result;
   }
 
-  async collectElements() {
+  async fetchElements() {
     if (
       process.env.TRAVERSER &&
       process.env.TRAVERSER.includes('skip-traverser')
