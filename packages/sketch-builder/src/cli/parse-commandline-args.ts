@@ -45,7 +45,7 @@ export async function parseCommandlineArgs(args: string[]): Promise<SketchBuilde
   // display walk through questioner guide
   if (!args.length) {
     const answers = await questioner();
-    const config = answers.hasOwnProperty('config') ? answers.config : await saveConfig(answers);
+    const config = answers.hasOwnProperty('config') ? answers.config as string : await saveConfig(answers);
     return require(config);
   }
 

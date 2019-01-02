@@ -38,7 +38,6 @@
     "test": "jest --detectOpenHandles --verbose --forceExit"
   },
   "devDependencies": {
-    "@sketchmine/sketch-builder": "^2.3.1",
     "@types/jest": "^23.3.0",
     "@types/node": "^10.6.0",
     "@types/ora": "^3.0.0",
