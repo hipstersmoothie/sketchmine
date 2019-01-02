@@ -9,7 +9,7 @@ const log = new Logger();
 export function startServer(config: SketchBuilderConfig): Promise<ChildProcess> {
   log.notice('\n\n');
   log.notice(chalk`{cyan start angular app:}{grey ...}\n`, '⚒');
-  const url = new URL(`${config.host.protocol}://${config.host.name}:${config.host.port}`);
+  const url = new URL(config.url);
   return new Promise((resolve, reject) => {
     const appPath = path.resolve(config.library.app);
     const server = spawn(path.join(appPath, '/node_modules/.bin/ng'), ['serve', '--port', url.port], {
