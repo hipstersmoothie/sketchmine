@@ -237,14 +237,8 @@ export class ElementFetcher {
     const confPages = this.conf.pages || [host.pathname];
 
     for (let i = 0, max = confPages.length; i < max; i += 1) {
-      const page = confPages[i];
-
-      const port =
-        host.port.length && host.protocol.match(/^https?/)
-          ? `:${host.port}`
-          : '';
-
-      const url = `${host.protocol}://${host.hostname}${port}/${page}`;
+      const page = confPages[i].startsWith('/') ? confPages[i] : `/${confPages[i]}`;
+      const url = `${host.origin}${page}`;
 
       log.debug(chalk`🛬\t{cyanBright Fetching Page}: ${url}`);
       this.result.push(await this.getPage(browser, url));
