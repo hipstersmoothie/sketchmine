@@ -1,4 +1,3 @@
-
 import { rules, IValidationRule } from '@sketchmine/sketch-validator';
 import { main } from './main';
 import { displayHelp } from './help';

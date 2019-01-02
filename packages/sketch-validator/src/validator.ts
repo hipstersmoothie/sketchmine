@@ -8,6 +8,7 @@ import chalk from 'chalk';
 import cloneDeep from 'lodash/cloneDeep';
 import {
   IValidationContext,
+  IValidationContextChildren,
   IValidationRule,
   ValidationRequirements,
 } from './interfaces/validation-rule.interface';
@@ -19,7 +20,7 @@ export class Validator {
   private _currentArtboard: string;
   private _currentSymbol: string;
   private _currentPage: string;
-  private _files: SketchBase[] = [];
+  files: SketchBase[] = [];
   private _document: SketchBase;
 
   constructor(private _rules: IValidationRule[], public env: string) {
@@ -36,7 +37,7 @@ export class Validator {
     if (!file || typeof file !== 'object') {
       throw Error(chalk`{bgRed Please provide a valid JSON object so that we can validate it!}`);
     }
-    this._files.push(file);
+    this.files.push(file);
   }
 
   /**
@@ -54,10 +55,10 @@ export class Validator {
    * Validates a Sketch file according to the given rules.
    */
   validate() {
-    if (this._files.length === 0) {
+    if (this.files.length === 0) {
       throw Error(chalk`{bgRed No files to validate!}`);
     }
-    this._files.forEach((content) => {
+    this.files.forEach((content) => {
       this.collectModules(content);
     });
     this.correct();
@@ -168,6 +169,15 @@ export class Validator {
       }
       if (requirements.includes(ValidationRequirements.DocumentReference) && this._document) {
         obj.ruleOptions.document = this._document;
+      }
+      if (requirements.includes(ValidationRequirements.Children)) {
+        if (layer.layers && layer.layers.length) {
+          obj.ruleOptions.children = layer.layers.map((l) => {
+            return { name: l.name, class: l._class } as  IValidationContextChildren;
+          });
+        } else {
+          obj.ruleOptions.children = [];
+        }
       }
     }
 

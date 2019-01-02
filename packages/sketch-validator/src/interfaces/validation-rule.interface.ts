@@ -31,10 +31,16 @@ export interface IValidationContextParents {
   symbolMaster: string;
 }
 
+export interface IValidationContextChildren {
+  name: string;
+  class: string;
+}
+
 export enum ValidationRequirements {
   AttributedString = 'attributedString',
   DocumentReference = 'document.json',
   Frame = 'frame',
   LayerSize = 'layersize',
   Style = 'style',
+  Children = 'children',
 }

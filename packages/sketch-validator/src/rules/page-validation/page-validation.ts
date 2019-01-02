@@ -1,7 +1,8 @@
 import chalk from 'chalk';
-import { ValidationError, PageNamingError } from '../../error/validation-error';
+import { ValidationError, PageNamingError, NoArtboardFoundError, EmptyPageError } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
-import { PAGE_NAME_ERROR_MESSAGE } from '../../error/error-messages';
+import { PAGE_NAME_ERROR_MESSAGE, NO_ARTBOARD_ERROR_MESSAGE,
+  EMPTY_PAGE_ERROR_MESSAGE } from '../../error/error-messages';
 
 /**
  * Takes a homework and corrects it like a teacher 👩🏼‍🏫
@@ -13,9 +14,11 @@ import { PAGE_NAME_ERROR_MESSAGE } from '../../error/error-messages';
 export function pageValidation(
   homeworks: IValidationContext[],
   currentTask: number,
-  ): (ValidationError | boolean)[] {
-  const filteredHomeworks = homeworks.filter(h => h._class === 'page');
-  if (!filteredHomeworks) {
+): (ValidationError | boolean)[] {
+  const errors: (ValidationError | boolean)[] = [];
+  const task = homeworks[currentTask];
+
+  if (!task) {
     console.error(
       chalk`{bgRed [page-validation.ts]} -> pageValidation needs a valid task` +
       chalk`{cyan IValdiationContext[]} parameter with index!\n`,
@@ -23,25 +26,60 @@ export function pageValidation(
     return;
   }
 
-  if (!homeworks[currentTask].ruleOptions || !homeworks[currentTask].ruleOptions.hasOwnProperty('artboardSizes')) {
+  if (
+    !task.ruleOptions ||
+    !task.ruleOptions.hasOwnProperty('artboardSizes') ||
+    !task.ruleOptions.hasOwnProperty('children') // will be added in the validator programmatically
+  ) {
     throw Error('Please provide the artboard sizes in the configuration');
   }
 
-  const errors: (ValidationError | boolean)[] = [];
-  const pageNameCheck = checkPageName(filteredHomeworks);
+  // we need to filter all the pages out of all the homeworks
+  const filteredHomeworks = homeworks.filter(h => h._class === 'page');
 
-  let object;
+  const pageNameCheck = checkPageName(filteredHomeworks, task.ruleOptions.artboardSizes);
 
-  if (filteredHomeworks[currentTask]) {
-    object = {
-      objectId: filteredHomeworks[currentTask].do_objectID,
-      name: filteredHomeworks[currentTask].name,
-    };
+  const object = {
+    objectId: task.do_objectID,
+    name: task.name,
+  };
+
+  // check if the page has any children (symbol master, artboards...)
+  if (!task.ruleOptions.children) {
+    errors.push(new EmptyPageError({
+      message: EMPTY_PAGE_ERROR_MESSAGE(task.name),
+      ...object,
+    }));
   }
 
+  let hasArtboards = false;
+  let isSymboldMaster = false;
+
+  const artboards = task.ruleOptions.children
+    .filter(c => c.class === 'artboard');
+
+  const symboldMasters = task.ruleOptions.children
+  .filter(c =>
+    c.class === 'symbolMaster');
+
+  isSymboldMaster = task.ruleOptions.children.length === symboldMasters.length && symboldMasters.length > 0;
+  hasArtboards = artboards.length > 0;
+
+  // if page is a symbol master, we do not validate
+  if (isSymboldMaster) {
+    return errors;
+  }
+
+  // if the page is not a symbol master, check if it has artboards
+  if (!hasArtboards) {
+    errors.push(new NoArtboardFoundError({
+      message: NO_ARTBOARD_ERROR_MESSAGE,
+      ...object,
+    }));
+  }
   if (!pageNameCheck) {
     errors.push(new PageNamingError({
-      message: PAGE_NAME_ERROR_MESSAGE(homeworks[currentTask].ruleOptions.artboardSizes),
+      message: PAGE_NAME_ERROR_MESSAGE(task.ruleOptions.artboardSizes),
       ...object,
     }));
   } else {
@@ -55,10 +93,9 @@ export function pageValidation(
  * @param taks IValidationContext[]
  * @returns boolean
  */
-export function checkPageName(tasks: IValidationContext[]): boolean {
-  const sizes = tasks[0].ruleOptions.artboardSizes;
-  const taskNames = tasks.map(t => t.name);
-  const missing = sizes.filter(size => taskNames.indexOf(size) < 0);
+export function checkPageName(tasks: IValidationContext[], sizes: string[]): boolean {
+  const allPageNames = tasks.map(t => t.name);
+  const missing = sizes.filter(size => allPageNames.indexOf(size) < 0);
   if (missing.length <= 0) {
     return true;
   }

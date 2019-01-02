@@ -84,6 +84,7 @@ export const rules: IValidationRule[] = [
     validation: pageValidation,
     options: {
       artboardSizes,
+      requirements: [ValidationRequirements.Children],
     },
   },
   {

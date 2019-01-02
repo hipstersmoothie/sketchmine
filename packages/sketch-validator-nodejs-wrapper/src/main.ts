@@ -6,7 +6,7 @@ import chalk from 'chalk';
 
 const log = new Logger();
 
-const COLORS_FILE = resolve('_tmp/src/lib/core/style/_colors.scss');
+const COLORS_FILE = resolve('../sketch-validator/tests/fixtures/_colors.scss');
 
 export async function main(file: string, rules: IValidationRule[], environment: string): Promise<number> {
   const colorValidationRule = rules.find(rule => rule.name === 'color-palette-validation');

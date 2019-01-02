@@ -10,9 +10,7 @@
   "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
   "homepage": "https://github.com/dynatrace/sketchmine#readme",
   "license": "MIT",
-  "main": "lib/index.cjs.js",
-  "module": "lib/index.esm.js",
-  "browser": "lib/index.umd.js",
+  "main": "lib/index.js",
   "typings": "lib/@types/index.d.ts",
   "directories": {
     "lib": "lib",
@@ -30,8 +28,9 @@
   },
   "scripts": {
     "clean": "rm -rf lib coverage",
-    "build": "yarn clean && rollup -c",
+    "build": "yarn clean && tsc -p tsconfig.json",
     "dev": "yarn build -w",
+    "run:node-wrapper": "node ../sketch-validator-nodejs-wrapper/lib/bin.js",
     "lint": "tslint -p tsconfig.json",
     "test": "jest --detectOpenHandles --verbose --forceExit"
   },

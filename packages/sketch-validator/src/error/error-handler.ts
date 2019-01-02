@@ -9,7 +9,7 @@ const log = new Logger();
 export class ErrorHandler {
 
   private static instance: ErrorHandler;
-  private _rulesStack: RulesStack = {};
+  rulesStack: RulesStack = {};
   private _colors: Set<string> = new Set();
 
   // Singelton pattern Constructor returning instance if it exists
@@ -21,16 +21,16 @@ export class ErrorHandler {
   }
 
   destroy() {
-    this._rulesStack = {};
+    this.rulesStack = {};
     this._colors = new Set();
   }
 
   addError(rule: IValidationRule, error: ValidationError) {
-    if (this._rulesStack.hasOwnProperty(rule.name)) {
-      this._rulesStack[rule.name].failing.push(error);
+    if (this.rulesStack.hasOwnProperty(rule.name)) {
+      this.rulesStack[rule.name].failing.push(error);
       return;
     }
-    this._rulesStack[rule.name] = {
+    this.rulesStack[rule.name] = {
       succeeding: 0,
       failing: [error],
       warning: rule.hasOwnProperty('warning') && rule.warning,
@@ -39,11 +39,11 @@ export class ErrorHandler {
   }
 
   addSuccess(rule: IValidationRule) {
-    if (this._rulesStack.hasOwnProperty(rule.name)) {
-      this._rulesStack[rule.name].succeeding += 1;
+    if (this.rulesStack.hasOwnProperty(rule.name)) {
+      this.rulesStack[rule.name].succeeding += 1;
       return;
     }
-    this._rulesStack[rule.name] = {
+    this.rulesStack[rule.name] = {
       succeeding: 1,
       failing: [],
       warning: rule.hasOwnProperty('warning') && rule.warning,
@@ -55,9 +55,9 @@ export class ErrorHandler {
     let throwingError: ValidationError; // save one Error to throw for exit code
     let stackedOutput = '';
 
-    for (const rule in this._rulesStack) {
-      if (this._rulesStack.hasOwnProperty(rule)) {
-        const element = this._rulesStack[rule];
+    for (const rule in this.rulesStack) {
+      if (this.rulesStack.hasOwnProperty(rule)) {
+        const element = this.rulesStack[rule];
         const isWarning = element.warning;
 
         if (element.failing.length === 0) {
