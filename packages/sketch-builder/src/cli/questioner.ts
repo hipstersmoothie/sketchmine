@@ -4,15 +4,18 @@ import { Subject } from 'rxjs';
 
 import { questions } from './questions';
 
+type AnswerValue = string | boolean | number | (string | boolean | number)[];
+type AnswersObject = { [key: string]: AnswerValue };
+
 interface Answer {
   name: string;
   answer: any;
 }
 
-export async function questioner(): Promise<{[key: string]: any}> {
+export async function questioner(): Promise<AnswersObject> {
   const prompt$ = new Subject<{}>();
 
-  const answers: { [key: string]: any } = {};
+  const answers: AnswersObject = {};
 
   // register the fuzzy path module
   inquirer.registerPrompt('fuzzyPath', inquirerFuzzyPath);
