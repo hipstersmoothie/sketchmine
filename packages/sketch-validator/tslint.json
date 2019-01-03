@@ -5,6 +5,6 @@
   ],
   "rules": {
     "ts-loader": true,
-    "validation-no-node-natives": false
+    "validation-no-node-natives": true
   }
 }
