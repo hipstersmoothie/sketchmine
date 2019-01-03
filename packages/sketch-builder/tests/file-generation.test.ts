@@ -9,13 +9,8 @@ import { SketchBuilderConfig } from '../src/config.interface';
 const config: SketchBuilderConfig = {
   metaInformation: resolve('tests', 'fixtures', 'meta-information.json'),
   agent: require.resolve('@sketchmine/dom-agent'),
-  host: {
-    protocol: 'file',
-    name: `${resolve('tests', 'fixtures')}`,
-    port: null,
-  },
+  url: `file:///${resolve('tests', 'fixtures', 'tile-default.html')}`,
   rootElement: 'app-root > * > *',
-  pages: ['tile-default.html'],
   outFile: resolve('./tests/_tmp/dt-asset-lib.sketch'),
   previewImage: 'assets/preview.png',
   chrome: {
@@ -35,13 +30,12 @@ const extract = promisify(require('extract-zip'));
 describe('[sketch-builder] › element-fetcher › try to generate .sketch file', () => {
   const fileName = 'dt-asset-lib';
   const testTmp = dirname(config.outFile);
-  const sketchFile = basename(config.outFile);
 
   beforeAll(async () => {
     delDir(testTmp);
     createDir(testTmp);
     const elementFetcher = new ElementFetcher(config);
-    await elementFetcher.collectElements();
+    await elementFetcher.fetchElements();
     await elementFetcher.generateSketchFile();
     await extract(config.outFile, { dir: join(testTmp, fileName) });
   });

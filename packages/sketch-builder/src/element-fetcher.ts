@@ -238,7 +238,7 @@ export class ElementFetcher {
 
     for (let i = 0, max = confPages.length; i < max; i += 1) {
       const page = confPages[i].startsWith('/') ? confPages[i] : `/${confPages[i]}`;
-      const url = `${host.origin}${page}`;
+      const url = host.protocol !== 'file:' ? `${host.origin}${page}` : host.href;
 
       log.debug(chalk`🛬\t{cyanBright Fetching Page}: ${url}`);
       this.result.push(await this.getPage(browser, url));
