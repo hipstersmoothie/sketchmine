@@ -3,41 +3,48 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-pool:
-  vmImage: 'macOS-10.13'
+jobs:
+- job: PR
+  pool:
+    vmImage: 'macOS-10.13'
 
-strategy:
-  maxParallel: 10
-  matrix:
-    node-10:
-      node_version: ^10.6.0
+  strategy:
+    maxParallel: 10
+    matrix:
+      node-10:
+        node_version: ^10.6.0
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: $(node_version)
-  displayName: 'Install Node.js 🐍'
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: $(node_version)
+    displayName: 'Install Node.js 🐍'
 
-- script: |
-    yarn install
-  displayName: 'Install dependencies'
+  - script: |
+      yarn install
+    displayName: 'Install dependencies'
 
-- script: |
-    yarn bootstrap
-  displayName: 'Lerna bootstrap 🥾'
+  - script: |
+      yarn bootstrap
+    displayName: 'Lerna bootstrap 🥾'
 
-- script: |
-    yarn lint
-  displayName: 'Run linting'
+  - script: |
+      yarn lint
+    displayName: 'Run linting'
 
-- script: |
-    yarn build
-  displayName: 'Build applications'
+  - script: |
+      yarn build
+    displayName: 'Build applications'
 
-- script: |
-    yarn test
-  displayName: 'Run testing'
+  - script: |
+      yarn test
+    displayName: 'Run testing'
 
-- script: docker build -t $(dockerId)/$(imageName) .
-  displayName: 'Create Docker image'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+- job: Docker
+  pool:
+    vmImage: 'ubuntu-16.04'
+  
+  steps:
+  - script: docker build  .
+    displayName: 'Create Docker image'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
