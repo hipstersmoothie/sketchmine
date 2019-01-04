@@ -1,6 +1,6 @@
 {
   "name": "@sketchmine/changelog-generation",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Generates the changelog for the sketchmine according to the Angular commit style",
   "keywords": [
     "angular",

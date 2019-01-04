@@ -1,6 +1,6 @@
 {
   "name": "@sketchmine/sketch-svg-parser",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Parse svg to sketch shapes with points",
   "keywords": [
     "sketch",
