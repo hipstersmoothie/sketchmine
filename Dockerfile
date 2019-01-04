@@ -2,22 +2,14 @@
 # Angular components
 #
 #----------------------------
-FROM alpine/git as angular-components
-ARG GIT_PASS
-ARG GIT_USER
-ARG GIT_BRANCH=feat/poc-sketch
-ARG GIT_REPO=https://${GIT_USER}:${GIT_PASS}@bitbucket.lab.dynatrace.org/scm/rx/angular-components.git
+FROM alpine/git as material2
+ARG GIT_TAG=7.1.1
+ARG GIT_REPO=https://github.com/angular/material2.git
 
 WORKDIR /ac
-RUN git clone --no-checkout --depth=1 -b ${GIT_BRANCH} ${GIT_REPO} . && \
-    git fetch origin ${GIT_BRANCH} && \
-    git checkout origin/${GIT_BRANCH} -- tsconfig.json && \
-    git checkout origin/${GIT_BRANCH} -- package.json && \
-    git checkout origin/${GIT_BRANCH} -- .npmrc && \
-    git checkout origin/${GIT_BRANCH} -- src/lib && \
-    git checkout origin/${GIT_BRANCH} -- src/docs/components
-
-
+RUN git clone --no-checkout --depth=1 -b ${GIT_TAG} ${GIT_REPO} . && \
+    git fetch origin && \
+    git checkout tags/${GIT_TAG}
 
 #============================
 # Puppeteer runable environment
@@ -48,57 +40,45 @@ ENV APP=${DIST_FOLDER}/sketch-library
 
 # copy and install the angular components in a _tmp folder
 WORKDIR ${TMP}
-COPY --from=angular-components \
+COPY --from=material2 \
      /ac/package.json \
-     /ac/.npmrc \
      ${TMP}/
 
 RUN yarn install --ignore-scripts
-COPY --from=angular-components \
+COPY --from=material2 \
      /ac/tsconfig.json \
      ${TMP}/
-COPY --from=angular-components \
+COPY --from=material2 \
      /ac/src\
      ${TMP}/src
 
-# prepare the angular app with the variants
-WORKDIR ${APP}
-COPY /config/angular-app-shell/.npmrc \ 
-     /config/angular-app-shell/package.json \
-     ${APP}/
-RUN npm install
-COPY /config/angular-app-shell/ ./
 
 # install the library (build etc.)
 WORKDIR ${LIB_FOLDER}
 COPY package.json ./
-RUN npm install
+COPY packages/app-builder/package.json ./packages/app-builder/package.json
+COPY packages/code-analyzer/package.json ./packages/code-analyzer/package.json
+COPY packages/dom-agent/package.json ./packages/dom-agent/package.json
+COPY packages/helpers/package.json ./packages/helpers/package.json
+COPY packages/library/package.json ./packages/library/package.json
+COPY packages/node-helpers/package.json ./packages/node-helpers/package.json
+COPY packages/sketch-builder/package.json ./packages/sketch-builder/package.json
+COPY packages/sketch-file-builder/package.json ./packages/sketch-file-builder/package.json
+COPY packages/sketch-file-format/package.json ./packages/sketch-file-format/package.json
+COPY packages/sketch-svg-parser/package.json ./packages/sketch-svg-parser/package.json
+COPY packages/sketch-validator/package.json ./packages/sketch-validator/package.json
+COPY packages/sketch-validator-nodejs-wrapper/package.json ./packages/sketch-validator-nodejs-wrapper/package.json
+
+RUN yarn
 
 # copy build stuff for library
-COPY rollup.config.js \
+COPY lerna.json \
+     jest.config.* \
+     yarn.lock \
      tsconfig.json \
      tslint.json \
      ${LIB_FOLDER}/
-COPY config ${LIB_FOLDER}/config
-COPY src ${LIB_FOLDER}/src
+COPY config ./config
+COPY packages ./packages
 
-
-RUN node_modules/.bin/rollup -c
-
-
-#============================
-# Library production target
-#
-#----------------------------
-FROM library-base as library-production
-
-# cleanup image
-RUN rm -rf .rpt2_cache \
-    package.json \
-    package-lock.json \
-    src \
-    rollup.config.js \
-    tsconfig.json \
-    tslint.json
-
-CMD ["node", "dist/library"]
+RUN yarn build

@@ -7,9 +7,7 @@ services:
       target: library-production
       context: .
       args:
-        GIT_PASS: ${GIT_PASS}
-        GIT_USER: ${GIT_USER}
-        GIT_BRANCH: feat/poc-sketch
+        GIT_TAG: 7.1.1
     cap_add:
       - ALL
     volumes:
