@@ -1,7 +1,32 @@
 # Changelog
 
 
-## v2.3.1 – 2018.11.4
+## v2.4.0 – 2019.1.5
+
+#### Contributors
+
+  - [Lukas Holzer](mailto:lukas.holzer@dynatrace.com)
+  - [Stefan Baumgartner](mailto:sbaumg@gmail.com)
+  - [Fabian Friedl](mailto:fabian.friedl@dynatrace.com)
+  - [Katrin Freihofner](mailto:katrin.freihofner@dynatrace.com)
+
+#### Commits
+
+##### Bug Fixes 🐞
+
+
+* [[`45c76e0`](https://github.com/Dynatrace/sketchmine/commit/45c76e0)] -  **sketch-validator**:  remove node-dependencies and provide logger and error handler via DI  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))
+* [[`18613c0`](https://github.com/Dynatrace/sketchmine/commit/18613c0)] -  **app-builder**:  add missing schematics dependency  ([**Fabian Friedl**](mailto:fabian.friedl@dynatrace.com))
+* [[`f01e3b5`](https://github.com/Dynatrace/sketchmine/commit/f01e3b5)] -  **sketch-validator**:  excluded symbols pages from validation, added check if page has artboards and updates tests  ([**Katrin Freihofner**](mailto:katrin.freihofner@dynatrace.com))    *issues:*    [UX-8672 ](https://dev-jira.dynatrace.org/browse/UX-8672 )
+* [[`5741efa`](https://github.com/Dynatrace/sketchmine/commit/5741efa)] -  **changelog-generation**:  fix wrong access to matches array – full match is on position 0 in array  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))
+
+##### Features
+
+
+* [[`a12dd27`](https://github.com/Dynatrace/sketchmine/commit/a12dd27)] -  **sketch-builder**:  add initial walkthrough to generate a config.json  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))    *issues:*    [UX-8766 ](https://dev-jira.dynatrace.org/browse/UX-8766 )
+
+
+## v2.3.1 – 2018.12.4
 
 #### Contributors
 
@@ -17,7 +42,7 @@
 * [[`b7854ab`](https://github.com/Dynatrace/sketchmine/commit/b7854ab)] -  **sketch-file-builder**:  remove double export  ([**Stefan Baumgartner**](mailto:sbaumg@gmail.com))
 
 
-## v2.3.0 – 2018.11.4
+## v2.3.0 – 2018.12.4
 
 #### Contributors
 
@@ -38,7 +63,7 @@
 * [[`6fab58b`](https://github.com/Dynatrace/sketchmine/commit/6fab58b)] -  **changelog-generation**:  add changelog generation  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))    *issues:*    [UX-8794 ](https://dev-jira.dynatrace.org/browse/UX-8794 )
 
 
-## v2.2.0 – 2018.11.1
+## v2.2.0 – 2018.12.1
 
 #### Contributors
 
