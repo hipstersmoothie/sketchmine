@@ -1,0 +1,19 @@
+{
+  "compatibleVersion": 3,
+  "bundleVersion": 1,
+  "icon": "icon.png",
+  "commands": [
+    {
+      "name": "Start Validation",
+      "identifier": "show-kraken-validation-ui",
+			"shortcut" : "ctrl alt v",
+      "script": "./run.js"
+    }
+  ],
+  "menu": {
+    "title": "🐙 Kraken Validation",
+    "items": [
+      "show-kraken-validation-ui"
+    ]
+  }
+}

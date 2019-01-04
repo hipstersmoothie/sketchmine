@@ -1,0 +1,52 @@
+{
+  "name": "@sketchmine/sketch-validation-plugin",
+  "version": "2.4.0",
+  "description": "Sketch plugin for our validation",
+  "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
+  "homepage": "https://github.com/dynatrace/sketchmine/tree/master/packages/sketch-validaton-plugin#readme",
+  "license": "MIT",
+  "keywords": [
+    "Sketch",
+    "validation",
+    "plugin"
+  ],
+  "main": "kraken-validation.sketchplugin",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dynatrace/sketchmine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Dynatrace/sketchmine/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "sketch": ">=3.0"
+  },
+  "skpm": {
+    "name": "Kraken Validation 🐙",
+    "manifest": "src/manifest.json",
+    "main": "kraken-validation.sketchplugin",
+    "assets": [
+      "assets/**/*"
+    ]
+  },
+  "scripts": {
+    "build": "skpm-build",
+    "link": "skpm-link"
+  },
+  "devDependencies": {
+    "@skpm/builder": "^0.5.13"
+  },
+  "dependencies": {
+    "sketch-module-web-view": "^2.1.2"
+  }
+}
