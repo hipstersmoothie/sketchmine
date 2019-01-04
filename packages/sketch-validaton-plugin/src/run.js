@@ -6,6 +6,7 @@ import { playSound } from './utils/play-sound';
 import { getFileFormat } from './utils/get-file-format';
 import { selectElement } from './utils/select-element';
 
+import { url } from '../config.json';
 
 export default function() {
   const options = {
@@ -72,13 +73,13 @@ export default function() {
       case 'document':
         response.data = getFileFormat(currentDocument);
         break;
-      default: 
+      default:
         console.log(`🚨 ERROR: Unknown event was fired with type: ${event.type}`);
         return;
     }
-    
+
     sendToWebView(webContents, response);
   });
 
-  browserWindow.loadURL('https://sketch-validation-interface-r39ibfqyj.now.sh/');
+  browserWindow.loadURL(url);
 }

@@ -41,7 +41,7 @@
   },
   "scripts": {
     "build": "skpm-build",
-    "link": "skpm-link"
+    "add:plugin": "skpm-link"
   },
   "devDependencies": {
     "@skpm/builder": "^0.5.13"
