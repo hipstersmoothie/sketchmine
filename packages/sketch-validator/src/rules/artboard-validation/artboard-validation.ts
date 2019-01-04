@@ -24,9 +24,7 @@ export function artboardValidation(
   ): (ValidationError | boolean)[] {
   const task = homeworks[currentTask];
   if (!task) {
-    console.error(`{bgRed [artboard-validation.ts]} -> artboardValidation needs a valid task
-    {cyan IValdiationContext[]} parameter with index!
-    `);
+    console.error('[artboard-validation.ts]} -> artboardValidation needs a valid task');
     return;
   }
 

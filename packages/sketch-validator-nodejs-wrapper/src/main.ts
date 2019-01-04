@@ -1,6 +1,7 @@
 import { lstatSync } from 'fs';
 import { resolve } from 'path';
-import { Validator, ErrorHandler, filenameValidation, IValidationRule } from '@sketchmine/sketch-validator';
+import { Validator, filenameValidation, IValidationRule } from '@sketchmine/sketch-validator';
+import { NodeErrorHandler } from './node-error-handler';
 import { zipToBuffer as unzip, Logger, readFile } from '@sketchmine/node-helpers';
 import chalk from 'chalk';
 
@@ -21,15 +22,19 @@ export async function main(file: string, rules: IValidationRule[], environment: 
     colorValidationRule.options.colors = await readFile(COLORS_FILE);
   }
 
-  const validator = new Validator(rules, environment);
-  const handler = new ErrorHandler();
+  const handler = new NodeErrorHandler(log);
+  const validator = new Validator(
+    rules,
+    handler,
+    environment,
+  );
 
   log.notice(chalk`💎💎💎  Start Validating Sketch File:  💎💎💎\n`);
   log.notice(`Validate file: ${file}`);
 
   /** Validate the file name for product environment only. */
   if (environment === 'product') {
-    filenameValidation(file);
+    filenameValidation(file, handler);
   }
 
   /** Unzip all the pages and the document.json file for the validation. */
