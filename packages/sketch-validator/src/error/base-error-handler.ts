@@ -20,7 +20,6 @@ export abstract class BaseErrorHandler {
     if (BaseErrorHandler.instance) {
       return BaseErrorHandler.instance;
     }
-    console.log(this);
     BaseErrorHandler.instance = this;
   }
 
