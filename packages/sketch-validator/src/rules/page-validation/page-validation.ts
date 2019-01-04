@@ -1,8 +1,13 @@
-import chalk from 'chalk';
-import { ValidationError, PageNamingError, NoArtboardFoundError, EmptyPageError } from '../../error/validation-error';
+import {
+  ValidationError,
+  PageNamingError,
+  NoArtboardFoundError,
+  EmptyPageError,
+  PAGE_NAME_ERROR_MESSAGE,
+  NO_ARTBOARD_ERROR_MESSAGE,
+  EMPTY_PAGE_ERROR_MESSAGE,
+} from '../../error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
-import { PAGE_NAME_ERROR_MESSAGE, NO_ARTBOARD_ERROR_MESSAGE,
-  EMPTY_PAGE_ERROR_MESSAGE } from '../../error/error-messages';
 
 /**
  * Takes a homework and corrects it like a teacher 👩🏼‍🏫
@@ -19,10 +24,7 @@ export function pageValidation(
   const task = homeworks[currentTask];
 
   if (!task) {
-    console.error(
-      chalk`{bgRed [page-validation.ts]} -> pageValidation needs a valid task` +
-      chalk`{cyan IValdiationContext[]} parameter with index!\n`,
-    );
+    console.error('[page-validation.ts]} -> pageValidation needs a valid task');
     return;
   }
 

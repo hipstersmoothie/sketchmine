@@ -1,16 +1,17 @@
-import chalk from 'chalk';
-import { ValidationError, WrongSymbolNamingError, DuplicatedSymbolError } from '../../error/validation-error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import {
+  ValidationError,
+  WrongSymbolNamingError,
+  DuplicatedSymbolError,
   SYMBOL_NAME_ERROR_MESSAGE,
   THEME_NAME_ERROR_MESSAGE,
   DUPLICATE_SYMBOL_ERROR_MESSAGE,
-} from '../../error/error-messages';
+} from '../../error';
 
 /** Components that do not need a theme name */
 export enum ThemeLess {
   icons = 'icons',
-  globalNavigations = 'global-navigation',
+  globalNavigation = 'global-navigation',
   menubar = 'menubar',
 }
 
@@ -35,10 +36,7 @@ export function symbolNameValidation(
   ): (ValidationError | boolean)[] {
   const task = homeworks[currentTask];
   if (!task) {
-    console.error(
-      chalk`{bgRed [symbol-name-validation.ts]} -> symbolNameValidation needs a valid task` +
-      chalk`{cyan IValdiationContext[]} parameter with index!\n`,
-    );
+    console.error('[symbol-name-validation.ts]} -> symbolNameValidation needs a valid task');
     return;
   }
 
@@ -74,7 +72,7 @@ export function symbolNameValidation(
 }
 
 /**
- * Check if the thme name is in the name
+ * Check if the theme name is in the name
  * @param name string[]
  * @returns boolean
  */

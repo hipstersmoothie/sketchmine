@@ -7,11 +7,11 @@ import { ValidationError } from './error/validation-error';
  * The teacher that applies the rules to the homeworks.
  */
 export class Teacher {
-  private _handler: ErrorHandler;
 
-  constructor(private _rules: IValidationRule[]) {
-    this._handler = new ErrorHandler();
-  }
+  constructor(
+    private _rules: IValidationRule[],
+    private handler: ErrorHandler,
+  ) { }
 
   improve(homework: IValidationContext[]) {
     for (let i = 0, max = homework.length; i < max; i += 1) {
@@ -33,11 +33,11 @@ export class Teacher {
     if (marks instanceof Array) {
       marks.forEach((mark) => {
         if (mark === true) {
-          this._handler.addSuccess(specification);
+          this.handler.addSuccess(specification);
         } else if (mark instanceof ValidationError) {
           mark.description = specification.description;
           mark.parents = task.parents;
-          this._handler.addError(specification, mark);
+          this.handler.addError(specification, mark);
         }
       });
     }

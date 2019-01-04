@@ -1,16 +1,5 @@
 import { SketchAttribute, round } from '@sketchmine/sketch-file-format';
 import { rgbToHex } from '@sketchmine/helpers';
-import chalk from 'chalk';
-import {
-  NO_FOREIGN_TEXT_STYLES_ERROR_MESSAGE,
-  NO_SHARED_TEXT_STYLES_ERROR_MESSAGE,
-  NO_SHARED_TEXT_STYLES_OVERRIDES_ERROR_MESSAGE,
-  NO_WRONG_HEADLINE_ERROR,
-  INVALID_TEXT_COLOR_ERROR,
-  TEXT_TOO_SMALL_ERROR,
-  NO_TEXT_COLOR_ERROR,
-  WRONG_FONT_ERROR,
-} from '../../error/error-messages';
 import {
   NoForeignTextStylesError,
   NoSharedTextStylesError,
@@ -21,7 +10,15 @@ import {
   TextTooSmallError,
   NoTextColorError,
   WrongFontError,
-} from '../../error/validation-error';
+  NO_FOREIGN_TEXT_STYLES_ERROR_MESSAGE,
+  NO_SHARED_TEXT_STYLES_ERROR_MESSAGE,
+  NO_SHARED_TEXT_STYLES_OVERRIDES_ERROR_MESSAGE,
+  NO_WRONG_HEADLINE_ERROR,
+  INVALID_TEXT_COLOR_ERROR,
+  TEXT_TOO_SMALL_ERROR,
+  NO_TEXT_COLOR_ERROR,
+  WRONG_FONT_ERROR,
+} from '../../error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import isEqual from 'lodash/isEqual';
 
@@ -70,10 +67,7 @@ export function textStyleValidation(
   };
 
   if (!task) {
-    console.error(
-      chalk`{bgRed [text-style-validation.ts]} -> textStyleValidation needs a valid task` +
-      chalk`{cyan IValdiationContext[]} parameter with index!\n`,
-      );
+    console.error('[text-style-validation.ts]} -> textStyleValidation needs a valid task');
     return;
   }
 
@@ -164,7 +158,7 @@ export function textStyleValidation(
   }
 
   const foreignTextStyle = task.ruleOptions.document.foreignTextStyles
-    .find(textstyle => textstyle.localSharedStyle.do_objectID === task.ruleOptions.sharedStyleID);
+    .find(textStyle => textStyle.localSharedStyle.do_objectID === task.ruleOptions.sharedStyleID);
 
   if (!foreignTextStyle) {
     console.error(`No foreign text style given that can be compared with ${task.ruleOptions.sharedStyleID}.`);

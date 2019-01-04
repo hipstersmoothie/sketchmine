@@ -3,6 +3,8 @@ import { Validator } from '../src/validator';
 import { Teacher } from '../src/teacher';
 import { colorValidation } from '../src/rules/color-validation';
 import { IValidationRule } from '../src/interfaces/validation-rule.interface';
+import { ErrorHandler } from '../src/error';
+import { Logger } from '@sketchmine/node-helpers';
 
 const fixture = require('./fixtures/validation-fixture.json');
 const RULE_FIXTURE: IValidationRule = {
@@ -14,6 +16,9 @@ const RULE_FIXTURE: IValidationRule = {
 };
 jest.mock('../src/teacher');
 
+const log = new Logger();
+const handler = new ErrorHandler(log);
+
 describe('Sketch Validation', () => {
   beforeEach(async () => {
     jest.clearAllMocks();
@@ -21,7 +26,7 @@ describe('Sketch Validation', () => {
 
   test('if color rule gets applied when no environment product', async () => {
     RULE_FIXTURE.env = ['product'];
-    const productValidator = new Validator([RULE_FIXTURE], 'global');
+    const productValidator = new Validator([RULE_FIXTURE], handler, 'global');
     await productValidator.addFile(fixture);
     await productValidator.validate();
     expect(Teacher).not.toHaveBeenCalled();
@@ -31,7 +36,7 @@ describe('Sketch Validation', () => {
 
   test('if color rule gets applied when no environment is set', async () => {
     RULE_FIXTURE.env = undefined;
-    const productValidator = new Validator([RULE_FIXTURE], 'product');
+    const productValidator = new Validator([RULE_FIXTURE], handler, 'product');
     await productValidator.addFile(fixture);
     await productValidator.validate();
     expect(Teacher).toHaveBeenCalledTimes(1);
@@ -41,7 +46,7 @@ describe('Sketch Validation', () => {
 
   test('if no rules are applied if environment doesn\'t match', async () => {
     RULE_FIXTURE.env = ['product', 'global'];
-    const productValidator = new Validator([RULE_FIXTURE], 'blubber');
+    const productValidator = new Validator([RULE_FIXTURE], handler, 'blubber');
     await productValidator.addFile(fixture);
     await productValidator.validate();
     expect(Teacher).not.toHaveBeenCalled();
@@ -51,7 +56,7 @@ describe('Sketch Validation', () => {
 
   test('if all rules are applied if multiple environments are set', async () => {
     RULE_FIXTURE.env = ['product', 'global'];
-    const productValidator = new Validator([RULE_FIXTURE], 'product');
+    const productValidator = new Validator([RULE_FIXTURE], handler, 'product');
     await productValidator.addFile(fixture);
     await productValidator.validate();
     expect(Teacher).toHaveBeenCalledTimes(1);

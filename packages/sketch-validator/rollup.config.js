@@ -1,5 +1,6 @@
 import typescript from 'rollup-plugin-typescript2';
 import resolve from 'rollup-plugin-node-resolve';
+import builtins from 'rollup-plugin-node-builtins';
 import commonjs from 'rollup-plugin-commonjs';
 import json from 'rollup-plugin-json'
 import pkg from './package.json';
@@ -29,6 +30,7 @@ export default [
     ],
     plugins: [
       json(),
+      builtins(), // to shim path that is used in the file-name-validation
       typescript({tsconfig: './tsconfig.json', useTsconfigDeclarationDir: true, }),
       resolve(), // so Rollup can find `ms`
       commonjs(), // so Rollup can convert `ms` to an ES module

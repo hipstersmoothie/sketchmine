@@ -3,13 +3,11 @@ import {
   ArtboardNamingError,
   ArtboardSizeError,
   ArtboardEmptyError,
-} from '../../error/validation-error';
-import { IValidationContext } from '../../interfaces/validation-rule.interface';
-import {
   ARTBOARD_SIZE_ERROR_MESSAGE,
   ARTBOARD_EMPTY_ERROR_MESSAGE,
   ARTBOARD_NAME_ERROR_MESSAGE,
-} from '../../error/error-messages';
+} from '../../error';
+import { IValidationContext } from '../../interfaces/validation-rule.interface';
 
 /**
  * Takes a homework and corrects it like a teacher 👩🏼‍🏫

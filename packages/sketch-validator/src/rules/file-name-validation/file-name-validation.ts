@@ -1,10 +1,14 @@
-import { ErrorHandler } from '../../error/error-handler';
-import { FileNameError } from '../../error/validation-error';
+// this path import is trusted in case we bundle the dirname and basename function
+// out of the node package. – In this case it is ok.
+// tslint:disable-next-line:validation-no-node-natives
 import { dirname, basename } from 'path';
-import { FILE_NAME_FOLDER_ERROR_MESSAGE, FILE_NAME_ERROR_MESSAGE } from '../../error/error-messages';
+import {
+  ErrorHandler,
+  FileNameError,
+  FILE_NAME_FOLDER_ERROR_MESSAGE,
+  FILE_NAME_ERROR_MESSAGE,
+} from '../../error';
 import { IValidationRule } from '../../interfaces/validation-rule.interface';
-
-const handler = new ErrorHandler();
 
 export const RULE_NAME = 'file-name-validation';
 
@@ -17,6 +21,7 @@ export const RULE_NAME = 'file-name-validation';
  */
 export function filenameValidation(
   file: string,
+  handler: ErrorHandler,
 ) {
 
   const filepath = dirname(file).split('/');

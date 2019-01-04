@@ -1,5 +1,5 @@
 import { artboardValidation } from '../src/rules/artboard-validation';
-import { ArtboardNamingError, ArtboardSizeError, ArtboardEmptyError } from '../src/error/validation-error';
+import { ArtboardNamingError, ArtboardSizeError, ArtboardEmptyError } from '../src/error';
 import { IValidationContext } from '../src/interfaces/validation-rule.interface';
 
 describe('Artboard Validation', () => {
