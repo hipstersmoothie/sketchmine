@@ -1,7 +1,7 @@
 /**
- * Sends a message to the Webview
- * @param {browserWindow.webContents} webContents  the webContents of the View
- * @param {string | Object} message the message to send
+ * Sends a message to the Webview.
+ * @param {browserWindow.webContents} webContents The webContents of the View.
+ * @param {string | Object} message The message to send.
  */
 export function sendToWebView(webContents, message) {
   webContents.executeJavaScript(`

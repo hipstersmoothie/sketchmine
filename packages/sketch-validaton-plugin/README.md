@@ -17,7 +17,7 @@ The plugin get generated with the [official Sketch plugin manager](https://githu
 
 ### Add the plugin to Sketch
 
-To install this plugin you can place it either in the Plugin in Folders under `~/Library/Application\ Support/com.bohemiancoding.sketch3/Plugins/*`.
+To install this plugin you can place it in the Plugin in Folders under `~/Library/Application\ Support/com.bohemiancoding.sketch3/Plugins/*`.
 
 ### Symlinking
 
