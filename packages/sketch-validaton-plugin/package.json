@@ -40,8 +40,12 @@
     ]
   },
   "scripts": {
+    "clean": "rm -rf kraken-validation.sketchplugin",
     "build": "skpm-build",
-    "add:plugin": "skpm-link"
+    "add:plugin": "skpm-link",
+    "dev": "yarn build --watch",
+    "lint": "echo 'no linting specified!'",
+    "test": "echo 'no tests specified!'"
   },
   "devDependencies": {
     "@skpm/builder": "^0.5.13"
