@@ -6,15 +6,15 @@ import { CommunicationService } from './communication.service';
 import { MatSnackBar } from '@angular/material';
 import { environment } from '../../environments/environment';
 
-const REPO_URL = environment.githubUrl;
-const COLORS_FILE = 'Dynatrace/sketchmine/blob/master/packages/sketch-validator/tests/fixtures/_colors.scss';
+// tslint:disable-next-line:max-line-length
+const COLORS_FILE = 'https://raw.githubusercontent.com/Dynatrace/sketchmine/master/packages/sketch-validator/tests/fixtures/_colors.scss';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ColorService {
 
-  private colorsUrl = `${REPO_URL}${COLORS_FILE}`;
+  private colorsUrl = COLORS_FILE;
   private headers: HttpHeaders;
 
   constructor(

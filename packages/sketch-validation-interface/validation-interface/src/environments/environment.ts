@@ -4,7 +4,6 @@
 
 export const environment = {
   production: false,
-  githubUrl: 'github/', // ng serve uses proxy config
 };
 
 /*
