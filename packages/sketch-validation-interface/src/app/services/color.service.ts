@@ -4,8 +4,9 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { CommunicationService } from './communication.service';
 import { MatSnackBar } from '@angular/material';
+import { environment } from '../../environments/environment';
 
-const REPO_URL = 'github/'; // 'https://github.com/Dynatrace/sketchmine/';
+const REPO_URL = environment.githubUrl;
 const COLORS_FILE = 'Dynatrace/sketchmine/blob/master/packages/sketch-validator/tests/fixtures/_colors.scss';
 
 @Injectable({
