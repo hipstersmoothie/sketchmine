@@ -1,0 +1,27 @@
+<div class="validation-results">
+
+  <h2 class="headline">Validation Results</h2>
+
+  <mat-accordion>
+    <mat-expansion-panel
+      *ngFor="let rule of result; let i = index"
+      [disabled]="rule.failing.length === 0">
+
+      <mat-expansion-panel-header>
+        <mat-panel-title class="panel-title">
+          <div class="panel-badges">
+            <span class="badge badge--failings">✘ {{ rule.failing.length }}</span>
+            <span class="badge">✔︎ {{ rule.failing.length }}</span>
+          </div>
+          {{ rule.description }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <result-item-failing
+        *ngFor="let error of rule.failing"
+        [error]="error"></result-item-failing>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+
+</div>

@@ -1,0 +1,15 @@
+<mat-divider></mat-divider>
+<mat-list-item>
+  <h3>{{error.name}}</h3>
+
+  <div *ngIf="error.parents" class="error--hierarchy">
+    <span *ngFor="let item of error.parents | values">{{ item }} ▸ </span>
+    <span>{{error.name}}</span>
+  </div>
+
+  <result-message [message]="error.message"></result-message>
+
+  <div class="action-row">
+    <button mat-raised-button color="primary" (click)="selectElement(error.objectId)">select item</button>
+  </div>
+</mat-list-item>

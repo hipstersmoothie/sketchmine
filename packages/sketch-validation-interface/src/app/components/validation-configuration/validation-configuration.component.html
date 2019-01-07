@@ -1,0 +1,58 @@
+<form [formGroup]="rulesConfiguration" class="validation-configuration">
+  <div class="validation-configuration__selects">
+    <mat-form-field class="validation-configuration__context">
+      <mat-select required formControlName="env">
+        <mat-option *ngFor="let env of environments" [value]="env">{{
+          env
+        }}</mat-option>
+      </mat-select>
+      <mat-hint>choose the validation context</mat-hint>
+      <mat-error>You have to select a context!</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select
+        formControlName="pages"
+        class="validation-configuration__pages"
+      >
+        <mat-option value="all">all pages</mat-option>
+        <mat-optgroup
+          *ngIf="documentMeta"
+          label="{{ documentMeta.path | fileName: '#filename.#ending' }}"
+        >
+          <mat-option
+            *ngFor="let page of documentMeta!.pages"
+            [value]="page.do_objectID"
+            >{{ page.name }}</mat-option
+          >
+        </mat-optgroup>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <ul class="rules" [formGroup]="rules">
+    <li *ngFor="let rule of rulesConf; let i = index">
+      <mat-checkbox
+        [formControlName]="rule.name"
+        [value]="rule.name"
+        [checked]="rule.active"
+        >{{ rule.description }}</mat-checkbox
+      >
+    </li>
+  </ul>
+
+  <div class="validation-actions">
+    <button
+      mat-raised-button
+      (click)="startValidation()"
+      [disabled]="rulesConfiguration.invalid || loading"
+    >
+      run validation
+    </button>
+  </div>
+</form>
+<mat-progress-bar
+  *ngIf="loading"
+  color="primary"
+  mode="indeterminate"
+></mat-progress-bar>

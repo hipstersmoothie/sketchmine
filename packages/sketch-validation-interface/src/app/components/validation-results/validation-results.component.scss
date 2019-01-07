@@ -1,0 +1,32 @@
+.entry {
+  cursor: pointer;
+  transition: all 400ms ease-out;
+
+  &:hover {
+    border-radius: 5px;
+    background-color: lightblue;
+  }
+}
+
+.panel-title {
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.panel-badges {
+  margin-right: 10px;
+}
+
+.badge {
+  font-size: 0.7em;
+  margin-right: 5px;
+  padding: 2px 7px;
+  color: white;
+  background: #caefcb;
+  border-radius: 15px;
+
+  &.badge--failings {
+    background: #f28289;
+  }
+}

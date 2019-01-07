@@ -1,0 +1,25 @@
+.validation-configuration {
+  padding: 40px;
+}
+
+.rules {
+  padding: 0;
+
+  li {
+    list-style-type: none;
+  }
+}
+
+.validation-actions {
+  margin-top: 20px;
+}
+
+.validation-configuration__selects {
+  display: flex;
+}
+
+mat-form-field {
+  & + & {
+    margin-left: 10px;
+  }
+}

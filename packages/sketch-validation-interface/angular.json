@@ -80,7 +80,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "sketch-plugin-interface:build"
+            "browserTarget": "sketch-plugin-interface:build",
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
