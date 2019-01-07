@@ -27,10 +27,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
+    "build": "ng build --prod",
+    "test": "echo 'no unit tests specified!'",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "echo 'no e2e tests specified!'"
   },
   "dependencies": {
     "@angular/animations": "^7.1.4",
