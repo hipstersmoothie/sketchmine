@@ -4,7 +4,7 @@
   "skipInstall": false,
   "meta": "../../node_modules/@sketchmine/code-analyzer/dist/meta-information.json",
   "examples": {
-    "dir": "/Users/lukas.holzer/Sites/material2/src/material-examples/",
+    "dir": "/<path-to-material>/material2/src/material-examples/",
     "entry": "example-module.ts",
     "list": {
       "button": "ButtonOverviewExample",

@@ -4,7 +4,7 @@ const { spawn } = require('child_process');
 const { red } = require('chalk');
 const del = require('del');
 
-const config = require('./config.json');
+const config = require('./config.material.json');
 const destDir = resolve('lib')
 const SCHEMATICS_ROOT = resolve('src');
 
