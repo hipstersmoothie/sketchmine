@@ -1,0 +1,77 @@
+{
+  "name": "angular-app-shell",
+  "directory": "dist/sketch-library",
+  "skipInstall": false,
+  "meta": "../../node_modules/@sketchmine/code-analyzer/dist/meta-information.json",
+  "examples": {
+    "dir": "<path-to-angular-components>/angular-components/src/barista-examples/",
+    "entry": "app.module.ts",
+    "list": {
+      "alert": "ErrorAlertExampleComponent",
+      "breadcrumbs": "DefaultBreadcrumbsExampleComponent",
+      "button": "PureButtonExampleComponent",
+      "button-group": "ButtonGroupDefaultExampleComponent",
+      "card": "DefaultCardExampleComponent",
+      "chart": "ChartDefaultExampleComponent",
+      "checkbox": "DefaultCheckboxExampleComponent",
+      "context-dialog": "DefaultContextDialogExampleComponent",
+      "copy-to-clipboard": "DefaultCopyToClipboardExampleComponent",
+      "cta-card": "DefaultCtaCardExampleComponent",
+      "expandable-section": "DefaultExpandableSectionExampleComponent",
+      "filter-field": "DefaultFilterFieldExample",
+      "icon": "DefaultIconExample",
+      "inline-editor": "PureInlineEditorExample",
+      "input": "DefaultInputExample",
+      "key-value-list": "DefaultKeyValueListExampleComponent",
+      "link": "LinkSimpleExampleComponent",
+      "loading-distractor": "DefaultLoadingDistractorExampleComponent",
+      "micro-chart": "MicroChartDefaultExampleComponent",
+      "pagination": "DefaultPaginationExampleComponent",
+      "progress-bar": "DefaultProgressBarExampleComponent",
+      "progress-circle": "DefaultProgressCircleExampleComponent",
+      "radio": "DefaultRadioExample",
+      "select": "DefaultSelectExampleComponent",
+      "show-more": "DefaultShowMoreExampleComponent",
+      "switch": "PureSwitchExampleComponent",
+      "table": "TableDefaultComponent",
+      "tabs": "PureTabsExampleComponent",
+      "tag": "DefaultTagExampleComponent",
+      "tile": "DefaultTileExampleComponent"
+    }
+  },
+  "dependencies": [
+    {
+      "type": "dependencies",
+      "name": "@dynatrace/angular-components",
+      "version": "latest"
+    },
+    {
+      "type": "dependencies",
+      "name": "@dynatrace/dt-iconpack",
+      "version": "latest"
+    },
+    {
+      "type": "dependencies",
+      "name": "highcharts",
+      "version": "^6.1.0"
+    },
+    {
+      "type": "devDependencies",
+      "name": "@types/highcharts",
+      "version": "^5.0.22"
+    },
+    {
+      "type": "dependencies",
+      "name": "@angular/cdk",
+      "version": "^7.0.4"
+    }
+  ],
+  "styles": [
+    "@import '~@dynatrace/angular-components/style/index';",
+    "",
+    "html,",
+    "body {",
+    "  margin: 0;\n  padding: 0;",
+    "}"
+  ]
+}
