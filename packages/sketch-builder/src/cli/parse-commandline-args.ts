@@ -1,8 +1,7 @@
 import chalk from 'chalk';
 import { displayHelp, CliCommand } from '@sketchmine/node-helpers';
 import { SketchBuilderConfig } from '../config.interface';
-import { resolve, join } from 'path';
-import { readFileSync } from 'fs';
+import { resolve } from 'path';
 import { questioner } from './questioner';
 import { saveConfig } from './save-config';
 const helpText = chalk`
@@ -15,7 +14,12 @@ The orchestration for drawing the whole library is done by the {grey @sketchmine
 For further documentation about how to configure the {grey config.json} please visit the {grey README.md}
 `;
 
-const sampleConfig = readFileSync(join(__dirname, '..', 'config.sample-page.json')).toString();
+const sampleConfig = `
+{
+  "url": "https://<your-page>.com",
+  "outFile": "<outDir>/<your-name>.sketch"
+}
+`;
 
 const cmdFlags: CliCommand[] = [
   {
