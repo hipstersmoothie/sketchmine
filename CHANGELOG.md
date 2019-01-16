@@ -1,5 +1,25 @@
 # Changelog
 
+## v2.5.0 – 2019.0.3
+
+#### Contributors
+
+  - [Lukas Holzer](mailto:lukas.holzer@dynatrace.com)
+  - [Fabian Friedl](mailto:fabian.friedl@dynatrace.com)
+  - [Baumgartner](mailto:sbaumg@gmail.com)
+
+#### Commits
+
+##### Bug Fixes 🐞
+
+* [[`6b087f9`](https://github.com/Dynatrace/sketchmine/commit/6b087f9)] -  **sketch-builder**:  remove readFile in case that it is not shipped in npm package  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))
+* [[`9e5c571`](https://github.com/Dynatrace/sketchmine/commit/9e5c571)] -  **app-builder**:  remove user specific code  ([**Fabian Friedl**](mailto:fabian.friedl@dynatrace.com))
+
+##### Features
+
+* [[`f98a784`](https://github.com/Dynatrace/sketchmine/commit/f98a784)] -  **sketch-validation-interface**:  add plugin-interface  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))
+* [[`7bd8153`](https://github.com/Dynatrace/sketchmine/commit/7bd8153)] -  **sketch-validation-plugin**:  add sketchplugin to the monorepo  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))
+* [[`1a8d030`](https://github.com/Dynatrace/sketchmine/commit/1a8d030)] -  **app-builder**:  add dynatrace-config for components  ([**Fabian Friedl**](mailto:fabian.friedl@dynatrace.com))
 
 ## v2.4.0 – 2019.1.5
 
@@ -14,14 +34,12 @@
 
 ##### Bug Fixes 🐞
 
-
 * [[`45c76e0`](https://github.com/Dynatrace/sketchmine/commit/45c76e0)] -  **sketch-validator**:  remove node-dependencies and provide logger and error handler via DI  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))
 * [[`18613c0`](https://github.com/Dynatrace/sketchmine/commit/18613c0)] -  **app-builder**:  add missing schematics dependency  ([**Fabian Friedl**](mailto:fabian.friedl@dynatrace.com))
 * [[`f01e3b5`](https://github.com/Dynatrace/sketchmine/commit/f01e3b5)] -  **sketch-validator**:  excluded symbols pages from validation, added check if page has artboards and updates tests  ([**Katrin Freihofner**](mailto:katrin.freihofner@dynatrace.com))    *issues:*    [UX-8672 ](https://dev-jira.dynatrace.org/browse/UX-8672 )
 * [[`5741efa`](https://github.com/Dynatrace/sketchmine/commit/5741efa)] -  **changelog-generation**:  fix wrong access to matches array – full match is on position 0 in array  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))
 
 ##### Features
-
 
 * [[`a12dd27`](https://github.com/Dynatrace/sketchmine/commit/a12dd27)] -  **sketch-builder**:  add initial walkthrough to generate a config.json  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))    *issues:*    [UX-8766 ](https://dev-jira.dynatrace.org/browse/UX-8766 )
 
