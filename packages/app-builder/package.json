@@ -1,6 +1,6 @@
 {
   "name": "@sketchmine/app-builder",
-  "version": "2.4.0",
+  "version": "2.5.1",
   "description": "Generates the example library out of the angular components",
   "keywords": [
     "angular",
