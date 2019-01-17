@@ -1,23 +1,14 @@
-import { SketchAttribute, round } from '@sketchmine/sketch-file-format';
-import { rgbToHex } from '@sketchmine/helpers';
+import { SketchAttribute } from '@sketchmine/sketch-file-format';
 import {
   NoForeignTextStylesError,
   NoSharedTextStylesError,
   ValidationError,
   NoSharedTextStylesOverridesError,
   WrongHeadlineError,
-  InvalidTextColorError,
-  TextTooSmallError,
-  NoTextColorError,
-  WrongFontError,
   NO_FOREIGN_TEXT_STYLES_ERROR_MESSAGE,
   NO_SHARED_TEXT_STYLES_ERROR_MESSAGE,
   NO_SHARED_TEXT_STYLES_OVERRIDES_ERROR_MESSAGE,
   NO_WRONG_HEADLINE_ERROR,
-  INVALID_TEXT_COLOR_ERROR,
-  TEXT_TOO_SMALL_ERROR,
-  NO_TEXT_COLOR_ERROR,
-  WRONG_FONT_ERROR,
 } from '../../error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import isEqual from 'lodash/isEqual';
@@ -88,54 +79,6 @@ export function textStyleValidation(
     }));
   } else {
     errors.push(true);
-  }
-
-  /**
-   * Check if text color is one of the defined valid text colors
-   * and if the text is not smaller than 12px.
-   */
-  if (task.ruleOptions.stringAttributes) {
-    task.ruleOptions.stringAttributes.forEach((attribute) => {
-      if (!attribute.attributes.MSAttributedStringColorAttribute) {
-        errors.push(new NoTextColorError({
-          message: NO_TEXT_COLOR_ERROR(task.name),
-          ...object,
-        }));
-      } else {
-        const colorHex = rgbToHex(
-          round(attribute.attributes.MSAttributedStringColorAttribute.red * 255, 0),
-          round(attribute.attributes.MSAttributedStringColorAttribute.green * 255, 0),
-          round(attribute.attributes.MSAttributedStringColorAttribute.blue * 255, 0),
-        ).toUpperCase();
-
-        // Check text colors
-        if (!task.ruleOptions.VALID_TEXT_COLORS.includes(colorHex)) {
-          errors.push(new InvalidTextColorError({
-            message: INVALID_TEXT_COLOR_ERROR(task.name),
-            ...object,
-          }));
-        }
-      }
-
-      const fontAttributes = attribute.attributes.MSAttributedStringFontAttribute.attributes;
-      // Check font size (not allowed to be smaller than 12px)
-      // TODO: is it 12 or another value?
-      if (fontAttributes.size < 12) {
-        errors.push(new TextTooSmallError({
-          message: TEXT_TOO_SMALL_ERROR(task.name),
-          ...object,
-        }));
-      }
-
-      // Check font family name (not allowed to be anything else than BerninaSans or Bitstream Vera )
-      const fontnameLowercase = fontAttributes.name.toLowerCase();
-      if (!fontnameLowercase.startsWith('bernina') && !fontnameLowercase.startsWith('bitstream')) {
-        errors.push(new WrongFontError({
-          message: WRONG_FONT_ERROR(task.name),
-          ...object,
-        }));
-      }
-    });
   }
 
   /**

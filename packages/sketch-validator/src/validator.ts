@@ -5,6 +5,7 @@ import {
   SketchText,
 } from '@sketchmine/sketch-file-format';
 import cloneDeep from 'lodash/cloneDeep';
+import merge from 'lodash/merge';
 import {
   IValidationContext,
   IValidationContextChildren,
@@ -15,9 +16,9 @@ import { Teacher } from './teacher';
 import { ErrorHandler } from './error/error-handler';
 
 export class Validator {
-  matchedRules: IValidationContext[] = [];
+  homeworks: IValidationContext[] = [];
   files: SketchBase[] = [];
-  private rulesSelectors: string[] = [];
+  private rulesSelectors = new Set<string>();
   private currentArtboard: string;
   private currentSymbol: string;
   private currentPage: string;
@@ -28,8 +29,9 @@ export class Validator {
     private handler: ErrorHandler,
     public env: string,
   ) {
-    /** selector array is faster to check than always lookup in an object */
-    this.rules.forEach((rule: IValidationRule) => this.rulesSelectors.push(...rule.selector));
+    /** Set of selectors is faster to check than always lookup in an object */
+    this.rules.forEach((rule: IValidationRule) =>
+      this.rulesSelectors = new Set([...this.rulesSelectors, ...rule.selector]));
   }
 
   /**
@@ -72,12 +74,12 @@ export class Validator {
    * 👩🏼‍🏫 The teacher applies the rules for you.
    */
   private correct() {
-    if (this.matchedRules.length === 0) {
+    if (this.homeworks.length === 0) {
       return;
     }
     // We call her Verena, because Pinky's girlfriend is a teacher 💁🏻‍.
     const verena = new Teacher(this.rules, this.handler);
-    verena.improve(this.matchedRules);
+    verena.improve(this.homeworks);
   }
 
   /**
@@ -92,18 +94,30 @@ export class Validator {
 
   /**
    * Gathers the matching objects from the Sketch JSON file
-   * and stores it in an array.
+   * and stores it in an homeworks array that is later passed to the teacher.
    * @param content SketchBase
    */
   private collectModules(content: SketchBase) {
     this.setCurrentParents(content);
-    if (this.rulesSelectors.includes(content._class)) {
-      const selectedRules = this.rules.filter(rule => rule.selector.includes(content._class as SketchObjectTypes));
-      for (let i = 0; i < selectedRules.length; i += 1) {
-        if (!this.excludeRule(selectedRules[i])) {
-          this.matchedRules.push(this.getProperties(content, selectedRules[i].options || {}));
-        }
-      }
+    if (this.rulesSelectors.has(content._class)) {
+      // Check all rules if they match the given content layer.
+      const matchingRules = this.rules.filter(rule =>
+        rule.selector.includes(content._class as SketchObjectTypes) &&
+        !this.excludeRule(rule),
+      );
+
+      // Merge given options of all matching rules into one options object.
+      const options = merge({}, ...matchingRules.map(rule => rule.options));
+      const obj = {
+        ...this.getProperties(content, options || {}),
+        ruleNames: matchingRules.map(rule => rule.name),
+      };
+
+      /**
+       * Add object containing all needed properties collected from Sketch json file
+       * combined with validation rule names to homeworks array.
+       */
+      this.homeworks.push(obj);
     }
 
     if (content.layers && content.layers.length) {

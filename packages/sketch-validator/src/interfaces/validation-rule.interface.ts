@@ -23,6 +23,7 @@ export interface IValidationContext {
   parents: IValidationContextParents;
   ruleOptions: { [key: string]: any };
   style?: SketchStyle;
+  ruleNames: string[];
 }
 
 export interface IValidationContextParents {

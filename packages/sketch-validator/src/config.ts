@@ -5,6 +5,7 @@ import { colorValidation } from './rules/color-validation';
 import { pageValidation } from './rules/page-validation';
 import { symbolNameValidation } from './rules/symbol-name-validation';
 import { textStyleValidation } from './rules/text-style-validation';
+import { textValidation } from './rules/text-validation';
 
 /** Available sizes */
 const artboardSizes: string[] = [
@@ -98,6 +99,22 @@ export const rules: IValidationRule[] = [
       requirements: [
         ValidationRequirements.AttributedString,
         ValidationRequirements.DocumentReference,
+        ValidationRequirements.Style,
+      ],
+      HEADLINE_TEXT_STYLES,
+      VALID_TEXT_COLORS,
+    },
+  },
+  {
+    selector: [SketchObjectTypes.Text],
+    name: 'text-validation',
+    description: 'Check if text is used correctly.',
+    env: ['product'],
+    validation: textValidation,
+    includePages: artboardSizes,
+    options: {
+      requirements: [
+        ValidationRequirements.AttributedString,
         ValidationRequirements.Style,
       ],
       HEADLINE_TEXT_STYLES,
