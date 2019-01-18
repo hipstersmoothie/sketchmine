@@ -39,7 +39,8 @@ export async function main(file: string, rules: IValidationRule[], environment: 
 
   /** Unzip all the pages and the document.json file for the validation. */
   return unzip(file, /(document\.json|pages\/.*?\.json)/).then(async (result) => {
-    log.debug(chalk`\n⏱  Parsing and validating ${result.length.toString()} pages: \n\n`);
+    const noOfPages = result.filter(file => file.path !== 'document.json').length;
+    log.debug(chalk`\n⏱  Parsing and validating ${noOfPages.toString()} pages: \n\n`);
 
     await result.forEach((file) => {
       const content = file.buffer.toString();

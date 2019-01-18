@@ -79,7 +79,7 @@ The package bundle is formatted **commonjs** and is meant to be consumed only by
 The build can be started with the following two commands:
 
 - `yarn build` for building the package.
-- `yarn dev` for building and watching the sources of the package *(rebuilds after safe)*.
+- `yarn dev` for building and watching the sources of the package *(rebuilds after save)*.
 
 ## Linting
 
