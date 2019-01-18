@@ -106,6 +106,11 @@ export class Validator {
         !this.excludeRule(rule),
       );
 
+      // If no rules pass the matching criterias, we can return here.
+      if (matchingRules.length < 1) {
+        return;
+      }
+
       // Merge given options of all matching rules into one options object.
       const options = merge({}, ...matchingRules.map(rule => rule.options));
       const obj = {

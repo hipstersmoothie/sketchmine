@@ -33,6 +33,7 @@ export const getFakeHomeworks = (sketchDocument) :IValidationContext[] => [
     do_objectID: 'C8BAFBE8-F0F0-4727-B952-7303F9CA3F33',
     name: '360',
     parents: {} as IValidationContextParents,
+    ruleNames: [],
     ruleOptions: {
       artboardSizes,
       document: sketchDocument,
@@ -44,6 +45,7 @@ export const getFakeHomeworks = (sketchDocument) :IValidationContext[] => [
     do_objectID: 'C8BAFBE8-F0F0-4727-B952-7303F9CA3F33',
     name: '1280',
     parents: {} as IValidationContextParents,
+    ruleNames: [],
     ruleOptions: {
       artboardSizes,
       document: sketchDocument,
@@ -55,6 +57,7 @@ export const getFakeHomeworks = (sketchDocument) :IValidationContext[] => [
     do_objectID: 'C8BAFBE8-F0F0-4727-B952-7303F9CA3F33',
     name: '1280',
     parents: {} as IValidationContextParents,
+    ruleNames: [],
     ruleOptions: {
       artboardSizes,
       VALID_TEXT_COLORS,
@@ -153,6 +156,7 @@ export const getFakeHomeworks = (sketchDocument) :IValidationContext[] => [
     do_objectID: 'C8BAFBE8-F0F0-4727-B952-7303F9CA3F33',
     name: '1280',
     parents: {} as IValidationContextParents,
+    ruleNames: [],
     ruleOptions: {
       artboardSizes,
       VALID_TEXT_COLORS,
@@ -227,6 +231,7 @@ export const getFakeHomeworks = (sketchDocument) :IValidationContext[] => [
       artboard: '1280-Applications',
       symbolMaster: undefined,
     } as IValidationContextParents,
+    ruleNames: [],
     ruleOptions: {
       artboardSizes,
       HEADLINE_TEXT_STYLES,
@@ -278,6 +283,7 @@ export const getFakeHomeworks = (sketchDocument) :IValidationContext[] => [
       artboard: '1920-Applications',
       symbolMaster: undefined,
     } as IValidationContextParents,
+    ruleNames: [],
     ruleOptions: {
       artboardSizes,
       HEADLINE_TEXT_STYLES,
@@ -321,7 +327,7 @@ export const getFakeHomeworks = (sketchDocument) :IValidationContext[] => [
     } as SketchStyle,
   },
   {
-    _class: SketchObjectTypes.Page,
+    _class: SketchObjectTypes.Page, /* Fixture used for text validation (color, font size, font family). */
     do_objectID: '493BDF72-5E8F-44B1-8BE0-725BA0EDC7B1',
     name: '1280',
     parents: {
@@ -329,6 +335,7 @@ export const getFakeHomeworks = (sketchDocument) :IValidationContext[] => [
       artboard: '1280-Applications',
       symbolMaster: undefined,
     } as IValidationContextParents,
+    ruleNames: [],
     ruleOptions: {
       artboardSizes,
       VALID_TEXT_COLORS,
@@ -380,6 +387,56 @@ export const getFakeHomeworks = (sketchDocument) :IValidationContext[] => [
               green: 0.5882352941176471,
               red: 0.7647058823529411,
             },
+            kerning: 0,
+            textStyleVerticalAlignmentKey: 0,
+            paragraphStyle: {
+              _class: SketchObjectTypes.ParagraphStyle,
+              alignment: 0,
+              allowsDefaultTighteningForTruncation: 0,
+            },
+          },
+        },
+        {
+          _class: SketchObjectTypes.StringAttribute,
+          location: 14,
+          length: 22,
+          attributes: {
+            MSAttributedStringFontAttribute: {
+              _class: SketchObjectTypes.FontDescriptor,
+              attributes: {
+                name: 'ArialBlack', /* invalid font family */
+                size: 14,
+              },
+            },
+            MSAttributedStringColorAttribute: {
+              _class: SketchObjectTypes.Color,
+              alpha: 1,
+              blue: 0.2745098039215687,
+              green: 0.2745098039215687,
+              red: 0.2705882352941176,
+            },
+            kerning: 0,
+            textStyleVerticalAlignmentKey: 0,
+            paragraphStyle: {
+              _class: SketchObjectTypes.ParagraphStyle,
+              alignment: 0,
+              allowsDefaultTighteningForTruncation: 0,
+            },
+          },
+        },
+        {
+          _class: SketchObjectTypes.StringAttribute,
+          location: 0,
+          length: 14,
+          attributes: {
+            MSAttributedStringFontAttribute: {
+              _class: SketchObjectTypes.FontDescriptor,
+              attributes: {
+                name: 'BerninaSans',
+                size: 16,
+              },
+            },
+            /* String attribute has no color set */
             kerning: 0,
             textStyleVerticalAlignmentKey: 0,
             paragraphStyle: {

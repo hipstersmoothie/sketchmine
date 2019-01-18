@@ -5,8 +5,6 @@ import {
   NoSharedTextStylesError,
   NoSharedTextStylesOverridesError,
   WrongHeadlineError,
-  InvalidTextColorError,
-  TextTooSmallError,
 } from '../src/error/validation-error';
 import { getFakeHomeworks } from './fixtures/fake-homeworks';
 import { textStyleValidation } from '../src/rules/text-style-validation';
@@ -67,21 +65,5 @@ describe('[sketch-validator] › Text Style Validation › Tests usage of text s
     expect(result).toBeInstanceOf(Array);
     expect(result).toHaveLength(3);
     expect(result[2]).toBeInstanceOf(WrongHeadlineError);
-  });
-
-  test('should check if only valid text colors are used', () => {
-    const fakeHomeworks = getFakeHomeworks(sketchDocument);
-    const result = textStyleValidation(fakeHomeworks, 6);
-    expect(result).toBeInstanceOf(Array);
-    expect(result).toHaveLength(4);
-    expect(result[2]).toBeInstanceOf(InvalidTextColorError);
-  });
-
-  test('should check if no font smaller than 12px is used', () => {
-    const fakeHomeworks = getFakeHomeworks(sketchDocument);
-    const result = textStyleValidation(fakeHomeworks, 6);
-    expect(result).toBeInstanceOf(Array);
-    expect(result).toHaveLength(4);
-    expect(result[1]).toBeInstanceOf(TextTooSmallError);
   });
 });

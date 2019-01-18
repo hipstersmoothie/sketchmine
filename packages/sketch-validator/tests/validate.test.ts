@@ -31,7 +31,7 @@ describe('Sketch Validation', () => {
     await productValidator.validate();
     expect(Teacher).not.toHaveBeenCalled();
     expect(Teacher.prototype.improve).not.toHaveBeenCalled();
-    expect(productValidator.matchedRules).toHaveLength(0);
+    expect(productValidator.homeworks).toHaveLength(0);
   });
 
   test('if color rule gets applied when no environment is set', async () => {
@@ -41,7 +41,7 @@ describe('Sketch Validation', () => {
     await productValidator.validate();
     expect(Teacher).toHaveBeenCalledTimes(1);
     expect(Teacher.prototype.improve).toHaveBeenCalled();
-    expect(productValidator.matchedRules).toHaveLength(10);
+    expect(productValidator.homeworks).toHaveLength(10);
   });
 
   test('if no rules are applied if environment doesn\'t match', async () => {
@@ -51,7 +51,7 @@ describe('Sketch Validation', () => {
     await productValidator.validate();
     expect(Teacher).not.toHaveBeenCalled();
     expect(Teacher.prototype.improve).not.toHaveBeenCalled();
-    expect(productValidator.matchedRules).toHaveLength(0);
+    expect(productValidator.homeworks).toHaveLength(0);
   });
 
   test('if all rules are applied if multiple environments are set', async () => {
@@ -61,6 +61,6 @@ describe('Sketch Validation', () => {
     await productValidator.validate();
     expect(Teacher).toHaveBeenCalledTimes(1);
     expect(Teacher.prototype.improve).toHaveBeenCalled();
-    expect(productValidator.matchedRules).toHaveLength(10);
+    expect(productValidator.homeworks).toHaveLength(10);
   });
 });
