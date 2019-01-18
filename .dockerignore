@@ -1,8 +1,31 @@
-node_modules
-_tmp
-.rpt2_cache
-.vscode
-dist
-lib
-coverage
-tests
+#--------------------------
+# disallow anything
+#--------------------------
+**
+
+#--------------------------
+# allow explicit
+#--------------------------
+
+
+# app-builder
+!packages/app-builder/src
+!packages/app-builder/tsconfig.json
+!packages/app-builder/gulpfile.js
+!packages/app-builder/package.json
+
+# code-analyzer
+!packages/code-analyzer/src
+!packages/code-analyzer/package.json
+!packages/code-analyzer/tsconfig.json
+!packages/code-analyzer/rollup.config.js
+
+# sketch-builder
+!packages/sketch-builder/src
+!packages/sketch-builder/package.json
+!packages/sketch-builder/tsconfig.json
+!packages/sketch-builder/rollup.config.js
+
+# root tsconfig
+!tsconfig.json
+!config
