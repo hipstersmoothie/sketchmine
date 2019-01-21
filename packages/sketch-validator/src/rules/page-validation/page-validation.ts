@@ -6,6 +6,7 @@ import {
   PAGE_NAME_ERROR_MESSAGE,
   NO_ARTBOARD_ERROR_MESSAGE,
   EMPTY_PAGE_ERROR_MESSAGE,
+  IValidationErrorContext,
 } from '../../error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 
@@ -24,7 +25,7 @@ export function pageValidation(
   const task = homeworks[currentTask];
 
   if (!task) {
-    console.error('[page-validation.ts]} -> pageValidation needs a valid task');
+    console.error('[page-validation.ts] -> pageValidation needs a valid task');
     return;
   }
 
@@ -41,7 +42,7 @@ export function pageValidation(
 
   const pageNameCheck = checkPageName(filteredHomeworks, task.ruleOptions.artboardSizes);
 
-  const object = {
+  const object: Partial<IValidationErrorContext> = {
     objectId: task.do_objectID,
     name: task.name,
   };
@@ -51,7 +52,7 @@ export function pageValidation(
     errors.push(new EmptyPageError({
       message: EMPTY_PAGE_ERROR_MESSAGE(task.name),
       ...object,
-    }));
+    } as IValidationErrorContext));
   }
 
   let hasArtboards = false;
@@ -77,13 +78,13 @@ export function pageValidation(
     errors.push(new NoArtboardFoundError({
       message: NO_ARTBOARD_ERROR_MESSAGE,
       ...object,
-    }));
+    } as IValidationErrorContext));
   }
   if (!pageNameCheck) {
     errors.push(new PageNamingError({
       message: PAGE_NAME_ERROR_MESSAGE(task.ruleOptions.artboardSizes),
       ...object,
-    }));
+    } as IValidationErrorContext));
   } else {
     errors.push(true);
   }

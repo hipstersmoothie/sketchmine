@@ -49,7 +49,7 @@ export const rules: IValidationRule[] = [
   {
     selector: [SketchObjectTypes.SymbolMaster],
     name: 'symbol-name-validation',
-    description: 'Validation if the symbol names matches the Dynatrace Sketch naming conventions.',
+    description: 'Check if the symbol names matche the Dynatrace Sketch naming conventions.',
     env: ['global'],
     validation: symbolNameValidation,
   },
@@ -91,7 +91,7 @@ export const rules: IValidationRule[] = [
   {
     selector: [SketchObjectTypes.Text],
     name: 'text-style-validation',
-    description: 'Check if text styles are used correctly.',
+    description: 'Check if text styles from the Sketch library are used correctly and have not been modified.',
     env: ['product'],
     validation: textStyleValidation,
     includePages: artboardSizes,
@@ -108,7 +108,7 @@ export const rules: IValidationRule[] = [
   {
     selector: [SketchObjectTypes.Text],
     name: 'text-validation',
-    description: 'Check if text is used correctly.',
+    description: 'Check if only valid font families, colors and sizes are used.',
     env: ['product'],
     validation: textValidation,
     includePages: artboardSizes,

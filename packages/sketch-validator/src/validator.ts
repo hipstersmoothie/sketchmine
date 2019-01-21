@@ -112,8 +112,8 @@ export class Validator {
       }
 
       // Merge given options of all matching rules into one options object.
-      const options = merge({}, ...matchingRules.map(rule => rule.options));
-      const obj = {
+      const options: { [key: string]: any } = merge({}, ...matchingRules.map(rule => rule.options));
+      const obj: Partial<IValidationContext> = {
         ...this.getProperties(content, options || {}),
         ruleNames: matchingRules.map(rule => rule.name),
       };
@@ -122,7 +122,7 @@ export class Validator {
        * Add object containing all needed properties collected from Sketch json file
        * combined with validation rule names to homeworks array.
        */
-      this.homeworks.push(obj);
+      this.homeworks.push(obj as IValidationContext);
     }
 
     if (content.layers && content.layers.length) {

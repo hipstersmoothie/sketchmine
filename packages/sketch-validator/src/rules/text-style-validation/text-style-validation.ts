@@ -9,6 +9,7 @@ import {
   NO_SHARED_TEXT_STYLES_ERROR_MESSAGE,
   NO_SHARED_TEXT_STYLES_OVERRIDES_ERROR_MESSAGE,
   NO_WRONG_HEADLINE_ERROR,
+  IValidationErrorContext,
 } from '../../error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import isEqual from 'lodash/isEqual';
@@ -52,13 +53,13 @@ export function textStyleValidation(
   ): (ValidationError | boolean)[] {
 
   const task = homeworks[currentTask];
-  const object = {
+  const object: Partial<IValidationErrorContext> = {
     objectId: task.do_objectID,
     name: task.name,
   };
 
   if (!task) {
-    console.error('[text-style-validation.ts]} -> textStyleValidation needs a valid task');
+    console.error('[text-style-validation.ts] -> textStyleValidation needs a valid task');
     return;
   }
 
@@ -76,7 +77,7 @@ export function textStyleValidation(
     errors.push(new NoForeignTextStylesError({
       message: NO_FOREIGN_TEXT_STYLES_ERROR_MESSAGE,
       ...object,
-    }));
+    } as IValidationErrorContext));
   } else {
     errors.push(true);
   }
@@ -96,7 +97,7 @@ export function textStyleValidation(
     errors.push(new NoSharedTextStylesError({
       message: NO_SHARED_TEXT_STYLES_ERROR_MESSAGE(task.name),
       ...object,
-    }));
+    } as IValidationErrorContext));
     return errors;
   }
 
@@ -128,7 +129,7 @@ export function textStyleValidation(
     errors.push(new NoSharedTextStylesOverridesError({
       message: NO_SHARED_TEXT_STYLES_OVERRIDES_ERROR_MESSAGE(task.name),
       ...object,
-    }));
+    } as IValidationErrorContext));
   } else {
     errors.push(true);
   }
@@ -143,7 +144,7 @@ export function textStyleValidation(
     errors.push(new WrongHeadlineError({
       message: NO_WRONG_HEADLINE_ERROR(task.name, task.parents.page),
       ...object,
-    }));
+    } as IValidationErrorContext));
   } else {
     errors.push(true);
   }

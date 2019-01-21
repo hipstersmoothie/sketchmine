@@ -6,6 +6,7 @@ import {
   ARTBOARD_SIZE_ERROR_MESSAGE,
   ARTBOARD_EMPTY_ERROR_MESSAGE,
   ARTBOARD_NAME_ERROR_MESSAGE,
+  IValidationErrorContext,
 } from '../../error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 
@@ -24,7 +25,7 @@ export function artboardValidation(
   ): (ValidationError | boolean)[] {
   const task = homeworks[currentTask];
   if (!task) {
-    console.error('[artboard-validation.ts]} -> artboardValidation needs a valid task');
+    console.error('[artboard-validation.ts] -> artboardValidation needs a valid task');
     return;
   }
 
@@ -47,7 +48,7 @@ export function artboardValidation(
   const errors: (ValidationError | boolean)[] = [];
   const name = task.name.split('-');
   const artboardNameCheck = checkArboardName(task, name);
-  const object = {
+  const object: Partial<IValidationErrorContext> = {
     objectId: task.do_objectID,
     name: task.name,
   };
@@ -56,24 +57,24 @@ export function artboardValidation(
     errors.push(new ArtboardSizeError({
       message: ARTBOARD_SIZE_ERROR_MESSAGE,
       ...object,
-    }));
+    } as IValidationErrorContext));
   }
   if (emptyArtboards) {
     errors.push(new ArtboardEmptyError({
       message: ARTBOARD_EMPTY_ERROR_MESSAGE,
       ...object,
-    }));
+    } as IValidationErrorContext));
   }
   if (name.length < 3) {
     errors.push(new ArtboardNamingError({
       message: ARTBOARD_NAME_ERROR_MESSAGE,
       ...object,
-    }));
+    } as IValidationErrorContext));
   } else if (!artboardNameCheck) {
     errors.push(new ArtboardNamingError({
       message: ARTBOARD_NAME_ERROR_MESSAGE,
       ...object,
-    }));
+    } as IValidationErrorContext));
   } else {
     errors.push(true);
   }
