@@ -36,13 +36,21 @@ const VALID_TEXT_COLORS = [
   '#CCCCCC', // gray-300
   '#B7B7B7', // gray-400
   '#898989', // gray-500
+  '#6D6D6D', // gray-600, pagination (deselected)
   '#454646', // gray-700, text color
+  '#191919', // gray-900, pagination, table
   '#00A1B2', // turquoise-600, link color
   '#00848e', // turquoise-700, link hover color
   '#DC172A', // red-500, error color
   '#C41425', // red-600, error hover color
   '#5EAD35', // green-600
   '#3F962A', // green-700
+  '#14A8F5', // blue-500, chart tab (deselected)
+  '#008CDB', // blue-600, chart tab (selected)
+  '#9355B7', // purple-500, chart tab (deselected)
+  '#7C38A1', // purple-600, chart tab (selected)
+  '#526CFF', // royal-blue-500, chart tab (deselected)
+  '#4556D7', // royal-blue-600, chart tab (selected)
 ];
 
 export const rules: IValidationRule[] = [
