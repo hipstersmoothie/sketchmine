@@ -1,5 +1,5 @@
 import { ValidationError } from '../error/validation-error';
-import { SketchStyle, SketchFrame, SketchObjectTypes } from '@sketchmine/sketch-file-format';
+import { SketchStyle, SketchFrame, SketchObjectTypes, SketchColor } from '@sketchmine/sketch-file-format';
 
 export type ValidationFunction = (homework: IValidationContext[], currentTask: number) => (ValidationError | boolean)[];
 
@@ -23,6 +23,7 @@ export interface IValidationContext {
   parents: IValidationContextParents;
   ruleOptions: { [key: string]: any };
   style?: SketchStyle;
+  backgroundColor?: SketchColor;
   ruleNames: string[];
 }
 
@@ -44,4 +45,5 @@ export enum ValidationRequirements {
   LayerSize = 'layersize',
   Style = 'style',
   Children = 'children',
+  BackgroundColor = 'backgroundColor',
 }

@@ -62,7 +62,16 @@ export const rules: IValidationRule[] = [
     validation: symbolNameValidation,
   },
   {
-    selector: [SketchObjectTypes.ShapeGroup, SketchObjectTypes.Rectangle, SketchObjectTypes.Path],
+    selector: [
+      SketchObjectTypes.Path,
+      SketchObjectTypes.ShapePath,
+      SketchObjectTypes.ShapeGroup,
+      SketchObjectTypes.Oval,
+      SketchObjectTypes.Polygon,
+      SketchObjectTypes.Rectangle,
+      SketchObjectTypes.Triangle,
+      SketchObjectTypes.Artboard, // Select artboard to validate the background color
+    ],
     name: 'color-palette-validation',
     description: 'Check if the used colors are in our color palette.',
     ignoreArtboards: ['full-color-palette'],
@@ -71,7 +80,10 @@ export const rules: IValidationRule[] = [
     options: {
       dynatraceLogoColors: DYNATRACE_LOGO_COLORS,
       colors: '', // gets overriden by run function on node.js and otherwise by sketch plugin
-      requirements: [ValidationRequirements.Style],
+      requirements: [
+        ValidationRequirements.Style,
+        ValidationRequirements.BackgroundColor,
+      ],
     },
   },
   {

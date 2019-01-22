@@ -19,10 +19,12 @@ export enum SketchObjectTypes {
   GraphicsContext = 'graphicsContextSettings',
   Group = 'group',
   InnerShadow = 'innerShadow',
+  Oval = 'oval',
   OverrideValue = 'overrideValue',
   Page = 'page',
   ParagraphStyle = 'paragraphStyle',
   Path = 'path',
+  Polygon = 'polygon',
   Rectangle = 'rectangle',
   RulerData = 'rulerData',
   Shadow = 'shadow',
@@ -34,6 +36,7 @@ export enum SketchObjectTypes {
   SymbolMaster = 'symbolMaster',
   Text = 'text',
   TextStyle = 'textStyle',
+  Triangle = 'triangle',
 }
 
 export interface SketchBase {

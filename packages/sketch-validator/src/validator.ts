@@ -3,6 +3,7 @@ import {
   SketchObjectTypes,
   SketchStyle,
   SketchText,
+  SketchArtboard,
 } from '@sketchmine/sketch-file-format';
 import cloneDeep from 'lodash/cloneDeep';
 import merge from 'lodash/merge';
@@ -179,6 +180,10 @@ export class Validator {
       }
       if (requirements.includes(ValidationRequirements.Style) && (layer as SketchText).sharedStyleID) {
         obj.ruleOptions.sharedStyleID = (layer as SketchText).sharedStyleID;
+      }
+      if (requirements.includes(ValidationRequirements.BackgroundColor)
+            && (layer as SketchArtboard).hasBackgroundColor && (layer as SketchArtboard).backgroundColor) {
+        obj.backgroundColor = (layer as SketchArtboard).backgroundColor;
       }
       if (requirements.includes(ValidationRequirements.AttributedString)
             && (layer as SketchText).attributedString && (layer as SketchText).attributedString.attributes) {

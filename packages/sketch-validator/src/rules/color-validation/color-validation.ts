@@ -1,4 +1,4 @@
-import { SketchFill, SketchBorder, round } from '@sketchmine/sketch-file-format';
+import { SketchFill, SketchBorder, SketchColor, round } from '@sketchmine/sketch-file-format';
 import { rgbToHex } from '@sketchmine/helpers';
 import { ValidationError, ColorNotInPaletteError, COLOR_ERROR_MESSAGE } from '../../error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
@@ -32,16 +32,19 @@ export function colorValidation(
   if (task.style) {
     if (task.style.fills) {
       for (let i = 0, max = task.style.fills.length; i < max; i += 1) {
-        const color = task.style.fills[i];
-        errors.push(colorInPalette(task, color, colors));
+        const styleProperty = task.style.fills[i];
+        errors.push(colorInPalette(task, styleProperty, colors));
       }
     }
     if (task.style.borders) {
       for (let i = 0, max = task.style.borders.length; i < max; i += 1) {
-        const color = task.style.borders[i];
-        errors.push(colorInPalette(task, color, colors));
+        const styleProperty = task.style.borders[i];
+        errors.push(colorInPalette(task, styleProperty, colors));
       }
     }
+  }
+  if (task.backgroundColor) {
+    errors.push(colorInPalette(task, { color: task.backgroundColor }, colors));
   }
   return errors;
 }
@@ -49,22 +52,22 @@ export function colorValidation(
 /**
  * validates a fill/border
  * @param task current Task for validation (context object)
- * @param fill the fill or border to validate
+ * @param styleProperty the fill, border or color to validate
  */
 export function colorInPalette(
   task: IValidationContext,
-  fill: SketchFill | SketchBorder,
+  styleProperty: SketchFill | SketchBorder | { [key: string]: SketchColor },
   colors: string[],
 ): ColorNotInPaletteError | boolean {
   /** only activated Fills should be validated */
-  if (fill.hasOwnProperty('isEnabled') && !fill.isEnabled) {
+  if (styleProperty.hasOwnProperty('isEnabled') && !styleProperty.isEnabled) {
     return true;
   }
 
   const hex = rgbToHex(
-    round(fill.color.red * 255, 0),
-    round(fill.color.green * 255, 0),
-    round(fill.color.blue * 255, 0),
+    round(styleProperty.color.red * 255, 0),
+    round(styleProperty.color.green * 255, 0),
+    round(styleProperty.color.blue * 255, 0),
   ).toUpperCase();
 
   if (!colors.includes(hex)) {
