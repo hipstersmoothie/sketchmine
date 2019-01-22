@@ -26,6 +26,14 @@
 !packages/sketch-builder/tsconfig.json
 !packages/sketch-builder/rollup.config.js
 
+# sketch-validator
+!packages/sketch-validator-nodejs-wrapper/src
+!packages/sketch-validator-nodejs-wrapper/package.json
+!packages/sketch-validator-nodejs-wrapper/tsconfig.json
+!packages/sketch-validator-nodejs-wrapper/rollup.config.js
+!packages/sketch-validator-nodejs-wrapper/sketchlint.json
+
+
 # root tsconfig
 !tsconfig.json
 !config
