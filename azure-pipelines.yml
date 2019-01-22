@@ -1,10 +1,6 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 jobs:
-- job: PR
+- job: library
+  displayName: Build Library 🦄
   pool:
     vmImage: 'macOS-10.13'
 
@@ -20,31 +16,47 @@ jobs:
       versionSpec: $(node_version)
     displayName: 'Install Node.js 🐍'
 
-  - script: |
-      yarn install
-    displayName: 'Install dependencies'
+  - script:  npm ci
+    displayName: 'Install dependencies 📦'
 
-  - script: |
-      yarn bootstrap
+  - script: yarn bootstrap
     displayName: 'Lerna bootstrap 🥾'
 
-  - script: |
-      yarn lint
+  - script: yarn lint
     displayName: 'Run linting'
 
-  - script: |
-      yarn build
-    displayName: 'Build applications'
+#   - script: |
+#       yarn build
+#     displayName: 'Build applications'
 
-  - script: |
-      yarn test
-    displayName: 'Run testing'
+#   - script: |
+#       yarn test
+#     displayName: 'Run testing'
 
-# - job: Docker
-#   pool:
-#     vmImage: 'ubuntu-16.04'
 
 #   steps:
 #   - script: docker build  .
 #     displayName: 'Create Docker image'
+
+
+
+- job: Docker
+  displayName: Docker 🐳
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+    - script: |
+        docker build -t sketchmine/sketch-validator . \
+          -f ./packages/sketch-validator-nodejs-wrapper/Dockerfile
+      displayName: 'Build Docker images 🐳 '
+
+    - script: |
+        docker login -u $(docker-hub-user) -p $(docker-hub-password)
+        docker push sketchmine/sketch-validator
+      displayName: 'Publish Docker images 🐳 🚀'
+      # condition: and(succeeded())
 #     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+
+variables:
+- group: docker-hub-credentials

@@ -32,7 +32,7 @@
 !packages/sketch-validator-nodejs-wrapper/tsconfig.json
 !packages/sketch-validator-nodejs-wrapper/rollup.config.js
 !packages/sketch-validator-nodejs-wrapper/sketchlint.json
-
+!packages/sketch-validator/tests/fixtures/_colors.scss
 
 # root tsconfig
 !tsconfig.json
