@@ -1,12 +1,6 @@
-import { SketchColor } from './color.interface';
-import { FillType } from '../helpers';
-import { SketchObjectTypes } from './base.interface';
+import { SketchColorBase } from './color.interface';
 
-export interface SketchBorder {
-  _class: SketchObjectTypes.Border;
-  isEnabled: boolean;
-  color: SketchColor;
-  fillType: FillType;
+export interface SketchBorder extends SketchColorBase {
   position: number;
   thickness: number;
 }

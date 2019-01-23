@@ -1,4 +1,5 @@
 import { SketchObjectTypes } from './base.interface';
+import { FillType } from '../helpers';
 
 export interface SketchColor {
   _class: SketchObjectTypes.Color;
@@ -6,4 +7,11 @@ export interface SketchColor {
   blue: number;
   green: number;
   red: number;
+}
+
+export interface SketchColorBase {
+  _class: SketchObjectTypes;
+  color: SketchColor;
+  isEnabled: boolean;
+  fillType: FillType;
 }

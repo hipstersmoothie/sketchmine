@@ -182,8 +182,10 @@ export class Validator {
         obj.ruleOptions.sharedStyleID = (layer as SketchText).sharedStyleID;
       }
       if (requirements.includes(ValidationRequirements.BackgroundColor)
-            && (layer as SketchArtboard).hasBackgroundColor && (layer as SketchArtboard).backgroundColor) {
-        obj.backgroundColor = (layer as SketchArtboard).backgroundColor;
+            && (layer as SketchArtboard).hasBackgroundColor
+            && (layer as SketchArtboard).includeBackgroundColorInExport
+            && (layer as SketchArtboard).backgroundColor) {
+        obj.ruleOptions.backgroundColor = (layer as SketchArtboard).backgroundColor;
       }
       if (requirements.includes(ValidationRequirements.AttributedString)
             && (layer as SketchText).attributedString && (layer as SketchText).attributedString.attributes) {

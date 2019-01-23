@@ -1,4 +1,4 @@
-import { SketchFill, SketchBorder, SketchColor, round } from '@sketchmine/sketch-file-format';
+import { SketchColorBase, round } from '@sketchmine/sketch-file-format';
 import { rgbToHex } from '@sketchmine/helpers';
 import { ValidationError, ColorNotInPaletteError, COLOR_ERROR_MESSAGE } from '../../error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
@@ -43,8 +43,8 @@ export function colorValidation(
       }
     }
   }
-  if (task.backgroundColor) {
-    errors.push(colorInPalette(task, { color: task.backgroundColor }, colors));
+  if (task.ruleOptions.backgroundColor) {
+    errors.push(colorInPalette(task, { color: task.ruleOptions.backgroundColor }, colors));
   }
   return errors;
 }
@@ -56,7 +56,7 @@ export function colorValidation(
  */
 export function colorInPalette(
   task: IValidationContext,
-  styleProperty: SketchFill | SketchBorder | { [key: string]: SketchColor },
+  styleProperty: Partial<SketchColorBase>,
   colors: string[],
 ): ColorNotInPaletteError | boolean {
   /** only activated Fills should be validated */

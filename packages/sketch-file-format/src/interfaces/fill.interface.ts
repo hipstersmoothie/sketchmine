@@ -1,13 +1,8 @@
-import { SketchColor } from './color.interface';
-import { FillType, PatternFillType } from '../helpers';
-import { SketchObjectTypes } from './base.interface';
+import { SketchColorBase } from './color.interface';
+import { PatternFillType } from '../helpers';
 import { SketchGradient } from './gradient.interface';
 
-export interface SketchFill {
-  _class: SketchObjectTypes.Fill;
-  isEnabled: boolean;
-  color: SketchColor;
-  fillType: FillType;
+export interface SketchFill extends SketchColorBase {
   gradient?: SketchGradient;
   noiseIndex: 0;
   noiseIntensity: 0;
