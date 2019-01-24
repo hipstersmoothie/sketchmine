@@ -117,15 +117,25 @@ If you run the library, `node dist/library` and the .sketch file will be generat
 Following each successful master build of a new Docker image, the library is generated and deployed to the Docker registry.
 You can view the list of available tags in the [Docker registry tag list](https://webkins.lab.dynatrace.org:5000/v2/ng-sketch/tags/list).
 
+#### Clean up your docker images and containers
+
+After this commands every image and container has to be pulled again and created.
+Clean reset if the hard drive is messed up.
+
+```bash
+docker stop $(docker ps -a -q)
+docker rm -v $(docker ps -a -q)
+docker rmi $(docker images -q)
+```
 
 ### Available commands
 
-```
-npm run build           | build all the parts
-npm run build:dev       | build with watch flag
-npm run test            | run all the unit tests and e2e tests
-npm run lint            | lint the project
-node dist/${part}       | run the specified part of the library
+```bash
+npm run build           # build all the parts
+npm run build:dev       # build with watch flag
+npm run test            # run all the unit tests and e2e tests
+npm run lint            # lint the project
+node dist/${part}       # run the specified part of the library
 ```
 
 ### Debugging

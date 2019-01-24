@@ -1,8 +1,7 @@
 {
   "name": "angular-app-shell",
-  "directory": "tmp",
+  "directory": "sketch-library",
   "skipInstall": false,
-  "meta": "/code-analyzer/meta-information.json",
   "examples": {
     "dir": "/angular-components/src/barista-examples/",
     "entry": "app.module.ts",
@@ -33,7 +32,6 @@
       "select": "DefaultSelectExampleComponent",
       "show-more": "DefaultShowMoreExampleComponent",
       "switch": "PureSwitchExampleComponent",
-      "table": "TableDefaultComponent",
       "tabs": "PureTabsExampleComponent",
       "tag": "DefaultTagExampleComponent",
       "tile": "DefaultTileExampleComponent"
@@ -43,7 +41,7 @@
     {
       "type": "dependencies",
       "name": "@dynatrace/angular-components",
-      "version": "latest"
+      "version": "1.5.0"
     },
     {
       "type": "dependencies",

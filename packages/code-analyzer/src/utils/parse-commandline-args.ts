@@ -73,9 +73,7 @@ export function parseCommandlineArgs(args: string[]): ConfigArguments {
   if (parsedArgs.hasOwnProperty('h') || parsedArgs.hasOwnProperty('help') || args.length === 0) {
     displayHelp(helpText, cmdFlags);
   }
-
-  const defaultConfig = require(resolve(DEFAULT_CONFIG));
-  let conf = {};
+  let conf: Partial<ConfigArguments> = {};
 
   if (parsedArgs.hasOwnProperty('c') || parsedArgs.hasOwnProperty('config')) {
     conf = require(resolve(parsedArgs.c || parsedArgs.config));
@@ -87,5 +85,5 @@ export function parseCommandlineArgs(args: string[]): ConfigArguments {
   if (parsedArgs.hasOwnProperty('tsConfig')) { conf['tsConfig'] = parsedArgs.tsConfig; }
   if (parsedArgs.hasOwnProperty('outFile')) { conf['outFile'] = parsedArgs.outFile; }
 
-  return Object.assign(defaultConfig, conf);
+  return conf as ConfigArguments;
 }

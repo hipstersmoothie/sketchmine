@@ -1,13 +1,11 @@
 {
-  "metaInformation": "../../node_modules/@sketchmine/code-analyzer/dist/meta-information.json",
-  "agent": "../../node_modules/@sketchmine/dom-agent/lib/index.esm.js",
-  "url": "http://localhost:4200",
-  "rootElement": "body > *:nth-child(2)",
+  "url": "http://localhost:4200/",
+  "rootElement": "ng-component > * ",
   "library": {
-    "app": "../../node_modules/@sketchmine/app-builder/dist/sketch-library"
+    "app": "/app-builder/"
   },
   "previewImage": "assets/preview.png",
-  "outFile": "_library/library.sketch",
+  "outFile": "/generated/library.sketch",
   "chrome": {
     "defaultViewport": {
       "width": 1200,

@@ -25,5 +25,3 @@ WORKDIR ${FOLDER}
 COPY --from=components-source /_tmp ${FOLDER}
 
 RUN yarn --ignore-scripts
-
-CMD ["./node_modules/.bin/gulp", "barista-example:generate"]

@@ -2,5 +2,5 @@
   "rootDir": "/angular-components/",
   "library": "src/lib",
   "inFile": "index.ts",
-  "outFile": "meta-information.json"
+  "outFile": "/shared/meta-information.json"
 }

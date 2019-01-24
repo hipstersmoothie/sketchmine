@@ -1,9 +1,0 @@
-{
-  "url": "htt://localhost:4200",
-  "rootElement": "ng-component > * ",
-  "library": {
-    "app": "/app-builder/tmp/"
-  },
-  "previewImage": "assets/preview.png",
-  "outFile": "library.sketch"
-}
