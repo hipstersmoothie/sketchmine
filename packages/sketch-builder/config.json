@@ -1,8 +1,8 @@
 {
-  "url": "http://localhost:4200/",
+  "url": "http://web_server/",
   "rootElement": "ng-component > * ",
   "library": {
-    "app": "/app-builder/"
+    "app": "/app-shell/"
   },
   "previewImage": "assets/preview.png",
   "outFile": "/generated/library.sketch",

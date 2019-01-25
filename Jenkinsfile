@@ -11,196 +11,143 @@ pipeline {
   }
 
   environment {
-    ANGULAR_COMPONENTS_BRANCH = 'feat/poc-sketch'
-    VERBOSE = 'true'
+    COMP_VOL_NAME = 'SketchmineComponentsLibrary'
+    SHARED_VOL_NAME = 'SketchmineShared'
+    APP_VOL_NAME = 'SketchmineApp'
+    APP_NETWORK = 'SketchmineNetwork'
+    GIT_TAG = '1.5.0'
+    GIT_REPO = 'https://bitbucket.lab.dynatrace.org/scm/rx/angular-components.git'
     FEATURE_BRANCH_PREFIX = 'feat/library-update-version'
+    VERBOSE = 'true'
   }
 
   stages {
 
-    stage('🔧 Prepare') {
+    stage('Install dependencies 📦') {
       steps {
-        checkout([
-          $class: 'GitSCM',
-          branches: [[name: "*/${ANGULAR_COMPONENTS_BRANCH}"]],
-          doGenerateSubmoduleConfigurations: false,
-          extensions: [
-            [
-              $class: 'CloneOption',
-              noTags: false,
-              reference: '',
-              shallow: true
-            ],
-            [
-              $class: 'SparseCheckoutPaths',
-              sparseCheckoutPaths: [
-                [path: 'src/lib/core/style/_colors.scss'],
-                [path: 'package.json']
-              ]
-            ],
-            [
-              $class: 'RelativeTargetDirectory',
-              relativeTargetDir: './_tmp'
-            ]
-          ],
-          submoduleCfg: [],
-          userRemoteConfigs: [
-            [
-              credentialsId: 'Buildmaster',
-              url: 'https://bitbucket.lab.dynatrace.org/scm/rx/angular-components.git'
-            ]
-          ]
-        ])
-
-      }
-    }
-
-    stage('🔨 controll versions') {
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
-          nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
-            sh 'node config/sem-versioning -p src/validate/package.json -b origin/master -c origin/$BRANCH_NAME '
-            sh 'echo $(node config/get-package-version -p package.json) > .version'
-          }
-        }
-        script {
-          def packageVersion = sh(returnStdout: true, script: "cat ./.version");
-          def version = sh(returnStdout: true, script: "cat ./.validator-version");
-          env.PACKAGE_VERSION = packageVersion;
-          env.VALIDATION_VERSION = version;
-        }
-
-        sh 'echo "\n💎 Library Version:\t$PACKAGE_VERSION"'
-        sh 'echo "\n🖍 Sketch Validator Version:\t$VALIDATION_VERSION"'
-      }
-    }
-
-    stage('⛏ Install') {
-      steps {
-        nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
+        nodejs(nodeJSInstallationName: 'Node 10.x') {
           ansiColor('xterm') {
-            sh 'npm install'
+            sh 'yarn install --registry http://artifactory.lab.dynatrace.org/artifactory/api/npm/registry-npmjs-org'
+            sh 'yarn bootstrap'
           }
         }
       }
     }
 
-    stage('🔎 Lint') {
+    stage('Build ⚒') {
       steps {
-        nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
+        nodejs(nodeJSInstallationName: 'Node 10.x') {
           ansiColor('xterm') {
-            sh 'npm run lint'
+            sh 'yarn build'
           }
         }
       }
     }
 
-    // Build need to run before test because the dom traverser has to be build!
-    stage('⚒ Build') {
-      steps {
-        nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
-          ansiColor('xterm') {
-            sh 'npm run build'
-          }
-        }
-      }
-    }
-
-    stage('🌡 Test') {
-      steps {
-        nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
-          ansiColor('xterm') {
-            sh 'npm run test'
-          }
-        }
-      }
-    }
-
-    stage('🚀 Publish validation to npm') {
-      when {
-        allOf {
-          branch 'master'
-          expression { return env.VALIDATION_VERSION != 'true' }
-          expression { return env.VALIDATION_VERSION != 'no-version' }
-        }
-      }
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'npm-artifactory', passwordVariable: 'npm_pass', usernameVariable: 'npm_user')]) {
-
-          nvm(version: 'v10.6.0', nvmInstallURL: 'https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh', nvmIoJsOrgMirror: 'https://iojs.org/dist', nvmNodeJsOrgMirror: 'https://nodejs.org/dist') {
-            dir('dist/sketch-validator/npm') {
-               sh '''
-                echo "@dynatrace:registry=https://artifactory.lab.dynatrace.org/artifactory/api/npm/npm-dynatrace-release-local/" > .npmrc
-                curl -u$npm_user:$npm_pass https://artifactory.lab.dynatrace.org/artifactory/api/npm/auth >> .npmrc
-                cat .npmrc
-
-                echo "publish new version of the @dynatrace/sketch-validation with version: ${VALIDATION_VERSION}"
-                npx yarn publish --verbose --no-git-tag-version --new-version $VALIDATION_VERSION ./
-              '''
-            }
-          }
-        }
-      }
-    }
-
-    stage('🐳 Build Docker image') {
-      when {
-        branch 'master'
-      }
-
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
-          sh '''
-            echo "Build Library for version: ${PACKAGE_VERSION}"
-
-            docker build \
-              -t webkins.lab.dynatrace.org:5000/ng-sketch:${PACKAGE_VERSION} \
-              -t webkins.lab.dynatrace.org:5000/ng-sketch:latest \
-              --build-arg GIT_PASS=$GIT_PASS \
-              --build-arg GIT_USER=$GIT_USER \
-              --build-arg GIT_BRANCH=${ANGULAR_COMPONENTS_BRANCH} \
-              .
-          '''
-        }
-      }
-    }
-
-    stage('✈️ Push docker image to registry') {
-      when {
-        branch 'master'
-      }
-
+    stage('Prepare Volumes 💾') {
       steps {
         sh '''
-          docker push webkins.lab.dynatrace.org:5000/ng-sketch:${PACKAGE_VERSION}
-          docker push webkins.lab.dynatrace.org:5000/ng-sketch:latest
+          echo "Create Volumes"
+          docker volume create --name ${COMP_VOL_NAME}
+          docker volume create --name ${SHARED_VOL_NAME}
+          docker volume create --name ${APP_VOL_NAME}
+
+          echo "Create Network"
+          docker network create -d bridge ${APP_NETWORK} || true
         '''
       }
     }
 
-    stage('💎 Generate .sketch library') {
-      when {
-        branch 'master'
-      }
-
+    stage('Build 🐳 🏙') {
       steps {
-        ansiColor('xterm') {
-          sh '''
-            docker pull webkins.lab.dynatrace.org:5000/ng-sketch:latest
+        sh '''
+          docker build -t sketchmine/components-library . -f ./config/Dockerfile --build-arg GIT_TAG=${GIT_TAG} --build-arg GIT_REPO=${GIT_REPO}
+          docker build -t sketchmine/code-analyzer . -f ./packages/code-analyzer/Dockerfile
+          docker build -t sketchmine/app-builder . -f ./packages/app-builder/Dockerfile
+          docker build -t sketchmine/sketch-builder . -f ./packages/sketch-builder/Dockerfile
+          docker build -t sketchmine/sketch-validator . -f ./packages/sketch-validator-nodejs-wrapper/Dockerfile
+        '''
+      }
+    }
 
-            # create _library for out dir of the generated file
-            mkdir _library
+    stage('Prepare Material Examples 👩🏼‍🔧') {
+      steps {
+        sh '''
+          docker run --rm \
+            --name components_library \
+            -v ${COMP_VOL_NAME}:/components-library \
+            sketchmine/components-library \
+            /bin/sh -c './node_modules/.bin/gulp barista-example:generate'
+        '''
+      }
+    }
 
-            # for verbose logging add -e DEBUG=true
-            docker run\
-              -v $(pwd)/_library/:/lib/_library/ \
-              -e DOCKER=true \
-              -e DEBUG=true \
-              --cap-add=SYS_ADMIN \
-              webkins.lab.dynatrace.org:5000/ng-sketch \
-              node dist/library
-          '''
-        }
+    stage('Generate meta-information.json 🕵🏻‍') {
+      steps {
+        sh '''
+           docker run --rm \
+            --name code_analyzer \
+            -v ${COMP_VOL_NAME}:/angular-components \
+            -v ${SHARED_VOL_NAME}:/shared \
+            sketchmine/code-analyzer \
+            /bin/sh -c 'node ./lib/bin --config="config.json"'
+        '''
+      }
+    }
+
+    stage('Generate examples angular application 🧰') {
+      steps {
+        sh '''
+          docker run --rm \
+            --name app_builder \
+            -v ${COMP_VOL_NAME}:/angular-components \
+            -v ${SHARED_VOL_NAME}:/shared \
+            -v ${APP_VOL_NAME}:/app-shell \
+            sketchmine/app-builder \
+            /bin/sh -c '\
+              yarn schematics --config="config.json" --dryRun=false && \
+              mkdir -p ./sketch-library/src/assets && \
+              cp /shared/* ./sketch-library/src/assets/ && \
+              cd ./sketch-library && \
+              yarn ng build && \
+              cd dist && \
+              cp -R ./angular-app-shell/* /app-shell'
+        '''
+      }
+    }
+
+    stage('Start Webserver 🌍') {
+      steps {
+        sh '''
+           docker run --rm \
+            -v ${APP_VOL_NAME}:/usr/share/nginx/html \
+            --name web_server \
+            --net ${APP_NETWORK} \
+            -p 4200:80 \
+            -d \
+            nginx:alpine
+        '''
+      }
+    }
+
+    stage('Generate the Sketch file 💎') {
+      steps {
+        sh '''
+
+          echo "create ./_library for out dir of the generated file"
+          mkdir _library
+
+          docker run --rm \
+            -e DOCKER=true \
+            -e DEBUG=true \
+            --cap-add=SYS_ADMIN \
+            --name sketch_builder \
+            --net ${APP_NETWORK} \
+            -v ${APP_VOL_NAME}:/app-shell \
+            -v $(pwd)/_library:/generated \
+            sketchmine/sketch-builder \
+            /bin/sh -c 'node ./lib/bin --config="config.json"'
+        '''
       }
     }
 
@@ -229,11 +176,11 @@ pipeline {
             FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
             git checkout -b ${FEATURE_BRANCH}
           '''
-      }
+        }
       }
     }
 
-    stage('🚀 deploy the library') {
+    stage('🚀 make PR with the generated library 💎') {
       when {
         branch 'master'
       }
@@ -244,7 +191,7 @@ pipeline {
             version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
             FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
 
-            cp ../_library/dt-asset-lib.sketch ./dt-asset-lib.sketch
+            cp ../_library/library.sketch ./library.sketch
 
             git add .
             message="feat(library): new library for version ${PACKAGE_VERSION} was generated."
@@ -287,6 +234,19 @@ pipeline {
   post {
     always {
       cleanWs()
+      sh '''
+        echo "Stop Nginx Web Server"
+        docker stop web_server
+
+        echo "Remove Volumes"
+        docker volume rm ${COMP_VOL_NAME}
+        docker volume rm ${SHARED_VOL_NAME}
+        docker volume rm ${APP_VOL_NAME}
+
+
+        echo "Remove Networks"
+        docker network rm ${APP_NETWORK}
+      '''
     }
   }
 }

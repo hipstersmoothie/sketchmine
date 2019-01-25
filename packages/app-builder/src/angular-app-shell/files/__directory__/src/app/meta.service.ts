@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
@@ -11,8 +10,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class MetaService {
 
-  host = `${environment.host}${environment.port?':':''}${environment.port}/`;
-  url = `${this.host}assets/meta-information.json`;
+  url = `/assets/meta-information.json`;
   meta: Observable<MetaComponent[]> = undefined;
   constructor(private http: HttpClient) { }
 

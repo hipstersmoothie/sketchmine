@@ -23,7 +23,11 @@ export async function main(config: SketchBuilderConfig, meta?: MetaResult | unde
     exec(`osascript -e 'quit app "Sketch"'`);
   }
 
-  const spinner = ora(chalk`Start scraping the provided site {grey ${config.url}} ⛏\n`).start();
+  let spinner;
+
+  if (!process.env.DEBUG) {
+    spinner = ora(chalk`Start scraping the provided site {grey ${config.url}} ⛏\n`).start();
+  }
   const elementFetcher = new ElementFetcher(config, meta);
   /**
    * starts the headless chrome to collect all the information from the provided site.
@@ -34,8 +38,14 @@ export async function main(config: SketchBuilderConfig, meta?: MetaResult | unde
    */
   await elementFetcher.fetchElements();
   // generates the .sketch file from the information that was provided from the `collectElements()` function.
-  spinner.text = 'Start writing your Sketch file 💎\n';
+
+  if (!process.env.DEBUG) {
+    spinner.text = 'Start writing your Sketch file 💎\n';
+  }
   const exitCode = await elementFetcher.generateSketchFile();
-  spinner.stop();
+
+  if (!process.env.DEBUG) {
+    spinner.stop();
+  }
   return exitCode;
 }

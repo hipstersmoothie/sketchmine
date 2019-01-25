@@ -14,8 +14,6 @@
 !packages/app-builder/gulpfile.js
 !packages/app-builder/package.json
 !packages/app-builder/config.json
-!packages/app-builder/Docker.sh
-
 
 # code-analyzer
 !packages/code-analyzer/src
