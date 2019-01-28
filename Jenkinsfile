@@ -15,7 +15,6 @@ pipeline {
     SHARED_VOL_NAME = 'SketchmineShared'
     APP_VOL_NAME = 'SketchmineApp'
     APP_NETWORK = 'SketchmineNetwork'
-    GIT_TAG = '1.5.0'
     GIT_REPO = 'https://bitbucket.lab.dynatrace.org/scm/rx/angular-components.git'
     FEATURE_BRANCH_PREFIX = 'feat/library-update-version'
     VERBOSE = 'true'
@@ -31,6 +30,24 @@ pipeline {
             sh 'yarn bootstrap'
           }
         }
+      }
+    }
+
+    stage('🔨 Get angular-components version') {
+      steps {
+
+        dir('packages/build') {
+          nodejs(nodeJSInstallationName: 'Node 10.x') {
+            sh 'yarn get-latest-tag -r=RX -p=angular-components -f="../../VERSION"'
+          }
+        }
+
+        script {
+          def version = sh(returnStdout: true, script: "cat ./VERSION");
+          env.VERSION = version;
+        }
+
+        sh 'echo "\n💎 Library Version:\t$VERSION"'
       }
     }
 
@@ -60,8 +77,14 @@ pipeline {
 
     stage('Build 🐳 🏙') {
       steps {
+
+        script {
+          def version = sh(returnStdout: true, script: "cat ./VERSION");
+          env.VERSION = version;
+        }
+
         sh '''
-          docker build -t sketchmine/components-library . -f ./config/Dockerfile --build-arg GIT_TAG=${GIT_TAG} --build-arg GIT_REPO=${GIT_REPO}
+          docker build -t sketchmine/components-library . -f ./config/Dockerfile --build-arg GIT_TAG=${VERSION} --build-arg GIT_REPO=${GIT_REPO}
           docker build -t sketchmine/code-analyzer . -f ./packages/code-analyzer/Dockerfile
           docker build -t sketchmine/app-builder . -f ./packages/app-builder/Dockerfile
           docker build -t sketchmine/sketch-builder . -f ./packages/sketch-builder/Dockerfile
@@ -152,11 +175,17 @@ pipeline {
     }
 
     stage('🗄 Clone UX global ressources') {
-      when {
-        branch 'master'
-      }
+      // when {
+      //   branch 'master'
+      // }
 
       steps {
+
+        script {
+          def version = sh(returnStdout: true, script: "cat ./VERSION");
+          env.VERSION = version;
+        }
+
         checkout([
           $class: 'GitSCM',
           branches: [[name: '*/master']],
@@ -169,65 +198,83 @@ pipeline {
           ]]
         ])
 
-        dir('ux-global-ressources') {
-          sh '''
-            # replace dot with divis for branchname
-            version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
-            FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
-            git checkout -b ${FEATURE_BRANCH}
-          '''
-        }
-      }
-    }
+        nodejs(nodeJSInstallationName: 'Node 10.x') {
+          ansiColor('xterm') {
+            withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
 
-    stage('🚀 make PR with the generated library 💎') {
-      when {
-        branch 'master'
-      }
-
-      steps {
-        dir('ux-global-ressources') {
-          sh '''
-            version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
-            FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
-
-            cp ../_library/library.sketch ./library.sketch
-
-            git add .
-            message="feat(library): new library for version ${PACKAGE_VERSION} was generated."
-            git commit -m "$message"
-            git status
-          '''
-
-          withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
-
-          sh '''
-            version=$(echo $PACKAGE_VERSION | sed 's/[\\.]/-/g')
-            FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
-
-            git push https://${GIT_USER}:${GIT_PASS}@bitbucket.lab.dynatrace.org/scm/ux/global-resources.git ${FEATURE_BRANCH}
-            curl --request \
-              POST \
-              --url https://${GIT_USER}:${GIT_PASS}@bitbucket.lab.dynatrace.org/rest/api/1.0/projects/UX/repos/global-resources/pull-requests \
-              --header 'content-type: application/json' \
-              --data '{ \
-                "title": "Automatic Library update for Angular Components version: '"${PACKAGE_VERSION}"'",\
-                "description": "**New Library updates** 🚀 \\nPlease update your sketch library!.", \
-                "state": "OPEN", \
-                "open": true, \
-                "closed": false, \
-                "fromRef": { "id": "refs/heads/'"${FEATURE_BRANCH}"'" }, \
-                "toRef": { "id": "refs/heads/master" }, \
-                "locked": false, \
-                "reviewers": [ \
-                  { "user": { "name": "simon.ludwig" } }, \
-                  { "user": { "name": "lukas.holzer" } } \
-                ] }'
-          '''
+              dir('packages/build') {
+                sh '''
+                  yarn commit-pr \
+                    --user $GIT_USER \
+                    --password $GIT_PASS \
+                    -v="${VERSION}" \
+                    --cwd="../../ux-global-ressources"
+                '''
+              }
+            }
           }
         }
       }
+
+      //   dir('ux-global-ressources') {
+      //     sh '''
+      //       # replace dot with divis for branchname
+      //       version=$(echo $GIT_TAG | sed 's/[\\.]/-/g')
+      //       FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
+      //       git checkout -b ${FEATURE_BRANCH}
+      //     '''
+      //   }
+      // }
     }
+
+    // stage('🚀 make PR with the generated library 💎') {
+    //   // when {
+    //   //   branch 'master'
+    //   // }
+
+    //   steps {
+    //     dir('ux-global-ressources') {
+    //       sh '''
+    //         version=$(echo $GIT_TAG | sed 's/[\\.]/-/g')
+    //         FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
+
+    //         cp ../_library/library.sketch ./library.sketch
+
+    //         git add .
+    //         message="feat(library): new library for version ${GIT_TAG} was generated."
+    //         git commit -m "$message"
+    //         git status
+    //       '''
+
+    //       withCredentials([usernamePassword(credentialsId: 'Buildmaster-encoded', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
+
+    //       sh '''
+    //         version=$(echo $GIT_TAG | sed 's/[\\.]/-/g')
+    //         FEATURE_BRANCH="${FEATURE_BRANCH_PREFIX}-${version}-${BUILD_NUMBER}"
+
+    //         git push https://${GIT_USER}:${GIT_PASS}@bitbucket.lab.dynatrace.org/scm/ux/global-resources.git ${FEATURE_BRANCH}
+    //         curl --request \
+    //           POST \
+    //           --url https://${GIT_USER}:${GIT_PASS}@bitbucket.lab.dynatrace.org/rest/api/1.0/projects/UX/repos/global-resources/pull-requests \
+    //           --header 'content-type: application/json' \
+    //           --data '{ \
+    //             "title": "Automatic Library update for Angular Components version: '"${GIT_TAG}"'",\
+    //             "description": "**New Library updates** 🚀 \\nPlease update your sketch library!.", \
+    //             "state": "OPEN", \
+    //             "open": true, \
+    //             "closed": false, \
+    //             "fromRef": { "id": "refs/heads/'"${FEATURE_BRANCH}"'" }, \
+    //             "toRef": { "id": "refs/heads/master" }, \
+    //             "locked": false, \
+    //             "reviewers": [ \
+    //               { "user": { "name": "simon.ludwig" } }, \
+    //               { "user": { "name": "lukas.holzer" } } \
+    //             ] }'
+    //       '''
+    //       }
+    //     }
+    //   }
+    // }
 
   }
 

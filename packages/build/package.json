@@ -1,0 +1,49 @@
+{
+  "name": "@sketchmine/build",
+  "version": "2.5.1",
+  "private": true,
+  "description": "Build scripts for the library",
+  "keywords": [
+    "build",
+    "monorepo",
+    "deployment"
+  ],
+  "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
+  "homepage": "https://github.com/dynatrace/sketchmine/tree/master/packages/build#readme",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dynatrace/sketchmine.git"
+  },
+  "scripts": {
+    "commit-pr": "ts-node src/commit-pr.ts",
+    "get-latest-tag": "ts-node src/get-latest-tag.ts",
+    "lint": "tslint -p tsconfig.json",
+    "test": "echo \"No tests specified for build package"
+  },
+  "bugs": {
+    "url": "https://github.com/Dynatrace/sketchmine/issues"
+  },
+  "dependencies": {
+    "@sketchmine/node-helpers": "^2.3.0",
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.18",
+    "ts-node": "^8.0.2",
+    "tslint": "^5.12.1",
+    "tslint-config-airbnb": "^5.11.1",
+    "typescript": "^3.2.4"
+  }
+}
