@@ -29,13 +29,19 @@ export class GitClient {
     if (newBranch) { flags.push('-b'); }
 
     await this.exec(`git checkout ${flags.join(' ')} ${name}`);
+    console.log(`git checkout ${flags.join(' ')} ${name}`);
     this.currentBranch = name;
-    console.log(`Checked out local Branch: ${name}`);
+
+    await this.exec('git lfs pull origin');
+    console.log('git lfs pull origin');
   }
 
   async commit(message: string, push = true): Promise<void> {
     await this.exec('git add .'); // Stage all changes
+    console.log('git add .');
+
     await this.exec(`git commit -m "${message}"`);
+    console.log(`git commit -m "${message}"`);
 
     if (push) {
       await this.push();
@@ -45,6 +51,7 @@ export class GitClient {
   async push(): Promise<void> {
     const remote = await this.getAuthenticatedRemote();
     await this.exec(`git push ${remote} HEAD:refs/heads/${this.currentBranch}`);
+    console.log(`git push ${remote} HEAD:refs/heads/${this.currentBranch}`)
   }
 
   private async getAuthenticatedRemote(): Promise<string> {

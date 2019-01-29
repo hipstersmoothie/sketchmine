@@ -10,6 +10,7 @@ RUN yarn
 COPY ${PACKAGE}/src ./src
 COPY ${PACKAGE}/rollup.config.js \
      ${PACKAGE}/tsconfig.json \
+     ${PACKAGE}/config.material.json \
      ${PACKAGE}/config.json ./
 
 # Copy root tsconfig

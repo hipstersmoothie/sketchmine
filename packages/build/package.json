@@ -29,6 +29,7 @@
   "scripts": {
     "commit-pr": "ts-node src/commit-pr.ts",
     "get-latest-tag": "ts-node src/get-latest-tag.ts",
+    "get-branch-name": "ts-node src/get-branch-name.ts",
     "lint": "tslint -p tsconfig.json",
     "test": "echo \"No tests specified for build package"
   },

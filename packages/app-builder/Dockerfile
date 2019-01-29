@@ -10,6 +10,7 @@ RUN yarn
 COPY ${PACKAGE}/src ./src
 COPY ${PACKAGE}/tsconfig.json \
      ${PACKAGE}/config.json \
+     ${PACKAGE}/config.material.json \
      ${PACKAGE}/gulpfile.js ./
 
 # Copy root tsconfig

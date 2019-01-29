@@ -12,6 +12,10 @@
         "$source": "argv",
         "index": 0
       }
+    },
+    "dependencies": {
+      "type": "string",
+      "description": "Additional dependencies or version overwrites"
     }
   },
   "required": [

@@ -22,6 +22,9 @@ ARG FOLDER=/components-library
 # copy and install the components library
 WORKDIR ${FOLDER}
 
+# clean up all ressources
+RUN rm -rf /components-library/*
+
 COPY --from=components-source /_tmp ${FOLDER}
 
 RUN yarn --ignore-scripts

@@ -3,6 +3,7 @@ import { NodeDependency }from '../utils/dependencies';
 
 export interface Config {
   config: string; // path to the configuration json
+  dependencies?: string; // optional dependencies or overrides
 }
 
 export interface Schema {

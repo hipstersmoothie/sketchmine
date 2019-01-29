@@ -1,7 +1,0 @@
-{
-  "rootDir": "/path/to/components/library/",
-  "library": "src/lib",
-  "inFile": "index.ts",
-  "tsConfig": "tsconfig.json",
-  "outFile": "dist/meta-information.json"
-}

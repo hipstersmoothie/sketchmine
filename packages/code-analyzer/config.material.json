@@ -1,7 +1,7 @@
 {
-  "rootDir": "/Users/lukas.holzer/Sites/material2/",
+  "rootDir": "/angular-components/",
   "library": "src/lib",
   "inFile": "index.ts",
   "tsConfig": "src/lib/tsconfig.json",
-  "outFile": "dist/meta-information.json"
+  "outFile": "/shared/meta-information.json"
 }

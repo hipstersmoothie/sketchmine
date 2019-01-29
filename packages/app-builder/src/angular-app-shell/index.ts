@@ -16,6 +16,7 @@ import { resolve, join } from 'path';
 import { Schema, Config } from './schema';
 import { setupOptions } from '../utils/setup';
 import { addExamplesListToModule, addDependencies, addStylesToTree } from './rules';
+import { NodeDependencyType } from '../utils/dependencies';
 
 const TREE_ROOT = join('/', '__directory__');
 const STYLES_FILE = join(TREE_ROOT, 'src', 'styles.scss');
@@ -25,6 +26,27 @@ export default function (configOptions: Config): Rule {
   // merge schematics options with options from a config file.
   // --config has to be provided with the schema
   const options = require(resolve(configOptions.config)) as Schema;
+
+  // add additional dependencies or override existing
+  if (configOptions.hasOwnProperty('dependencies')) {
+    const additionalDependencies = configOptions.dependencies
+      .split(',')
+      .map((dep) => {
+        const sep = dep.lastIndexOf('@');
+
+        return {
+          type: NodeDependencyType.Default,
+          name: dep.substring(0, sep),
+          version: dep.substring(sep + 1, dep.length),
+          overwrite: true,
+        };
+      });
+
+    options.dependencies = [
+      ...options.dependencies,
+      ...additionalDependencies,
+    ];
+  }
 
   return (host: Tree, context: SchematicContext) => {
     setupOptions(host, options);

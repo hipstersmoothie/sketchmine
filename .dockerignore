@@ -14,6 +14,7 @@
 !packages/app-builder/gulpfile.js
 !packages/app-builder/package.json
 !packages/app-builder/config.json
+!packages/app-builder/config.material.json
 
 # code-analyzer
 !packages/code-analyzer/src
@@ -21,6 +22,7 @@
 !packages/code-analyzer/tsconfig.json
 !packages/code-analyzer/rollup.config.js
 !packages/code-analyzer/config.json
+!packages/code-analyzer/config.material.json
 
 # sketch-builder
 !packages/sketch-builder/src

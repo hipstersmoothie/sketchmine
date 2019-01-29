@@ -20,7 +20,8 @@ interface BitbucketPullRequest {
 export class PullRequest {
 
   title: string = 'Automatic Library update.';
-  description: string = '**New Library updates** 🚀 \\nPlease update your sketch library!.';
+  description: string = `**New Library updates** 🚀
+Please update your sketch library!.`;
   reviewers: string[] = [];
 
   constructor(public branch: string) {}

@@ -1,10 +1,9 @@
 {
   "name": "angular-app-shell",
-  "directory": "dist/sketch-library",
+  "directory": "sketch-library",
   "skipInstall": false,
-  "meta": "../../node_modules/@sketchmine/code-analyzer/dist/meta-information.json",
   "examples": {
-    "dir": "/<path-to-material>/material2/src/material-examples/",
+    "dir": "/angular-components/src/material-examples/",
     "entry": "example-module.ts",
     "list": {
       "button": "ButtonOverviewExample",
