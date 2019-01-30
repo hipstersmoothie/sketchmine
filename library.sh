@@ -116,6 +116,7 @@ docker run --rm \
 h2 "Generate examples angular application 🧰"
 docker run --rm \
   --name app_builder \
+  -e CONFIG="$config_app_builder" \
   -e VERSION="$git_tag" \
   -v $COMP_VOL_NAME:/angular-components \
   -v $SHARED_VOL_NAME:/shared \
@@ -123,7 +124,7 @@ docker run --rm \
   sketchmine/app-builder \
   /bin/sh -c '\
     yarn schematics \
-      --config="config.json" \
+      --config ${CONFIG} \
       --dependencies @dynatrace/angular-components@${VERSION} \
       --dryRun=false && \
     mkdir -p ./sketch-library/src/assets && \
