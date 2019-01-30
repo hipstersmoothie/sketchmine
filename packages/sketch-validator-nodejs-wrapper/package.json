@@ -1,6 +1,6 @@
 {
   "name": "@sketchmine/sketch-validator-nodejs-wrapper",
-  "version": "2.4.0",
+  "version": "2.6.0",
   "description": "A node wrapper for the validation that unzips the sketchfile and run the validation.",
   "keywords": [
     "sketch",
@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "@sketchmine/node-helpers": "^2.3.0",
-    "@sketchmine/sketch-validator": "^2.4.0",
+    "@sketchmine/sketch-validator": "^2.6.0",
     "chalk": "^2.4.1",
     "minimist": "^1.2.0"
   },

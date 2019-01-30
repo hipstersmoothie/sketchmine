@@ -1,6 +1,6 @@
 {
   "name": "@sketchmine/sketch-validator",
-  "version": "2.4.0",
+  "version": "2.6.0",
   "description": "Validation of the sketchfiles for the dynatrace design system.",
   "keywords": [
     "sketch",
@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@sketchmine/helpers": "^2.2.0",
-    "@sketchmine/sketch-file-format": "^2.2.0",
+    "@sketchmine/sketch-file-format": "^2.6.0",
     "lodash": "^4.17.11"
   },
   "gitHead": "e68a441a334fa1134af0ac8e5bb9ac3c58021c75"

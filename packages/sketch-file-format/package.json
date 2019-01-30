@@ -1,6 +1,6 @@
 {
   "name": "@sketchmine/sketch-file-format",
-  "version": "2.2.0",
+  "version": "2.6.0",
   "description": "Abstract layer on top of the sketch file format.",
   "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
   "homepage": "https://github.com/dynatrace/sketchmine#readme",
