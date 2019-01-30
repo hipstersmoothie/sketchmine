@@ -11,27 +11,27 @@ describe('[sketch-generator] › helpers › fonts', () => {
 
   it('should get the correct font mapped for regular font', () => {
     const font = fontMapping('BerninaSansWeb', '400', 'normal');
-    expect(font).toMatch('BerninaSans');
+    expect(font).toMatch('BerninaSansOffc-Regular');
   });
 
   it('should get the correct font mapped for light italic', () => {
     const font = fontMapping('BerninaSansWeb', '300', 'italic');
-    expect(font).toMatch('BerninaSans-LightItalic');
+    expect(font).toMatch('BerninaSansOffc-LightItalic');
   });
 
   it('should get the correct font mapped for extra bold italic', () => {
     const font = fontMapping('BerninaSansWeb', '900', 'italic');
-    expect(font).toMatch('BerninaSans-ExtraboldItalic');
+    expect(font).toMatch('BerninaSansOffc-ExtraboldItalic');
   });
 
   it('should get the correct font mapped for extra bold but written in textform - italic', () => {
     const font = fontMapping('BerninaSansWeb', 'bolder', 'italic');
-    expect(font).toMatch('BerninaSans-ExtraboldItalic');
+    expect(font).toMatch('BerninaSansOffc-ExtraboldItalic');
   });
 
   it('should get the correct font mapped for regular font without weight', () => {
     const font = fontMapping('BerninaSansWeb', '400');
-    expect(font).toMatch('BerninaSans');
+    expect(font).toMatch('BerninaSansOffc-Regular');
   });
 
   it('should get the correct font mapped for any other font', () => {

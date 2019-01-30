@@ -92,8 +92,8 @@ describe('[sketch-file-format] › models › generate text', () => {
       expect.objectContaining({
         _class: SketchObjectTypes.FontDescriptor,
         attributes: expect.objectContaining({
-          name: 'BerninaSans',
-          size: 12, // 14px are 12 sketch units
+          name: 'BerninaSansOffc-Regular',
+          size: 14,
         }),
       }));
   });
@@ -112,13 +112,14 @@ describe('[sketch-file-format] › models › generate text', () => {
       expect.objectContaining({
         _class: SketchObjectTypes.FontDescriptor,
         attributes: expect.objectContaining({
-          name: 'BerninaSans-LightItalic',
-          size: 13, // 15px are 13 sketch units
+          name: 'BerninaSansOffc-LightItalic',
+          size: 15,
+
         }),
       }));
   });
 
-  test('paragraph styling with lineheight normal inherits from fontsize * 1.2', () => {
+  test('paragraph styling with line height normal inherits from fontsize * 1.2', () => {
     styles.fontSize = '15px';
     styles.lineHeight = 'normal';
     styles.textAlign = 'right';
@@ -131,14 +132,14 @@ describe('[sketch-file-format] › models › generate text', () => {
       expect.objectContaining({
         _class: SketchObjectTypes.ParagraphStyle,
         alignment: TextAlignment.Right,
-        maximumLineHeight: 16,
-        minimumLineHeight: 16,
+        maximumLineHeight: 18,
+        minimumLineHeight: 18,
         paragraphSpacing: 0,
         allowsDefaultTighteningForTruncation: 0,
       }));
   });
 
-  test('paragraph styling with lineheight set in px', () => {
+  test('paragraph styling with line height set in px', () => {
     styles.fontSize = '15px';
     styles.lineHeight = '22px';
     styles.textAlign = 'center';
@@ -158,7 +159,7 @@ describe('[sketch-file-format] › models › generate text', () => {
       }));
   });
 
-  test('paragraph styling with lineheight should be ignroed with display inline, instead use fontsize * 1.2', () => {
+  test('paragraph styling with line height should be ignored with display inline, instead use fontsize * 1.2', () => {
     styles.fontSize = '15px';
     styles.lineHeight = '22px';
     styles.display = 'inline';
@@ -171,8 +172,8 @@ describe('[sketch-file-format] › models › generate text', () => {
       expect.objectContaining({
         _class: SketchObjectTypes.ParagraphStyle,
         alignment: TextAlignment.Left,
-        maximumLineHeight: 16,
-        minimumLineHeight: 16,
+        maximumLineHeight: 18,
+        minimumLineHeight: 18,
         paragraphSpacing: 0,
         allowsDefaultTighteningForTruncation: 0,
       }));
