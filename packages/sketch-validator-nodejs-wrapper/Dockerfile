@@ -1,4 +1,4 @@
-FROM node:10-alpine as code-analyzer
+FROM node:10-alpine as sketch-validator
 WORKDIR /sketch-validator
 
 ENV PACKAGE=packages/sketch-validator-nodejs-wrapper
@@ -21,4 +21,3 @@ COPY ./tsconfig.json /
 COPY ./config /config
 
 RUN yarn build
-
