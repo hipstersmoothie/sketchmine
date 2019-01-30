@@ -1,11 +1,5 @@
 variables:
 - group: docker-hub-credentials
-- name: COMP_VOL_NAME
-  value: 'SketchmineComponentsLibrary'
-- name: SHARED_VOL_NAME
-  value: 'SketchmineShared'
-- name: APP_VOL_NAME
-  value: 'SketchmineApp'
 
 jobs:
 - job: library
@@ -40,18 +34,11 @@ jobs:
   - script: yarn test
     displayName: 'Run testing'
 
-
 - job: Docker
   displayName: Docker 🐳
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
-
-    - script: |
-        docker volume create --name $(COMP_VOL_NAME)
-        docker volume create --name $(SHARED_VOL_NAME)
-        docker volume create --name $(APP_VOL_NAME)
-      displayName: 'Create Volumes 💾'
 
     - script: |
         docker build -t sketchmine/components-library . -f ./config/Dockerfile
@@ -61,58 +48,6 @@ jobs:
         docker build -t sketchmine/sketch-validator . -f ./packages/sketch-validator-nodejs-wrapper/Dockerfile
       displayName: 'Build 🐳 🏙'
 
-    # - script: |
-    #     docker run --rm \
-    #       --name components_library \
-    #       -v $(COMP_VOL_NAME):/components-library \
-    #       sketchmine/components-library \
-    #       /bin/sh -c './node_modules/.bin/gulp build-examples-module'
-    #   displayName: 'Prepare Material Examples 👩🏼‍🔧'
-
-    # - script: |
-    #     docker run -i --rm \
-    #       --name code_analyzer \
-    #       -v $(COMP_VOL_NAME):/angular-components \
-    #       -v $(SHARED_VOL_NAME):/shared \
-    #       sketchmine/code-analyzer \
-    #       /bin/sh -c 'node ./lib/bin --config="config.json"'
-    #   displayName: 'Generate meta-information.json 🕵🏻‍'
-
-    # - script: |
-    #     docker run -i --rm \
-    #       --name app_builder \
-    #       -v $(COMP_VOL_NAME):/angular-components \
-    #       -v $(SHARED_VOL_NAME):/shared \
-    #       -v $(APP_VOL_NAME):/app-shell \
-    #       sketchmine/app-builder \
-    #       /bin/sh -c '\
-    #         yarn schematics --config="config.json" --dryRun=false && \
-    #         mkdir -p ./sketch-library/src/assets && \
-    #         cp /shared/* ./sketch-library/src/assets/ && \
-    #         cd ./sketch-library && \
-    #         yarn ng build && \
-    #         cd dist && \
-    #         cp -R ./angular-app-shell/* /app-shell'
-    #   displayName: 'Generate examples angular application 🧰'
-
-    # - script: |
-    #     docker run -i --rm \
-    #       -v $(APP_VOL_NAME):/usr/share/nginx/html \
-    #       -p 4200:80 \
-    #       -d \
-    #       nginx:alpine
-    #   displayName: 'Start Webserver with generated app 🌍'
-
-    # - script: |
-    #     docker run -i --rm \
-    #       -e DEBUG=true \
-    #       -e DOCKER=true \
-    #       --name sketch_builder \
-    #       -v $(APP_VOL_NAME):/app-shell \
-    #       sketchmine/sketch-builder \
-    #       /bin/sh -c 'node ./lib/bin --config="config.json"'
-    #   displayName: 'Generate the .sketch file 💎'
-
     - script: |
         docker login -u $(docker-hub-user) -p $(docker-hub-password)
         docker push sketchmine/code-analyzer
@@ -120,5 +55,4 @@ jobs:
         docker push sketchmine/sketch-builder
         docker push sketchmine/sketch-validator
       displayName: 'Publish 👩🏼‍🏫 Docker images 🐳 🚀'
-      # condition: and(succeeded())
-#     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
