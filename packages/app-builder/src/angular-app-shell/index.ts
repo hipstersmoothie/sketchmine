@@ -28,7 +28,7 @@ export default function (configOptions: Config): Rule {
   const options = require(resolve(configOptions.config)) as Schema;
 
   // add additional dependencies or override existing
-  if (configOptions.hasOwnProperty('dependencies')) {
+  if (configOptions.dependencies && configOptions.dependencies.length) {
     const additionalDependencies = configOptions.dependencies
       .split(',')
       .map((dep) => {
