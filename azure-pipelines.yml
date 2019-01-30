@@ -55,4 +55,4 @@ jobs:
         docker push sketchmine/sketch-builder
         docker push sketchmine/sketch-validator
       displayName: 'Publish 👩🏼‍🏫 Docker images 🐳 🚀'
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
