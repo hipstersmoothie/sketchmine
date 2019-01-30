@@ -45,8 +45,10 @@ validate_sketchfile() {
   local dir=${file_dir#"$volume_dir"}
   local file="${dir}/$(basename "$1")"
 
-  docker run -t \
+  docker run -it \
+    -e DEBUG=true \
     -e ENVIRONMENT="$environment" \
+    -v $(pwd)/packages/sketch-validator/:/sketch-validator/node_modules/@sketchmine/sketch-validator \
     -v $volume_dir:/validation-files \
     sketchmine/sketch-validator:${validation_version} \
     node lib/bin \
@@ -54,7 +56,7 @@ validate_sketchfile() {
 }
 
 # if filepath is provided validate only this file
-if [ -a $1 ]; then
+if [ $1 ]; then
   validate_sketchfile $1 $2
   exit $FAILURE;
 fi
@@ -69,7 +71,7 @@ if [ "$BUILD_IMAGE" == "no" ]; then
   docker pull sketchmine/sketch-validator:$validation_version
 else
   docker build -t sketchmine/sketch-validator . -f ./packages/sketch-validator-nodejs-wrapper/Dockerfile
-fi
+fi;
 
 validate_files $BASEPATH $ENVIRONMENT
 
