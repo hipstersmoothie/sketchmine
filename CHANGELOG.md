@@ -1,6 +1,41 @@
 # Changelog
 
-## v2.5.0 – 2019.0.3
+## v2.6.0 – 2019.1.30
+
+#### Contributors
+
+  - [Lukas Holzer](mailto:lukas.holzer@dynatrace.com)
+  - [Lara Aigmueller](mailto:lara.aigmueller@dynatrace.com)
+
+#### Commits
+
+##### Features
+
+* [[`e145610`](https://github.com/Dynatrace/sketchmine/commit/e145610)] -  **sketch-validator**:  extend list of color validation selectors and enable background color validation for artboards  ([**Lara Aigmueller**](mailto:lara.aigmueller@dynatrace.com))    *issues:*    [UX-8756 ](https://dev-jira.dynatrace.org/browse/UX-8756 )
+* [[`49c448f`](https://github.com/Dynatrace/sketchmine/commit/49c448f)] -  **sketch-validator**:  separate text and text style validations  ([**Lara Aigmueller**](mailto:lara.aigmueller@dynatrace.com))    *issues:*    [UX-8645 ](https://dev-jira.dynatrace.org/browse/UX-8645 )
+
+##### Bug Fixes 🐞
+
+* [[`ca54ba2`](https://github.com/Dynatrace/sketchmine/commit/ca54ba2)] -  **sketch-validator**:  updated list of valid text colors according to defined text styles  ([**Lara Aigmueller**](mailto:lara.aigmueller@dynatrace.com))
+
+
+## v2.5.1 – 2019.1.17
+
+#### Contributors
+
+  - [Lukas Holzer](mailto:lukas.holzer@dynatrace.com)
+
+#### Commits
+
+##### Bug Fixes 🐞
+
+
+* [[`6a0890a`](https://github.com/Dynatrace/sketchmine/commit/6a0890a)] -  **sketch-builder**:  remove readFile in case that it is not present in npm package  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))
+
+
+# Changelog
+
+## v2.5.0 – 2019.1.16
 
 #### Contributors
 
