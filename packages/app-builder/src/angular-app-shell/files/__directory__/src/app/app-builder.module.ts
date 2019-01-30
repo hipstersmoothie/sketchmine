@@ -6,10 +6,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { PortalModule } from '@angular/cdk/portal';
 import { EXAMPLES_MAP } from './examples-registry';
 import { AppComponent } from './app.component';
+import { DebugComponent } from './debug.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    DebugComponent,
   ],
   imports: [
     BrowserModule,
