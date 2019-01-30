@@ -51,7 +51,7 @@ export class GitClient {
   async push(): Promise<void> {
     const remote = await this.getAuthenticatedRemote();
     await this.exec(`git push ${remote} HEAD:refs/heads/${this.currentBranch}`);
-    console.log(`git push ${remote} HEAD:refs/heads/${this.currentBranch}`)
+    console.log(`git push ${remote} HEAD:refs/heads/${this.currentBranch}`);
   }
 
   private async getAuthenticatedRemote(): Promise<string> {

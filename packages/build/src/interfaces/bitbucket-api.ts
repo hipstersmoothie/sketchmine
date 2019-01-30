@@ -33,4 +33,4 @@ export interface BitBucketBranch extends BitBucketAPIEntry {
 export interface BitbucketTag extends BitBucketAPIEntry {
   type: 'TAG';
   hash: any;
-};
+}

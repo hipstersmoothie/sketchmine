@@ -11,14 +11,6 @@
   "author": "Lukas Holzer <lukas.holzer@dynatrace.com>",
   "homepage": "https://github.com/dynatrace/sketchmine/tree/master/packages/build#readme",
   "license": "MIT",
-  "main": "lib/index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "tests"
-  },
-  "files": [
-    "lib"
-  ],
   "publishConfig": {
     "access": "public"
   },
@@ -30,8 +22,7 @@
     "commit-pr": "ts-node src/commit-pr.ts",
     "get-latest-tag": "ts-node src/get-latest-tag.ts",
     "get-branch-name": "ts-node src/get-branch-name.ts",
-    "lint": "tslint -p tsconfig.json",
-    "test": "echo \"No tests specified for build package"
+    "lint": "tslint -p tsconfig.json"
   },
   "bugs": {
     "url": "https://github.com/Dynatrace/sketchmine/issues"
