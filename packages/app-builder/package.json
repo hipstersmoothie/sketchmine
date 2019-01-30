@@ -27,12 +27,12 @@
     "access": "public"
   },
   "scripts": {
-    "clean": "rm -rf lib coverage dist",
+    "clean": "rm -rf lib coverage sketch-library",
     "build": "gulp",
     "dev": "gulp dev",
     "lint": "tslint -p tsconfig.json",
     "test": "jest --detectOpenHandles --verbose --forceExit",
-    "schematics": "rm -rf dist && schematics ./lib/collection.json:angular-app-shell"
+    "schematics": "rm -rf sketch-library && schematics ./lib/collection.json:angular-app-shell"
   },
   "dependencies": {
     "@angular-devkit/core": "^7.1.2",

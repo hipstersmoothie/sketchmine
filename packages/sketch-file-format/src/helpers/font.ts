@@ -40,37 +40,6 @@ export function fixWhiteSpace(text: string, whiteSpace: string) {
   return text;
 }
 
-export function kerningTableBernina(fontSize: number): number {
-  switch (fontSize) {
-    case 6: return 0.74;
-    case 7: return 0.8;
-    case 8: return 0.8;
-    case 9: return 0.75;
-    case 10: return 0.68;
-    case 11: return 0.64;
-    case 12: return 0.6;
-    case 13: return 0.58;
-    case 14: return 0.54;
-    case 15: return 0.5;
-    case 16: return 0.47;
-    case 17: return 0.42;
-    case 18: return 0.4;
-    case 19: return 0.36;
-    case 20: return 0.34;
-    case 21: return 0.3;
-    case 22: return 0.25;
-    case 23: return 0.2;
-    case 24: return 0.17;
-    case 25: return 0.12;
-    case 26: return 0.09;
-    case 27: return 0.06;
-    case 28: return -0.01;
-    case 29: return -0.02;
-    case 30: return -0.06;
-    case 31: return -0.11;
-  }
-}
-
 export function fontMapping(
   fontFamily: string,
   fontWeight: string,
@@ -82,16 +51,16 @@ export function fontMapping(
     return fontFamily;
   }
 
-  if (weight === 900 && style === 'italic') { return 'BerninaSans-ExtraboldItalic'; }
-  if (weight === 900) { return 'BerninaSans-Extrabold'; }
-  if (weight === 700 && style === 'italic') { return 'BerninaSans-BoldItalic'; }
-  if (weight === 700) { return 'BerninaSans-Bold'; }
-  if (weight === 600 && style === 'italic') { return 'BerninaSans-SemiboldItalic'; }
-  if (weight === 600) { return 'BerninaSans-Semibold'; }
-  if (weight === 400 && style === 'italic') { return 'BerninaSans-Italic'; }
-  if (weight === 400) { return 'BerninaSans'; }
-  if (weight === 300 && style === 'italic') { return 'BerninaSans-LightItalic'; }
-  if (weight === 300) { return 'BerninaSans-Light'; }
+  if (weight === 900 && style === 'italic') { return 'BerninaSansOffc-ExtraboldItalic'; }
+  if (weight === 900) { return 'BerninaSansOffc-Extrabold'; }
+  if (weight === 700 && style === 'italic') { return 'BerninaSansOffc-BoldItalic'; }
+  if (weight === 700) { return 'BerninaSansOffc-Bold'; }
+  if (weight === 600 && style === 'italic') { return 'BerninaSansOffc-SemiboldItalic'; }
+  if (weight === 600) { return 'BerninaSansOffc-Semibold'; }
+  if (weight === 400 && style === 'italic') { return 'BerninaSansOffc-Italic'; }
+  if (weight === 400) { return 'BerninaSansOffc-Regular'; }
+  if (weight === 300 && style === 'italic') { return 'BerninaSansOffc-LightItalic'; }
+  if (weight === 300) { return 'BerninaSansOffc-Light'; }
 
   return 'BerninaSans';
 }
@@ -99,6 +68,7 @@ export function fontMapping(
 export function convertFontWeightToNumber(fontWeight: string): number {
   if (Object.keys(textWeights).includes(fontWeight)) {
     if (fontWeight === 'initial' || fontWeight === 'inherit') {
+      // TODO: lukas.holzer get the font weight of the parent and not 400
       return 400;
     }
     return textWeights[fontWeight] || 400;

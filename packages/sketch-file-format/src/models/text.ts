@@ -20,7 +20,6 @@ import {
   fontMapping,
   fontStyle,
   TextBehaviour,
-  kerningTableBernina,
 } from '../helpers';
 import { StyleDeclaration } from '@sketchmine/helpers';
 import { resolveTextDecoration, TextDecoration } from '../helpers/resolve-text-decoration';
@@ -45,7 +44,7 @@ export class Text extends Base {
       throw new Error('Text always have to have a style!');
     }
     this.textDecoration = resolveTextDecoration(styles.textDecoration);
-    this.fontSize = parseInt(this.styles.fontSize, 10) - 2; // Sketch does not calculate the font in px
+    this.fontSize = parseInt(this.styles.fontSize, 10);
   }
 
   addParagraphStyle(): SketchParagraphStyle {
@@ -83,8 +82,8 @@ export class Text extends Base {
     return StrikethroughStyle.None;
   }
 
-  addKerning(): number {
-    let kerning = kerningTableBernina(this.fontSize);
+  addKerning(): number | undefined {
+    let kerning;
     if (this.styles.letterSpacing !== 'normal') {
       kerning = parseFloat(this.styles.letterSpacing);
     }
@@ -103,7 +102,7 @@ export class Text extends Base {
   }
 
   addParagraphSpacing(): number | undefined {
-    // TODO: need to implement
+    // TODO: lukas.holzer need to implement
     return undefined;
   }
 
