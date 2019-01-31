@@ -18,4 +18,4 @@ export const NO_WRONG_HEADLINE_ERROR = (textElementName, artboardSize) => `The h
 export const INVALID_TEXT_COLOR_ERROR = textElementName => `The text "${textElementName}" uses a wrong text color.`;
 export const NO_TEXT_COLOR_ERROR = textElementName => `The text "${textElementName}" does not use a text color.`;
 export const TEXT_TOO_SMALL_ERROR = textElementName => `Font of text "${textElementName}" is smaller than 12px.`;
-export const WRONG_FONT_ERROR = textElementName => `Font of text "${textElementName}" is wrong. You should use Bernina Sans or Bitstream Vera.`;
+export const WRONG_FONT_ERROR = textElementName => `Font of text "${textElementName}" is wrong. You should only use "Bernina Sans Offc" or "Bitstream Vera Sans Mono".`;

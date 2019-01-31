@@ -89,7 +89,7 @@ export function textValidation(
 
     // Check font family name (not allowed to be anything else than BerninaSans or Bitstream Vera )
     const fontnameLowercase = fontAttributes.name.toLowerCase();
-    const validFontname = ALLOWED_FONT_FAMILIES_REGEX.some(regex => regex.test(fontnameLowercase));
+    const validFontname = ALLOWED_FONT_FAMILIES_REGEX.some(regex => fontnameLowercase.match(regex) !== null);
     if (!validFontname) {
       errors.push(new WrongFontError({
         message: WRONG_FONT_ERROR(task.name),

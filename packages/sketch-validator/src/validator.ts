@@ -6,7 +6,7 @@ import {
   SketchArtboard,
 } from '@sketchmine/sketch-file-format';
 import cloneDeep from 'lodash/cloneDeep';
-import merge from 'lodash/merge';
+import mergeWith from 'lodash/mergeWith';
 import {
   IValidationContext,
   IValidationContextChildren,
@@ -113,7 +113,15 @@ export class Validator {
       }
 
       // Merge given options of all matching rules into one options object.
-      const options: { [key: string]: any } = merge({}, ...matchingRules.map(rule => rule.options));
+      const options: { [key: string]: any } = mergeWith(
+        {},
+        ...matchingRules.map(rule => rule.options),
+        (objVal, srcVal) => {
+          if (objVal instanceof Array) {
+            return objVal.concat(srcVal);
+          }
+        },
+      );
       const obj: Partial<IValidationContext> = {
         ...this.getProperties(content, options || {}),
         ruleNames: matchingRules.map(rule => rule.name),
