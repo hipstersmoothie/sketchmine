@@ -1,7 +1,7 @@
 /**
  * transforms the Sketch Document to the fileFormat
- * @param {MSDocument} document 
- * @param {boolean} meta if we only need the meta infromation about the pages and the path
+ * @param {MSDocument} document
+ * @param {boolean} meta if we only need the meta information about the pages and the path
  * @returns {string}
  */
 export function getFileFormat(document, meta = false) {
@@ -26,7 +26,7 @@ export function getFileFormat(document, meta = false) {
     return result;
   }
 
-  
+
   // provide the whole document
   result.document = parsedJSON;
 
