@@ -1,11 +1,6 @@
 import { DomVisitor } from './dom-visitor';
 import { ITraversedElement, ITraversedDomElement, Traverser } from './public-api';
-
-export enum NodeType {
-  Text = 'Text',
-  Element = 'Element',
-  Comment = 'Comment',
-}
+import { checkNodeType, NodeType, hasBeforeOrAfterElement } from './helpers';
 
 /**
  * @description
@@ -18,23 +13,6 @@ export class DomTraverser implements Traverser {
   textCount = 0;
   commentCount = 0;
 
-  /**
-   * this function is needed for the unit tests, in case we have to mock this part
-   * in case that jest does not know the Element, Text or Comment instance.
-   * @param node Node to be checked
-   */
-  checkNodeType(node: Node): NodeType {
-    if (node instanceof Element) {
-      return NodeType.Element;
-    }
-    if (node instanceof Text) {
-      return NodeType.Text;
-    }
-    if (node instanceof Comment) {
-      return NodeType.Comment;
-    }
-  }
-
   traverse(node: any, visitor: DomVisitor): ITraversedElement {
     if (!node) {
       throw new Error('No node was passed to the traverse function, maybe the root Element does not exist!');
@@ -43,10 +21,10 @@ export class DomTraverser implements Traverser {
     this.nodeCount += 1;
     let treeLevel: ITraversedElement;
 
-    switch (this.checkNodeType(node)) {
+    switch (checkNodeType(node)) {
       case NodeType.Element:
         this.elementCount += 1;
-        treeLevel = visitor.visitElement(node);
+        treeLevel = visitor.visitElement(node) as ITraversedDomElement;
         break;
       case NodeType.Text:
         this.textCount += 1;
@@ -56,21 +34,35 @@ export class DomTraverser implements Traverser {
         this.commentCount += 1;
         break;
     }
+
+    if (hasBeforeOrAfterElement(node, ':before')) {
+      addChild(treeLevel as ITraversedDomElement, visitor.visitBeforeOrAfterElement(node, ':before'));
+    }
+
     // Start traversing the child nodes
     let childNode = node.firstChild;
     if (childNode) {
-      (treeLevel as ITraversedDomElement).children = [];
-      const n = this.traverse(childNode, visitor);
-      if (n) {
-        (treeLevel as ITraversedDomElement).children.push(n);
-      }
+      addChild(treeLevel as ITraversedDomElement, this.traverse(childNode, visitor));
+
       while (childNode = childNode.nextSibling) {
-        const cn = this.traverse(childNode, visitor);
-        if (cn) {
-          (treeLevel as ITraversedDomElement).children.push(cn);
-        }
+        addChild(treeLevel as ITraversedDomElement, this.traverse(childNode, visitor));
       }
     }
+
+    if (hasBeforeOrAfterElement(node, ':after')) {
+      addChild(treeLevel as ITraversedDomElement, visitor.visitBeforeOrAfterElement(node, ':after'));
+    }
+
     return treeLevel;
+  }
+}
+
+function addChild(parent: ITraversedDomElement, child: ITraversedElement): void {
+  if (!child) { return; }
+
+  if (parent.children && parent.children.length) {
+    parent.children.push(child);
+  } else {
+    parent.children = [child]
   }
 }
