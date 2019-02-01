@@ -43,6 +43,18 @@ pipeline {
       }
     }
 
+    stage('Publish Validation Interface 👩🏼‍🏫') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'lakeside-aws-s3-secret', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY')]) {
+          dir('packages/build') {
+            nodejs(nodeJSInstallationName: 'Node 10.x') {
+              sh 'yarn deploy --id=$AWS_KEY --secret=$AWS_SECRET --dir="../sketch-validation-interface/dist"'
+            }
+          }
+        }
+      }
+    }
+
     stage('🔨 Get angular-components version') {
       steps {
 
