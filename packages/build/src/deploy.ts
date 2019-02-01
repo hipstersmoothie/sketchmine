@@ -27,7 +27,7 @@ async function main(args: string[]): Promise<void> {
   const client = new AWSClient(bucketName, cloudFrontDistributionId, awsConfig);
   const filesArray = await readDirRecursively(resolve(dir), /.+?\..+$/);
   const files = filesArray
-    .map((file: string) => fileTransformer(file))
+    .map((file: string) => fileTransformer(resolve(dir), file))
     .filter(f => f !== undefined);
 
   await client.upload(files);

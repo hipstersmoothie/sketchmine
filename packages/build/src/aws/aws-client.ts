@@ -34,7 +34,7 @@ export class AWSClient {
         ContentType: file.mimeType,
         ContentLength: file.buffer.byteLength,
         Expires: EXPIRE_TIME,
-        Key: `${basename(file.name)}`,
+        Key: `${file.name}`,
       };
 
       return new Promise((res: (data: AWSFile) => void, rej: (data: AWSError) => void) => {
