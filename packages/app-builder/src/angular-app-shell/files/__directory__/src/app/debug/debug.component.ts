@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
-import { waitForDraw } from './utils';
-import { MetaService } from './meta.service';
+import { waitForDraw } from '../utils';
+import { MetaService } from '../meta.service';
 import { ViewData } from '@angular/core/src/view'; // not exported from core (only for POC)
-import { checkSubComponents } from './check-sub-components';
+import { checkSubComponents } from '../check-sub-components';
 import { Subscription } from 'rxjs';
 import { Component as MetaComponent } from '@sketchmine/code-analyzer/lib/@types';
 
@@ -10,7 +10,8 @@ declare var window: any;
 
 @Component({
   selector: 'app-root',
-  template: '<button dt-button>Simple button</button>',
+  templateUrl: 'debug.component.html',
+  styleUrls: ['debug.component.scss'],
 })
 export class DebugComponent implements OnInit, OnDestroy {
 
