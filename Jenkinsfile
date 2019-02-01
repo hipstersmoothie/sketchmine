@@ -44,6 +44,9 @@ pipeline {
     }
 
     stage('Publish Validation Interface 👩🏼‍🏫') {
+      when {
+        branch 'master'
+      }
       steps {
         withCredentials([usernamePassword(credentialsId: 'kraken-validation-s3', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY')]) {
           dir('packages/build') {
