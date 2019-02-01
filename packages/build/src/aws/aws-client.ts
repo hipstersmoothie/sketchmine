@@ -2,6 +2,7 @@ import { CloudFront, S3, AWSError } from 'aws-sdk';
 import { CreateInvalidationResult, CreateInvalidationRequest } from 'aws-sdk/clients/cloudfront';
 import { PutObjectOutput, PutObjectRequest } from 'aws-sdk/clients/s3';
 import { AWSFile } from '../interfaces';
+import { basename } from 'path';
 
 const MONTH_IN_MILLISECONDS = 2592000000;
 const EXPIRE_TIME = new Date(Date.now() + MONTH_IN_MILLISECONDS * 30);
@@ -33,7 +34,7 @@ export class AWSClient {
         ContentType: file.mimeType,
         ContentLength: file.buffer.byteLength,
         Expires: EXPIRE_TIME,
-        Key: `${file.name}`,
+        Key: `${basename(file.name)}`,
       };
 
       return new Promise((res: (data: AWSFile) => void, rej: (data: AWSError) => void) => {
