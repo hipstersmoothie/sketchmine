@@ -13,7 +13,7 @@ const statAsync = promisify(stat);
  */
 export async function readDirRecursively(
   dir: string,
-  regex: RegExp,
+  regex: RegExp = /.*/gm,
   allFiles: string[] = [],
 ): Promise<string[]> {
   const files = (await readdirAsync(dir)).map(file => join(dir, file));

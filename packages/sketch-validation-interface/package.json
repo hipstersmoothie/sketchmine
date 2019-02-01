@@ -21,6 +21,10 @@
     "type": "git",
     "url": "git+https://github.com/Dynatrace/sketchmine.git"
   },
+  "private": true,
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/Dynatrace/sketchmine/issues"
   },

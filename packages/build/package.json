@@ -19,6 +19,7 @@
     "url": "git+https://github.com/Dynatrace/sketchmine.git"
   },
   "scripts": {
+    "deploy": "ts-node src/deploy.ts",
     "commit-pr": "ts-node src/commit-pr.ts",
     "get-latest-tag": "ts-node src/get-latest-tag.ts",
     "get-branch-name": "ts-node src/get-branch-name.ts",
@@ -29,9 +30,13 @@
   },
   "dependencies": {
     "@sketchmine/node-helpers": "^2.3.0",
+    "aws-sdk": "^2.395.0",
+    "mime-types": "^2.1.21",
     "minimist": "^1.2.0"
   },
   "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
+    "@types/mime-types": "^2.1.0",
     "@types/node": "^10.12.18",
     "ts-node": "^8.0.2",
     "tslint": "^5.12.1",
