@@ -16,6 +16,11 @@ import {
 import { Teacher } from './teacher';
 import { ErrorHandler } from './error/error-handler';
 
+const MERGE_CUSTOMIZER = (objVal, srcVal) => {
+  if (objVal instanceof Array) {
+    return objVal.concat(srcVal);
+  }
+};
 export class Validator {
   homeworks: IValidationContext[] = [];
   files: SketchBase[] = [];
@@ -116,11 +121,7 @@ export class Validator {
       const options: { [key: string]: any } = mergeWith(
         {},
         ...matchingRules.map(rule => rule.options),
-        (objVal, srcVal) => {
-          if (objVal instanceof Array) {
-            return objVal.concat(srcVal);
-          }
-        },
+        MERGE_CUSTOMIZER,
       );
       const obj: Partial<IValidationContext> = {
         ...this.getProperties(content, options || {}),

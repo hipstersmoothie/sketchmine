@@ -8,7 +8,7 @@ import { textStyleValidation } from './rules/text-style-validation';
 import { textValidation } from './rules/text-validation';
 
 /** Available sizes */
-const artboardSizes: string[] = [
+export const ARTBOARD_SIZES: string[] = [
   '360',
   '1280',
   '1920',
@@ -92,7 +92,7 @@ export const rules: IValidationRule[] = [
     description: 'Check if the artboard names are valid.',
     env: ['product'],
     validation: artboardValidation,
-    includePages: artboardSizes,
+    includePages: ARTBOARD_SIZES,
     options: {
       requirements: [ValidationRequirements.LayerSize, ValidationRequirements.Frame],
     },
@@ -104,7 +104,7 @@ export const rules: IValidationRule[] = [
     env: ['product'],
     validation: pageValidation,
     options: {
-      artboardSizes,
+      artboardSizes: ARTBOARD_SIZES,
       requirements: [ValidationRequirements.Children],
     },
   },
@@ -114,7 +114,7 @@ export const rules: IValidationRule[] = [
     description: 'Check if text styles from the Sketch library are used correctly and have not been modified.',
     env: ['product'],
     validation: textStyleValidation,
-    includePages: artboardSizes,
+    includePages: ARTBOARD_SIZES,
     options: {
       requirements: [
         ValidationRequirements.AttributedString,
@@ -131,7 +131,7 @@ export const rules: IValidationRule[] = [
     description: 'Check if only valid font families, colors and sizes are used.',
     env: ['product'],
     validation: textValidation,
-    includePages: artboardSizes,
+    includePages: ARTBOARD_SIZES,
     options: {
       requirements: [
         ValidationRequirements.AttributedString,
