@@ -1,5 +1,5 @@
 import { Logger } from '@sketchmine/node-helpers';
-import { SketchObjectTypes, SketchBase } from '@sketchmine/sketch-file-format';
+import { SketchObjectTypes } from '@sketchmine/sketch-file-format';
 import { DYNATRACE_LOGO_COLORS, ARTBOARD_SIZES } from '../src/config';
 import { ErrorHandler } from '../src/error';
 import { IValidationRule, ValidationRequirements } from '../src/interfaces/validation-rule.interface';
@@ -204,6 +204,7 @@ describe('Sketch Validation', () => {
     await validator.addFile(fixture2);
     await validator.addDocumentFile(documentFixture);
     await validator.validate();
+    // homeworks[0] class: artboard
     expect(validator.homeworks[0]).toHaveProperty('style');
     expect(validator.homeworks[0]).toHaveProperty('frame');
     expect(validator.homeworks[0].ruleOptions).toHaveProperty('backgroundColor');
@@ -211,6 +212,7 @@ describe('Sketch Validation', () => {
     expect(validator.homeworks[0].ruleOptions.layerSize).toBe(3);
     expect(validator.homeworks[0].ruleOptions).toHaveProperty('children');
     expect(validator.homeworks[0].ruleOptions.children).toHaveLength(3);
+    // homeworks[6] class: text
     expect(validator.homeworks[6].ruleOptions).toHaveProperty('sharedStyleID');
     expect(validator.homeworks[6].ruleOptions).toHaveProperty('stringAttributes');
     expect(validator.homeworks[6].ruleOptions.stringAttributes).toHaveLength(1);
