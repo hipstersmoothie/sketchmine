@@ -41,7 +41,7 @@ function resolveTypeValues(node: ParseProperty) {
 }
 
 /**
- * Resolve types to values recursivly
+ * Resolve types to values recursively
  * @param nodeType Type to be resolved
  */
 function resolveType(nodeType: ParseType): (string | null)[] {
