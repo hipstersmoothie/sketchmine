@@ -28,7 +28,7 @@ export class ReferenceResolver extends ReferenceTreeVisitor implements AstVisito
   }
 
   /**
-   * Overwrites the visitReferenceType method from the TreeVisitor to resolve the types
+   * Overwrites the visitReferenceType method from the ReferenceTreeVisitor to resolve the types
    * if it could not be resolved return the ParseEmpty() node.
    * @param {ParseReferenceType} node Reference node that should be resolved
    * @returns {ParseDefinition | ParseEmpty}
@@ -61,7 +61,10 @@ export class ReferenceResolver extends ReferenceTreeVisitor implements AstVisito
     // after we replaced the generic type we can resolve the reference and replace the values
     if (node.typeArguments && node.typeArguments.length) {
 
-      console.log('\n\nvalue that needs to be passed')
+      // if we have typeArguments it is a generic and we have to clone the resolvedNode
+      // because maybe it is used by other declarations as well.
+      // So we won't modify the original reference.
+      // const cloned = cloneDeep(resolvedNode)
 
       for (let i = 0, max = node.typeArguments.length; i < max; i += 1) {
         let typeArgument = node.typeArguments[0];
@@ -72,12 +75,12 @@ export class ReferenceResolver extends ReferenceTreeVisitor implements AstVisito
           typeArgument = this.visitReferenceType(typeArgument);
         }
 
-        (<any>resolvedNode).typeParamter[i].value = typeArgument;
+        // TODO: lukas.holzer check later for better typing and
+        // try to figure out which node types can have type parameters
+        if (resolvedNode.hasOwnProperty('typeParamter')) {
+          (<any>resolvedNode).typeParamter[i].value = typeArgument;
+        }
       }
-
-      console.log(resolvedNode);
-
-      return;
     }
 
     // if there are no TypeArguments it is a normal interface or type and we can replace
@@ -88,7 +91,7 @@ export class ReferenceResolver extends ReferenceTreeVisitor implements AstVisito
   }
 
   /** Find a root Node by its name – used to find types and interfaces */
-  getRootNodeByName(name: string): ParseDefinition {
+  private getRootNodeByName(name: string): ParseDefinition {
     return this.rootNodes.find((node: ParseDefinition) => node.name === name);
   }
 
