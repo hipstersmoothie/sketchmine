@@ -8,6 +8,7 @@ import {
   ParsePrimitiveType,
   Primitives,
   ParseTypeAliasDeclaration,
+  ParseGeneric,
 } from './ast';
 import { flatten } from 'lodash';
 import { Logger } from '@sketchmine/node-helpers';
@@ -21,6 +22,7 @@ const log = new Logger();
  * applied (false would be without property).
  */
 export class ValuesResolver extends TreeVisitor implements AstVisitor {
+
   visitProperty(node: ParseProperty) {
     return resolveTypeValues(node);
   }
