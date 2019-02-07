@@ -89,7 +89,7 @@ export const rules: IValidationRule[] = [
   {
     selector: [SketchObjectTypes.Artboard],
     name: 'artboard-validation',
-    description: 'Check if the artboard names are valid.',
+    description: 'Check if the artboard names and sizes are valid and if artboards are not empty.',
     env: ['product'],
     validation: artboardValidation,
     includePages: ARTBOARD_SIZES,

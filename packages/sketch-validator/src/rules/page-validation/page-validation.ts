@@ -56,20 +56,24 @@ export function pageValidation(
   }
 
   let hasArtboards = false;
-  let isSymboldMaster = false;
+  let isSymbolMaster = false;
 
   const artboards = task.ruleOptions.children
     .filter(c => c.class === 'artboard');
 
-  const symboldMasters = task.ruleOptions.children
-  .filter(c =>
-    c.class === 'symbolMaster');
+  const symbolMasters = task.ruleOptions.children
+    .filter(c => c.class === 'symbolMaster');
+  const symbolInstances = task.ruleOptions.children
+    .filter(c => c.class === 'symbolInstance');
 
-  isSymboldMaster = task.ruleOptions.children.length === symboldMasters.length && symboldMasters.length > 0;
+  // if a page only contains symbolMaster or symbolInstance children it should not be validated
+  isSymbolMaster =
+    task.ruleOptions.children.length === (symbolMasters.length + symbolInstances.length) &&
+    symbolMasters.length > 0;
   hasArtboards = artboards.length > 0;
 
   // if page is a symbol master, we do not validate
-  if (isSymboldMaster) {
+  if (isSymbolMaster) {
     return errors;
   }
 

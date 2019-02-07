@@ -31,19 +31,23 @@ export function artboardValidation(
 
   /**
    * Check if the page contains at least one artboard with a valid size
+   * Filter homeworks that are from type artboard, that have the same parent
+   * as the current task and include the artboard validation rule.
    */
   const includeArtboardSize = homeworks
     .filter(homework =>
       homework._class === 'artboard' &&
-      homework.parents.page === task.parents.page)
+      homework.parents.page === task.parents.page &&
+      homework.ruleNames.includes('artboard-validation'))
     .some(homework =>
       homework.frame.width === parseInt(task.parents.page, 10));
 
-  const emptyArtboards = homeworks
-    .some(homework =>
-      homework._class === 'artboard' &&
-      (!homework.ruleOptions.layerSize ||
-      homework.ruleOptions.layerSize < 1));
+  /**
+   * Check if the artboard is empty.
+   */
+  const artboardEmpty =
+    task._class === 'artboard' &&
+    (!task.ruleOptions.layerSize || task.ruleOptions.layerSize < 1);
 
   const errors: (ValidationError | boolean)[] = [];
   const name = task.name.split('-');
@@ -59,7 +63,7 @@ export function artboardValidation(
       ...object,
     } as IValidationErrorContext));
   }
-  if (emptyArtboards) {
+  if (artboardEmpty) {
     errors.push(new ArtboardEmptyError({
       message: ARTBOARD_EMPTY_ERROR_MESSAGE,
       ...object,
