@@ -8,7 +8,7 @@ const log = new Logger();
  * Get the name from any node
  * @param node Any Node
  */
-export function getSymbolName(node): string {
+export function getSymbolName(node: any): string {
   if (!node) {
     return '';
   }

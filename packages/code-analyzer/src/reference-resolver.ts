@@ -1,15 +1,30 @@
-import { TreeVisitor, AstVisitor, ParseResult, ParseReferenceType, ParseDefinition, ParseEmpty } from './ast';
+import {
+  AstVisitor,
+  ParseResult,
+  ParseReferenceType,
+  ParseDefinition,
+  ParseEmpty,
+  ReferenceTreeVisitor,
+  ParseNode,
+  ParseTypeAliasDeclaration,
+  ParseGeneric,
+} from './ast';
+
+import { flatten } from 'lodash';
 
 /**
  * @class
- * @classdesc tansformer that resolves the references in the AST
+ * @classdesc Transformer that resolves the references in the AST
  * @implements AstVisitor
  * @extends TreeVisitor
  */
-export class ReferenceResolver extends TreeVisitor implements AstVisitor {
+export class ReferenceResolver extends ReferenceTreeVisitor implements AstVisitor {
 
-  constructor(private _parseResults: ParseResult[]) {
+  private rootNodes: ParseDefinition[];
+
+  constructor(parseResults: ParseResult[]) {
     super();
+    this.rootNodes = flatten(parseResults.map(result => result.nodes));
   }
 
   /**
@@ -19,14 +34,72 @@ export class ReferenceResolver extends TreeVisitor implements AstVisitor {
    * @returns {ParseDefinition | ParseEmpty}
    */
   visitReferenceType(node: ParseReferenceType): ParseDefinition | ParseEmpty {
-    let resolvedNode: ParseDefinition;
-    for (const result of this._parseResults) {
-      resolvedNode =
-        result.nodes.find((resultRootNode: ParseDefinition) => resultRootNode.name === node.name) as ParseDefinition;
-      if (resolvedNode) {
-        break;
-      }
+    // Check if the reference is a generic and is stored in the lookup Table
+    const typeParameter = this.getGenericFromLookupTable(node.location, node.name);
+
+    // if we have a type parameter then it is a generic
+    if (typeParameter) {
+      const rootNode = this.getParentRootNode(node) as ParseTypeAliasDeclaration;
+      const generic = new ParseGeneric(typeParameter);
+
+      // get the index of the typeParamter in the root nodes typeParameter array
+      const index = rootNode.typeParamter.findIndex(param => param.name === typeParameter);
+      // replace the typeParameter with the generic placeholder (reference storage)
+      rootNode.typeParamter[index] = generic;
+
+      // Return the reference of the Generic so that we can replace it later on by reference
+      // on the rootNode and the reference to the inner get replaced as well.
+      return generic;
     }
+
+    // If the reference is not in the lookup Table search it in the root nodes
+    // So now we know it is not a generic and we can search in the types and interfaces
+    // if there is a matching Symbol name
+    const resolvedNode = this.getRootNodeByName(node.name);
+
+    // If we have typeArguments they have to be replaced with the arguments from the generic
+    // after we replaced the generic type we can resolve the reference and replace the values
+    if (node.typeArguments && node.typeArguments.length) {
+
+      console.log('\n\nvalue that needs to be passed')
+
+      for (let i = 0, max = node.typeArguments.length; i < max; i += 1) {
+        let typeArgument = node.typeArguments[0];
+
+        // if the typeArgument is a reference type we have to resolve it
+        // before we pass it into the generic
+        if (typeArgument instanceof ParseReferenceType) {
+          typeArgument = this.visitReferenceType(typeArgument);
+        }
+
+        (<any>resolvedNode).typeParamter[i].value = typeArgument;
+      }
+
+      console.log(resolvedNode);
+
+      return;
+    }
+
+    // if there are no TypeArguments it is a normal interface or type and we can replace
+    // the reference type with the found ParseDefinition from the root and return it.
+    // if we did not found any reference in the root nodes we can not resolve it and
+    // the value will be a parse empty that will be dropped later on.
     return resolvedNode || new ParseEmpty();
+  }
+
+  /** Find a root Node by its name – used to find types and interfaces */
+  getRootNodeByName(name: string): ParseDefinition {
+    return this.rootNodes.find((node: ParseDefinition) => node.name === name);
+  }
+
+  /**
+   * The parent root Node is the root node with the position that is smaller
+   * and the closest number to the position of the child Node.
+   */
+  private getParentRootNode(node: ParseNode): ParseNode {
+    const nodes = this.rootNodes
+      .filter(rootNode => rootNode.location.position < node.location.position)
+      .reverse();
+    return nodes[0];
   }
 }
