@@ -10,7 +10,7 @@ import * as ts from 'typescript';
   export class SampleClassname { … }
   ```
  * @param {ts.Node} node Node to check
- * @returns {booleand}
+ * @returns {boolean}
  */
 export function hasExportModifier(node: ts.Declaration): boolean {
   return (
