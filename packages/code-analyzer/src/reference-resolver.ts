@@ -59,7 +59,11 @@ export class ReferenceResolver extends ReferenceTreeVisitor implements AstVisito
 
     // If we have typeArguments they have to be replaced with the arguments from the generic
     // after we replaced the generic type we can resolve the reference and replace the values
-    if (node.typeArguments && node.typeArguments.length) {
+    if (
+      resolvedNode &&
+      node.typeArguments &&
+      node.typeArguments.length
+    ) {
 
       // if we have typeArguments it is a generic and we have to clone the resolvedNode
       // because maybe it is used by other declarations as well.
