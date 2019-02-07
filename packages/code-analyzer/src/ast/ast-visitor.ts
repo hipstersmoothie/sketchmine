@@ -114,13 +114,16 @@ export class TreeVisitor extends NodeVisitor implements AstVisitor {
 
   visitFunctionType(node: ParseFunctionType): any {
     node.args = this.visitAll(node.args);
-    console.log('visit return type form function Type: ', node)
     node.returnType = this.visit(node.returnType);
     return node;
   }
 
   visitGeneric(node: ParseGeneric): any {
-    console.log('\n\nvisit Generinn')
+    // when the generic has a value we know it was resolved
+    // so we don't need the ParseGeneric any more return only the value.
+    if (node.value) {
+      return this.visit(node.value);
+    }
     node.value = this.visit(node.value);
     return node;
   }

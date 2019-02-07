@@ -88,9 +88,9 @@ export function tsVisitorFactory(
       case ts.SyntaxKind.ImportDeclaration:
         visitExportOrImportDeclaration(node as ts.ImportDeclaration | ts.ExportDeclaration);
         break;
-      // case ts.SyntaxKind.InterfaceDeclaration:
-      //   visitInterfaceDeclaration(node as ts.InterfaceDeclaration);
-      //   break;
+      case ts.SyntaxKind.InterfaceDeclaration:
+        visitInterfaceDeclaration(node as ts.InterfaceDeclaration);
+        break;
       case ts.SyntaxKind.TypeAliasDeclaration:
         visitTypeAliasDeclaration(node as ts.TypeAliasDeclaration);
         break;
@@ -98,9 +98,9 @@ export function tsVisitorFactory(
       case ts.SyntaxKind.VariableStatement:
         visitVariableStatement(node as ts.VariableStatement);
         break;
-      // case ts.SyntaxKind.ClassDeclaration:
-      //   visitClassDeclaration(node as ts.ClassDeclaration);
-      //   break;
+      case ts.SyntaxKind.ClassDeclaration:
+        visitClassDeclaration(node as ts.ClassDeclaration);
+        break;
 
       case ts.SyntaxKind.FunctionDeclaration:
         break;
@@ -323,7 +323,7 @@ export function tsVisitorFactory(
     );
   }
 
-  function visitTypeArguments(node: ts.TypeReferenceNode): (ParseType | ParseEmpty)[] | undefined {
+  function visitTypeArguments(node: ts.TypeReferenceNode): ParseType[] | undefined {
     if (!node.typeArguments) {
       return;
     }
@@ -336,9 +336,8 @@ export function tsVisitorFactory(
    * @returns {ParseType | ParseEmpty}
    */
   function visitType(node: ts.TypeNode): ParseType | ParseEmpty {
-    const location = new ParseLocation(currentLocation, node.pos);
-
     if (node) {
+      const location = new ParseLocation(currentLocation, node.pos);
       switch (node.kind) {
         case ts.SyntaxKind.VoidKeyword:
           return new ParseValueType(location, 'void');
