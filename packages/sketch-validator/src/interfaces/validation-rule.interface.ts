@@ -34,8 +34,9 @@ export interface IValidationContextParents {
 }
 
 export interface IValidationContextChildren {
-  name: string;
   class: string;
+  do_objectID: string;
+  name: string;
 }
 
 export enum ValidationRequirements {

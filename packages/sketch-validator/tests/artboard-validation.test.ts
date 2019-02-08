@@ -19,6 +19,7 @@ describe('Artboard Validation', () => {
       ruleOptions: {
         layerSize: 3,
       } as any,
+      ruleNames: ['artboard-validation'],
     } as IValidationContext;
   });
 

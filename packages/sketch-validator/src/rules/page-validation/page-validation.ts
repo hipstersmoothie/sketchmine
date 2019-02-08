@@ -1,14 +1,18 @@
 import {
   ValidationError,
   PageNamingError,
+  InvalidSymbolsPageError,
   NoArtboardFoundError,
   EmptyPageError,
   PAGE_NAME_ERROR_MESSAGE,
+  INVALID_SYMBOLS_PAGE_ERROR_MESSAGE,
   NO_ARTBOARD_ERROR_MESSAGE,
   EMPTY_PAGE_ERROR_MESSAGE,
   IValidationErrorContext,
 } from '../../error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
+
+const SYMBOL_MASTER_THRESHOLD = 0.5;
 
 /**
  * Takes a homework and corrects it like a teacher 👩🏼‍🏫
@@ -61,19 +65,33 @@ export function pageValidation(
   const artboards = task.ruleOptions.children
     .filter(c => c.class === 'artboard');
 
-  const symbolMasters = task.ruleOptions.children
-    .filter(c => c.class === 'symbolMaster');
-  const symbolInstances = task.ruleOptions.children
-    .filter(c => c.class === 'symbolInstance');
-
-  // if a page only contains symbolMaster or symbolInstance children it should not be validated
-  isSymbolMaster =
-    task.ruleOptions.children.length === (symbolMasters.length + symbolInstances.length) &&
-    symbolMasters.length > 0;
   hasArtboards = artboards.length > 0;
 
-  // if page is a symbol master, we do not validate
+  const symbolMasters = task.ruleOptions.children
+    .filter(c => c.class === 'symbolMaster');
+
+  // check if page is a symbol master page
+  const noOfChildren = task.ruleOptions.children ? task.ruleOptions.children.length : 0;
+  if (noOfChildren > 0) {
+    const noOfSymbolMasters = symbolMasters.length;
+    isSymbolMaster = (noOfSymbolMasters / noOfChildren) >= SYMBOL_MASTER_THRESHOLD;
+  }
+
   if (isSymbolMaster) {
+    // if page is a symbol master it should only contain symbolMasters as children
+    const noSymbolMasters = task.ruleOptions.children
+      .filter(c => c.class !== 'symbolMaster');
+    noSymbolMasters.forEach((child) => {
+      const childObject: Partial<IValidationErrorContext> = {
+        objectId: child.do_objectID,
+        name: child.name,
+      };
+      errors.push(new InvalidSymbolsPageError({
+        message: INVALID_SYMBOLS_PAGE_ERROR_MESSAGE(child.name),
+        ...childObject,
+      } as IValidationErrorContext));
+    });
+    // if page is a symbol master, we do not validate artboards or the page name
     return errors;
   }
 

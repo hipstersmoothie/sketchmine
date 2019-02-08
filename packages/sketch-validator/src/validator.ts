@@ -212,7 +212,11 @@ export class Validator {
       if (requirements.includes(ValidationRequirements.Children)) {
         if (layer.layers && layer.layers.length) {
           obj.ruleOptions.children = layer.layers.map((l) => {
-            return { name: l.name, class: l._class } as  IValidationContextChildren;
+            return {
+              class: l._class,
+              do_objectID: l.do_objectID,
+              name: l.name,
+            } as  IValidationContextChildren;
           });
         } else {
           obj.ruleOptions.children = [];

@@ -3,6 +3,7 @@ export const ARTBOARD_SIZE_ERROR_MESSAGE = 'Every page needs to have at least on
 export const ARTBOARD_EMPTY_ERROR_MESSAGE = 'Artboards should not be left empty.';
 export const NO_ARTBOARD_ERROR_MESSAGE = 'Every page has to contain at least one artboard.';
 export const EMPTY_PAGE_ERROR_MESSAGE = taskName =>  `The page "${taskName}" is empty.`;
+export const INVALID_SYMBOLS_PAGE_ERROR_MESSAGE = elementName => `The element ${elementName} is no symbol master and not allowed on a symbols page.`;
 export const ARTBOARD_NAME_ERROR_MESSAGE = 'The artboard name should contain artboardsize, folder name and feature name e.g. 360-services-serviceflow.';
 export const PAGE_NAME_ERROR_MESSAGE = artboardsizes => `Every file needs to include pages with the following names: {${artboardsizes.join(', ')}}`;
 export const FILE_NAME_FOLDER_ERROR_MESSAGE = (filename: string) => `File name ${filename} is invalid, it needs to contain the folder name.`;

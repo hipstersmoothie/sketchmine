@@ -33,6 +33,7 @@ const HEADLINE_TEXT_STYLES = [
 /** Valid text colors */
 const VALID_TEXT_COLORS = [
   '#FFFFFF', // white
+  '#F8F8F8', // gray-100
   '#CCCCCC', // gray-300
   '#B7B7B7', // gray-400
   '#898989', // gray-500
@@ -100,7 +101,7 @@ export const rules: IValidationRule[] = [
   {
     selector: [SketchObjectTypes.Page],
     name: 'page-validation',
-    description: 'Check if the page names are valid.',
+    description: 'Check if all pages have a valid name, contain artboards and if the symbols page is valid.',
     env: ['product'],
     validation: pageValidation,
     options: {
