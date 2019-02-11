@@ -109,6 +109,13 @@ export function tsVisitorFactory(
 
       case ts.SyntaxKind.EndOfFileToken:
         break;
+
+      // The following cases are from variable statements
+      case ts.SyntaxKind.FunctionExpression:
+        const nodes = visitFunctionType(node as any);
+        console.log(nodes)
+        break;
+
       default:
         log.warning(`Unsupported SyntaxKind to visit: <${ts.SyntaxKind[node.kind]}>`);
     }
@@ -122,7 +129,7 @@ export function tsVisitorFactory(
 
     node.declarationList.declarations.forEach((declaration: ts.VariableDeclaration) => {
 
-      const value = 'unresolved';
+      const value = visitor(declaration.initializer);
       const location = new ParseLocation(currentLocation, declaration.pos);
 
       const variableStatement = new ParseVariableStatement(
