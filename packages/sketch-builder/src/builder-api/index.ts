@@ -1,4 +1,4 @@
-import { ITraversedElement, TraversedSymbol, TraversedLibrary } from '@sketchmine/dom-agent/lib/@types/public-api';
+import { TraversedSymbol, TraversedLibrary } from '@sketchmine/dom-agent/lib/@types/public-api';
 import { Result as MetaResult } from '@sketchmine/code-analyzer';
 import { Logger } from '@sketchmine/node-helpers';
 import { getComponentSelectors } from '../helpers/get-component-selectors';
