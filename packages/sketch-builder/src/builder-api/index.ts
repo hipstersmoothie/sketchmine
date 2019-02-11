@@ -1,4 +1,4 @@
-import { ITraversedElement, TraversedSymbol } from '@sketchmine/dom-agent/lib/@types/public-api';
+import { ITraversedElement, TraversedSymbol, TraversedLibrary } from '@sketchmine/dom-agent/lib/@types/public-api';
 import { Result as MetaResult } from '@sketchmine/code-analyzer';
 import { Logger } from '@sketchmine/node-helpers';
 import { getComponentSelectors } from '../helpers/get-component-selectors';
@@ -16,7 +16,7 @@ export interface SketchGeneratorApiConfig {
 declare var window: InjectedWindow;
 
 const log = new Logger();
-export async function sketchGeneratorApi(config: SketchGeneratorApiConfig): Promise<any> {
+export async function sketchGeneratorApi(config: SketchGeneratorApiConfig): Promise<TraversedLibrary> {
   const componentSelectors = getComponentSelectors(config.metaInformation);
   const page = await config.browser.newPage();
   let resolveFinish;
@@ -122,5 +122,5 @@ export async function sketchGeneratorApi(config: SketchGeneratorApiConfig): Prom
 
   await finished;
 
-  return await page.evaluate(() => window.library) as ITraversedElement[];
+  return await page.evaluate(() => window.library);
 }
