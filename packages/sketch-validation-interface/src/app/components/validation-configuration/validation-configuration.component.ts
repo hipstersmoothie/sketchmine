@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { ValidationService, ActiveRule } from '../../services/validation.service';
 import { DocumentMetaResponseData } from '../../services/communication.service';
@@ -7,6 +7,7 @@ import { DocumentMetaResponseData } from '../../services/communication.service';
   selector: 'validation-configuration',
   templateUrl: './validation-configuration.component.html',
   styleUrls: ['./validation-configuration.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ValidationConfigurationComponent implements OnInit {
   @Input() documentMeta: DocumentMetaResponseData;

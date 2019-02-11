@@ -65,6 +65,8 @@ export class ValidationService {
       return;
     }
 
+    console.log('after try catch')
+
     const ruleNames = Object.keys(handler.rulesStack);
     const result = [];
 

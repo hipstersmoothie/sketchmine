@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 /** @see https://regex101.com/r/nuKQ0X/4 */
@@ -16,6 +16,7 @@ const LINK_REGEX = /((?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~
   selector: 'result-message',
   template: '<p [innerHTML]="sanitizedMsg"></p>',
   styles: ['.material-icons { vertical-align: -6px }'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResultMessageComponent implements OnInit {
   sanitizedMsg: SafeHtml;

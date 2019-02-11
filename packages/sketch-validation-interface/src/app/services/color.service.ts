@@ -4,7 +4,6 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { CommunicationService } from './communication.service';
 import { MatSnackBar } from '@angular/material';
-import { environment } from '../../environments/environment';
 
 // tslint:disable-next-line:max-line-length
 const COLORS_FILE = 'https://raw.githubusercontent.com/Dynatrace/sketchmine/master/packages/sketch-validator/tests/fixtures/_colors.scss';

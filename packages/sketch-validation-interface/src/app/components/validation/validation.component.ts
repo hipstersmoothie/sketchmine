@@ -1,14 +1,19 @@
-import { Component, OnDestroy } from '@angular/core';
-import { ColorService } from '../../services/color.service';
+import { Component, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { combineLatest, Subject } from 'rxjs';
-import { ValidationService, CommunicationService, DocumentMetaResponseData } from '../../services';
-import { ValidationConfig } from '../../interfaces';
 import { takeUntil, take } from 'rxjs/operators';
+import {
+  ValidationService,
+  CommunicationService,
+  DocumentMetaResponseData,
+  ColorService,
+} from '../../services';
+import { ValidationConfig } from '../../interfaces';
 
 @Component({
   selector: 'validation',
   templateUrl: './validation.component.html',
   styleUrls: ['./validation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ValidationComponent implements OnDestroy {
   documentMeta: DocumentMetaResponseData;
@@ -20,6 +25,7 @@ export class ValidationComponent implements OnDestroy {
     private colorService: ColorService,
     private communicationService: CommunicationService,
     private validationService: ValidationService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.validationService.getRules();
 
@@ -31,6 +37,7 @@ export class ValidationComponent implements OnDestroy {
       this.validationService.colorsFile = colors;
       this.documentMeta = docMeta;
       this.loading = false;
+      this.changeDetectorRef.markForCheck();
     });
   }
 
@@ -43,6 +50,7 @@ export class ValidationComponent implements OnDestroy {
         this.validationService.sketchDocument = document;
         this.result = this.validationService.validate(config);
         this.loading = false;
+        this.changeDetectorRef.markForCheck();
       });
   }
 

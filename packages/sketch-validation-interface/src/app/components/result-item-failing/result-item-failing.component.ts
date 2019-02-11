@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, HostBinding } from '@angular/core';
+import { Component, Input, OnDestroy, HostBinding, ChangeDetectionStrategy } from '@angular/core';
 import { CommunicationService } from '../../services/communication.service';
 import { combineLatest, Subscription } from 'rxjs';
 
@@ -6,6 +6,7 @@ import { combineLatest, Subscription } from 'rxjs';
   selector: 'result-item-failing',
   templateUrl: './result-item-failing.component.html',
   styleUrls: ['./result-item-failing.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResultItemFailingComponent implements OnDestroy {
   @HostBinding('class.is-active') private isSelected: boolean;

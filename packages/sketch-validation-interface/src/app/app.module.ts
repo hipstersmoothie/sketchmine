@@ -26,6 +26,7 @@ import {
   MatListModule,
   MatIconModule,
 } from '@angular/material';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ResultMessageComponent } from './components/result-message/result-message.component';
@@ -59,6 +60,7 @@ import { ResultMessageComponent } from './components/result-message/result-messa
     MatDividerModule,
     MatListModule,
     MatIconModule,
+    ScrollingModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
