@@ -9,23 +9,23 @@ import { getResult } from './get-result';
 describe('ParseVariableStatement', () => {
 
   test('detecting variable statements', () => {
-    const interfaceSource = 'const x = 1;';
-    const result = getResult(interfaceSource).nodes;
+    const source = 'const x = 1;';
+    const result = getResult(source).nodes;
     expect(result).toHaveLength(1);
     expect(result[0]).toBeInstanceOf(ParseVariableDeclaration);
   });
 
   test('detecting variable statements with multiple declarations', () => {
-    const interfaceSource = 'const x = 1, y = 2;';
-    const result = getResult(interfaceSource).nodes;
+    const source = 'const x = 1, y = 2;';
+    const result = getResult(source).nodes;
     expect(result).toHaveLength(2);
     expect(result[0]).toBeInstanceOf(ParseVariableDeclaration);
     expect(result[1]).toBeInstanceOf(ParseVariableDeclaration);
   });
 
   test('detecting variable from object destruction', () => {
-    const interfaceSource = 'const {a,b}={a:1,b:"hello"};';
-    const result = getResult(interfaceSource).nodes;
+    const source = 'const {a,b}={a:1,b:"hello"};';
+    const result = getResult(source).nodes;
     expect(result).toHaveLength(2);
     expect(result[0]).toBeInstanceOf(ParseVariableDeclaration);
     expect((result[0] as any).value).toBeInstanceOf(ParseValueType);
@@ -40,8 +40,8 @@ describe('ParseVariableStatement', () => {
   });
 
   test('detecting variable from array destruction', () => {
-    const interfaceSource = 'const {a,b}=[1, "hello"]';
-    const result = getResult(interfaceSource).nodes;
+    const source = 'const {a,b}=[1, "hello"]';
+    const result = getResult(source).nodes;
     expect(result).toHaveLength(2);
     expect(result[0]).toBeInstanceOf(ParseVariableDeclaration);
     expect((result[0] as any).value).toBeInstanceOf(ParseValueType);
@@ -59,8 +59,8 @@ describe('ParseVariableStatement', () => {
 describe('ParseVariableDeclaration', () => {
 
   test('variable is only declared without value and type', () => {
-    const interfaceSource = 'let x;';
-    const result = getResult(interfaceSource) as any;
+    const source = 'let x;';
+    const result = getResult(source) as any;
     const declaration = result.nodes[0] as ParseVariableDeclaration;
 
     expect(declaration).toBeInstanceOf(ParseVariableDeclaration);
@@ -69,8 +69,8 @@ describe('ParseVariableDeclaration', () => {
   });
 
   test('variable has a string type without value', () => {
-    const interfaceSource = 'let x: string;';
-    const result = getResult(interfaceSource) as any;
+    const source = 'let x: string;';
+    const result = getResult(source) as any;
     const declaration = result.nodes[0] as ParseVariableDeclaration;
 
     expect(declaration).toBeInstanceOf(ParseVariableDeclaration);
@@ -80,8 +80,8 @@ describe('ParseVariableDeclaration', () => {
   });
 
   test('variable has a string type with value', () => {
-    const interfaceSource = 'const x: string = "hello"';
-    const result = getResult(interfaceSource) as any;
+    const source = 'const x: string = "hello"';
+    const result = getResult(source) as any;
     const declaration = result.nodes[0] as ParseVariableDeclaration;
 
     expect(declaration).toBeInstanceOf(ParseVariableDeclaration);
@@ -92,8 +92,8 @@ describe('ParseVariableDeclaration', () => {
   });
 
   test('variable has only a value without a type definition', () => {
-    const interfaceSource = 'const x = 1';
-    const result = getResult(interfaceSource) as any;
+    const source = 'const x = 1';
+    const result = getResult(source) as any;
     const declaration = result.nodes[0] as ParseVariableDeclaration;
 
     expect(declaration).toBeInstanceOf(ParseVariableDeclaration);
@@ -103,8 +103,8 @@ describe('ParseVariableDeclaration', () => {
   });
 
   test('variable has a boolean value', () => {
-    const interfaceSource = 'const x = true';
-    const result = getResult(interfaceSource) as any;
+    const source = 'const x = true';
+    const result = getResult(source) as any;
     const declaration = result.nodes[0] as ParseVariableDeclaration;
 
     expect(declaration).toBeInstanceOf(ParseVariableDeclaration);
@@ -114,8 +114,8 @@ describe('ParseVariableDeclaration', () => {
   });
 
   test('variable has an export keyword', () => {
-    const interfaceSource = 'export const number = 1';
-    const result = getResult(interfaceSource).nodes[0] as ParseVariableDeclaration;
+    const source = 'export const number = 1';
+    const result = getResult(source).nodes[0] as ParseVariableDeclaration;
     expect(result.tags).toHaveLength(1);
     expect(result.tags[0]).toBe('exported');
   });

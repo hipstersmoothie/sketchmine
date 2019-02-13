@@ -10,6 +10,7 @@ export abstract class ParsedVisitor {
   // visitGeneric(node: ParseGeneric) {}
   visitIndexSignature(node: ParseIndexSignature) {}
   visitInterfaceDeclaration(node: ParseInterfaceDeclaration) {}
+  visitIntersectionType(node: ParseIntersectionType) {}
   visitMethod(node: ParseMethod) {}
   visitNode(node: ParseNode) {}
   visitObjectLiteral(node: ParseObjectLiteral) {}
@@ -115,6 +116,25 @@ export class ParseUnionType extends ParseNode {
 
 /**
  * @descriptions
+ * An intersection type combines multiple types into one.
+ * `method(): T & U {…}`
+ * @see https://www.typescriptlang.org/docs/handbook/advanced-types.html
+ */
+export class ParseIntersectionType extends ParseNode {
+
+  constructor(
+    location: ParseLocation,
+    public types: ParseSimpleType[],
+  ) {
+    super(location);
+  }
+  visit(visitor: ParsedVisitor): any {
+    return visitor.visitIntersectionType(this);
+  }
+}
+
+/**
+ * @descriptions
  * A parenthesized type combines multiple types to be applied for an array
  * type as an example: `type a = (number | string)[]`
  * So this array can hold numbers and strings
@@ -192,11 +212,14 @@ export class ParseArrayType extends ParseNode {
   * @description
   * A type parameter is passed like a generic `type a<T> = () => T`
   * it prov
+  * @param constraint The constraint can extend the generic type T
+  * like the following example `function f<T extends OtherType<I>>(): T`
   */
 export class ParseTypeParameter extends ParseNode {
   constructor(
     location: ParseLocation,
     public name: string,
+    public constraint?: ParseType,
   ) {
     super(location);
   }
@@ -450,7 +473,6 @@ export class ParseTypeAliasDeclaration extends ParseProperty {
     return visitor.visitTypeAliasDeclaration(this);
   }
 }
-
 
 /**
  * @description

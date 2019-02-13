@@ -25,6 +25,7 @@ import {
   ParseUnionType,
   ParseArrayType,
   ParseParenthesizedType,
+  ParseIntersectionType,
 } from './parsed-nodes';
 import { getNodeTags, NodeTags } from './util';
 import { getSymbolName } from '../utils';
@@ -61,6 +62,7 @@ type classMembers =
  * All types that can be converted to a ParseMethod
  */
 type methodTypes =
+  | ts.ConstructorTypeNode
   | ts.FunctionDeclaration
   | ts.MethodDeclaration
   | ts.MethodSignature ;
@@ -248,7 +250,10 @@ export class Visitor {
       case ts.SyntaxKind.LiteralType:
         return this.visitType((<any>node).literal);
       case ts.SyntaxKind.FunctionType:
+      case ts.SyntaxKind.ConstructorType:
         return this.visitMethod(node as any);
+      case ts.SyntaxKind.IntersectionType:
+        return this.visitIntersectionType(node as ts.IntersectionTypeNode);
     }
     log.warning(
       chalk`Node Type {bgBlue {magenta  <ts.${ts.SyntaxKind[node.kind]}> }} ` +
@@ -316,7 +321,8 @@ export class Visitor {
    */
   private visitTypeParameter(node: ts.TypeParameterDeclaration): any {
     const { location, name }  = this.getBaseProperties(node);
-    return new ParseTypeParameter(location, name);
+    const constraint = node.constraint ? this.visitType(node.constraint) : undefined;
+    return new ParseTypeParameter(location, name, constraint);
   }
 
   /**
@@ -509,6 +515,20 @@ export class Visitor {
     const location = this.getLocation(node);
     const type = this.visitType(node.type);
     return new ParseParenthesizedType(location, type);
+  }
+
+  /**
+   * @description
+   * Visit a typescript intersection type
+   * An intersection type combines multiple types into onåe.
+   * `method(): T & U {…}`
+   * @see https://www.typescriptlang.org/docs/handbook/advanced-types.html
+   */
+  private visitIntersectionType(node: ts.IntersectionTypeNode): ParseIntersectionType {
+    const location = this.getLocation(node);
+    const types = node.types ? node.types
+      .map((type: ts.TypeNode) => this.visitType(type)) : [];
+    return new ParseIntersectionType(location, types);
   }
 
   /**
