@@ -17,10 +17,11 @@ import {
   VariantMethod as MetaVariantMethod,
   VariantProperty as MetaVariantProperty,
 } from '@sketchmine/code-analyzer/lib/@types';
+import { asyncForEach } from '@sketchmine/helpers';
 import { ExamplesRegistry } from './examples-registry';
 import { checkSubComponents } from './check-sub-components';
 import { Subscription } from 'rxjs';
-import { asyncForEach, waitForDraw, findComponentInstance } from './utils';
+import { waitForDraw, findComponentInstance } from './utils';
 import { map } from 'rxjs/operators';
 
 declare var window: any;

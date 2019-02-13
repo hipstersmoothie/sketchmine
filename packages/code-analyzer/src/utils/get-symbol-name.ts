@@ -40,7 +40,7 @@ export function getSymbolName(node: any): string {
     return node.typeName.text;
   }
 
-  log.warning(
+  log.debug(
     chalk`Unsupported Syntax kind {bgBlue  <${ts.SyntaxKind[node.kind]}> } ` +
     chalk`{grey – function getSymbolName(node)}`,
   );
