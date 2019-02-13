@@ -89,4 +89,18 @@ describe('ParseInterfaceDeclaration', () => {
     expect(prop.typeParameters[0]).toBeInstanceOf(ParseTypeParameter);
     expect(prop.parameters).toHaveLength(2);
   });
+
+  test('interface has type parameters', () => {
+    const interfaceSource = 'interface a<T> { method<T>(a: boolean, b: string): T; }';
+    const result = getResult(interfaceSource).nodes[0];
+    const members = (<ParseInterfaceDeclaration>result).members;
+    expect(members).toHaveLength(1);
+    expect(members[0]).toBeInstanceOf(ParseMethod);
+    const prop = members[0] as unknown as ParseMethod;
+    expect(prop.name).toBe('method');
+    expect(prop.returnType).toBeInstanceOf(ParseReferenceType);
+    expect(prop.typeParameters).toHaveLength(1);
+    expect(prop.typeParameters[0]).toBeInstanceOf(ParseTypeParameter);
+    expect(prop.parameters).toHaveLength(2);
+  });
 });
