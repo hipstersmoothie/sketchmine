@@ -13,8 +13,5 @@ import * as ts from 'typescript';
  * @returns {boolean}
  */
 export function hasExportModifier(node: ts.Declaration): boolean {
-  return (
-    (ts.getCombinedModifierFlags(node) & ts.ModifierFlags.Export) !== 0 ||
-    (!!node.parent && node.parent.kind === ts.SyntaxKind.SourceFile)
-  );
+  return (ts.getCombinedModifierFlags(node) & ts.ModifierFlags.Export) !== 0;
 }

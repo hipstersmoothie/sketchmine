@@ -68,7 +68,7 @@ export function tsVisitorFactory(
     }
 
     currentLocation = sourceFile.fileName;
-    sourceFile.forEachChild(visitor);
+    sourceFile.forEachChild(visitRootNodes);
     const result = new ParseResult(new ParseLocation(currentLocation, 0), nodes, dependencyPaths);
 
     nodes = [];
@@ -82,7 +82,7 @@ export function tsVisitorFactory(
    * Visit the typescript nodes in the root
    * @param {ts.Node} node Node to be visited
    */
-  function visitor(node: ts.Node) {
+  function visitRootNodes(node: ts.Node) {
     switch (node.kind) {
       case ts.SyntaxKind.ExportDeclaration:
       case ts.SyntaxKind.ImportDeclaration:
@@ -110,14 +110,17 @@ export function tsVisitorFactory(
       case ts.SyntaxKind.EndOfFileToken:
         break;
 
-      // The following cases are from variable statements
-      case ts.SyntaxKind.FunctionExpression:
-        const nodes = visitFunctionType(node as any);
-        console.log(nodes)
-        break;
-
       default:
         log.warning(`Unsupported SyntaxKind to visit: <${ts.SyntaxKind[node.kind]}>`);
+    }
+  }
+
+  function visitNodes(node: ts.Node) {
+    switch (node.kind) {
+      case ts.SyntaxKind.FunctionExpression:
+        return visitFunctionType(<any>node);
+      default:
+        log.warning(`Unsupported Node in visitNodes(node: ts.Node): <${ts.SyntaxKind[node.kind]}>`);
     }
   }
 
@@ -129,7 +132,7 @@ export function tsVisitorFactory(
 
     node.declarationList.declarations.forEach((declaration: ts.VariableDeclaration) => {
 
-      const value = visitor(declaration.initializer);
+      const value = visitNodes(declaration.initializer);
       const location = new ParseLocation(currentLocation, declaration.pos);
 
       const variableStatement = new ParseVariableStatement(

@@ -1,3 +1,4 @@
+export * from './async-for-each';
 export * from './capitalize-first-letter';
 export * from './kebab-case-to-camel-case';
 export * from './rgb-to-hex';
