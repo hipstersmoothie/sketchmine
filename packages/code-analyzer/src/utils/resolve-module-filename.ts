@@ -20,5 +20,5 @@ export function resolveModuleFilename(fileName: string) {
   if (isFile(resolved)) {
     return resolved;
   }
-  throw Error(`The specified filename: ${fileName} cannot be resolved!`);
+  throw Error(`The specified module: ./${fileName} cannot be resolved!`);
 }
