@@ -1,14 +1,10 @@
 import {
-  ParseResult,
-  ParseInterfaceDeclaration,
   ParseLocation,
   ParseProperty,
   ParsePrimitiveType,
   ParseMethod,
   ParseTypeParameter,
   ParseReferenceType,
-  ParseTypeLiteral,
-  ParseIndexSignature,
   ParseValueType,
   ParseClassDeclaration,
   ParseDecorator,
@@ -18,7 +14,7 @@ import {
 } from '../../src/v2/parsed-nodes';
 import { getResult } from './get-result';
 
-describe('ParseClassDeclaration', () => {
+describe('[code-analyzer] › ParseClassDeclaration', () => {
 
   test('detecting classes', () => {
     const source = 'class Test {}';

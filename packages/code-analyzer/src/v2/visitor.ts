@@ -1,34 +1,34 @@
 import * as ts from 'typescript';
 import {
-  ParseDefinition,
-  ParseResult,
-  ParseLocation,
-  ParseDependency,
-  ParseVariableDeclaration,
-  ParseType,
-  ParseProperty,
-  ParseEmpty,
-  ParseInterfaceDeclaration,
-  Primitives,
-  ParsePrimitiveType,
-  ParseValueType,
-  ParseIndexSignature,
-  ParseMethod,
-  ParseTypeParameter,
-  ParseReferenceType,
-  ParseTypeLiteral,
-  ParseClassDeclaration,
-  ParseObjectLiteral,
   ParseArrayLiteral,
-  ParseSimpleType,
-  ParseTypeAliasDeclaration,
-  ParseUnionType,
   ParseArrayType,
-  ParseParenthesizedType,
-  ParseIntersectionType,
+  ParseClassDeclaration,
   ParseDecorator,
-  ParseNode,
+  ParseDefinition,
+  ParseDependency,
+  ParseEmpty,
   ParseExpression,
+  ParseIndexSignature,
+  ParseInterfaceDeclaration,
+  ParseIntersectionType,
+  ParseLocation,
+  ParseMethod,
+  ParseNode,
+  ParseObjectLiteral,
+  ParseParenthesizedType,
+  ParsePrimitiveType,
+  ParseProperty,
+  ParseReferenceType,
+  ParseResult,
+  ParseSimpleType,
+  ParseType,
+  ParseTypeAliasDeclaration,
+  ParseTypeLiteral,
+  ParseTypeParameter,
+  ParseUnionType,
+  ParseValueType,
+  ParseVariableDeclaration,
+  Primitives,
 } from './parsed-nodes';
 import { getNodeTags, NodeTags } from './util';
 import { getSymbolName, parseAbsoluteModulePath } from '../utils';
@@ -76,7 +76,7 @@ type methodTypes =
  * @description
  * A node that can have a typeParameters property
  */
-type hasTypeParameterNode =
+export type hasTypeParameterNode =
  | ts.ClassDeclaration
  | ts.InterfaceDeclaration
  | ts.TypeAliasDeclaration

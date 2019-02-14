@@ -1,8 +1,6 @@
 import {
   ParsePrimitiveType,
   ParseValueType,
-  ParseVariableDeclaration,
-  ParseEmpty,
   ParseUnionType,
   ParseTypeAliasDeclaration,
   ParseReferenceType,
@@ -14,7 +12,7 @@ import {
 import { getResult } from './get-result';
 import { NodeTags } from '../../src/v2/util';
 
-describe('ParseTypeAliasDeclaration', () => {
+describe('[code-analyzer] › ParseTypeAliasDeclaration', () => {
 
   test('detecting types', () => {
     const source = 'type t = "abc"';

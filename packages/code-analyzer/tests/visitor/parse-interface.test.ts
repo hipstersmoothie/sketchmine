@@ -13,7 +13,7 @@ import {
 } from '../../src/v2/parsed-nodes';
 import { getResult } from './get-result';
 
-describe('ParseInterfaceDeclaration', () => {
+describe('[code-analyzer] › ParseInterfaceDeclaration', () => {
 
   test('detecting interfaces', () => {
     const source = 'interface TestInterface {}';

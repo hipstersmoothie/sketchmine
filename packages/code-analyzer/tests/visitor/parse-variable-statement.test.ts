@@ -6,7 +6,7 @@ import {
 } from '../../src/v2/parsed-nodes';
 import { getResult } from './get-result';
 
-describe('ParseVariableStatement', () => {
+describe('[code-analyzer] › ParseVariableStatement', () => {
 
   test('detecting variable statements', () => {
     const source = 'const x = 1;';
