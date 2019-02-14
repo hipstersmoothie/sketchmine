@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 import { checkNodeTags } from '../src/utils/check-node-tags';
 
-describe('[angular-meta-paser] › utils › check node tags', () => {
+describe('[code-analyzer] › utils › check node tags', () => {
 
   test('normal node should return no node tags', () => {
     const code = 'export const VARIABLE = "test";';

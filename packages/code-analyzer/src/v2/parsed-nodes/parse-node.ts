@@ -1,34 +1,5 @@
 import { NodeTags } from '../util';
-
-export abstract class ParsedVisitor {
-  visitArrayLiteral(node: ParseArrayLiteral) {}
-  visitArrayType(node: ParseArrayType) {}
-  visitClassDeclaration(node: ParseClassDeclaration) {}
-  // visitComponent(node: ParseComponent) {}
-  visitDecorator(node: ParseDecorator) {}
-  visitDefinition(node: ParseDefinition) {}
-  visitDependency(node: ParseDependency) {}
-  visitExpression(node: ParseExpression) {}
-  // visitGeneric(node: ParseGeneric) {}
-  visitIndexSignature(node: ParseIndexSignature) {}
-  visitInterfaceDeclaration(node: ParseInterfaceDeclaration) {}
-  visitIntersectionType(node: ParseIntersectionType) {}
-  visitMethod(node: ParseMethod) {}
-  visitNode(node: ParseNode) {}
-  visitObjectLiteral(node: ParseObjectLiteral) {}
-  visitParenthesizedType(node: ParseParenthesizedType) {}
-  visitPrimitiveType(node: ParsePrimitiveType) {}
-  visitProperty(node: ParseProperty) {}
-  visitReferenceType(node: ParseReferenceType) {}
-  visitResult(node: ParseResult) {}
-  visitSimpleType(node: ParseSimpleType) {}
-  visitTypeAliasDeclaration(node: ParseTypeAliasDeclaration) {}
-  visitTypeLiteral(node: ParseTypeLiteral) {}
-  visitTypeParameter(node: ParseTypeParameter) {}
-  visitUnionType(node: ParseUnionType) {}
-  visitValueType(node: ParseValueType) {}
-  visitVariableDeclaration(node: ParseVariableDeclaration) {}
-}
+import { ParsedVisitor } from './parsed-visitor';
 
 export type ParseSimpleType =
   | ParseMethod // a function can be a type
@@ -69,6 +40,21 @@ export class ParseEmpty extends ParseNode {
     super(null);
   }
   visit(visitor: ParsedVisitor): any { return null; }
+}
+
+/**
+ * @description
+ * The parse generic is being used as a placeholder during the transform process
+ * to be replaced later on with the real value.
+ */
+export class ParseGeneric extends ParseEmpty {
+  value: ParseNode;
+  constructor(public name: string) {
+    super();
+  }
+  visit(visitor: ParsedVisitor): any {
+    return visitor.visitGeneric(this);
+  }
 }
 
 /**
@@ -153,7 +139,6 @@ export class ParseParenthesizedType extends ParseNode {
     return visitor.visitParenthesizedType(this);
   }
 }
-
 
 /**
  * @description
