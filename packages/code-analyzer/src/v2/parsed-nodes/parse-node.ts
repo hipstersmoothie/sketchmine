@@ -5,8 +5,10 @@ export abstract class ParsedVisitor {
   visitArrayType(node: ParseArrayType) {}
   visitClassDeclaration(node: ParseClassDeclaration) {}
   // visitComponent(node: ParseComponent) {}
+  visitDecorator(node: ParseDecorator) {}
   visitDefinition(node: ParseDefinition) {}
   visitDependency(node: ParseDependency) {}
+  visitExpression(node: ParseExpression) {}
   // visitGeneric(node: ParseGeneric) {}
   visitIndexSignature(node: ParseIndexSignature) {}
   visitInterfaceDeclaration(node: ParseInterfaceDeclaration) {}
@@ -254,6 +256,44 @@ export class ParseTypeLiteral extends ParseNode {
 
 /**
  * @description
+ * Visits a typescript visitDecorator
+ */
+export class ParseDecorator extends ParseNode {
+  constructor(
+    location: ParseLocation,
+    public name: string,
+    public args: ParseNode[] = [],
+  ) {
+    super(location);
+  }
+
+  visit(visitor: ParsedVisitor): any {
+    return visitor.visitDecorator(this);
+  }
+}
+
+/**
+ * @description
+ * Holds the information for a typescript expression more or less like
+ * a reference to the declaration with values for the parameters
+ */
+export class ParseExpression extends ParseReferenceType {
+  constructor(
+    location: ParseLocation,
+    name: string,
+    typeArguments: ParseType[] = [],
+    public args: ParseNode[] = [],
+  ) {
+    super(location, name, typeArguments);
+  }
+
+  visit(visitor: ParsedVisitor): any {
+    return visitor.visitExpression(this);
+  }
+}
+
+/**
+ * @description
  * A parse object literal is an Object with properties.
  */
 export class ParseObjectLiteral extends ParseNode {
@@ -322,6 +362,7 @@ export class ParseProperty extends ParseDefinition {
     tags: NodeTags[],
     public type: ParseType,
     public value?: any,
+    public decorators?: ParseDecorator[],
   ) {
     super(location, name, tags);
   }
@@ -387,6 +428,7 @@ export class ParseMethod extends ParseDefinition {
     public parameters: ParseProperty[],
     public returnType: ParseType,
     public typeParameters: ParseType[] = [],
+    public decorators?: ParseDecorator[],
   ) {
     super(location, name, tags);
   }
@@ -509,8 +551,16 @@ export class ParseClassDeclaration extends ParseInterfaceDeclaration {
     typeParameters: ParseType[] = [],
     extending: ParseReferenceType[],
     public implementing: ParseReferenceType[],
+    public decorators?: ParseDecorator[],
   ) {
     super(location, name, tags, members, typeParameters, extending);
+  }
+
+  isAngularComponent(): boolean {
+    if (!this.decorators || !this.decorators.length) { return false; }
+    return !!this.decorators
+      .find((decorator: ParseDecorator) =>
+        decorator.name === 'Component');
   }
 
   visit(visitor: ParsedVisitor): any {

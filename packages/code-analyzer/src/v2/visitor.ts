@@ -26,11 +26,15 @@ import {
   ParseArrayType,
   ParseParenthesizedType,
   ParseIntersectionType,
+  ParseDecorator,
+  ParseNode,
+  ParseExpression,
 } from './parsed-nodes';
 import { getNodeTags, NodeTags } from './util';
-import { getSymbolName } from '../utils';
+import { getSymbolName, parseAbsoluteModulePath } from '../utils';
 import { Logger } from '@sketchmine/node-helpers';
 import { flatten } from 'lodash';
+import { dirname } from 'path';
 import chalk from 'chalk';
 
 const log = new Logger();
@@ -65,6 +69,7 @@ type methodTypes =
   | ts.ConstructorTypeNode
   | ts.FunctionDeclaration
   | ts.MethodDeclaration
+  | ts.SetAccessorDeclaration
   | ts.MethodSignature ;
 
 /**
@@ -84,7 +89,9 @@ type hasTypeParameterNode =
 type propertyTypes =
   | ts.ParameterDeclaration
   | ts.PropertyAssignment
-  | ts.PropertyDeclaration;
+  | ts.GetAccessorDeclaration
+  | ts.PropertyDeclaration
+  | ts.PropertySignature;
 
 /**
  * @description
@@ -134,8 +141,8 @@ export class Visitor {
   visitSourceFile(sourceFile: ts.SourceFile): ParseResult {
     const location = this.getLocation(sourceFile);
     const definitions: ParseDefinition[] = sourceFile.statements
-      .map((node: ts.Node) =>
-        this.visit(node));
+      .map((node: ts.Node) => this.visit(node))
+      .filter((node: ParseNode) => node !== undefined);
 
     return new ParseResult(location, flatten(definitions), this.dependencyPaths);
   }
@@ -158,6 +165,10 @@ export class Visitor {
         return this.visitClassDeclaration(node as ts.ClassDeclaration);
       case ts.SyntaxKind.InterfaceDeclaration:
         return this.visitInterfaceDeclaration(node as ts.InterfaceDeclaration);
+      case ts.SyntaxKind.ExportDeclaration:
+      case ts.SyntaxKind.ImportDeclaration:
+        this.visitExportOrImportDeclaration(node as ts.ImportDeclaration | ts.ExportDeclaration);
+        break;
       case ts.SyntaxKind.HeritageClause:
         return this.visitHeritageClause(node as ts.HeritageClause);
       case ts.SyntaxKind.VariableStatement:
@@ -171,17 +182,32 @@ export class Visitor {
       case ts.SyntaxKind.PropertyDeclaration:
       case ts.SyntaxKind.PropertyAssignment:
       case ts.SyntaxKind.Parameter:
+      case ts.SyntaxKind.GetAccessor:
         return this.visitPropertyOrParameter(node as propertyTypes);
       case ts.SyntaxKind.MethodDeclaration:
       case ts.SyntaxKind.FunctionDeclaration:
+      case ts.SyntaxKind.SetAccessor:
         return this.visitMethod(node as methodTypes);
       case ts.SyntaxKind.ObjectLiteralExpression:
         return this.visitObjectLiteral(node as ts.ObjectLiteralExpression);
       case ts.SyntaxKind.StringLiteral:
       case ts.SyntaxKind.FirstLiteralToken:
+      case ts.SyntaxKind.FirstTemplateToken:
       case ts.SyntaxKind.FalseKeyword:
       case ts.SyntaxKind.TrueKeyword:
+      case ts.SyntaxKind.Identifier:
         return this.visitType(node as ts.TypeNode);
+      case ts.SyntaxKind.Decorator:
+        return this.visitDecorator(node as ts.Decorator);
+      case ts.SyntaxKind.Constructor:
+        return this.visitConstructor(node as ts.ConstructorDeclaration);
+      case ts.SyntaxKind.CallExpression:
+        return this.visitCallExpression(node as ts.CallExpression);
+      case ts.SyntaxKind.PropertyAccessExpression:
+        // We do not need property accesses (does not provide any value or type information)
+        // in case that we do not execute
+        // the code only gets analyzed.
+        return new ParseEmpty();
       default:
         log.warning(`Unsupported SyntaxKind to visit: <${ts.SyntaxKind[node.kind]}>`);
         return;
@@ -222,6 +248,7 @@ export class Visitor {
         return new ParseValueType(location, false);
       case ts.SyntaxKind.TrueKeyword:
         return new ParseValueType(location, true);
+      case ts.SyntaxKind.Identifier:
       case ts.SyntaxKind.TypeReference:
         const typeReferenceName = getSymbolName(node);
         let typeArguments: ParseType[] = [];
@@ -237,6 +264,7 @@ export class Visitor {
         // First LiteralToken is a number as value
         // occurs by variable declarations as value `const x = 1`
         return new ParseValueType(location, parseInt(node.getText(), 10));
+      case ts.SyntaxKind.FirstTemplateToken:
       case ts.SyntaxKind.StringLiteral:
         return new ParseValueType(location, node.getText());
       case ts.SyntaxKind.TypeLiteral:
@@ -282,9 +310,7 @@ export class Visitor {
 
     switch (node.kind) {
       case ts.SyntaxKind.PropertySignature:
-        const propertyName = getSymbolName(node);
-        return new ParseProperty(location, propertyName, tags, type);
-
+        return this.visitPropertyOrParameter(node);
       case ts.SyntaxKind.MethodSignature:
         return this.visitMethod(node);
       case ts.SyntaxKind.IndexSignature:
@@ -312,6 +338,63 @@ export class Visitor {
           chalk`{grey @${location.path}}`,
         );
     }
+  }
+
+  /**
+   * @description
+   * Visits a typescript call Expression we need to check the return type
+   * in case that it can be used to assign data to a variable statement.
+   */
+  private visitCallExpression(node: ts.CallExpression): ParseExpression {
+    const { location, name } = this.getBaseProperties(node);
+    let typeArguments: ParseType[] = [];
+    let args: ParseNode[] = [];
+
+    // A call expression can have besides the normal arguments type arguments
+    // that are passed to the function.
+    if (node.typeArguments) {
+      typeArguments = node.typeArguments
+        .map((argument: ts.TypeNode) => this.visitType(argument));
+    }
+
+    // the parameters that are passed to the call expression
+    if (node.arguments) {
+      args = node.arguments.map((argument: ts.Node) => this.visit(argument));
+    }
+
+    return new ParseExpression(location, name, typeArguments, args);
+  }
+
+  /**
+   * @description
+   * We need to visit a class constructor declaration in case that there can be
+   * some public or private properties defined in the parameters.
+   * In this case we need to return an array an ParseProperties
+   */
+  private visitConstructor(node: ts.ConstructorDeclaration): ParseProperty[] {
+    const keywords: Partial<NodeTags>[] = ['private', 'public', 'protected'];
+
+    // get all parameters and filter the private and public ones
+    const parameters = node.parameters
+      .map((parameter: ts.ParameterDeclaration) => this.visit(parameter))
+      .filter((parameter: ParseProperty) =>
+        parameter.tags.some((tag: NodeTags) => keywords.includes(tag)));
+
+    return parameters;
+  }
+
+  /**
+   * @description
+   * Visits a typescript decorator.
+   */
+  private visitDecorator(node: ts.Decorator) {
+    const expression = node.expression as ts.CallExpression;
+    const { location, name } = this.getBaseProperties(expression.expression);
+
+    const args = expression.arguments
+      .map((argument: ts.Expression) => this.visit(argument));
+
+    return new ParseDecorator(location, name, args);
   }
 
   /**
@@ -344,17 +427,30 @@ export class Visitor {
   private visitClassDeclaration(node: ts.ClassDeclaration): any {
     const { location, name, tags }  = this.getBaseProperties(node);
     const typeParameters = this.getTypeParametersOfNode(node);
-    const members = node.members ?
-      node.members.map((member: classMembers) => this.visit(member)) :
-      [];
-
     const extending = this.getHeritageClauses(node, ts.SyntaxKind.ExtendsKeyword);
     const implementing = this.getHeritageClauses(node, ts.SyntaxKind.ImplementsKeyword);
+    let decorators: ParseDecorator[];
+    const members = node.members
+      ? node.members.map((member: classMembers) => this.visit(member))
+      : [];
 
-    // TODO: parse decorator
-    // node.decorators.map()
+    if (node.hasOwnProperty('decorators') && node.decorators) {
+      decorators = node.decorators
+        .map((decorator: ts.Decorator) => this.visit(decorator));
+    }
 
-    return new ParseClassDeclaration(location, name, tags, members, typeParameters, extending, implementing);
+    return new ParseClassDeclaration(
+      location,
+      name,
+      tags,
+      // flatten in case there can be an array from all the constructor parameters
+      // that get parsed as members when they are public, private or protected
+      flatten(members),
+      typeParameters,
+      extending,
+      implementing,
+      decorators,
+    );
   }
 
   /**
@@ -371,15 +467,36 @@ export class Visitor {
 
   /**
    * @description
-   * A property can be a property inside a typescript class definition,
-   * a property can also be a function parameter.
+   * A property can be a member of a typescript class or interface,
+   * a property can also be a function parameter, or a get accessor
    */
   private visitPropertyOrParameter(node: propertyTypes): ParseProperty {
     const { location, name, tags }  = this.getBaseProperties(node);
-    const type = (<any>node).type ? this.visitType((<any>node).type) : undefined;
-    const value = (node.initializer) ? this.visit(node.initializer) : undefined;
+    let decorators: ParseDecorator[];
+    let type: ParseType;
+    let value;
 
-    return new ParseProperty(location, name, tags, type, value);
+    // A Property Assignment has no type so we need to check for the type
+    // property on the node
+    if (node.hasOwnProperty('type') && (<any>node).type) {
+      type = this.visitType((<any>node).type);
+    }
+
+    // If the node has an initializer (a value) then visit it.
+    // A variable declaration without assigning a value has no initializer
+    // A Get Accessor has no initializer, in case it is a function, so we need to check it
+    if (node.hasOwnProperty('initializer') && (<any>node).initializer) {
+      value = this.visit((<any>node).initializer);
+    }
+
+    // A get accessor can have a decorator as well or class members, so
+    // we need to check the properties here
+    if (node.hasOwnProperty('decorators') && node.decorators) {
+      decorators = node.decorators
+        .map((decorator: ts.Decorator) => this.visit(decorator));
+    }
+
+    return new ParseProperty(location, name, tags, type, value, decorators);
   }
 
   /**
@@ -393,8 +510,22 @@ export class Visitor {
     const returnType = this.visitType(node.type);
     const parameters = this.getMethodParameters(node);
     const typeParameters = this.getTypeParametersOfNode(node);
+    let decorators: ParseDecorator[];
 
-    return new ParseMethod(location, methodName, tags, parameters, returnType, typeParameters);
+    if (node.hasOwnProperty('decorators') && node.decorators) {
+      decorators = node.decorators
+        .map((decorator: ts.Decorator) => this.visit(decorator));
+    }
+
+    return new ParseMethod(
+      location,
+      methodName,
+      tags,
+      parameters,
+      returnType,
+      typeParameters,
+      decorators,
+    );
   }
 
   /**
@@ -542,6 +673,61 @@ export class Visitor {
   }
 
   /**
+   * Visits and Import or ExportDeclaration Nodes and adds the paths to the
+   * Dependency path array to know which files should be ParseDependency.
+   * In the example below the modules `['/path/to/module', '/path/to/module-b']` would
+   * be added to the `dependencyPaths` array.
+   * When the function `parseAbsoluteModulePath` returns null then it is a **node_module** and
+   * gets ignored.
+   * ```typescript
+   * import { fn } from '../module';
+   * export * from './module-b';
+   * ```
+   */
+  private visitExportOrImportDeclaration(node: ts.ExportDeclaration | ts.ImportDeclaration): void {
+    const location = this.getLocation(node);
+    const relativePath = getSymbolName(node.moduleSpecifier);
+
+    // if the if the import has no moduleSpecifier something is wrong!
+    if (!relativePath) {
+      throw Error('Import statement without module specifier found!');
+    }
+
+    // get the absolute path from the relative one.
+    // the relative path its the module specifier, so the string after the from statement
+    const absolutePath = parseAbsoluteModulePath(
+      dirname(location.path),
+      relativePath,
+      this.paths,
+      this.nodeModulesPath,
+    );
+
+    // if absolutePath is null then it is a node_module so we can skip it!
+    if (absolutePath === null) {
+      return;
+    }
+
+    // use a set to avoid duplicate import specifier
+    const importSpecifier = new Set<string>();
+
+    // if we have a named import than we add the import specifiers to the parse dependency
+    if (
+      node.kind === ts.SyntaxKind.ImportDeclaration &&
+      node.importClause &&
+      node.importClause.namedBindings &&
+      (node.importClause.namedBindings as ts.NamedImports).elements &&
+      (node.importClause.namedBindings as ts.NamedImports).elements.length
+    ) {
+      const elements = (node.importClause.namedBindings as ts.NamedImports).elements;
+      elements.forEach(el => importSpecifier.add(getSymbolName(el.name)));
+    }
+
+    this.dependencyPaths.push(
+      new ParseDependency(location, absolutePath, importSpecifier),
+    );
+  }
+
+  /**
    * @internal helper function to access the AST
    * @description
    * is visiting the HeritageClauses of an interface or class declaration
@@ -581,7 +767,7 @@ export class Visitor {
     let parameters: ParseProperty[] = [];
 
     // if the method has parameters
-    if (node.parameters && node.parameters.length) {
+    if (node.parameters) {
       parameters = node.parameters
         .map((parameter: ts.ParameterDeclaration) => this.visit(parameter));
     }
@@ -598,7 +784,7 @@ export class Visitor {
     let typeParameters: ParseTypeParameter[] = [];
 
     // check if the node has type parameters
-    if (node.typeParameters && node.typeParameters.length) {
+    if (node.typeParameters) {
       typeParameters = node.typeParameters
         .map((parameter: ts.TypeParameterDeclaration) =>
           this.visitTypeParameter(parameter));
