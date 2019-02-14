@@ -20,6 +20,8 @@ export function getSymbolName(node: any): string {
       return node.declarations.map(declaration => getSymbolName(declaration)).join(', ');
     case ts.SyntaxKind.ObjectLiteralExpression:
     case ts.SyntaxKind.ArrayLiteralExpression:
+    case ts.SyntaxKind.FunctionType:
+    case ts.SyntaxKind.IndexSignature:
     case ts.SyntaxKind.ConstructorType:
       // Array or Object Literal expressions can't have a name!
       return;
@@ -51,7 +53,7 @@ export function getSymbolName(node: any): string {
   }
 
   // call expression
-  if (node.expression.kind === ts.SyntaxKind.Identifier) {
+  if (node.expression && node.expression.kind === ts.SyntaxKind.Identifier) {
     return node.expression.text;
   }
 

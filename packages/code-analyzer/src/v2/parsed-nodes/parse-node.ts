@@ -427,7 +427,7 @@ export class ParseMethod extends ParseDefinition {
     tags: NodeTags[],
     public parameters: ParseProperty[],
     public returnType: ParseType,
-    public typeParameters: ParseType[] = [],
+    public typeParameters: ParseTypeParameter[] = [],
     public decorators?: ParseDecorator[],
   ) {
     super(location, name, tags);
@@ -525,9 +525,9 @@ export class ParseInterfaceDeclaration extends ParseDefinition {
     location: ParseLocation,
     name: string,
     tags: NodeTags[],
-    public members: ParseProperty[] = [],
-    public typeParameters: ParseType[] = [],
-    public extending: ParseReferenceType[] = [],
+    public members: (ParseProperty | ParseMethod | ParseIndexSignature)[] = [],
+    public typeParameters: ParseTypeParameter[] = [],
+    public extending: ParseReferenceType = undefined,
   ) {
     super(location, name, tags);
   }
@@ -547,10 +547,10 @@ export class ParseClassDeclaration extends ParseInterfaceDeclaration {
     location: ParseLocation,
     name: string,
     tags: NodeTags[],
-    members: ParseProperty[] = [],
-    typeParameters: ParseType[] = [],
-    extending: ParseReferenceType[],
-    public implementing: ParseReferenceType[],
+    members: (ParseProperty | ParseMethod)[] = [],
+    typeParameters: ParseTypeParameter[] = [],
+    extending: ParseReferenceType = undefined,
+    public implementing?: ParseReferenceType[],
     public decorators?: ParseDecorator[],
   ) {
     super(location, name, tags, members, typeParameters, extending);

@@ -334,8 +334,7 @@ export class Visitor {
       default:
         log.warning(
           chalk`Signature Type {bgBlue {magenta  <ts.${ts.SyntaxKind[(<ts.Node>node).kind]}> }} ` +
-          chalk`not handled yet! {grey – visitSignature(node)}\n` +
-          chalk`{grey @${location.path}}`,
+          chalk`not handled yet! {grey – visitSignature(node) @${location.path}}`,
         );
     }
   }
@@ -447,7 +446,8 @@ export class Visitor {
       // that get parsed as members when they are public, private or protected
       flatten(members),
       typeParameters,
-      extending,
+      // there can only be one extends in typescript
+      extending[0],
       implementing,
       decorators,
     );
@@ -473,7 +473,7 @@ export class Visitor {
   private visitPropertyOrParameter(node: propertyTypes): ParseProperty {
     const { location, name, tags }  = this.getBaseProperties(node);
     let decorators: ParseDecorator[];
-    let type: ParseType;
+    let type: ParseType = new ParseEmpty();
     let value;
 
     // A Property Assignment has no type so we need to check for the type
@@ -634,7 +634,15 @@ export class Visitor {
 
     const extending = this.getHeritageClauses(node, ts.SyntaxKind.ExtendsKeyword);
 
-    return new ParseInterfaceDeclaration(location, name, tags, members, typeParameters, extending);
+    return new ParseInterfaceDeclaration(
+      location,
+      name,
+      tags,
+      members,
+      typeParameters,
+      // there can only be one extends in typescript
+      extending[0],
+    );
   }
 
   /**
