@@ -26,14 +26,17 @@ describe('[code-analyzer] › ParseInterfaceDeclaration', () => {
   });
 
   test('interface has multiple members', () => {
-    const source = 'interface TestInterface { a: number; b: string; }';
+    const source = 'interface TestInterface { a: number; b: string; c: () => boolean }';
     const result = getParsedResult(source).nodes[0] as ParseInterfaceDeclaration;
     expect(result).toBeInstanceOf(ParseInterfaceDeclaration);
     expect(result.tags).toHaveLength(0);
     const members = result.members as ParseProperty[];
-    expect(members).toHaveLength(2);
+    expect(members).toHaveLength(3);
     expect((members[0].type as ParsePrimitiveType).type).toBe('number');
     expect((members[1].type as ParsePrimitiveType).type).toBe('string');
+    expect(members[0].isFunction()).toBe(false);
+    expect(members[1].isFunction()).toBe(false);
+    expect(members[2].isFunction()).toBe(true);
   });
 
   test('interface can have nested objects', () => {
