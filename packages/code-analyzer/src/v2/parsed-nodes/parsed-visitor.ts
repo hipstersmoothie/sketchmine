@@ -36,7 +36,6 @@ export interface ParsedVisitor {
   visitInterfaceDeclaration(node: ParseInterfaceDeclaration): any;
   visitIntersectionType(node: ParseIntersectionType): any;
   visitMethod(node: ParseMethod): any;
-  visitNode(node: ParseNode): any;
   visitObjectLiteral(node: ParseObjectLiteral): any;
   visitParenthesizedType(node: ParseParenthesizedType): any;
   visitPrimitiveType(node: ParsePrimitiveType): any;
@@ -62,7 +61,6 @@ export class NullVisitor implements ParsedVisitor {
   visitInterfaceDeclaration(node: ParseInterfaceDeclaration): any { return null; }
   visitIntersectionType(node: ParseIntersectionType): any { return null; }
   visitMethod(node: ParseMethod): any { return null; }
-  visitNode(node: ParseNode): any { return null; }
   visitObjectLiteral(node: ParseObjectLiteral): any { return null; }
   visitParenthesizedType(node: ParseParenthesizedType): any { return null; }
   visitPrimitiveType(node: ParsePrimitiveType): any { return null; }
@@ -95,7 +93,6 @@ export class NodeVisitor extends NullVisitor implements ParsedVisitor {
   visitInterfaceDeclaration(node: ParseInterfaceDeclaration): any { return node; }
   visitIntersectionType(node: ParseIntersectionType): any { return node; }
   visitMethod(node: ParseMethod): any { return node; }
-  visitNode(node: ParseNode): any { return node; }
   visitObjectLiteral(node: ParseObjectLiteral): any { return node; }
   visitParenthesizedType(node: ParseParenthesizedType): any { return node; }
   visitPrimitiveType(node: ParsePrimitiveType): any { return node; }
@@ -113,15 +110,11 @@ export class NodeVisitor extends NullVisitor implements ParsedVisitor {
 export class TreeVisitor extends NodeVisitor implements ParsedVisitor {
 
   visitArrayLiteral(node: ParseArrayLiteral): any {
-    if (node.values) {
-      node.values = this.visitAll(node.values);
-    }
+    node.values = this.visitAll(node.values);
     return node;
   }
   visitArrayType(node: ParseArrayType): any {
-    if (node.type) {
-      node.type = this.visit(node.type);
-    }
+    node.type = this.visit(node.type);
     return node;
   }
   visitClassDeclaration(node: ParseClassDeclaration): any {
