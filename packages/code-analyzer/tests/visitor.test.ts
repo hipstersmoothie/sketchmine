@@ -19,7 +19,7 @@ describe('[code-analyzer] › visitor', () => {
     );
   });
 
-  it('should have generated a ts.Sourcefile from the testfile.', () => {
+  it('should have generated a ts.Sourcefile from the test file.', () => {
     expect(sourceFile).not.toBeUndefined();
     expect(sourceFile.fileName).toBe(TEST_FILE_PATH);
     expect(sourceFile.statements.length).toBeGreaterThan(0);
@@ -43,7 +43,7 @@ describe('[code-analyzer] › visitor', () => {
       expect(result.dependencyPaths[0]).toBeInstanceOf(ParseDependency);
     });
 
-    describe('sholud contain component', () => {
+    describe('should contain component', () => {
       let component;
       let comp: ParseComponent;
       beforeAll(() => {
@@ -62,7 +62,7 @@ describe('[code-analyzer] › visitor', () => {
         expect(comp.selector).toBeInstanceOf(Array);
         expect(comp.selector.length).toBe(2);
       });
-      it('sholud contain JSDoc annotations in comment', () => {
+      it('should contain JSDoc annotations in comment', () => {
         expect(comp.tags).toContain('unrelated');
         expect(comp.clickable).toBeTruthy();
         expect(comp.hoverable).toBeTruthy();
@@ -75,7 +75,7 @@ describe('[code-analyzer] › visitor', () => {
           expect(member).toBeInstanceOf(ParseProperty);
         });
       });
-      it('Expect third memeber to be a ButtonVariant', () => {
+      it('Expect third member to be a ButtonVariant', () => {
         expect(comp.members[2].type).toBeInstanceOf(ParseReferenceType);
         expect((comp.members[2].type as ParseReferenceType).name).toBe('ButtonVariant');
       });

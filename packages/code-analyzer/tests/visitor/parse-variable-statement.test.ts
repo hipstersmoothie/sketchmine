@@ -4,20 +4,20 @@ import {
   ParseVariableDeclaration,
   ParseEmpty,
 } from '../../src/v2/parsed-nodes';
-import { getResult } from './get-result';
+import { getParsedResult } from '../helpers';
 
 describe('[code-analyzer] › ParseVariableStatement', () => {
 
   test('detecting variable statements', () => {
     const source = 'const x = 1;';
-    const result = getResult(source).nodes;
+    const result = getParsedResult(source).nodes;
     expect(result).toHaveLength(1);
     expect(result[0]).toBeInstanceOf(ParseVariableDeclaration);
   });
 
   test('detecting variable statements with multiple declarations', () => {
     const source = 'const x = 1, y = 2;';
-    const result = getResult(source).nodes;
+    const result = getParsedResult(source).nodes;
     expect(result).toHaveLength(2);
     expect(result[0]).toBeInstanceOf(ParseVariableDeclaration);
     expect(result[1]).toBeInstanceOf(ParseVariableDeclaration);
@@ -25,7 +25,7 @@ describe('[code-analyzer] › ParseVariableStatement', () => {
 
   test('detecting variable from object destruction', () => {
     const source = 'const {a,b}={a:1,b:"hello"};';
-    const result = getResult(source).nodes;
+    const result = getParsedResult(source).nodes;
     expect(result).toHaveLength(2);
     expect(result[0]).toBeInstanceOf(ParseVariableDeclaration);
     expect((result[0] as any).value).toBeInstanceOf(ParseValueType);
@@ -41,7 +41,7 @@ describe('[code-analyzer] › ParseVariableStatement', () => {
 
   test('detecting variable from array destruction', () => {
     const source = 'const {a,b}=[1, "hello"]';
-    const result = getResult(source).nodes;
+    const result = getParsedResult(source).nodes;
     expect(result).toHaveLength(2);
     expect(result[0]).toBeInstanceOf(ParseVariableDeclaration);
     expect((result[0] as any).value).toBeInstanceOf(ParseValueType);
@@ -60,7 +60,7 @@ describe('ParseVariableDeclaration', () => {
 
   test('variable is only declared without value and type', () => {
     const source = 'let x;';
-    const result = getResult(source) as any;
+    const result = getParsedResult(source) as any;
     const declaration = result.nodes[0] as ParseVariableDeclaration;
 
     expect(declaration).toBeInstanceOf(ParseVariableDeclaration);
@@ -70,7 +70,7 @@ describe('ParseVariableDeclaration', () => {
 
   test('variable has a string type without value', () => {
     const source = 'let x: string;';
-    const result = getResult(source) as any;
+    const result = getParsedResult(source) as any;
     const declaration = result.nodes[0] as ParseVariableDeclaration;
 
     expect(declaration).toBeInstanceOf(ParseVariableDeclaration);
@@ -81,7 +81,7 @@ describe('ParseVariableDeclaration', () => {
 
   test('variable has a string type with value', () => {
     const source = 'const x: string = "hello"';
-    const result = getResult(source) as any;
+    const result = getParsedResult(source) as any;
     const declaration = result.nodes[0] as ParseVariableDeclaration;
 
     expect(declaration).toBeInstanceOf(ParseVariableDeclaration);
@@ -93,7 +93,7 @@ describe('ParseVariableDeclaration', () => {
 
   test('variable has only a value without a type definition', () => {
     const source = 'const x = 1';
-    const result = getResult(source) as any;
+    const result = getParsedResult(source) as any;
     const declaration = result.nodes[0] as ParseVariableDeclaration;
 
     expect(declaration).toBeInstanceOf(ParseVariableDeclaration);
@@ -104,7 +104,7 @@ describe('ParseVariableDeclaration', () => {
 
   test('variable has a boolean value', () => {
     const source = 'const x = true';
-    const result = getResult(source) as any;
+    const result = getParsedResult(source) as any;
     const declaration = result.nodes[0] as ParseVariableDeclaration;
 
     expect(declaration).toBeInstanceOf(ParseVariableDeclaration);
@@ -115,7 +115,7 @@ describe('ParseVariableDeclaration', () => {
 
   test('variable has an export keyword', () => {
     const source = 'export const number = 1';
-    const result = getResult(source).nodes[0] as ParseVariableDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseVariableDeclaration;
     expect(result.tags).toHaveLength(1);
     expect(result.tags[0]).toBe('exported');
   });

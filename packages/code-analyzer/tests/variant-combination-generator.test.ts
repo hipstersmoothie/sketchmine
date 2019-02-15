@@ -62,7 +62,7 @@ describe('[code-analyzer] › utils › generate variants', () => {
     );
   });
 
-  test('permutate all the button variants', () => {
+  test('permute all the button variants', () => {
     const result = variantCombinationGenerator('button', ...BUTTON_VARIANTS);
     expect(result).toBeInstanceOf(Array);
     expect(result).toHaveLength(23);
@@ -93,7 +93,7 @@ describe('[code-analyzer] › utils › generate variants', () => {
     expect(variants).toContain('button/warning/disabled');
   });
 
-  test('if undefine is getting stripped out', () => {
+  test('if undefined is getting stripped out', () => {
     const BUTTON: Property[] = [
       { type: 'property', key: 'disabled', value: ['true'] },
       { type: 'property', key: 'color', value: ['"main"', '"accent"', '"warning"', '"error"', '"cta"', undefined] },

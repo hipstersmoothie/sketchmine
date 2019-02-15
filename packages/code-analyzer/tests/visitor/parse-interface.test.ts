@@ -11,13 +11,13 @@ import {
   ParseIndexSignature,
   ParseValueType,
 } from '../../src/v2/parsed-nodes';
-import { getResult } from './get-result';
+import { getParsedResult } from '../helpers';
 
 describe('[code-analyzer] › ParseInterfaceDeclaration', () => {
 
   test('detecting interfaces', () => {
     const source = 'interface TestInterface {}';
-    const result = getResult(source).nodes[0];
+    const result = getParsedResult(source).nodes[0];
     expect(result).toBeInstanceOf(ParseInterfaceDeclaration);
     expect(result.tags).toHaveLength(0);
     expect(result.name).toBe('TestInterface');
@@ -27,7 +27,7 @@ describe('[code-analyzer] › ParseInterfaceDeclaration', () => {
 
   test('interface has multiple members', () => {
     const source = 'interface TestInterface { a: number; b: string; }';
-    const result = getResult(source).nodes[0] as ParseInterfaceDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseInterfaceDeclaration;
     expect(result).toBeInstanceOf(ParseInterfaceDeclaration);
     expect(result.tags).toHaveLength(0);
     const members = result.members as ParseProperty[];
@@ -38,7 +38,7 @@ describe('[code-analyzer] › ParseInterfaceDeclaration', () => {
 
   test('interface can have nested objects', () => {
     const source = 'interface TestInterface { a: number; b: string; c: { d: number }}';
-    const result = getResult(source).nodes[0] as ParseInterfaceDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseInterfaceDeclaration;
     expect(result).toBeInstanceOf(ParseInterfaceDeclaration);
     expect(result.tags).toHaveLength(0);
     const members = result.members as ParseProperty[];
@@ -52,7 +52,7 @@ describe('[code-analyzer] › ParseInterfaceDeclaration', () => {
 
   test('interface to have PropertySignature member', () => {
     const source = 'interface TestInterface { prop: boolean; }';
-    const result = getResult(source).nodes[0] as ParseInterfaceDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseInterfaceDeclaration;
     const members = result.members as ParseProperty[];
     expect(members).toHaveLength(1);
     expect(members[0]).toBeInstanceOf(ParseProperty);
@@ -63,7 +63,7 @@ describe('[code-analyzer] › ParseInterfaceDeclaration', () => {
 
   test('interface to have indexSignature member', () => {
     const source = 'interface TestInterface { [key: string]: any; }';
-    const result = getResult(source).nodes[0] as ParseInterfaceDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseInterfaceDeclaration;
     const members = result.members;
     expect(members).toHaveLength(1);
     expect(members[0]).toBeInstanceOf(ParseIndexSignature);
@@ -77,7 +77,7 @@ describe('[code-analyzer] › ParseInterfaceDeclaration', () => {
 
   test('interface to have MethodSignature member', () => {
     const source = 'interface a { method<T>(a: boolean, b: string): T; }';
-    const result = getResult(source).nodes[0] as ParseInterfaceDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseInterfaceDeclaration;
     const members = result.members;
     expect(members).toHaveLength(1);
     expect(members[0]).toBeInstanceOf(ParseMethod);
@@ -91,7 +91,7 @@ describe('[code-analyzer] › ParseInterfaceDeclaration', () => {
 
   test('interface has type parameters', () => {
     const source = 'interface a<T> { method<T>(a: boolean, b: string): T; }';
-    const result = getResult(source).nodes[0] as ParseInterfaceDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseInterfaceDeclaration;
     const members = result.members;
     expect(members).toHaveLength(1);
     expect(members[0]).toBeInstanceOf(ParseMethod);
@@ -107,7 +107,7 @@ describe('[code-analyzer] › ParseInterfaceDeclaration', () => {
     const source = `
     interface a { a: number; }
     interface b extends a { b: string; }`;
-    const result = getResult(source).nodes as ParseInterfaceDeclaration[];
+    const result = getParsedResult(source).nodes as ParseInterfaceDeclaration[];
     expect(result).toHaveLength(2);
     expect(result[0].extending).toBeUndefined();
     expect(result[1].extending).toBeInstanceOf(ParseReferenceType);

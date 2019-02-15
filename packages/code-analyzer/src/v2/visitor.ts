@@ -204,7 +204,8 @@ export class Visitor {
       case ts.SyntaxKind.CallExpression:
         return this.visitCallExpression(node as ts.CallExpression);
       case ts.SyntaxKind.PropertyAccessExpression:
-        // We do not need property accesses (does not provide any value or type information)
+      case ts.SyntaxKind.ExpressionStatement:
+        // We do not need property accesses or expressionStatements (does not provide any value or type information)
         // in case that we do not execute
         // the code only gets analyzed.
         return new ParseEmpty();

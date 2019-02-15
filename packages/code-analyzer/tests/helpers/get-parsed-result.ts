@@ -1,13 +1,12 @@
 import { createSourceFile, ScriptTarget } from 'typescript';
-import { ParseResult } from '../../src/v2/parsed-nodes';
-import { Visitor } from '../../src/v2/visitor';
+import { ParseResult, Visitor } from '../../src';
 
 /**
  * @description
  * creates a test fixture ParseResult from a provided typescript string
  * @param source the typescript source that should be visited
  */
-export function getResult(source: string): ParseResult {
+export function getParsedResult(source: string): ParseResult {
   const paths = new Map<string, string>();
   const sourceFile = createSourceFile(
     'test-case.ts',
