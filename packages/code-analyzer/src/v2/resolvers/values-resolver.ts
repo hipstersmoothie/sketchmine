@@ -31,7 +31,7 @@ export class ValuesResolver extends TreeVisitor implements ParsedVisitor {
  * @param node Node to be resolved
  */
 function resolveTypeValues(node: ParseProperty) {
-  const values = new Set(node.value);
+  const values = new Set([node.value]);
   if (node.type) {
     const typeValues = resolveType(node.type)
       .filter((value: string | null) => value !== null)

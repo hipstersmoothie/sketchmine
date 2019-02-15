@@ -317,6 +317,7 @@ export class ParseArrayLiteral extends ParseNode {
  * @description
  * A parse definition is every Root node in a SourceFile,
  * a ParseResult consist out of ParseDefinitions
+ * Is only used for extending other classes!
  */
 export class ParseDefinition extends ParseNode {
 
@@ -332,7 +333,7 @@ export class ParseDefinition extends ParseNode {
   ) {
     super(location);
   }
-  visit(visitor: ParsedVisitor): any { return null; }
+  visit(visitor: ParsedVisitor): null { return null; }
 }
 
 /**

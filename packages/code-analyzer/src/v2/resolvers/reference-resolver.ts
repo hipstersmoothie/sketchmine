@@ -8,19 +8,19 @@ import {
   ParseNode,
   ParseTypeAliasDeclaration,
   ParseGeneric,
-  ParseLocation,
 } from '../parsed-nodes';
 
 import { flatten } from 'lodash';
-import { hasTypeParameterNode } from '../visitor';
 import { Logger } from '@sketchmine/node-helpers';
 const log = new Logger();
+
+export const FOUND_TO_EQUAL_GENERICS_ERROR = 'Resolving Generics found two generics with the same name!';
 
 /**
  * @class
  * @classdesc Transformer that resolves the references in the AST
  * @implements AstVisitor
- * @extends TreeVisitor
+ * @extends ReferenceTreeVisitor
  */
 export class ReferenceResolver extends ReferenceTreeVisitor implements ParsedVisitor {
 
@@ -125,7 +125,7 @@ export class ReferenceResolver extends ReferenceTreeVisitor implements ParsedVis
 
     // should not happen but if it does throw an error so we can handle it
     if (keys.length > 1) {
-      log.error('Resolving Generics found two generics with the same name.');
+      throw Error(FOUND_TO_EQUAL_GENERICS_ERROR);
     }
     // return the matching generic
     return positionMap.get(keys[0]);

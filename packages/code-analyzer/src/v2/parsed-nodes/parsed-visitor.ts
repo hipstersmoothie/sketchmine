@@ -3,8 +3,6 @@ import {
   ParseArrayType,
   ParseClassDeclaration,
   ParseDecorator,
-  ParseDefinition,
-  ParseDependency,
   ParseExpression,
   ParseGeneric,
   ParseIndexSignature,
@@ -18,7 +16,6 @@ import {
   ParseProperty,
   ParseReferenceType,
   ParseResult,
-  ParseSimpleType,
   ParseTypeAliasDeclaration,
   ParseTypeLiteral,
   ParseTypeParameter,
@@ -27,16 +24,12 @@ import {
   ParseVariableDeclaration,
   ParseLocation,
 } from './parse-node';
-import { Logger } from '@sketchmine/node-helpers';
-const log = new Logger();
 
 export interface ParsedVisitor {
   visitArrayLiteral(node: ParseArrayLiteral): any;
   visitArrayType(node: ParseArrayType): any;
   visitClassDeclaration(node: ParseClassDeclaration): any;
   visitDecorator(node: ParseDecorator): any;
-  visitDefinition(node: ParseDefinition): any;
-  visitDependency(node: ParseDependency): any;
   visitExpression(node: ParseExpression): any;
   visitGeneric(node: ParseGeneric): any;
   visitIndexSignature(node: ParseIndexSignature): any;
@@ -50,7 +43,6 @@ export interface ParsedVisitor {
   visitProperty(node: ParseProperty): any;
   visitReferenceType(node: ParseReferenceType): any;
   visitResult(node: ParseResult): any;
-  visitSimpleType(node: ParseSimpleType): any;
   visitTypeAliasDeclaration(node: ParseTypeAliasDeclaration): any;
   visitTypeLiteral(node: ParseTypeLiteral): any;
   visitTypeParameter(node: ParseTypeParameter): any;
@@ -64,8 +56,6 @@ export class NullVisitor implements ParsedVisitor {
   visitArrayType(node: ParseArrayType): any { return null; }
   visitClassDeclaration(node: ParseClassDeclaration): any { return null; }
   visitDecorator(node: ParseDecorator): any { return null; }
-  visitDefinition(node: ParseDefinition): any { return null; }
-  visitDependency(node: ParseDependency): any { return null; }
   visitExpression(node: ParseExpression): any { return null; }
   visitGeneric(node: ParseGeneric): any { return null; }
   visitIndexSignature(node: ParseIndexSignature): any { return null; }
@@ -79,7 +69,6 @@ export class NullVisitor implements ParsedVisitor {
   visitProperty(node: ParseProperty): any { return null; }
   visitReferenceType(node: ParseReferenceType): any { return null; }
   visitResult(node: ParseResult): any { return null; }
-  visitSimpleType(node: ParseSimpleType): any { return null; }
   visitTypeAliasDeclaration(node: ParseTypeAliasDeclaration): any { return null; }
   visitTypeLiteral(node: ParseTypeLiteral): any { return null; }
   visitTypeParameter(node: ParseTypeParameter): any { return null; }
@@ -100,8 +89,6 @@ export class NodeVisitor extends NullVisitor implements ParsedVisitor {
   visitArrayType(node: ParseArrayType): any { return node; }
   visitClassDeclaration(node: ParseClassDeclaration): any { return node; }
   visitDecorator(node: ParseDecorator): any { return node; }
-  visitDefinition(node: ParseDefinition): any { return node; }
-  visitDependency(node: ParseDependency): any { return node; }
   visitExpression(node: ParseExpression): any { return node; }
   visitGeneric(node: ParseGeneric): any { return node; }
   visitIndexSignature(node: ParseIndexSignature): any { return node; }
@@ -115,7 +102,6 @@ export class NodeVisitor extends NullVisitor implements ParsedVisitor {
   visitProperty(node: ParseProperty): any { return node; }
   visitReferenceType(node: ParseReferenceType): any { return node; }
   visitResult(node: ParseResult): any { return node; }
-  visitSimpleType(node: ParseSimpleType): any { return node; }
   visitTypeAliasDeclaration(node: ParseTypeAliasDeclaration): any { return node; }
   visitTypeLiteral(node: ParseTypeLiteral): any { return node; }
   visitTypeParameter(node: ParseTypeParameter): any { return node; }
@@ -216,9 +202,11 @@ export class TreeVisitor extends NodeVisitor implements ParsedVisitor {
   }
   visitTypeLiteral(node: ParseTypeLiteral): any {
     node.members = this.visitAll(node.members);
+    return node;
   }
   visitTypeParameter(node: ParseTypeParameter): any {
     node.constraint = this.visit(node.constraint);
+    return node;
   }
   visitUnionType(node: ParseUnionType): any {
     node.types = this.visitAll(node.types);

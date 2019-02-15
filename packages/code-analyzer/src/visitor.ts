@@ -40,8 +40,6 @@ import {
 } from './utils';
 import { Logger } from '@sketchmine/node-helpers';
 
-import { inspect } from 'util';
-
 const log = new Logger();
 
 /**

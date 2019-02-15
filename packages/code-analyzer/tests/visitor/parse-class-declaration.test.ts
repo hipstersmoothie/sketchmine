@@ -12,13 +12,13 @@ import {
   ParseEmpty,
   ParseArrayLiteral,
 } from '../../src/v2/parsed-nodes';
-import { getResult } from './get-result';
+import { getParsedResult } from '../helpers';
 
 describe('[code-analyzer] › ParseClassDeclaration', () => {
 
   test('detecting classes', () => {
     const source = 'class Test {}';
-    const result = getResult(source).nodes[0];
+    const result = getParsedResult(source).nodes[0];
     expect(result).toBeInstanceOf(ParseClassDeclaration);
     expect(result.tags).toHaveLength(0);
     expect(result.name).toBe('Test');
@@ -28,7 +28,7 @@ describe('[code-analyzer] › ParseClassDeclaration', () => {
 
   test('class has multiple members with different keywords', () => {
     const source = 'class Test { a: number; private b: string = "my-value"; }';
-    const result = getResult(source).nodes[0] as ParseClassDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseClassDeclaration;
     expect(result).toBeInstanceOf(ParseClassDeclaration);
     expect(result.tags).toHaveLength(0);
     const members = result.members as ParseProperty[];
@@ -49,7 +49,7 @@ describe('[code-analyzer] › ParseClassDeclaration', () => {
       private method(b: string): void {}
       public methodB(a: number): boolean { return true;}
     }`;
-    const result = getResult(source).nodes[0] as ParseClassDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseClassDeclaration;
     expect(result).toBeInstanceOf(ParseClassDeclaration);
     expect(result.tags).toHaveLength(0);
     const extending = result.extending;
@@ -70,7 +70,7 @@ describe('[code-analyzer] › ParseClassDeclaration', () => {
     class TestComponent implements OnDestroy {
       ngOnDestroy(): void { }
     }`;
-    const result = getResult(source).nodes[0] as ParseClassDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseClassDeclaration;
     expect(result.isAngularComponent()).toBe(true);
 
     expect(result.decorators).toHaveLength(1);
@@ -86,7 +86,7 @@ describe('[code-analyzer] › ParseClassDeclaration', () => {
     class TestComponent implements OnDestroy {
       ngOnDestroy(): void { }
     }`;
-    const result = getResult(source).nodes[0] as ParseClassDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseClassDeclaration;
     expect(result.isAngularComponent()).toBe(true);
 
     expect(result.decorators).toHaveLength(1);
@@ -107,7 +107,7 @@ describe('[code-analyzer] › ParseClassDeclaration', () => {
     class TestComponent {
       constructor(...args: any[])
     }`;
-    const result = getResult(source).nodes[0] as ParseClassDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseClassDeclaration;
     expect(result.members).toHaveLength(0);
   });
 
@@ -116,7 +116,7 @@ describe('[code-analyzer] › ParseClassDeclaration', () => {
     class TestComponent {
       constructor(public isCool: boolean, ...args: any[])
     }`;
-    const result = getResult(source).nodes[0] as ParseClassDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseClassDeclaration;
     expect(result.members).toHaveLength(1);
     expect(result.members[0]).toBeInstanceOf(ParseProperty);
 
@@ -133,7 +133,7 @@ describe('[code-analyzer] › ParseClassDeclaration', () => {
       private _x = 1;
       get x(): number { return this._x; }
     }`;
-    const result = getResult(source).nodes[0] as ParseClassDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseClassDeclaration;
     expect(result.members).toHaveLength(2);
     expect(result.members[0]).toBeInstanceOf(ParseProperty);
     expect(result.members[1]).toBeInstanceOf(ParseProperty);
@@ -158,7 +158,7 @@ describe('[code-analyzer] › ParseClassDeclaration', () => {
       set x(n: number): void { this._x = n; }
       get x(): number { return this._x; }
     }`;
-    const result = getResult(source).nodes[0] as ParseClassDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseClassDeclaration;
     expect(result.members).toHaveLength(3);
     expect(result.members[0]).toBeInstanceOf(ParseProperty);
     expect(result.members[1]).toBeInstanceOf(ParseMethod);
@@ -182,7 +182,7 @@ describe('[code-analyzer] › ParseClassDeclaration', () => {
       @Input()
       set x(n: number): void { this._x = n; }
     }`;
-    const result = getResult(source).nodes[0] as ParseClassDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseClassDeclaration;
     expect(result.members).toHaveLength(2);
     expect(result.members[1]).toBeInstanceOf(ParseMethod);
     const setter = result.members[1] as ParseMethod;
@@ -199,7 +199,7 @@ describe('[code-analyzer] › ParseClassDeclaration', () => {
       @HostListener('click', ['$event'])
       onClick: Function;
     }`;
-    const result = getResult(source).nodes[0] as ParseClassDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseClassDeclaration;
     expect(result.members).toHaveLength(1);
     const fn = result.members[0] as ParseProperty;
     expect(fn).toBeInstanceOf(ParseProperty);
@@ -222,7 +222,7 @@ describe('[code-analyzer] › ParseClassDeclaration', () => {
     class TestComponent<T> {
       method: T;
     }`;
-    const result = getResult(source).nodes[0] as ParseClassDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseClassDeclaration;
     expect(result.typeParameters).toHaveLength(1);
     expect(result.typeParameters[0]).toBeInstanceOf(ParseTypeParameter);
     expect(result.typeParameters[0].name).toBe('T');
@@ -234,21 +234,21 @@ describe('[code-analyzer] › ParseClassDeclaration', () => {
     class TestComponent<T extends P> {
       method: T;
     }`;
-    const result = getResult(source).nodes[0] as any;
+    const result = getParsedResult(source).nodes[0] as any;
     expect(result.typeParameters[0].constraint).toBeInstanceOf(ParseReferenceType);
     expect(result.typeParameters[0].constraint.name).toBe('P');
   });
 
   test('class is exported', () => {
     const source = 'export class TestComponent { }';
-    const result = getResult(source).nodes[0] as ParseClassDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseClassDeclaration;
     expect(result.tags).toHaveLength(1);
     expect(result.tags[0]).toBe('exported');
   });
 
   test('class is design unrelated', () => {
     const source = '/** @design-unrelated */export class TestComponent { }';
-    const result = getResult(source).nodes[0] as ParseClassDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseClassDeclaration;
     expect(result.tags).toHaveLength(2);
     expect(result.tags).toEqual(
       expect.arrayContaining(['exported', 'unrelated']),
@@ -263,7 +263,7 @@ describe('[code-analyzer] › ParseClassDeclaration', () => {
        */
       @Component()
       export class TestComponent { }`;
-    const result = getResult(source).nodes[0] as ParseClassDeclaration;
+    const result = getParsedResult(source).nodes[0] as ParseClassDeclaration;
     expect(result.tags).toHaveLength(3);
     expect(result.tags).toEqual(
       expect.arrayContaining(['exported', 'unrelated', 'noCombinations']),
