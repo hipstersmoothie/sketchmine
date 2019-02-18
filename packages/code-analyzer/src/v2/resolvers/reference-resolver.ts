@@ -1,78 +1,103 @@
 import {
   ParsedVisitor,
-  ParseResult,
+  TreeVisitor,
   ParseReferenceType,
   ParseDefinition,
+  ParseResult,
+  ParseClassDeclaration,
+  ParseInterfaceDeclaration,
+  ParseMethod,
   ParseEmpty,
-  ReferenceTreeVisitor,
-  ParseNode,
   ParseTypeAliasDeclaration,
+  ParseTypeParameter,
   ParseGeneric,
+  ParseLocation,
+  ParseNode,
+  ParseExpression,
 } from '../parsed-nodes';
 
-import { flatten } from 'lodash';
-import { Logger } from '@sketchmine/node-helpers';
-const log = new Logger();
+import { flatten, cloneDeep } from 'lodash';
+import chalk from 'chalk';
 
 export const FOUND_TO_EQUAL_GENERICS_ERROR = 'Resolving Generics found two generics with the same name!';
 
-/**
- * @class
- * @classdesc Transformer that resolves the references in the AST
- * @implements AstVisitor
- * @extends ReferenceTreeVisitor
- */
-export class ReferenceResolver extends ReferenceTreeVisitor implements ParsedVisitor {
+type typeParametersNode =
+  | ParseClassDeclaration
+  | ParseInterfaceDeclaration
+  | ParseMethod
+  | ParseTypeAliasDeclaration;
 
+type typeArgumentsNode =
+  | ParseExpression
+  | ParseReferenceType;
+
+export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
+
+  /**
+   * Lookup Table for the Generics that are found in the tree
+   * The outer map is a map where the key represents the filename
+   * the value of this map is another map where the key represents the position
+   * in the file where the generic ocurred and holds as value the generic symbol
+   */
+  lookupTable = new Map<string, Map<number, ParseGeneric>>();
   private rootNodes: ParseDefinition[];
+
+  step = 0;
 
   constructor(parseResults: ParseResult[]) {
     super();
     this.rootNodes = flatten(parseResults.map(result => result.nodes));
   }
 
-  /**
-   * Overwrites the visitReferenceType method from the ReferenceTreeVisitor to resolve the types
-   * if it could not be resolved return the ParseEmpty() node.
-   * @param {ParseReferenceType} node Reference node that should be resolved
-   * @returns {ParseDefinition | ParseEmpty}
-   */
-  visitReferenceType(node: ParseReferenceType): ParseDefinition | ParseEmpty {
+  visitTypeAliasDeclaration(node: ParseTypeAliasDeclaration): any {
+    this.collectGenerics(node);
+    return super.visitTypeAliasDeclaration(node);
+  }
+
+  visitMethod(node: ParseMethod): any {
+    this.collectGenerics(node);
+    return super.visitMethod(node);
+  }
+
+  visitClassDeclaration(node: ParseClassDeclaration): any {
+    this.collectGenerics(node);
+    return super.visitClassDeclaration(node);
+  }
+
+  visitInterfaceDeclaration(node: ParseInterfaceDeclaration): any {
+    this.collectGenerics(node);
+    return super.visitInterfaceDeclaration(node);
+  }
+
+  visitReferenceType(node: ParseReferenceType) {
+    this.step += 1;
+    console.log(chalk`${this.step.toString()}: {green Visit Reference Type:} {grey ${node.name}}`);
     // Check if the reference is a generic and is stored in the lookup Table
-    const typeParameter = this.getGenericFromLookupTable(node);
+    const generic = this.getGenericFromLookupTable(node);
 
-    // if we have a type parameter then it is a generic
-    if (typeParameter) {
-      const rootNode = this.getParentRootNode(node) as ParseTypeAliasDeclaration;
-      const generic = new ParseGeneric(typeParameter);
-
-      // get the index of the typeParamter in the root nodes typeParameter array
-      const index = rootNode.typeParameters.findIndex(param => param.name === typeParameter);
-      // replace the typeParameter with the generic placeholder (reference storage)
-      rootNode.typeParameters[index] = generic;
-
-      // Return the reference of the Generic so that we can replace it later on by reference
-      // on the rootNode and the reference to the inner get replaced as well.
+    // if we have a generic replace it with the reference type
+    if (generic) {
       return generic;
     }
 
     // If the reference is not in the lookup Table search it in the root nodes
     // So now we know it is not a generic and we can search in the types and interfaces
     // if there is a matching Symbol name
-    const resolvedNode = this.getRootNodeByName(node.name);
+    const resolvedNode = this.getRootNodeByName(node.name) as typeParametersNode;
+
+    // if there is no resolved node we have to return ParseEmpty so we know it cannot be resolved
+    if (!resolvedNode) {
+      return new ParseEmpty();
+    }
+
+    // if we have typeArguments it is a generic and we have to clone the resolvedNode
+    // because maybe it is used by other declarations as well.
+    // So we won't modify the original reference.
+    const cloned = cloneDeep(resolvedNode) as unknown as typeParametersNode;
 
     // If we have typeArguments they have to be replaced with the arguments from the generic
     // after we replaced the generic type we can resolve the reference and replace the values
-    if (
-      resolvedNode &&
-      node.typeArguments &&
-      node.typeArguments.length
-    ) {
-
-      // if we have typeArguments it is a generic and we have to clone the resolvedNode
-      // because maybe it is used by other declarations as well.
-      // So we won't modify the original reference.
-      // const cloned = cloneDeep(resolvedNode)
+    if (node.typeArguments && node.typeArguments.length) {
 
       for (let i = 0, max = node.typeArguments.length; i < max; i += 1) {
         let typeArgument = node.typeArguments[0];
@@ -81,31 +106,82 @@ export class ReferenceResolver extends ReferenceTreeVisitor implements ParsedVis
         // before we pass it into the generic
         if (typeArgument instanceof ParseReferenceType) {
           typeArgument = this.visitReferenceType(typeArgument);
+        } else {
+          console.log('Unsupported instance of typeArgument: ', typeArgument.constructor.name)
         }
 
-        // TODO: lukas.holzer check later for better typing and
-        // try to figure out which node types can have type parameters
-        if (resolvedNode.hasOwnProperty('typeParameters')) {
-          (<any>resolvedNode).typeParameters[i].value = typeArgument;
+        if (cloned.typeParameters) {
+          const typeParameter = cloned.typeParameters[i] as ParseGeneric;
+          typeParameter.value = typeArgument as ParseDefinition;
         }
+
       }
     }
-
-    // if there are no TypeArguments it is a normal interface or type and we can replace
-    // the reference type with the found ParseDefinition from the root and return it.
-    // if we did not found any reference in the root nodes we can not resolve it and
-    // the value will be a parse empty that will be dropped later on.
-    return resolvedNode || new ParseEmpty();
+    return cloned;
   }
 
   /** Find a root Node by its name – used to find types and interfaces */
   private getRootNodeByName(name: string): ParseDefinition {
     return this.rootNodes.find((node: ParseDefinition) => node.name === name);
   }
-    /**
+
+  /**
+   * @description
+   * The parent root Node is the root node with the position that is smaller
+   * and the closest number to the position of the child Node.
+   */
+  protected getParentRootNode(node: ParseNode): ParseNode {
+    const nodes = this.rootNodes
+      .filter(rootNode => rootNode.location.position < node.location.position)
+      .reverse();
+    return nodes[0];
+  }
+
+  /**
+   * @description
+   * Checks the typeParameters of a parsed node and
+   * adds the generics to the lookup table.
+   */
+  private collectGenerics(node: typeParametersNode): void {
+    node.typeParameters.forEach((generic: ParseTypeParameter, index: number) => {
+      let constraint;
+
+      if (generic.constraint) {
+        constraint = this.visit(generic.constraint);
+      }
+
+      const location = generic.location;
+      const gen = new ParseGeneric(location, generic.name, constraint);
+      this.addGenericToLookupTable(generic.location, gen);
+      node.typeParameters[index] = gen;
+    });
+  }
+
+  /**
+   * @description
+   * Adds a generic to the lookup table according to its file and the position
+   */
+  private addGenericToLookupTable(location: ParseLocation, value: ParseGeneric): void {
+    const file = this.lookupTable.get(location.path);
+
+    // file key already exists so we need to append it.
+    // to the existing position Map.
+    if (file) {
+      file.set(location.position, value);
+      return;
+    }
+    // if there is no entry for this file create a file entry in the map
+    // and add a new position map.
+    const positionMap = new Map<number, ParseGeneric>();
+    positionMap.set(location.position, value);
+    this.lookupTable.set(location.path, positionMap);
+  }
+
+  /**
+   * @description
    * Finds a Generic in the lookupTable
    */
-  protected getGenericFromLookupTable(node: ParseReferenceType): string | undefined {
+  protected getGenericFromLookupTable(node: ParseReferenceType): ParseGeneric | undefined {
     const parent = this.getParentRootNode(node);
     const location = node.location;
     const value = node.name;
@@ -121,7 +197,7 @@ export class ReferenceResolver extends ReferenceTreeVisitor implements ParsedVis
       .filter(pos =>
           pos > parent.location.position &&
           pos < location.position &&
-          positionMap.get(pos) === value);
+          positionMap.get(pos).name === value);
 
     // should not happen but if it does throw an error so we can handle it
     if (keys.length > 1) {
@@ -129,17 +205,6 @@ export class ReferenceResolver extends ReferenceTreeVisitor implements ParsedVis
     }
     // return the matching generic
     return positionMap.get(keys[0]);
-  }
-
-  /**
-   * The parent root Node is the root node with the position that is smaller
-   * and the closest number to the position of the child Node.
-   */
-  protected getParentRootNode(node: ParseNode): ParseNode {
-    const nodes = this.rootNodes
-      .filter(rootNode => rootNode.location.position < node.location.position)
-      .reverse();
-    return nodes[0];
   }
 
 }
