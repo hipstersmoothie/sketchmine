@@ -27,10 +27,6 @@ type typeParametersNode =
   | ParseMethod
   | ParseTypeAliasDeclaration;
 
-type typeArgumentsNode =
-  | ParseExpression
-  | ParseReferenceType;
-
 export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
   /**
@@ -67,6 +63,32 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
   visitInterfaceDeclaration(node: ParseInterfaceDeclaration): any {
     this.collectGenerics(node);
     return super.visitInterfaceDeclaration(node);
+  }
+
+  visitExpression(node: ParseExpression): any {
+    const method = this.getRootNodeByName(node.name) as ParseMethod;
+
+    if (!method) {
+      return new ParseEmpty();
+    }
+
+    const cloned = cloneDeep(method) as ParseMethod;
+
+    node.args = this.visitAll(node.args);
+
+    node.args.forEach((arg, index: number) => {
+      const param = cloned.parameters[index].type;
+
+      switch (param.constructor.name) {
+        case 'ParseGeneric':
+          (param as ParseGeneric).value = arg;
+          break;
+        default:
+          console.log('visiting Expression parameter constructor not handled yet!: ', param.constructor.name);
+      }
+    });
+
+    return cloned;
   }
 
   visitReferenceType(node: ParseReferenceType) {
