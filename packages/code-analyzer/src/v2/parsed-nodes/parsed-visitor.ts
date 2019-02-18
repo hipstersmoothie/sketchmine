@@ -51,6 +51,8 @@ export interface ParsedVisitor {
 }
 
 export class NullVisitor implements ParsedVisitor {
+  currentLvl: number = 0;
+
   visitArrayLiteral(node: ParseArrayLiteral): any { return null; }
   visitArrayType(node: ParseArrayType): any { return null; }
   visitClassDeclaration(node: ParseClassDeclaration): any { return null; }
@@ -135,6 +137,9 @@ export class TreeVisitor extends NodeVisitor implements ParsedVisitor {
     return node;
   }
   visitGeneric(node: ParseGeneric): any {
+    // we have to visit the constraints in case that they might be a reference type
+    node.constraint = this.visit(node.constraint);
+
     // when the generic has a value we know it was resolved
     // so we don't need the ParseGeneric any more return only the value.
     if (node.value) {

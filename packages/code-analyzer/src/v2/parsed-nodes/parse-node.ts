@@ -47,10 +47,14 @@ export class ParseEmpty extends ParseNode {
  * The parse generic is being used as a placeholder during the transform process
  * to be replaced later on with the real value.
  */
-export class ParseGeneric extends ParseEmpty {
+export class ParseGeneric extends ParseNode {
   value: ParseNode;
-  constructor(public name: string) {
-    super();
+  constructor(
+    location: ParseLocation,
+    public name: string,
+    public constraint?: ParseType,
+  ) {
+    super(location);
   }
   visit(visitor: ParsedVisitor): any {
     return visitor.visitGeneric(this);
