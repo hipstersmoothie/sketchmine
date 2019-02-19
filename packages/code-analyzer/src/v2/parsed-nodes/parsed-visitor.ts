@@ -24,6 +24,9 @@ import {
   ParseVariableDeclaration,
   ParseLocation,
 } from './parse-node';
+import { Logger } from '@sketchmine/node-helpers';
+
+const log = new Logger();
 
 export interface ParsedVisitor {
   visitArrayLiteral(node: ParseArrayLiteral): any;
@@ -53,28 +56,94 @@ export interface ParsedVisitor {
 export class NullVisitor implements ParsedVisitor {
   currentLvl: number = 0;
 
-  visitArrayLiteral(node: ParseArrayLiteral): any { return null; }
-  visitArrayType(node: ParseArrayType): any { return null; }
-  visitClassDeclaration(node: ParseClassDeclaration): any { return null; }
-  visitDecorator(node: ParseDecorator): any { return null; }
-  visitExpression(node: ParseExpression): any { return null; }
-  visitGeneric(node: ParseGeneric): any { return null; }
-  visitIndexSignature(node: ParseIndexSignature): any { return null; }
-  visitInterfaceDeclaration(node: ParseInterfaceDeclaration): any { return null; }
-  visitIntersectionType(node: ParseIntersectionType): any { return null; }
-  visitMethod(node: ParseMethod): any { return null; }
-  visitObjectLiteral(node: ParseObjectLiteral): any { return null; }
-  visitParenthesizedType(node: ParseParenthesizedType): any { return null; }
-  visitPrimitiveType(node: ParsePrimitiveType): any { return null; }
-  visitProperty(node: ParseProperty): any { return null; }
-  visitReferenceType(node: ParseReferenceType): any { return null; }
-  visitResult(node: ParseResult): any { return null; }
-  visitTypeAliasDeclaration(node: ParseTypeAliasDeclaration): any { return null; }
-  visitTypeLiteral(node: ParseTypeLiteral): any { return null; }
-  visitTypeParameter(node: ParseTypeParameter): any { return null; }
-  visitUnionType(node: ParseUnionType): any { return null; }
-  visitValueType(node: ParseValueType): any { return null; }
-  visitVariableDeclaration(node: ParseVariableDeclaration): any { return null; }
+  visitArrayLiteral(node: ParseArrayLiteral): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitArrayType(node: ParseArrayType): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitClassDeclaration(node: ParseClassDeclaration): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitDecorator(node: ParseDecorator): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitExpression(node: ParseExpression): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitGeneric(node: ParseGeneric): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitIndexSignature(node: ParseIndexSignature): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitInterfaceDeclaration(node: ParseInterfaceDeclaration): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitIntersectionType(node: ParseIntersectionType): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitMethod(node: ParseMethod): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitObjectLiteral(node: ParseObjectLiteral): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitParenthesizedType(node: ParseParenthesizedType): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitPrimitiveType(node: ParsePrimitiveType): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitProperty(node: ParseProperty): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitReferenceType(node: ParseReferenceType): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitResult(node: ParseResult): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitTypeAliasDeclaration(node: ParseTypeAliasDeclaration): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitTypeLiteral(node: ParseTypeLiteral): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitTypeParameter(node: ParseTypeParameter): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitUnionType(node: ParseUnionType): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitValueType(node: ParseValueType): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitVariableDeclaration(node: ParseVariableDeclaration): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
   visit(node: ParseNode): any {
     return node && node.visit ? node.visit(this) : node;
   }
