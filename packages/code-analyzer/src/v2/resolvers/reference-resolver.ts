@@ -18,21 +18,41 @@ import {
 
 import { flatten, cloneDeep } from 'lodash';
 
+/**
+ * @description
+ * All parsed class types that can have typeParameters
+ */
 type typeParametersNode =
   | ParseClassDeclaration
   | ParseInterfaceDeclaration
   | ParseMethod
   | ParseTypeAliasDeclaration;
 
+  /**
+   * @class
+   * @classdesc
+   * The reference resolver is used to get the values of interfaces, type alias declarations
+   * generics or methods and replace them with their place holding parse reference class.
+   * The first lookup is always in a lookup table that stores all generics. These generics are
+   * collected during the visiting process. If a reference type matches with a generic from the table
+   * the reference (pointer to the object) is placed instead.
+   */
 export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
   /**
+   * @description
    * Lookup Table for the Generics that are found in the tree
    * The outer map is a map where the key represents the filename
    * the value of this map is another map where the key represents the position
    * in the file where the generic ocurred and holds as value the generic symbol
    */
   lookupTable = new Map<string, Map<number, ParseGeneric>>();
+
+  /**
+   * @description
+   * A collection of all rootNodes is used as second lookup table for the interfaces
+   * and types. In case that an interface or type can only be defined in the root of a file.
+   */
   private rootNodes: ParseDefinition[];
 
   constructor(parseResults: ParseResult[]) {
@@ -60,6 +80,12 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     return super.visitInterfaceDeclaration(node);
   }
 
+  /**
+   * @description
+   * Overwrites the visitExpression method from the tree visitor. Try to find the matching
+   * function declaration and pass the arguments in so that we get the returning value that can
+   * be assigned to a variable declaration.
+   */
   visitExpression(node: ParseExpression): any {
     const method = this.getRootNodeByName(node.name) as ParseMethod;
 
@@ -85,6 +111,13 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     return cloned;
   }
 
+  /**
+   * @description
+   * Overwrites the visitReferenceType method from the tree visitor to resolve the ParseReferenceType.
+   * It should result into a value from a generic, interface, class, type etc...
+   * If it is not resolvable, in case that it comes from any node dependency that we don't want to parse
+   * we result in returning the ParseEmpty class.
+   */
   visitReferenceType(node: ParseReferenceType) {
     // Check if the reference is a generic and is stored in the lookup Table
     const generic = this.getGenericFromLookupTable(node);
@@ -134,7 +167,10 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     return cloned;
   }
 
-  /** Find a root Node by its name – used to find types and interfaces */
+  /**
+   * @description
+   * Find a root Node by its name – used to find types and interfaces
+   */
   private getRootNodeByName(name: string): ParseDefinition {
     return this.rootNodes.find((node: ParseDefinition) => node.name === name);
   }
@@ -161,7 +197,8 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
   /**
    * @description
-   * Adds a generic to the lookup table according to its file and the position
+   * Adds a generic to the lookup table according to its file and the position.
+   * The position is always unique in a file – *(the character position)*
    */
   private addGenericToLookupTable(location: ParseLocation, value: ParseGeneric): void {
     const file = this.lookupTable.get(location.path);
@@ -181,7 +218,10 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
   /**
    * @description
-   * Finds the parent generic in the lookup table
+   * Finds the parent generic in the lookup table according to the provided position of the
+   * node. The parent generic is always the generic with the same name that has the closest position
+   * number related to the nodes position. If undefined is returned it is not a generic and we can assume
+   * that it is a type reference (interface, class or type).
    */
   protected getGenericFromLookupTable(node: ParseReferenceType): ParseGeneric | undefined {
     const location = node.location;
