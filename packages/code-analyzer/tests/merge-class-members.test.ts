@@ -39,7 +39,6 @@ describe('[code-analyzer] › utils › merge class members from implements and 
     });
   });
 
-
   test('Merge the two arrays and make one large out of them', () => {
     const original = [{ type: 'property', key: 'color', value: ['"cta"'] }];
     const toBeMerged = [{ type: 'property', key: 'color', value: ['"main"', '"accent"'] }];

@@ -17,9 +17,6 @@ import {
 } from '../parsed-nodes';
 
 import { flatten, cloneDeep } from 'lodash';
-import chalk from 'chalk';
-
-export const FOUND_TO_EQUAL_GENERICS_ERROR = 'Resolving Generics found two generics with the same name!';
 
 type typeParametersNode =
   | ParseClassDeclaration
@@ -37,8 +34,6 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
    */
   lookupTable = new Map<string, Map<number, ParseGeneric>>();
   private rootNodes: ParseDefinition[];
-
-  step = 0;
 
   constructor(parseResults: ParseResult[]) {
     super();
@@ -79,21 +74,18 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     node.args.forEach((arg, index: number) => {
       const param = cloned.parameters[index].type;
 
-      switch (param.constructor.name) {
-        case 'ParseGeneric':
+      switch (param.constructor) {
+        case ParseGeneric:
           (param as ParseGeneric).value = arg;
           break;
         default:
           console.log('visiting Expression parameter constructor not handled yet!: ', param.constructor.name);
       }
     });
-
     return cloned;
   }
 
   visitReferenceType(node: ParseReferenceType) {
-    this.step += 1;
-    console.log(chalk`${this.step.toString()}: {green Visit Reference Type:} {grey ${node.name}}`);
     // Check if the reference is a generic and is stored in the lookup Table
     const generic = this.getGenericFromLookupTable(node);
 
@@ -149,18 +141,6 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
   /**
    * @description
-   * The parent root Node is the root node with the position that is smaller
-   * and the closest number to the position of the child Node.
-   */
-  protected getParentRootNode(node: ParseNode): ParseNode {
-    const nodes = this.rootNodes
-      .filter(rootNode => rootNode.location.position < node.location.position)
-      .reverse();
-    return nodes[0];
-  }
-
-  /**
-   * @description
    * Checks the typeParameters of a parsed node and
    * adds the generics to the lookup table.
    */
@@ -201,10 +181,9 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
   /**
    * @description
-   * Finds a Generic in the lookupTable
+   * Finds the parent generic in the lookup table
    */
   protected getGenericFromLookupTable(node: ParseReferenceType): ParseGeneric | undefined {
-    const parent = this.getParentRootNode(node);
     const location = node.location;
     const value = node.name;
 
@@ -215,18 +194,16 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
       return;
     }
 
-    const keys = Array.from(positionMap.keys())
-      .filter(pos =>
-          pos > parent.location.position &&
-          pos < location.position &&
-          positionMap.get(pos).name === value);
+    // find the position of the parent generic
+    const genericPosition = Array.from(positionMap.keys())
+      // sort table descending to find the first smaller number
+      .sort((a: number, b: number) => b - a)
+      // find the next smaller position to identify the parent generic
+      .find((pos: number) =>
+        pos < location.position &&
+        positionMap.get(pos).name === value);
 
-    // should not happen but if it does throw an error so we can handle it
-    if (keys.length > 1) {
-      throw Error(FOUND_TO_EQUAL_GENERICS_ERROR);
-    }
-    // return the matching generic
-    return positionMap.get(keys[0]);
+    return positionMap.get(genericPosition) || undefined;
   }
 
 }

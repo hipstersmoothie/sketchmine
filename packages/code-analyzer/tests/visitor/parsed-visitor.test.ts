@@ -148,7 +148,7 @@ describe('[code-analyzer] › Parsed tree visitor', () => {
   });
 
   test('Visit Generic', () => {
-    const generic = new ParseGeneric('T');
+    const generic = new ParseGeneric(new ParseLocation('./file.ts', 85), 'T');
     const visitGenericFn = jest.spyOn(treeVisitor, 'visitGeneric');
 
     expect(nullVisitor.visit(generic)).toBeNull();
@@ -164,7 +164,7 @@ describe('[code-analyzer] › Parsed tree visitor', () => {
   test('Visit Generic that was filled with a value, it should return the value instead of the generic', () => {
     const location = new ParseLocation('./other-file.ts', 80);
     const value = new ParseValueType(location, 'value');
-    const generic = new ParseGeneric('T');
+    const generic = new ParseGeneric(new ParseLocation('./file.ts', 85), 'T');
     generic.value = value;
     const visitFn = jest.spyOn(treeVisitor, 'visit');
 
