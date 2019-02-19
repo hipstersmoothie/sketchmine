@@ -68,7 +68,7 @@ function resolveType(nodeType: ParseType): (string | null)[] {
     case ParseTypeAliasDeclaration:
       const aliasNode = resolveTypeValues(nodeType as ParseTypeAliasDeclaration);
       // return flatten(aliasNode.values);
-      return aliasNode.value
+      return aliasNode.value;
     default:
       return [];
   }

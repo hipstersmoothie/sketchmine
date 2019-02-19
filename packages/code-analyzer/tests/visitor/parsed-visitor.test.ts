@@ -19,7 +19,7 @@ import {
   ParseTypeAliasDeclaration,
   ParseTypeLiteral,
   ParseTypeParameter,
-  ReferenceTreeVisitor,
+  ReferenceResolver,
   ParseUnionType,
   ParseValueType,
   ParseVariableDeclaration,
@@ -29,7 +29,7 @@ import {
   TreeVisitor,
   ParseDefinition,
   ParseDependency,
-} from '../../src/v2/parsed-nodes';
+} from '../../src';
 import { getParsedResult } from '../helpers';
 
 describe('[code-analyzer] › Parsed tree visitor', () => {
@@ -457,9 +457,9 @@ describe('[code-analyzer] › Parsed tree visitor', () => {
 describe('[code-analyzer] › Reference tree visitor', () => {
 
   test('Collecting generics from ClassDeclaration', () => {
-    const refTreeVisitor = new ReferenceTreeVisitor();
     const source = 'class a<T> { method<T>(...args: any[]): T { return null;}}';
     const result = getParsedResult(source) as any;
+    const refTreeVisitor = new ReferenceResolver([result]);
     const node = result.nodes[0] as ParseClassDeclaration;
 
     const visitClassDeclarationFn = jest.spyOn(refTreeVisitor, 'visitClassDeclaration');
@@ -470,14 +470,15 @@ describe('[code-analyzer] › Reference tree visitor', () => {
     expect(visitClassDeclarationFn).not.toBeCalled();
     refTreeVisitor.visit(node);
     expect(lookupTable.size).toBe(1);
-    expect([...lookupTable.get('test-case.ts').values()][0]).toBe('T');
+    expect([...lookupTable.get('test-case.ts').values()][0]).toBeInstanceOf(ParseGeneric);
+    expect([...lookupTable.get('test-case.ts').values()][0].name).toBe('T');
     visitClassDeclarationFn.mockRestore();
   });
 
   test('Collecting generics from TypeAliasDeclaration', () => {
-    const refTreeVisitor = new ReferenceTreeVisitor();
     const source = 'type myFunc<T> = () => T';
     const result = getParsedResult(source) as any;
+    const refTreeVisitor = new ReferenceResolver([result]);
     const node = result.nodes[0] as ParseClassDeclaration;
 
     const visitTypeAliasDeclarationFn = jest.spyOn(refTreeVisitor, 'visitTypeAliasDeclaration');
@@ -488,14 +489,15 @@ describe('[code-analyzer] › Reference tree visitor', () => {
     expect(visitTypeAliasDeclarationFn).not.toBeCalled();
     refTreeVisitor.visit(node);
     expect(lookupTable.size).toBe(1);
-    expect([...lookupTable.get('test-case.ts').values()][0]).toBe('T');
+    expect([...lookupTable.get('test-case.ts').values()][0]).toBeInstanceOf(ParseGeneric);
+    expect([...lookupTable.get('test-case.ts').values()][0].name).toBe('T');
     visitTypeAliasDeclarationFn.mockRestore();
   });
 
   test('Adding generic to existing lookup table to the same file', () => {
-    const refTreeVisitor = new ReferenceTreeVisitor();
     const source = 'type myFunc<T> = () => T; type secondFunc<P> = () => P';
     const result = getParsedResult(source) as any;
+    const refTreeVisitor = new ReferenceResolver([result]);
 
     const lookupTable = refTreeVisitor.lookupTable;
 
@@ -503,7 +505,8 @@ describe('[code-analyzer] › Reference tree visitor', () => {
     refTreeVisitor.visit(result.nodes[0]);
     expect(lookupTable.size).toBe(1);
     expect(lookupTable.get('test-case.ts').size).toBe(1);
-    expect([...lookupTable.get('test-case.ts').values()][0]).toBe('T');
+    expect([...lookupTable.get('test-case.ts').values()][0]).toBeInstanceOf(ParseGeneric);
+    expect([...lookupTable.get('test-case.ts').values()][0].name).toBe('T');
 
     refTreeVisitor.visit(result.nodes[1]);
     expect(lookupTable.size).toBe(1);
