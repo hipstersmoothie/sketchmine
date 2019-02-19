@@ -12,7 +12,6 @@ import {
   ParseTypeParameter,
   ParseGeneric,
   ParseLocation,
-  ParseNode,
   ParseExpression,
 } from '../parsed-nodes';
 
@@ -93,8 +92,12 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
       return new ParseEmpty();
     }
 
-    const cloned = cloneDeep(method) as ParseMethod;
+    // We need to check if we have typeArguments, and when we have some, we have
+    // to pass it through the typeParameters of the matching `typeParametersNode`
+    const cloned = this.passTypeArguments(node, method);
 
+    // we have to visit the arguments so that we can pass the values to the
+    // matching function declaration instead only passing some reference.
     node.args = this.visitAll(node.args);
 
     node.args.forEach((arg, index: number) => {
@@ -137,10 +140,25 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
       return new ParseEmpty();
     }
 
+    // We need to check if we have typeArguments, and when we have some, we have
+    // to pass it through the typeParameters of the matching `typeParametersNode`
+    return this.passTypeArguments(node, resolvedNode);
+  }
+
+  /**
+   * @description
+   * Passes the typeArguments to the found resolvedNode and returns
+   * the resulting node with the typeArguments from the reference node or expression
+  */
+  private passTypeArguments<T extends typeParametersNode>(
+    node: ParseReferenceType | ParseExpression,
+    resolvedNode: T,
+  ): T {
+
     // if we have typeArguments it is a generic and we have to clone the resolvedNode
     // because maybe it is used by other declarations as well.
     // So we won't modify the original reference.
-    const cloned = cloneDeep(resolvedNode) as unknown as typeParametersNode;
+    const cloned = cloneDeep(resolvedNode) as T;
 
     // If we have typeArguments they have to be replaced with the arguments from the generic
     // after we replaced the generic type we can resolve the reference and replace the values
@@ -150,12 +168,10 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
         let typeArgument = node.typeArguments[0];
 
         // if the typeArgument is a reference type we have to resolve it
-        // before we pass it into the generic
-        if (typeArgument instanceof ParseReferenceType) {
-          typeArgument = this.visitReferenceType(typeArgument);
-        } else {
-          console.log('Unsupported instance of typeArgument: ', typeArgument.constructor.name)
-        }
+        // before we pass it into the generic.
+        // to limit our selfs not only to reference types we can call the generic
+        // visit function of the typeArgument so it does not matter which class it is!
+        typeArgument = typeArgument.visit(this);
 
         if (cloned.typeParameters) {
           const typeParameter = cloned.typeParameters[i] as ParseGeneric;
@@ -172,6 +188,9 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
    * Find a root Node by its name – used to find types and interfaces
    */
   private getRootNodeByName(name: string): ParseDefinition {
+
+    // TODO: major: lukas.holzer build check if rootNode is not parent node,
+    // otherwise we would get a circular structure that is causing a memory leak!
     return this.rootNodes.find((node: ParseDefinition) => node.name === name);
   }
 

@@ -33,47 +33,40 @@ export class JSONResolver extends NullVisitor implements ParsedVisitor {
     log.debug(`Visiting: ${node.constructor.name}`);
     // heritage clauses have to be parsed
     const members = this.visitAll(node.members);
+    const extending = this.visit(node.extending);
+    // console.log(extending)
     return {
       name: node.name,
       members,
+      extending,
     };
   }
 
-  visitInterfaceDeclaration(node: ParseInterfaceDeclaration): any {
-    log.debug(`Visiting: ${node.constructor.name}`);
-    const members = this.visitAll(node.members);
-    return {
-      name: node.name,
-      members,
-    };
-  }
+  // visitInterfaceDeclaration(node: ParseInterfaceDeclaration): any {
+  //   log.debug(`Visiting: ${node.constructor.name}`);
+  //   const members = this.visitAll(node.members);
+  //   const extending = this.visit(node.extending);
+
+  //   console.log(node.name)
+  //   console.log(extending)
+
+  //   return {
+  //     name: node.name,
+  //     // members,
+  //   };
+  // }
 
   visitIntersectionType(node: ParseIntersectionType): any {
     log.debug(`Visiting: ${node.constructor.name}`);
     const types = this.visitAll(node.types);
     return flatten(types);
-
-    // console.log(types)
-    // const values = [];
-
-    // types.forEach((type) => {
-    //   if (type.members) {
-    //     values.push(...type.members);
-    //   }
-    // });
-
-
-
-    // return merge.apply(null, [{}].concat(values));
   }
+
 
   visitMethod(node: ParseMethod) {
     log.debug(`Visiting: ${node.constructor.name}`);
     const returnType = this.visit(node.returnType);
-    return {
-      name: node.name,
-      returnType,
-    };
+    return returnType;
   }
 
   visitProperty(node: ParseProperty): Property {
@@ -88,7 +81,7 @@ export class JSONResolver extends NullVisitor implements ParsedVisitor {
   visitResult(node: ParseResult): any[] {
     log.debug(`Visiting: ${node.constructor.name}`);
     const nodes = node.nodes
-      .filter(node => node instanceof ParseVariableDeclaration)
+      .filter(node => node instanceof ParseClassDeclaration)
       .map(node => this.visit(node));
     // TODO: filter all nodes that are angular components
     // .filter(node => node instanceof ParseClassDeclaration && node.isAngularComponent());
@@ -112,7 +105,8 @@ export class JSONResolver extends NullVisitor implements ParsedVisitor {
     const constraint = this.visit(node.constraint);
     const value = this.visit(node.value);
 
-    return mergeMembers(value, constraint)
+    return [value, constraint]
+    // return mergeMembers(value, constraint)
   }
 
 }
