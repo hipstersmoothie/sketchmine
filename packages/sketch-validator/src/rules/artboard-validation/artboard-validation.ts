@@ -40,6 +40,7 @@ export function artboardValidation(
       homework.parents.page === task.parents.page &&
       homework.ruleNames.includes('artboard-validation'))
     .some(homework =>
+      homework.frame &&
       homework.frame.width === parseInt(task.parents.page, 10));
 
   /**
