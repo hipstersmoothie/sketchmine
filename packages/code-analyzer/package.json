@@ -1,6 +1,6 @@
 {
   "name": "@sketchmine/code-analyzer",
-  "version": "2.3.0",
+  "version": "2.6.1",
   "description": "Pulls out the information from a source code and provides an abstract representation in JSON format about the code.",
   "keywords": [
     "angular",
@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "@sketchmine/helpers": "^2.2.0",
-    "@sketchmine/node-helpers": "^2.3.0",
+    "@sketchmine/node-helpers": "^2.6.1",
     "chalk": "^2.4.0",
     "lodash": "^4.17.0",
     "minimatch": "^3.0.0",
