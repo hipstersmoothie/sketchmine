@@ -11,9 +11,15 @@ import {
   ParseProperty,
   ParseVariableDeclaration,
   ParseClassDeclaration,
+  ParseUnionType,
+  ParseValueType,
+  ParsePrimitiveType,
+  ParseTypeLiteral,
+  ParsePartialType,
 } from '../parsed-nodes';
 import { Logger } from '@sketchmine/node-helpers';
-import { merge, flatten } from 'lodash';
+import { merge, flatten, mergeWith } from 'lodash';
+import chalk from 'chalk';
 const log = new Logger();
 
 export interface Property {
@@ -22,6 +28,13 @@ export interface Property {
   value: string[];
 }
 
+
+const MERGE_CUSTOMIZER = (objVal, srcVal) => {
+  if (objVal instanceof Array) {
+    return objVal.concat(srcVal);
+  }
+};
+
 /**
  * Generates the final JSON that is written to a file from the
  * generated AST.
@@ -29,12 +42,8 @@ export interface Property {
 export class JSONResolver extends NullVisitor implements ParsedVisitor {
 
   visitClassDeclaration(node: ParseClassDeclaration): any {
-
-    log.debug(`Visiting: ${node.constructor.name}`);
-    // heritage clauses have to be parsed
     const members = this.visitAll(node.members);
     const extending = this.visit(node.extending);
-    // console.log(extending)
     return {
       name: node.name,
       members,
@@ -42,83 +51,106 @@ export class JSONResolver extends NullVisitor implements ParsedVisitor {
     };
   }
 
-  // visitInterfaceDeclaration(node: ParseInterfaceDeclaration): any {
-  //   log.debug(`Visiting: ${node.constructor.name}`);
-  //   const members = this.visitAll(node.members);
-  //   const extending = this.visit(node.extending);
+  visitInterfaceDeclaration(node: ParseInterfaceDeclaration): any {
+    log.debug(chalk`{green Visiting:} ${node.constructor.name}`);
+    const members = this.visitAll(node.members);
+    const extending = this.visit(node.extending);
 
-  //   console.log(node.name)
-  //   console.log(extending)
-
-  //   return {
-  //     name: node.name,
-  //     // members,
-  //   };
-  // }
-
-  visitIntersectionType(node: ParseIntersectionType): any {
-    log.debug(`Visiting: ${node.constructor.name}`);
-    const types = this.visitAll(node.types);
-    return flatten(types);
+    return {
+      name: node.name,
+      members,
+      extending,
+    };
   }
 
+  visitIntersectionType(node: ParseIntersectionType): any {
+    const types = this.visitAll(node.types);
+    // return flatten(types);
+    return types;
+  }
 
   visitMethod(node: ParseMethod) {
-    log.debug(`Visiting: ${node.constructor.name}`);
     const returnType = this.visit(node.returnType);
+    // const param = this.visitAll(node.parameters)
     return returnType;
   }
 
-  visitProperty(node: ParseProperty): Property {
-    log.debug(`Visiting: ${node.constructor.name}`);
+  visitUnionType(node: ParseUnionType) {
+    const types = this.visitAll(node.types)
+    return types;
+  }
+
+  visitProperty(node: ParseProperty) {
+    log.debug(chalk`{green Visiting:} ${node.constructor.name}`);
+
     return {
       type: 'property',
       key: node.name,
       value: node.value,
+      types: this.visit(node.type)
     };
   }
 
+  visitPrimitiveType(node: ParsePrimitiveType) {
+    log.debug(chalk`{green Visiting:} ${node.constructor.name}`);
+    return node.type;
+  }
+
+  visitTypeLiteral(node: ParseTypeLiteral) {
+    log.debug(chalk`{green Visiting:} ${node.constructor.name}`);
+    return this.visitAll(node.members);
+  }
+
+  visitValueType(node: ParseValueType) {
+    log.debug(chalk`{green Visiting:} ${node.constructor.name}`);
+    return node.value;
+  }
+
   visitResult(node: ParseResult): any[] {
-    log.debug(`Visiting: ${node.constructor.name}`);
     const nodes = node.nodes
-      .filter(node => node instanceof ParseClassDeclaration)
+      .filter(node =>
+        node.constructor === ParseClassDeclaration &&
+        (<ParseClassDeclaration>node).isAngularComponent())
       .map(node => this.visit(node));
-    // TODO: filter all nodes that are angular components
-    // .filter(node => node instanceof ParseClassDeclaration && node.isAngularComponent());
     return nodes;
   }
 
   visitTypeAliasDeclaration(node: ParseTypeAliasDeclaration): any {
-    log.debug(`Visiting: ${node.constructor.name}`);
     return this.visit(node.type);
   }
 
   visitVariableDeclaration(node: ParseVariableDeclaration): any {
-    log.debug(`Visiting: ${node.constructor.name}`);
-    // TODO: const type =
-    const value = this.visit(node.value);
-    return value;
+    return this.visit(node.value);
+  }
+
+  visitPartialType(node: ParsePartialType): any {
+    const types = this.visitAll(node.types);
+    return {
+      type: 'Partial',
+      types,
+    };
   }
 
   visitGeneric(node: ParseGeneric): any {
-    log.debug(`Visiting: ${node.constructor.name}`);
     const constraint = this.visit(node.constraint);
     const value = this.visit(node.value);
+    const type = this.visit(node.type);
 
-    return [value, constraint]
-    // return mergeMembers(value, constraint)
+
+    if (value && type) {
+      console.log(value, type)
+    }
+
+    if (constraint) {
+      console.log(constraint);
+      // const v = mergeWith(
+      //   {},
+      //   {},
+      //   MERGE_CUSTOMIZER,
+      // )
+    }
+
+  //   return [value, constraint, type];
   }
 
-}
-
-function mergeMembers(...nodes: any[]) {
-  const values = [];
-
-  nodes.forEach((node) => {
-    if (node && node.members) {
-      values.push(...node.members);
-    }
-  });
-
-  return values;
 }

@@ -10,6 +10,8 @@ import {
   ParseGeneric,
   ReferenceResolver,
   ParseInterfaceDeclaration,
+  ParseIntersectionType,
+  ParseClassDeclaration,
 } from '../../src';
 import { getParsedResult, resolveReferences } from '../helpers';
 
@@ -63,8 +65,8 @@ describe('[code-analyzer] › Resolving Generic Types', () => {
     expect(a).toBeInstanceOf(ParseTypeAliasDeclaration);
     expect(a.type).toBeInstanceOf(ParseMethod);
     expect(a.type.returnType).toBeInstanceOf(ParseGeneric);
-    expect(a.type.returnType.value).toBeInstanceOf(ParsePrimitiveType);
-    expect(a.type.returnType.value.type).toBe('string');
+    expect(a.type.returnType.type).toBeInstanceOf(ParsePrimitiveType);
+    expect(a.type.returnType.type.type).toBe('string');
   });
 
   test('generic resolves with a reference type as parameter', () => {
@@ -82,12 +84,12 @@ describe('[code-analyzer] › Resolving Generic Types', () => {
     expect(a).toBeInstanceOf(ParseTypeAliasDeclaration);
     expect(a.type).toBeInstanceOf(ParseMethod);
     expect(a.type.returnType).toBeInstanceOf(ParseGeneric);
-    expect(a.type.returnType.value).toBeInstanceOf(ParseTypeAliasDeclaration);
-    expect(a.type.returnType.value.type).toBeInstanceOf(ParseUnionType);
-    expect(a.type.returnType.value.type.types[0]).toBeInstanceOf(ParseValueType);
-    expect(a.type.returnType.value.type.types[0].value).toMatch('value');
-    expect(a.type.returnType.value.type.types[1]).toBeInstanceOf(ParseValueType);
-    expect(a.type.returnType.value.type.types[1].value).toMatch('test');
+    expect(a.type.returnType.type).toBeInstanceOf(ParseTypeAliasDeclaration);
+    expect(a.type.returnType.type.type).toBeInstanceOf(ParseUnionType);
+    expect(a.type.returnType.type.type.types[0]).toBeInstanceOf(ParseValueType);
+    expect(a.type.returnType.type.type.types[0].value).toMatch('value');
+    expect(a.type.returnType.type.type.types[1]).toBeInstanceOf(ParseValueType);
+    expect(a.type.returnType.type.type.types[1].value).toMatch('test');
   });
 
   test('multiple generics with where the inner generic should be taken for the reference', () => {
@@ -144,7 +146,7 @@ describe('[code-analyzer] › Resolving Generic Types', () => {
     // test constraints
     expect(functionTypeParameter.constraint.name).toBe('Constructor');
     expect(functionTypeParameter.constraint.type).toBeInstanceOf(ParseMethod);
-    expect(functionTypeParameter.constraint.type.returnType).toMatchObject(interface1);
+    expect(functionTypeParameter.constraint.type.returnType.type).toMatchObject(interface1);
 
     const functionParameterA = nodes[3].parameters[0];
     // function parameter matches the extended Constructor
@@ -154,6 +156,46 @@ describe('[code-analyzer] › Resolving Generic Types', () => {
     expect(returnType[0]).toMatchObject(functionTypeParameter);
     expect(returnType[1]).toBeInstanceOf(ParseTypeAliasDeclaration);
     expect(returnType[1].type.returnType).toBeInstanceOf(ParseGeneric);
-    expect(returnType[1].type.returnType.value).toMatchObject(interface2);
+    expect(returnType[1].type.returnType.type).toMatchObject(interface2);
+  });
+
+  test('pass interfaces and types through the typeArguments to the generic', () => {
+    const source = `
+      function mixinColor<T, P >(base: T, defaultColor?: P): Constructor<P> & T { }
+      type Constructor<T> = new(...args: any[]) => T;
+      type DtButtonThemePalette = 'main' | 'warning' | 'cta';
+      class DtButtonBase {
+        constructor(public _elementRef: ElementRef) { }
+      }
+
+      const mixinBase = mixinColor<Constructor<DtButtonBase>, DtButtonThemePalette>(DtButtonBase, 'main');
+    `;
+    const result = getParsedResult(source);
+    const nodes = resolveReferences(result).nodes as any[];
+
+    const mixinValue = nodes[4].value.returnType;
+
+    // first part of intersection type should be main
+    expect(mixinValue).toBeInstanceOf(ParseIntersectionType);
+    expect(mixinValue.types[0]).toBeInstanceOf(ParseTypeAliasDeclaration);
+    expect(mixinValue.types[0].type).toBeInstanceOf(ParseMethod);
+    expect(mixinValue.types[0].type.returnType.type).toBeInstanceOf(ParseGeneric);
+    expect(mixinValue.types[0].type.returnType.type).toBeInstanceOf(ParseGeneric);
+    expect(mixinValue.types[0].type.returnType.type.value).toBeInstanceOf(ParseValueType);
+    expect(mixinValue.types[0].type.returnType.type.value.value).toMatch('main');
+    expect(mixinValue.types[0].type.returnType.type.type).toBeInstanceOf(ParseTypeAliasDeclaration);
+
+
+    const themePalette = mixinValue.types[0].type.returnType;
+    console.log(themePalette);
+
+
+    // second part should be the button theme palette
+    // expect(mixinValue.types[1]).toBeInstanceOf(ParseGeneric);
+    // expect(mixinValue.types[1].value).toBeInstanceOf(ParseClassDeclaration);
+    // expect(mixinValue.types[1].value.name).toBe('DtButtonBase');
+    // expect(mixinValue.types[1].value).toMatchObject(nodes[3]);
+
+    // console.log(mixinValue.types[1].value)
   });
 });

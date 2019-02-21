@@ -22,7 +22,7 @@ import {
   ParseUnionType,
   ParseValueType,
   ParseVariableDeclaration,
-  ParseLocation,
+  ParsePartialType,
 } from './parse-node';
 import { Logger } from '@sketchmine/node-helpers';
 
@@ -41,6 +41,7 @@ export interface ParsedVisitor {
   visitMethod(node: ParseMethod): any;
   visitObjectLiteral(node: ParseObjectLiteral): any;
   visitParenthesizedType(node: ParseParenthesizedType): any;
+  visitPartialType(node: ParsePartialType): any;
   visitPrimitiveType(node: ParsePrimitiveType): any;
   visitProperty(node: ParseProperty): any;
   visitReferenceType(node: ParseReferenceType): any;
@@ -101,6 +102,10 @@ export class NullVisitor implements ParsedVisitor {
     return null;
   }
   visitParenthesizedType(node: ParseParenthesizedType): any {
+    log.debug(`Visiting: ${node.constructor.name}`);
+    return null;
+  }
+  visitPartialType(node: ParsePartialType): any {
     log.debug(`Visiting: ${node.constructor.name}`);
     return null;
   }
@@ -166,6 +171,7 @@ export class NodeVisitor extends NullVisitor implements ParsedVisitor {
   visitMethod(node: ParseMethod): any { return node; }
   visitObjectLiteral(node: ParseObjectLiteral): any { return node; }
   visitParenthesizedType(node: ParseParenthesizedType): any { return node; }
+  visitPartialType(node: ParsePartialType): any { return node; }
   visitPrimitiveType(node: ParsePrimitiveType): any { return node; }
   visitProperty(node: ParseProperty): any { return node; }
   visitReferenceType(node: ParseReferenceType): any { return node; }
@@ -209,12 +215,13 @@ export class TreeVisitor extends NodeVisitor implements ParsedVisitor {
     // we have to visit the constraints in case that they might be a reference type
     node.constraint = this.visit(node.constraint);
 
-    // when the generic has a value we know it was resolved
-    // so we don't need the ParseGeneric any more return only the value.
-    if (node.value) {
-      return this.visit(node.value);
-    }
+    // // when the generic has a value we know it was resolved
+    // // so we don't need the ParseGeneric any more return only the value.
+    // if (node.value) {
+    //   return this.visit(node.value);
+    // }
     node.value = this.visit(node.value);
+    node.type = this.visit(node.type);
     return node;
   }
   visitIndexSignature(node: ParseIndexSignature): any {
@@ -245,6 +252,10 @@ export class TreeVisitor extends NodeVisitor implements ParsedVisitor {
   }
   visitParenthesizedType(node: ParseParenthesizedType): any {
     node.type = this.visit(node.type);
+    return node;
+  }
+  visitPartialType(node: ParsePartialType): any {
+    node.types = this.visitAll(node.types);
     return node;
   }
   visitProperty(node: ParseProperty): any {

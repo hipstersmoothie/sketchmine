@@ -59,6 +59,14 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     this.rootNodes = flatten(parseResults.map(result => result.nodes));
   }
 
+  visit(node: any): any {
+    // Node that was visited from the ReferenceResolver has the visited
+    // property – so that we know if we have to visit it or not when we collectGenerics
+    // a node from the root nodes
+    if (node) { node._visited = true; }
+    return super.visit(node);
+  }
+
   visitTypeAliasDeclaration(node: ParseTypeAliasDeclaration): any {
     this.collectGenerics(node);
     return super.visitTypeAliasDeclaration(node);
@@ -91,7 +99,6 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     if (!method) {
       return new ParseEmpty();
     }
-
     // We need to check if we have typeArguments, and when we have some, we have
     // to pass it through the typeParameters of the matching `typeParametersNode`
     const cloned = this.passTypeArguments(node, method);
@@ -100,15 +107,13 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     // matching function declaration instead only passing some reference.
     node.args = this.visitAll(node.args);
 
-    node.args.forEach((arg, index: number) => {
-      const param = cloned.parameters[index].type;
+    node.args.forEach((arg, i: number) => {
+      const param = cloned.parameters[i].type;
 
-      switch (param.constructor) {
-        case ParseGeneric:
-          (param as ParseGeneric).value = arg;
-          break;
-        default:
-          console.log('visiting Expression parameter constructor not handled yet!: ', param.constructor.name);
+      if (param && param.constructor.name === 'ParseGeneric') {
+        (param as ParseGeneric).value = arg;
+      } else {
+        cloned.parameters[i] = arg as any;
       }
     });
     return cloned;
@@ -174,8 +179,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
         typeArgument = typeArgument.visit(this);
 
         if (cloned.typeParameters) {
-          const typeParameter = cloned.typeParameters[i] as ParseGeneric;
-          typeParameter.value = typeArgument as ParseDefinition;
+          (cloned.typeParameters[i] as ParseGeneric).type = typeArgument as ParseDefinition;
         }
 
       }
@@ -187,11 +191,22 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
    * @description
    * Find a root Node by its name – used to find types and interfaces
    */
-  private getRootNodeByName(name: string): ParseDefinition {
+  private getRootNodeByName(name: string): ParseDefinition | undefined {
 
     // TODO: major: lukas.holzer build check if rootNode is not parent node,
     // otherwise we would get a circular structure that is causing a memory leak!
-    return this.rootNodes.find((node: ParseDefinition) => node.name === name);
+    const rootNode = this.rootNodes.find((node: ParseDefinition) => node.name === name);
+    if (!rootNode) {
+      return;
+    }
+
+    if (!rootNode.hasOwnProperty('_visited') || (<any>rootNode)._visited !== true) {
+      // if the node was not visited yet we have to visit the root node first
+      // before we are returning it!
+      return rootNode.visit(this);
+    }
+    // rootNode was visited and we can pass it!
+    return rootNode;
   }
 
   /**
