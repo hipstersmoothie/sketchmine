@@ -49,6 +49,7 @@ export class ParseEmpty extends ParseNode {
  */
 export class ParseGeneric extends ParseNode {
   value: ParseNode;
+  type: ParseNode;
   constructor(
     location: ParseLocation,
     public name: string,
@@ -90,7 +91,7 @@ export class ParsePrimitiveType extends ParseNode {
 }
 
 /**
- * @descriptions
+ * @description
  * Parses a Union type `type x = 'a' | 'b'`
  */
 export class ParseUnionType extends ParseNode {
@@ -103,6 +104,23 @@ export class ParseUnionType extends ParseNode {
   }
   visit(visitor: ParsedVisitor): any {
     return visitor.visitUnionType(this);
+  }
+}
+
+/**
+ * @description
+ * Parses a typescript partial type `Partial<type>`
+ */
+export class ParsePartialType extends ParseUnionType {
+  constructor(
+    location: ParseLocation,
+    types: ParseSimpleType[],
+  ) {
+    super(location, types);
+  }
+
+  visit(visitor: ParsedVisitor): any {
+    return visitor.visitPartialType(this);
   }
 }
 

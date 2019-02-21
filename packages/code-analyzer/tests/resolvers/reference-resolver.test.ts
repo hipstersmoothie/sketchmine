@@ -7,6 +7,9 @@ import {
   ParseGeneric,
   ParseValueType,
   ReferenceResolver,
+  ParseIntersectionType,
+  ParseTypeLiteral,
+  ParseProperty,
 } from '../../src';
 import { getParsedResult, resolveReferences } from '../helpers';
 
@@ -77,7 +80,7 @@ describe('[code-analyzer] › Resolving References', () => {
     expect(resolved[1].value.returnType.type).toBe('string');
   });
 
-  test('should parse arguments to expression call', () => {
+  test('should pass primitive arguments to expression call', () => {
     const source = `
       function f(a: string): string { return a; }
       const a = f('hello');
@@ -90,7 +93,33 @@ describe('[code-analyzer] › Resolving References', () => {
     expect(resolved[1].value.returnType.type).toBe('string');
   });
 
-  test('should parse arguments to expression call with generic', () => {
+  test('should pass primitive to un-resolvable type', () => {
+    const source = `
+      function f(a: asd): asd { }
+      const a = f('hello');
+    `;
+    const result = getParsedResult(source);
+    const resolved = resolveReferences(result).nodes as any[];
+
+    expect(resolved[1].value).toBeInstanceOf(ParseMethod);
+    expect(resolved[1].value.returnType).toBeInstanceOf(ParseEmpty);
+  });
+
+  test('should pass primitive arguments to expression call', () => {
+    const source = `
+      function f(a: object): object { return a; }
+      const a = f({a: 'b'});
+    `;
+    const result = getParsedResult(source);
+    const resolved = resolveReferences(result).nodes as any[];
+
+    expect(resolved[1].value).toBeInstanceOf(ParseMethod);
+    // object can not be resolved for now
+    // TODO: rethink the returning null…
+    expect(resolved[1].value.returnType).toBeNull();
+  });
+
+  test('should pass arguments to expression call with generic', () => {
     const source = `
       function f<T>(a: T): T { return a; }
       const a = f('hello');
@@ -114,6 +143,38 @@ describe('[code-analyzer] › Resolving References', () => {
 
     expect(resolved[1].value).toMatchObject(resolved[0]);
     expect(resolved[1].value).not.toBe(resolved[0]);
+  });
+
+  test('passing data through arguments when resolving an expression statement', () => {
+    const source = `
+      function f<T, P>(a: T, b: P): P & T { return {...a, ...b}; }
+      const a = f('a', 2);
+    `;
+    const result = getParsedResult(source);
+    const resolved = resolveReferences(result).nodes as any[];
+
+    const value = resolved[1].value;
+
+    expect(value.returnType).toBeInstanceOf(ParseIntersectionType);
+    expect(value.returnType.types[0]).toBeInstanceOf(ParseGeneric);
+    expect(value.returnType.types[0].value).toBeInstanceOf(ParseValueType);
+    expect(value.returnType.types[0].value.value).toBe(2);
+    expect(value.returnType.types[1].value.value).toMatch('a');
+  });
+
+  test('passing data through typeArguments when resolving an expression statement', () => {
+    const source = `
+      function f<T, P>(): P & T {}
+      const a = f<{a: string}, {b: number}>();
+    `;
+    const result = getParsedResult(source);
+    const resolved = resolveReferences(result).nodes as any[];
+
+    const value = resolved[1].value;
+
+    expect(value.returnType.types[0].type).toBeInstanceOf(ParseTypeLiteral);
+    expect(value.returnType.types[1].type).toBeInstanceOf(ParseTypeLiteral);
+    expect(value.returnType.types[1].type.members[0]).toBeInstanceOf(ParseProperty);
   });
 
 });
@@ -179,5 +240,4 @@ describe('[code-analyzer] › Collect generics in reference resolver', () => {
     expect(generic).toBeInstanceOf(ParseGeneric);
     expect(generic.name).toBe('T');
   });
-
 });

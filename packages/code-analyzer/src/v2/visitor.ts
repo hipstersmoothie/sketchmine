@@ -29,6 +29,7 @@ import {
   ParseValueType,
   ParseVariableDeclaration,
   Primitives,
+  ParsePartialType,
 } from './parsed-nodes';
 import { getNodeTags, NodeTags } from './util';
 import { getSymbolName, parseAbsoluteModulePath } from '../utils';
@@ -229,6 +230,8 @@ export class Visitor {
     const location = this.getLocation(node);
 
     switch (node.kind) {
+      case ts.SyntaxKind.ObjectKeyword:
+        return new ParseEmpty();
       case ts.SyntaxKind.VoidKeyword:
         return new ParseValueType(location, 'void');
       case ts.SyntaxKind.AnyKeyword:
@@ -256,6 +259,9 @@ export class Visitor {
         if ((<ts.TypeReferenceNode>node).typeArguments) {
           typeArguments = (<ts.TypeReferenceNode>node).typeArguments
             .map((argument: ts.TypeNode) => this.visitType(argument));
+        }
+        if (typeReferenceName === 'Partial') {
+          return new ParsePartialType(location, typeArguments as ParseSimpleType[]);
         }
         return new ParseReferenceType(location, typeReferenceName, typeArguments);
       case ts.SyntaxKind.ArrayType:

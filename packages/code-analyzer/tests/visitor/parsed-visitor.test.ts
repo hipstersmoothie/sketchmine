@@ -29,6 +29,7 @@ import {
   TreeVisitor,
   ParseDefinition,
   ParseDependency,
+  ParsePartialType,
 } from '../../src';
 import { getParsedResult } from '../helpers';
 
@@ -282,6 +283,23 @@ describe('[code-analyzer] › Parsed tree visitor', () => {
     expect(visitParenthesizedTypeFn).toHaveBeenCalledWith(node);
     expect(visitParenthesizedTypeFn).toReturnWith(node);
     visitParenthesizedTypeFn.mockRestore();
+  });
+
+  test('Visit PartialType', () => {
+    const source = 'type x = "a" | "b"; type a = Partial<x>';
+    const result = getParsedResult(source) as any;
+    const node = result.nodes[1].type as ParsePartialType;
+
+    const visitPartialTypeFn = jest.spyOn(treeVisitor, 'visitPartialType');
+
+    expect(nullVisitor.visit(node)).toBeNull();
+    expect(nodeVisitor.visit(node)).toBeInstanceOf(ParsePartialType);
+    expect(nodeVisitor.visit(node)).toBe(node);
+    expect(visitPartialTypeFn).not.toHaveBeenCalled();
+    treeVisitor.visit(node);
+    expect(visitPartialTypeFn).toHaveBeenCalledWith(node);
+    expect(visitPartialTypeFn).toReturnWith(node);
+    visitPartialTypeFn.mockRestore();
   });
 
   test('Visit PrimitiveType', () => {
