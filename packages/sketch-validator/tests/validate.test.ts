@@ -1,99 +1,33 @@
-import { Logger } from '@sketchmine/node-helpers';
-import { SketchObjectTypes } from '@sketchmine/sketch-file-format';
-import { DYNATRACE_LOGO_COLORS, ARTBOARD_SIZES } from '../src/config';
+import { Logger, readFile } from '@sketchmine/node-helpers';
+import { SketchBase } from '@sketchmine/sketch-file-format';
+import { rules } from '../src/config';
 import { ErrorHandler } from '../src/error';
-import { IValidationRule, ValidationRequirements } from '../src/interfaces/validation-rule.interface';
-import { artboardValidation } from '../src/rules/artboard-validation';
-import { colorValidation } from '../src/rules/color-validation';
 import { Teacher } from '../src/teacher';
 import { Validator } from '../src/validator';
+import { generateArtboardWithEnabledBackgroundColor } from './fixtures/artboard-fixtures';
+import { generateValidSketchPages } from './fixtures/page-fixtures';
+import { ALL_REQUIREMENTS_RULE, ANOTHER_RULE } from './fixtures/rule-fixtures';
+import { getSketchPagesWithText } from './fixtures/text-fixtures';
 
-const fixture = require('./fixtures/validation-fixture.json');
-const fixture2 = require('./fixtures/validation-fixture-2.json');
-const documentFixture = require('./fixtures/text-validation-document.json');
-const COLOR_VALIDATION_RULE: IValidationRule = {
-  selector: [
-    SketchObjectTypes.Path,
-    SketchObjectTypes.ShapePath,
-    SketchObjectTypes.ShapeGroup,
-    SketchObjectTypes.Oval,
-    SketchObjectTypes.Polygon,
-    SketchObjectTypes.Rectangle,
-    SketchObjectTypes.Triangle,
-    SketchObjectTypes.Artboard,
-  ],
-  name: 'color-palette-validation',
-  description: 'Check if the used colors are in our color palette.',
-  ignoreArtboards: ['full-color-palette'],
-  validation: colorValidation,
-  options: {
-    dynatraceLogoColors: DYNATRACE_LOGO_COLORS,
-    colors: '', // gets overriden by run function on node.js and otherwise by sketch plugin
-    requirements: [
-      ValidationRequirements.Style,
-      ValidationRequirements.BackgroundColor,
-    ],
-  },
-};
-const ARTBOARD_VALIDATION_RULE: IValidationRule = {
-  selector: [SketchObjectTypes.Artboard],
-  name: 'artboard-validation',
-  description: 'Check if the artboard names are valid.',
-  validation: artboardValidation,
-  includePages: ARTBOARD_SIZES,
-  options: {
-    requirements: [
-      ValidationRequirements.LayerSize,
-      ValidationRequirements.Frame,
-    ],
-  },
-};
-const ANOTHER_RULE: IValidationRule = {
-  selector: [SketchObjectTypes.Artboard],
-  name: 'another-validation',
-  description: 'This is a rule only used for testing.',
-  validation: artboardValidation,
-  includePages: ARTBOARD_SIZES,
-  ignoreArtboards: ['1280'],
-  env: ['product'],
-  options: {
-    requirements: [
-      ValidationRequirements.LayerSize,
-      ValidationRequirements.Frame,
-    ],
-  },
-};
-const ALL_REQUIREMENTS_RULE: IValidationRule = {
-  selector: [
-    SketchObjectTypes.Path,
-    SketchObjectTypes.ShapePath,
-    SketchObjectTypes.ShapeGroup,
-    SketchObjectTypes.Rectangle,
-    SketchObjectTypes.Text,
-    SketchObjectTypes.Artboard,
-  ],
-  name: 'some-validation',
-  description: 'This is a rule used only for testing.',
-  validation: artboardValidation,
-  env: ['product'],
-  options: {
-    requirements: [
-      ValidationRequirements.AttributedString,
-      ValidationRequirements.BackgroundColor,
-      ValidationRequirements.Children,
-      ValidationRequirements.DocumentReference,
-      ValidationRequirements.Frame,
-      ValidationRequirements.LayerSize,
-      ValidationRequirements.Style,
-    ],
-  },
-};
 jest.mock('../src/teacher');
 
-const log = new Logger();
-const handler = new ErrorHandler(log);
+// tslint:disable-next-line max-line-length
+describe('[sketch-validator] › Sketch validator › Tests if the validator prepares tasks for all validations correctly.', () => {
 
-describe('Sketch Validation', () => {
+  const log = new Logger();
+  const handler = new ErrorHandler(log);
+  let COLOR_VALIDATION_RULE;
+  let ARTBOARD_VALIDATION_RULE;
+  let documentFixture: SketchBase;
+
+  beforeAll(async () => {
+    COLOR_VALIDATION_RULE = rules.find(rule => rule.name === 'color-palette-validation');
+    ARTBOARD_VALIDATION_RULE = rules.find(rule => rule.name === 'artboard-validation');
+    documentFixture = JSON.parse(
+      await readFile('tests/fixtures/text-validation-document.json'),
+    );
+  });
+
   beforeEach(async () => {
     jest.clearAllMocks();
   });
@@ -109,11 +43,12 @@ describe('Sketch Validation', () => {
     expect(error).toEqual(new Error('No files to validate!'));
   });
 
-  test('if color rule gets applied when no environment product', async () => {
+  test('if color rule does not get applied when product environment is not set', async () => {
     COLOR_VALIDATION_RULE.env = ['product'];
     const productValidator = new Validator([COLOR_VALIDATION_RULE], handler, 'global');
-    await productValidator.addFile(fixture);
+    productValidator.files = generateValidSketchPages(true);
     await productValidator.validate();
+
     expect(Teacher).not.toHaveBeenCalled();
     expect(Teacher.prototype.improve).not.toHaveBeenCalled();
     expect(productValidator.homeworks).toHaveLength(0);
@@ -122,18 +57,20 @@ describe('Sketch Validation', () => {
   test('if color rule gets applied when no environment is set', async () => {
     COLOR_VALIDATION_RULE.env = undefined;
     const productValidator = new Validator([COLOR_VALIDATION_RULE], handler, 'product');
-    await productValidator.addFile(fixture);
+    productValidator.files = generateValidSketchPages(true);
     await productValidator.validate();
+
     expect(Teacher).toHaveBeenCalledTimes(1);
     expect(Teacher.prototype.improve).toHaveBeenCalled();
-    expect(productValidator.homeworks).toHaveLength(10);
+    expect(productValidator.homeworks).toHaveLength(8); // 4 artboards, 4 rectangles
   });
 
   test('if no rules are applied if environment doesn\'t match', async () => {
     COLOR_VALIDATION_RULE.env = ['product', 'global'];
     const productValidator = new Validator([COLOR_VALIDATION_RULE], handler, 'blubber');
-    await productValidator.addFile(fixture);
+    productValidator.files = generateValidSketchPages(true);
     await productValidator.validate();
+
     expect(Teacher).not.toHaveBeenCalled();
     expect(Teacher.prototype.improve).not.toHaveBeenCalled();
     expect(productValidator.homeworks).toHaveLength(0);
@@ -142,22 +79,30 @@ describe('Sketch Validation', () => {
   test('if all rules are applied if multiple environments are set', async () => {
     COLOR_VALIDATION_RULE.env = ['product', 'global'];
     const productValidator = new Validator([COLOR_VALIDATION_RULE], handler, 'product');
-    await productValidator.addFile(fixture);
+    productValidator.files = generateValidSketchPages(true);
     await productValidator.validate();
     expect(Teacher).toHaveBeenCalledTimes(1);
     expect(Teacher.prototype.improve).toHaveBeenCalled();
-    expect(productValidator.homeworks).toHaveLength(10);
+    expect(productValidator.homeworks).toHaveLength(8); // 4 artboards, 4 rectangles
+  });
+
+  test('if only artboards are part of the resulting homeworks', async () => {
+    const productValidator = new Validator([ARTBOARD_VALIDATION_RULE], handler, 'product');
+    productValidator.files = generateValidSketchPages(true);
+    await productValidator.validate();
+    expect(Teacher).toHaveBeenCalledTimes(1);
+    expect(Teacher.prototype.improve).toHaveBeenCalled();
+    expect(productValidator.homeworks).toHaveLength(3);
+    productValidator.homeworks.forEach(h => expect(h._class).toBe('artboard'));
   });
 
   test('if rule options are merged correctly for artboard selector', async () => {
     const rules = [COLOR_VALIDATION_RULE, ARTBOARD_VALIDATION_RULE];
-    const validator = new Validator(
-      rules,
-      handler,
-      'product',
-    );
-    await validator.addFile(fixture2);
+    const validator = new Validator(rules, handler, 'product');
+    validator.files = generateValidSketchPages(true);
     await validator.validate();
+
+    expect(validator.homeworks[0]._class).toBe('artboard');
     expect(validator.homeworks[0].ruleOptions).toHaveProperty('dynatraceLogoColors');
     expect(validator.homeworks[0].ruleOptions).toHaveProperty('colors');
     expect(validator.homeworks[0].ruleOptions).toHaveProperty('requirements');
@@ -166,56 +111,70 @@ describe('Sketch Validation', () => {
   });
 
   test('if excluding of rules works as expected', async () => {
-    const ignoreArtboardValidator = new Validator(
-      [ANOTHER_RULE],
-      handler,
-      'product',
-    );
-    await ignoreArtboardValidator.addFile(fixture2);
+    const ignoreArtboardValidator = new Validator([ANOTHER_RULE], handler, 'product');
+    ignoreArtboardValidator.files = generateValidSketchPages(true);
     await ignoreArtboardValidator.validate();
-    expect(ignoreArtboardValidator.homeworks).toHaveLength(1); // There are 2 artboards, but one is ignored
+    // There are 3 artboards (3 of the 4 pages are validated),
+    // but one is ignored by the given rule
+    expect(ignoreArtboardValidator.homeworks).toHaveLength(2);
 
-    const envValidator = new Validator(
-      [ANOTHER_RULE],
-      handler,
-      'fake',
-    );
-    await envValidator.addFile(fixture2);
+    const envValidator = new Validator([ANOTHER_RULE], handler, 'fake');
+    envValidator.files = generateValidSketchPages(true);
     await envValidator.validate();
     expect(envValidator.homeworks).toHaveLength(0); // Because environment does not match.
 
     ANOTHER_RULE.includePages = ['100'];
-    const pagesValidator = new Validator(
-      [ANOTHER_RULE],
-      handler,
-      'product',
-    );
-    await pagesValidator.addFile(fixture2);
+    const pagesValidator = new Validator([ANOTHER_RULE], handler, 'product');
+    pagesValidator.files = generateValidSketchPages(true);
     await pagesValidator.validate();
     expect(pagesValidator.homeworks).toHaveLength(0); // Because includePages does not contain given page.
   });
 
   test('if rule requirements options generate the expected outcome', async () => {
-    const validator = new Validator(
-      [ALL_REQUIREMENTS_RULE],
-      handler,
-      'product',
-    );
-    await validator.addFile(fixture2);
-    await validator.addDocumentFile(documentFixture);
-    await validator.validate();
+    const allRequirementsValidator = new Validator([ALL_REQUIREMENTS_RULE], handler, 'product');
+    const files = getSketchPagesWithText(1); // add some text to page with index 1
+    files[0] = generateArtboardWithEnabledBackgroundColor(360, '#ccc'); // add background color to page with index 0
+    allRequirementsValidator.files = files;
+    await allRequirementsValidator.addDocumentFile(documentFixture);
+    await allRequirementsValidator.validate();
+
     // homeworks[0] class: artboard
-    expect(validator.homeworks[0]).toHaveProperty('style');
-    expect(validator.homeworks[0]).toHaveProperty('frame');
-    expect(validator.homeworks[0].ruleOptions).toHaveProperty('backgroundColor');
-    expect(validator.homeworks[0].ruleOptions).toHaveProperty('layerSize');
-    expect(validator.homeworks[0].ruleOptions.layerSize).toBe(3);
-    expect(validator.homeworks[0].ruleOptions).toHaveProperty('children');
-    expect(validator.homeworks[0].ruleOptions.children).toHaveLength(3);
-    // homeworks[6] class: text
-    expect(validator.homeworks[6].ruleOptions).toHaveProperty('sharedStyleID');
-    expect(validator.homeworks[6].ruleOptions).toHaveProperty('stringAttributes');
-    expect(validator.homeworks[6].ruleOptions.stringAttributes).toHaveLength(1);
-    expect(validator.homeworks[6].ruleOptions).toHaveProperty('document');
+    expect(allRequirementsValidator.homeworks[0]).toHaveProperty('style');
+    expect(allRequirementsValidator.homeworks[0]).toHaveProperty('frame');
+    expect(allRequirementsValidator.homeworks[0].ruleOptions).toHaveProperty('backgroundColor');
+    expect(allRequirementsValidator.homeworks[0].ruleOptions).toHaveProperty('layerSize');
+    expect(allRequirementsValidator.homeworks[0].ruleOptions.layerSize).toBe(1);
+    expect(allRequirementsValidator.homeworks[0].ruleOptions).toHaveProperty('children');
+    expect(allRequirementsValidator.homeworks[0].ruleOptions.children).toHaveLength(1);
+  });
+
+  test('if rule requirements options generate the expected outcome when text styles are used', async () => {
+    const allRequirementsValidator = new Validator([ALL_REQUIREMENTS_RULE], handler, 'product');
+    const files = getSketchPagesWithText(1); // add some text to page with index 1
+
+    /**
+     * When a text style from a library is used in Sketch, an ID to the text style is
+     * added to the text layer.
+     *
+     * The ID "9343FE57-1181-456A-801F-4046D11C9BBB" added here can be found in
+     * fixtures/text-validation-document.json. The ID is only used for testing if the
+     * validator adds the ID to the rule options. The styles itself don't match!
+     */
+    files[1].layers[0].layers
+      .forEach((layer) => {
+        if (layer._class === 'text') {
+          layer.sharedStyleID = '9343FE57-1181-456A-801F-4046D11C9BBB';
+        }
+      });
+
+    allRequirementsValidator.files = files;
+    await allRequirementsValidator.addDocumentFile(documentFixture);
+    await allRequirementsValidator.validate();
+
+    // homeworks[4] class: text
+    expect(allRequirementsValidator.homeworks[4].ruleOptions).toHaveProperty('sharedStyleID');
+    expect(allRequirementsValidator.homeworks[4].ruleOptions).toHaveProperty('stringAttributes');
+    expect(allRequirementsValidator.homeworks[4].ruleOptions.stringAttributes).toHaveLength(1);
+    expect(allRequirementsValidator.homeworks[4].ruleOptions).toHaveProperty('document');
   });
 });

@@ -7,31 +7,32 @@ import { symbolNameValidation } from './rules/symbol-name-validation';
 import { textStyleValidation } from './rules/text-style-validation';
 import { textValidation } from './rules/text-validation';
 
-/** Available sizes */
+// Valid artboard sizes
 export const ARTBOARD_SIZES: string[] = [
   '360',
   '1280',
   '1920',
 ];
 
+// Dynatrace logo colors
 export const DYNATRACE_LOGO_COLORS = [
-  '#FFFFFF', /** logo-white */
-  '#1496FF', /** logo-blue */
-  '#6F2DA8', /** logo-purple */
-  '#B4DC00', /** logo-limegreen */
-  '#73BE28', /** logo-green */
-  '#1A1A1A', /** logo-dark-gray */
+  '#FFFFFF', // logo-white
+  '#1496FF', // logo-blue
+  '#6F2DA8', // logo-purple
+  '#B4DC00', // logo-limegreen
+  '#73BE28', // logo-green
+  '#1A1A1A', // logo-dark-gray
 ];
 
-/** Available headline text styles */
-const HEADLINE_TEXT_STYLES = [
+// Available headline text styles
+export const HEADLINE_TEXT_STYLES = [
   '1920-H1', '1920-H2', '1920-H3',
   '1280-H1', '1280-H2', '1280-H3',
   '360-H1', '360-H2', '360-H3',
 ];
 
-/** Valid text colors */
-const VALID_TEXT_COLORS = [
+// Valid text colors
+export const VALID_TEXT_COLORS = [
   '#FFFFFF', // white
   '#F8F8F8', // gray-100
   '#CCCCCC', // gray-300

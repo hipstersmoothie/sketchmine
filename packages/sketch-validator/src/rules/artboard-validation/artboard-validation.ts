@@ -58,18 +58,27 @@ export function artboardValidation(
     name: task.name,
   };
 
+  // check artboard size
   if (!includeArtboardSize) {
     errors.push(new ArtboardSizeError({
       message: ARTBOARD_SIZE_ERROR_MESSAGE,
       ...object,
     } as IValidationErrorContext));
+  } else {
+    errors.push(true);
   }
+
+  // check if artboard is empty
   if (artboardEmpty) {
     errors.push(new ArtboardEmptyError({
       message: ARTBOARD_EMPTY_ERROR_MESSAGE,
       ...object,
     } as IValidationErrorContext));
+  } else {
+    errors.push(true);
   }
+
+  // check artboard name
   if (name.length < 3) {
     errors.push(new ArtboardNamingError({
       message: ARTBOARD_NAME_ERROR_MESSAGE,
@@ -83,6 +92,7 @@ export function artboardValidation(
   } else {
     errors.push(true);
   }
+
   return errors;
 }
 

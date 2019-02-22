@@ -1,52 +1,77 @@
-import { SketchBase } from '@sketchmine/sketch-file-format';
-import { readFile } from '@sketchmine/node-helpers';
+import { Logger } from '@sketchmine/node-helpers';
+import { rules } from '../src/config';
+import { ErrorHandler } from '../src/error';
 import {
   InvalidTextColorError,
   NoTextColorError,
   TextTooSmallError,
   WrongFontError,
 } from '../src/error/validation-error';
-import { getFakeHomeworks } from './fixtures/fake-homeworks';
-import { textValidation } from '../src/rules/text-validation';
+import { Validator } from '../src/validator';
+import { getSketchPagesWithText, getSketchPagesWithTextWithoutColor } from './fixtures/text-fixtures';
 
-describe('[sketch-validator] › Text Validation › Tests usage of text in Sketch documents.', () => {
-  let sketchDocument: SketchBase;
+describe('[sketch-validator] › Text validation › Tests if the text validation succeeds and fails as expected.', () => {
+  const log = new Logger();
+  let validator: Validator;
+  const handler = new ErrorHandler(log);
 
   beforeEach(async () => {
-    sketchDocument = JSON.parse(
-      await readFile('tests/fixtures/text-validation-document.json'),
-    );
+    const textValidationRule = rules.find(rule => rule.name === 'text-validation');
+    validator = new Validator([textValidationRule], handler, 'product');
+    handler.rulesStack = {};
   });
 
-  test('should check if only valid text colors are used', () => {
-    const fakeHomeworks = getFakeHomeworks(sketchDocument);
-    const result = textValidation(fakeHomeworks, 6);
-    expect(result).toBeInstanceOf(Array);
-    expect(result).toHaveLength(12);
-    expect(result[3]).toBeInstanceOf(InvalidTextColorError);
+  test('should check if validation fails if invalid text color is used', () => {
+    // color is a valid text color
+    // rgb(69, 70, 70) == #454646 == $gray-700
+    validator.files = getSketchPagesWithText(0, 'rgb(69, 70, 70)');
+    validator.validate();
+
+    const result = handler.rulesStack['text-validation'];
+    expect(result.succeeding).toBe(6); // 2 text layers, 3 checks each
+    expect(result.failing).toHaveLength(0);
+  });
+
+  test('should check if validation passes if valid text color is used', () => {
+    // color is part of the Dynatrace color palette but not a valid text color
+    // rgb(210, 239, 190) == #D2EFBE == $green-200
+    validator.files = getSketchPagesWithText(0, 'rgb(210, 239, 190)');
+    validator.validate();
+
+    const result = handler.rulesStack['text-validation'];
+    expect(result.succeeding).toBe(4); // 2 text layers, 3 checks each, 2 of them passing
+    expect(result.failing).toHaveLength(2);
+    expect(result.failing[0]).toBeInstanceOf(InvalidTextColorError);
+    expect(result.failing[1]).toBeInstanceOf(InvalidTextColorError);
   });
 
   test('should check if a text color is set', () => {
-    const fakeHomeworks = getFakeHomeworks(sketchDocument);
-    const result = textValidation(fakeHomeworks, 6);
-    expect(result).toBeInstanceOf(Array);
-    expect(result).toHaveLength(12);
-    expect(result[9]).toBeInstanceOf(NoTextColorError);
+    validator.files = getSketchPagesWithTextWithoutColor();
+    validator.validate();
+
+    const result = handler.rulesStack['text-validation'];
+    expect(result.failing).toHaveLength(1);
+    expect(result.failing[0]).toBeInstanceOf(NoTextColorError);
   });
 
   test('should check if no font smaller than 12px is used', () => {
-    const fakeHomeworks = getFakeHomeworks(sketchDocument);
-    const result = textValidation(fakeHomeworks, 6);
-    expect(result).toBeInstanceOf(Array);
-    expect(result).toHaveLength(12);
-    expect(result[1]).toBeInstanceOf(TextTooSmallError);
+    // color valid, text too small
+    validator.files = getSketchPagesWithText(0, 'rgb(69, 70, 70)', '11px');
+    validator.validate();
+
+    const result = handler.rulesStack['text-validation'];
+    expect(result.failing).toHaveLength(2);
+    expect(result.failing[0]).toBeInstanceOf(TextTooSmallError);
+    expect(result.failing[1]).toBeInstanceOf(TextTooSmallError);
   });
 
   test('should check if no font other than BerninaSans or Bitstream Vera is used', () => {
-    const fakeHomeworks = getFakeHomeworks(sketchDocument);
-    const result = textValidation(fakeHomeworks, 6);
-    expect(result).toBeInstanceOf(Array);
-    expect(result).toHaveLength(12);
-    expect(result[8]).toBeInstanceOf(WrongFontError);
+    // wrong font family
+    validator.files = getSketchPagesWithText(0, 'rgb(69, 70, 70)', '14px', 'Helvetica Neue');
+    validator.validate();
+
+    const result = handler.rulesStack['text-validation'];
+    expect(result.failing).toHaveLength(1);
+    expect(result.failing[0]).toBeInstanceOf(WrongFontError);
   });
 });

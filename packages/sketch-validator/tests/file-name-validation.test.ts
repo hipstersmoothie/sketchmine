@@ -1,11 +1,12 @@
-import { filenameValidation, RULE_NAME } from '../src/rules/file-name-validation';
-import { FileNameError } from '../src/error/validation-error';
-import { ErrorHandler } from '../src/error/error-handler';
 import { Logger } from '@sketchmine/node-helpers';
+import { ErrorHandler } from '../src/error/error-handler';
+import { FileNameError } from '../src/error/validation-error';
+import { filenameValidation, RULE_NAME } from '../src/rules/file-name-validation';
 
 const log = new Logger();
 
-describe('Filename Validation', () => {
+// tslint:disable-next-line max-line-length
+describe('[sketch-validator] › Filename validation › Tests if the filename validation succeeds and fails as expected.', () => {
 
   const handler = new ErrorHandler(log);
 

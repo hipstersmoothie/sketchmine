@@ -16,7 +16,7 @@ export interface IValidationRule {
 }
 
 export interface IValidationContext {
-  _class: string;
+  _class: SketchObjectTypes;
   do_objectID: string;
   frame?: SketchFrame;
   name: string;

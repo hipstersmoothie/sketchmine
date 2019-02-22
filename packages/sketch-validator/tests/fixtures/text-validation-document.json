@@ -1,15 +1,17 @@
 {
   "_class": "document",
-  "do_objectID": "BF3F988F-9860-4C10-978F-2C57C311258A",
+  "do_objectID": "D06DEFB6-1F89-41E3-9186-6894797FFA6C",
   "assets": {
     "_class": "assetCollection",
-    "colors": [],
-    "gradients": [],
+    "colorAssets": [],
+    "gradientAssets": [],
     "imageCollection": {
       "_class": "imageCollection",
       "images": {}
     },
-    "images": []
+    "images": [],
+    "colors": [],
+    "gradients": []
   },
   "colorSpace": 0,
   "currentPageIndex": 0,
@@ -19,12 +21,12 @@
     {
       "_class": "MSImmutableForeignTextStyle",
       "libraryID": "AA0FDB9A-5C09-4B8A-BE27-2CC4082E94D8",
-      "sourceLibraryName": "01_all_components_library",
+      "sourceLibraryName": "sketchlibrary",
       "symbolPrivate": false,
       "localSharedStyle": {
         "_class": "sharedStyle",
-        "do_objectID": "76B3A10F-3B2E-4895-AE97-31CB57F3D4CC",
-        "name": "360-H1",
+        "do_objectID": "7D859186-4473-4A35-82F5-D3CF5F244689",
+        "name": "H1\/light-bg\/1280px",
         "value": {
           "_class": "style",
           "endMarkerType": 0,
@@ -36,58 +38,15 @@
               "MSAttributedStringFontAttribute": {
                 "_class": "fontDescriptor",
                 "attributes": {
-                  "name": "BerninaSans-Semibold",
-                  "size": 24
-                }
-              },
-              "paragraphStyle": {
-                "_class": "paragraphStyle",
-                "alignment": 0,
-                "allowsDefaultTighteningForTruncation": 0
-              },
-              "MSAttributedStringColorAttribute": {
-                "_class": "color",
-                "alpha": 1,
-                "blue": 0.2745098039,
-                "green": 0.2745098039,
-                "red": 0.2705882353
-              },
-              "kerning": 0
-            },
-            "verticalAlignment": 0
-          },
-          "windingRule": 1
-        }
-      },
-      "remoteStyleID": "3D1767DD-56EB-4EA3-A368-03E638E745D7"
-    },
-    {
-      "_class": "MSImmutableForeignTextStyle",
-      "libraryID": "AA0FDB9A-5C09-4B8A-BE27-2CC4082E94D8",
-      "sourceLibraryName": "01_all_components_library",
-      "symbolPrivate": false,
-      "localSharedStyle": {
-        "_class": "sharedStyle",
-        "do_objectID": "17F04F78-3C82-497C-AF47-0568F62B910A",
-        "name": "1280-H1",
-        "value": {
-          "_class": "style",
-          "endMarkerType": 0,
-          "miterLimit": 10,
-          "startMarkerType": 0,
-          "textStyle": {
-            "_class": "textStyle",
-            "encodedAttributes": {
-              "MSAttributedStringFontAttribute": {
-                "_class": "fontDescriptor",
-                "attributes": {
-                  "name": "BerninaSans-Semibold",
+                  "name": "BerninaSansOffc-Semibold",
                   "size": 26.4
                 }
               },
               "paragraphStyle": {
                 "_class": "paragraphStyle",
                 "alignment": 0,
+                "maximumLineHeight": 36,
+                "minimumLineHeight": 36,
                 "allowsDefaultTighteningForTruncation": 0
               },
               "MSAttributedStringColorAttribute": {
@@ -109,12 +68,12 @@
     {
       "_class": "MSImmutableForeignTextStyle",
       "libraryID": "AA0FDB9A-5C09-4B8A-BE27-2CC4082E94D8",
-      "sourceLibraryName": "01_all_components_library",
+      "sourceLibraryName": "sketchlibrary",
       "symbolPrivate": false,
       "localSharedStyle": {
         "_class": "sharedStyle",
-        "do_objectID": "BEFA4ED9-125C-4E1F-A581-2F54BAD6445C",
-        "name": "1280-H3",
+        "do_objectID": "9343FE57-1181-456A-801F-4046D11C9BBB",
+        "name": "body\/light-bg\/default",
         "value": {
           "_class": "style",
           "endMarkerType": 0,
@@ -126,21 +85,24 @@
               "MSAttributedStringFontAttribute": {
                 "_class": "fontDescriptor",
                 "attributes": {
-                  "name": "BerninaSans",
-                  "size": 18
+                  "name": "BerninaSansOffc-Regular",
+                  "size": 14
                 }
-              },
-              "paragraphStyle": {
-                "_class": "paragraphStyle",
-                "alignment": 0,
-                "allowsDefaultTighteningForTruncation": 0
               },
               "MSAttributedStringColorAttribute": {
                 "_class": "color",
                 "alpha": 1,
-                "blue": 0.2745098039,
-                "green": 0.2745098039,
-                "red": 0.2705882353
+                "blue": 0.2745098039215687,
+                "green": 0.2745098039215687,
+                "red": 0.2705882352941176
+              },
+              "textStyleVerticalAlignmentKey": 0,
+              "paragraphStyle": {
+                "_class": "paragraphStyle",
+                "alignment": 0,
+                "maximumLineHeight": 22,
+                "minimumLineHeight": 22,
+                "allowsDefaultTighteningForTruncation": 0
               },
               "kerning": 0
             },
@@ -149,7 +111,7 @@
           "windingRule": 1
         }
       },
-      "remoteStyleID": "961959A1-EE03-4483-B8DF-3A77BE7B32AA"
+      "remoteStyleID": "8BF693C1-B64F-4365-97E2-B2326973AE09"
     }
   ],
   "layerStyles": {
@@ -165,8 +127,8 @@
     "objects": [
       {
         "_class": "sharedStyle",
-        "do_objectID": "5C3551BD-FCD8-4593-A3FC-BCF5E171EDC9",
-        "name": "H1",
+        "do_objectID": "EC4059DC-B1F0-4108-8F9B-032F0A557034",
+        "name": "body\/light-bg\/default",
         "value": {
           "_class": "style",
           "endMarkerType": 0,
@@ -178,21 +140,24 @@
               "MSAttributedStringFontAttribute": {
                 "_class": "fontDescriptor",
                 "attributes": {
-                  "name": "BerninaSans-Light",
-                  "size": 24
+                  "name": "BerninaSansOffc-Regular",
+                  "size": 14
                 }
-              },
-              "paragraphStyle": {
-                "_class": "paragraphStyle",
-                "alignment": 0,
-                "allowsDefaultTighteningForTruncation": 0
               },
               "MSAttributedStringColorAttribute": {
                 "_class": "color",
                 "alpha": 1,
-                "blue": 0.2745098039,
-                "green": 0.2745098039,
-                "red": 0.2705882353
+                "blue": 0.2745098039215687,
+                "green": 0.2745098039215687,
+                "red": 0.2705882352941176
+              },
+              "textStyleVerticalAlignmentKey": 0,
+              "paragraphStyle": {
+                "_class": "paragraphStyle",
+                "alignment": 0,
+                "maximumLineHeight": 22,
+                "minimumLineHeight": 22,
+                "allowsDefaultTighteningForTruncation": 0
               },
               "kerning": 0
             },
@@ -207,22 +172,17 @@
     {
       "_class": "MSJSONFileReference",
       "_ref_class": "MSImmutablePage",
-      "_ref": "pages\/B276E5A1-2D6C-4425-866E-23F1A8529A2A"
+      "_ref": "pages\/ECAE3055-749E-4B92-92BF-F68072B594F3"
     },
     {
       "_class": "MSJSONFileReference",
       "_ref_class": "MSImmutablePage",
-      "_ref": "pages\/662A9D77-4CDE-43D1-9936-2D98EB87D83E"
+      "_ref": "pages\/BF8EB27C-4E25-4B02-AE24-4FCD4955F08C"
     },
     {
       "_class": "MSJSONFileReference",
       "_ref_class": "MSImmutablePage",
-      "_ref": "pages\/493BDF72-5E8F-44B1-8BE0-725BA0EDC7B1"
-    },
-    {
-      "_class": "MSJSONFileReference",
-      "_ref_class": "MSImmutablePage",
-      "_ref": "pages\/43F37A98-D85F-433C-9949-6621D0001743"
+      "_ref": "pages\/2F077957-96F3-4DC9-A8A6-9C39EA20CAFC"
     }
   ],
   "userInfo": {
