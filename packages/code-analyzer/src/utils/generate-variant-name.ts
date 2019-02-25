@@ -1,4 +1,4 @@
-import { VariantMethod, VariantProperty } from '../meta-information';
+import { VariantMethod, VariantProperty } from '../interfaces';
 import { kebabCase } from 'lodash';
 
 const ACTIONS = ['disabled', 'active', 'hover', 'click'];

@@ -1,5 +1,4 @@
-import { Property } from '../interfaces';
-import { VariantMethod, Variant, VariantProperty } from '../meta-information';
+import { VariantMethod, Variant, VariantProperty, Property } from '../interfaces';
 import { generateVariantName } from './generate-variant-name';
 
 /**
