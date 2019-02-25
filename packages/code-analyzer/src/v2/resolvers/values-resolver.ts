@@ -27,6 +27,7 @@ export class ValuesResolver extends TreeVisitor implements ParsedVisitor {
 }
 
 /**
+ * @description
  * resolves the node in the value resolver
  * @param node Node to be resolved
  */
@@ -47,6 +48,7 @@ function resolveTypeValues(node: ParseProperty) {
 }
 
 /**
+ * @description
  * Resolve types to values recursively
  * @param nodeType Type to be resolved
  */
