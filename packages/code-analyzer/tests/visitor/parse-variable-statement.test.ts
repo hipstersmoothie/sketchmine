@@ -3,7 +3,7 @@ import {
   ParseValueType,
   ParseVariableDeclaration,
   ParseEmpty,
-} from '../../src/v2/parsed-nodes';
+} from '../../src';
 import { getParsedResult } from '../helpers';
 
 describe('[code-analyzer] › ParseVariableStatement', () => {

@@ -1,6 +1,4 @@
-import {
-  ParseEmpty,
-} from '../../src/v2';
+import { ParseEmpty } from '../../src';
 import { getParsedResult } from '../helpers';
 
 describe('[code-analyzer] › Parse Nodes that should return ParseEmpty', () => {

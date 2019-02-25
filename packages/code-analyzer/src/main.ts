@@ -1,9 +1,8 @@
 import { join, resolve, dirname } from 'path';
-import { ParseResult, AstVisitor } from './ast';
+import { ParseResult, ParsedVisitor } from './parsed-nodes';
 import { adjustPathAliases, readTsConfig } from './utils';
-import { ReferenceResolver } from './reference-resolver';
+import { ReferenceResolver, applyTransformers } from './resolvers';
 import { writeJSON } from '@sketchmine/node-helpers';
-import { ValuesResolver } from './values-resolver';
 import { parseFile } from './parse-file';
 import { renderASTtoJSON } from './render-ast-to-json';
 import { Result as MetaResult } from './meta-information';
@@ -20,43 +19,29 @@ export async function main(
   inFile: string = 'index.ts',
   tsConfig: string = 'tsconfig.json',
   inMemory: boolean = false,
-): Promise<number | MetaResult> {
+): Promise<number | any> {
 
   if (!rootDir || !library) {
     throw new Error('The --rootDir and the --library, to the angular components has to be specified!');
   }
 
   const pkg = resolve(rootDir, 'package.json');
+  const pkgJSON = require(pkg);
   const tsconfig = resolve(rootDir, tsConfig);
   const nodeModules = join(dirname(pkg), 'node_modules');
   const entryFile = resolve(rootDir, library, inFile);
-  let parseResults = new Map<string, ParseResult>();
+  const parseResults = new Map<string, ParseResult>();
 
   const config = await readTsConfig(tsconfig);
   parseFile(entryFile, adjustPathAliases(config, join(rootDir, library)), parseResults, nodeModules);
 
-  const results = Array.from(parseResults.values());
-
-  /** list of transformers that got applied on the AST */
-  const transformers: AstVisitor[] = [
-    new ReferenceResolver(results),
-    new ValuesResolver(),
-  ];
-  /** applies the transformers on the AST */
-  for (const transformer of transformers) {
-    const transformedResults = new Map<string, ParseResult>();
-    parseResults.forEach((result, fileName) => {
-      transformedResults.set(fileName, result.visit(transformer));
-    });
-    parseResults = transformedResults;
-  }
-  const metaInformation = renderASTtoJSON(parseResults, pkg);
+  const meta = Array.from(applyTransformers(parseResults).values());
 
   if (inMemory) {
-    return metaInformation;
+    return meta;
   }
   /** write the JSON structure to the outFile */
-  await writeJSON(outFile, metaInformation, false);
+  await writeJSON(outFile, meta, false);
 
   // return exit code
   return 0;

@@ -1,4 +1,4 @@
-import { NodeTags } from '../util';
+import { NodeTags } from '../utils';
 import { ParsedVisitor } from './parsed-visitor';
 
 export type ParseSimpleType =

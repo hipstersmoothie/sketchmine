@@ -5,6 +5,7 @@ export * from './generate-variants';
 export * from './get-component-decorator';
 export * from './get-decorator-of-type';
 export * from './get-initializer';
+export * from './get-node-tags';
 export * from './get-symbol-name';
 export * from './has-export-modifier';
 export * from './jsdoc-annotations';

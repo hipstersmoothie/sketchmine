@@ -1,11 +1,11 @@
-import { Property } from '../ast/json-visitor';
+import { Property } from '../interfaces';
 import { VariantMethod, Variant, VariantProperty } from '../meta-information';
 import { generateVariantName } from './generate-variant-name';
 
 /**
  * generate all the combined variants of a component
  * @param baseName name of the component for example button, or alert, ...
- * @param variants the Porperty or methods that can be applied
+ * @param variants the Property or methods that can be applied
  */
 export function variantCombinationGenerator(baseName: string, ...variants: Property[]): Variant[] {
   if (!variants || !Array.isArray(variants) || !variants.length) {

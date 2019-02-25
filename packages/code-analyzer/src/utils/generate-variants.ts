@@ -1,5 +1,5 @@
 import { Variant } from '../meta-information';
-import { Property } from '../ast/json-visitor';
+import { Property } from '../interfaces';
 import { generateVariantName } from './generate-variant-name';
 
 /**

@@ -8,9 +8,9 @@ import {
   ParseArrayType,
   ParseParenthesizedType,
   ParseTypeParameter,
-} from '../../src/v2/parsed-nodes';
+  NodeTags,
+} from '../../src';
 import { getParsedResult } from '../helpers';
-import { NodeTags } from '../../src/v2/util';
 
 describe('[code-analyzer] › ParseTypeAliasDeclaration', () => {
 
