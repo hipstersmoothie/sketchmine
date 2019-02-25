@@ -5,7 +5,7 @@ import { ReferenceResolver, applyTransformers } from './resolvers';
 import { writeJSON } from '@sketchmine/node-helpers';
 import { parseFile } from './parse-file';
 import { renderASTtoJSON } from './render-ast-to-json';
-import { Result as MetaResult } from './meta-information';
+import { ComponentsList } from './interfaces';
 /**
  * The Main function that takes command line args build the AST and transforms the AST,
  * generate a JSON representation from it and write it to the outFile.

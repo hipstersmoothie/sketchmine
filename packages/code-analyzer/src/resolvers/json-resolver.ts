@@ -21,6 +21,7 @@ import {
   ParseObjectLiteral,
   ParseArrayLiteral,
   Primitives,
+  ParseEmpty,
 } from '../parsed-nodes';
 import { Logger } from '@sketchmine/node-helpers';
 import { flatten } from 'lodash';
@@ -288,7 +289,7 @@ export class JSONResolver extends NullVisitor implements ParsedVisitor {
    * but maybe the value can be used as type.
    */
   private propertyVisitStrategy(node: ParseProperty | ParseGeneric) {
-    if (!!node.type) {
+    if (!!node.type && node.type && node.type.constructor !== ParseEmpty) {
       return this.visitWithParent(node.type, node);
     }
 
