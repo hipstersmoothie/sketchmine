@@ -20,17 +20,13 @@ import {
   ParseDecorator,
   ParseObjectLiteral,
   ParseArrayLiteral,
+  Primitives,
 } from '../parsed-nodes';
 import { Logger } from '@sketchmine/node-helpers';
-import { merge, flatten, mergeWith } from 'lodash';
-import chalk from 'chalk';
+import { flatten } from 'lodash';
+
 const log = new Logger();
 
-export interface Property {
-  type: 'property';
-  key: string;
-  value: string[];
-}
 
 /**
  * @description
@@ -38,6 +34,23 @@ export interface Property {
  * `@Component` decorator of an angular component.
  */
 const COMPONENT_DECORATOR_ITEMS = ['selector', 'exportAs', 'inputs'];
+
+/**
+ * @description
+ * Resolve primitive values like booleans to true in case that
+ * we need the possible variants and false would be default.
+ */
+function resolvePrimitiveType(nodeType: ParsePrimitiveType): string | null {
+  switch (nodeType.type) {
+    case Primitives.Boolean:
+      return 'true';
+    case Primitives.Null:
+      return 'null';
+    default:
+      // don't resolve undefined we dont need the undefined state
+      return null;
+  }
+}
 
 /**
  * Generates the final JSON that is written to a file from the
@@ -180,7 +193,7 @@ export class JSONResolver extends NullVisitor implements ParsedVisitor {
   }
 
   visitPrimitiveType(node: ParsePrimitiveType) {
-    return node.type;
+    return resolvePrimitiveType(node);
   }
 
   visitTypeLiteral(node: ParseTypeLiteral) {
@@ -228,12 +241,13 @@ export class JSONResolver extends NullVisitor implements ParsedVisitor {
    */
   visitGeneric(node: ParseGeneric): any {
     const constraint = this.visitWithParent(node.constraint, node);
+    const value = this.propertyVisitStrategy(node as ParseGeneric);
 
     if (!!constraint) {
-      log.warning('The generic had a constraint what we missed to parse in the JSON resolver 😢');
+      flatten([constraint, value]);
     }
 
-    return this.propertyVisitStrategy(node as ParseGeneric);
+    return value;
   }
 
   /**

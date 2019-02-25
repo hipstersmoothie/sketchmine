@@ -1,12 +1,12 @@
 import * as ts from 'typescript';
-import { getSymbolName } from '../../utils/get-symbol-name';
-import { visitJsDoc } from '../../utils/visit-jsdoc';
+import { getSymbolName } from './get-symbol-name';
+import { visitJsDoc } from './visit-jsdoc';
 import {
   JSDOC_ANNOTATION_INTERNAL,
   JSDOC_ANNOTATION_UNRELATED,
   JSDOC_ANNOTATION_NO_COMBINATIONS,
-} from '../../utils/jsdoc-annotations';
-import { hasExportModifier } from '../../utils';
+} from './jsdoc-annotations';
+import { hasExportModifier } from './has-export-modifier';
 
 /**
  * @description

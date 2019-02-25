@@ -8,24 +8,9 @@ const log = new Logger();
  * Get the name from any node
  * @param node Any Node
  */
-export function getSymbolName(node: any): string {
+export function getSymbolName(node: any): string | undefined {
   if (!node) {
     return '';
-  }
-
-  switch (node.kind) {
-    case ts.SyntaxKind.VariableStatement:
-      return getSymbolName(node.declarationList);
-    case ts.SyntaxKind.VariableDeclarationList:
-      return node.declarations.map(declaration => getSymbolName(declaration)).join(', ');
-    case ts.SyntaxKind.ObjectLiteralExpression:
-    case ts.SyntaxKind.ArrayLiteralExpression:
-    case ts.SyntaxKind.FunctionType:
-    case ts.SyntaxKind.IndexSignature:
-    case ts.SyntaxKind.ConstructorType:
-      // Array or Object Literal expressions can't have a name!
-      return;
-
   }
 
   // node is a StringLiteral
@@ -55,6 +40,22 @@ export function getSymbolName(node: any): string {
   // call expression
   if (node.expression && node.expression.kind === ts.SyntaxKind.Identifier) {
     return node.expression.text;
+  }
+
+  switch (node.kind) {
+    case ts.SyntaxKind.VariableStatement:
+      return getSymbolName(node.declarationList);
+    case ts.SyntaxKind.VariableDeclarationList:
+      return node.declarations.map(declaration => getSymbolName(declaration)).join(', ');
+    // call expression that does not match the if case before.
+    case ts.SyntaxKind.CallExpression:
+    case ts.SyntaxKind.ObjectLiteralExpression:
+    case ts.SyntaxKind.ArrayLiteralExpression:
+    case ts.SyntaxKind.FunctionType:
+    case ts.SyntaxKind.IndexSignature:
+    case ts.SyntaxKind.ConstructorType:
+      // Array or Object Literal expressions can't have a name!
+      return;
   }
 
   log.warning(

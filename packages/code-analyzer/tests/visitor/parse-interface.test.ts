@@ -1,5 +1,4 @@
 import {
-  ParseResult,
   ParseInterfaceDeclaration,
   ParseLocation,
   ParseProperty,
@@ -10,7 +9,7 @@ import {
   ParseTypeLiteral,
   ParseIndexSignature,
   ParseValueType,
-} from '../../src/v2/parsed-nodes';
+} from '../../src';
 import { getParsedResult } from '../helpers';
 
 describe('[code-analyzer] › ParseInterfaceDeclaration', () => {

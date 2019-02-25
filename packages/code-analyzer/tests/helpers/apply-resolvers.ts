@@ -1,6 +1,5 @@
 import {
   ReferenceResolver,
-  ValuesResolver,
   ParseResult,
 } from '../../src/';
 
@@ -12,9 +11,7 @@ export function applyResolvers(result: ParseResult): ParseResult {
   let transformedResult: ParseResult;
 
   const referenceResolver = new ReferenceResolver([result]);
-  const valuesResolver = new ValuesResolver();
   transformedResult = result.visit(referenceResolver);
-  transformedResult = result.visit(valuesResolver);
 
   return transformedResult;
 }

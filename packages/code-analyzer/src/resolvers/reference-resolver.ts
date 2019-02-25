@@ -14,8 +14,10 @@ import {
   ParseLocation,
   ParseExpression,
 } from '../parsed-nodes';
-
 import { flatten, cloneDeep } from 'lodash';
+import { Logger } from '@sketchmine/node-helpers';
+
+const log = new Logger();
 
 /**
  * @description
@@ -103,11 +105,20 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     // to pass it through the typeParameters of the matching `typeParametersNode`
     const cloned = this.passTypeArguments(node, method);
 
+    if (!cloned) {
+      return new ParseEmpty();
+    }
+
     // we have to visit the arguments so that we can pass the values to the
     // matching function declaration instead only passing some reference.
     node.args = this.visitAll(node.args);
 
     node.args.forEach((arg, i: number) => {
+      if (!cloned.parameters[i]) {
+        log.error(
+          `When resolving the expression ${node.name} – ` +
+          'a problem occurred, the found parameters did not match the provided ones!');
+      }
       const param = cloned.parameters[i].type;
 
       if (param && param.constructor.name === 'ParseGeneric') {
@@ -178,7 +189,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
         // visit function of the typeArgument so it does not matter which class it is!
         typeArgument = typeArgument.visit(this);
 
-        if (cloned.typeParameters) {
+        if (cloned.typeParameters && cloned.typeParameters[i]) {
           (cloned.typeParameters[i] as ParseGeneric).type = typeArgument as ParseDefinition;
         }
 

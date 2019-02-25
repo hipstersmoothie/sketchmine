@@ -1,5 +1,5 @@
 import { getParsedResult, applyResolvers } from '../helpers';
-import { ParseObjectLiteral } from '../../src/v2';
+import { ParseObjectLiteral } from '../../src';
 
 describe('[code-analyzer] › Resolving Values in the result', () => {
 

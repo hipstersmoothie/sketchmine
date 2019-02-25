@@ -11,7 +11,7 @@ import {
   ParseObjectLiteral,
   ParseEmpty,
   ParseArrayLiteral,
-} from '../../src/v2/parsed-nodes';
+} from '../../src';
 import { getParsedResult } from '../helpers';
 
 describe('[code-analyzer] › ParseClassDeclaration', () => {
