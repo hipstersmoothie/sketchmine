@@ -7,4 +7,4 @@
 // export * from './render-ast-to-json';
 // export * from './visitor';
 // export * from './values-resolver';
-export * from './v2'
+export * from './v2';

@@ -27,6 +27,10 @@ export enum Primitives {
  * It provides the node with a location to identify its position
  */
 export class ParseNode {
+  /** Used by the visitors to have the reference of the parent nodes */
+  _parentNode: ParseNode;
+  _visited: boolean = false;
+
   constructor(public location: ParseLocation) { }
   visit(visitor: ParsedVisitor): any { return null; }
 }
@@ -377,6 +381,13 @@ export class ParseProperty extends ParseDefinition {
 
   isFunction(): boolean {
     return this.type instanceof ParseMethod;
+  }
+
+  isAngularInput(): boolean {
+    if (!this.decorators || !this.decorators.length) { return false; }
+    return !!this.decorators
+      .find((decorator: ParseDecorator) =>
+        decorator.name === 'Input');
   }
 
   visit(visitor: ParsedVisitor): any {

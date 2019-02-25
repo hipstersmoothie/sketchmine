@@ -170,7 +170,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     if (node.typeArguments && node.typeArguments.length) {
 
       for (let i = 0, max = node.typeArguments.length; i < max; i += 1) {
-        let typeArgument = node.typeArguments[0];
+        let typeArgument = node.typeArguments[i];
 
         // if the typeArgument is a reference type we have to resolve it
         // before we pass it into the generic.
