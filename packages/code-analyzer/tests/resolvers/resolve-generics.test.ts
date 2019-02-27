@@ -189,7 +189,7 @@ describe('[code-analyzer] › Resolving Generic Types', () => {
     const themePalette = mixinValue.types[0].type.returnType;
     console.log(themePalette);
 
-
+    // TODO: lukas.holzer
     // second part should be the button theme palette
     // expect(mixinValue.types[1]).toBeInstanceOf(ParseGeneric);
     // expect(mixinValue.types[1].value).toBeInstanceOf(ParseClassDeclaration);

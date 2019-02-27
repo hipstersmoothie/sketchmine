@@ -1,3 +1,3 @@
 export * from './apply-transformers';
-export * from './json-resolver';
+export * from './meta-resolver';
 export * from './reference-resolver';
