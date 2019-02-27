@@ -1,5 +1,5 @@
 import { generateVariantName } from '../src/utils/generate-variant-name';
-import { VariantMethod, VariantProperty } from '../src/meta-information';
+import { VariantMethod, VariantProperty } from '../src/interfaces';
 
 type Property = VariantMethod | VariantProperty;
 

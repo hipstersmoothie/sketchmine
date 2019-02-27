@@ -1,5 +1,4 @@
 import {
-  NodeVisitor,
   NullVisitor,
   ParsedVisitor,
   ParseMethod,
@@ -15,7 +14,6 @@ import {
   ParseValueType,
   ParsePrimitiveType,
   ParseTypeLiteral,
-  ParsePartialType,
   ParseNode,
   ParseDecorator,
   ParseObjectLiteral,
@@ -25,9 +23,9 @@ import {
 } from '../parsed-nodes';
 import { Logger } from '@sketchmine/node-helpers';
 import { flatten } from 'lodash';
+import { NodeTags } from '../utils';
 
 const log = new Logger();
-
 
 /**
  * @description
@@ -35,6 +33,24 @@ const log = new Logger();
  * `@Component` decorator of an angular component.
  */
 const COMPONENT_DECORATOR_ITEMS = ['selector', 'exportAs', 'inputs'];
+
+/**
+ * @description
+ * A list of NodeTags for properties that should not be exported.
+ * Those properties where only used to resolve types.
+ */
+const INTERNAL_MEMBERS: NodeTags[] = ['hasUnderscore', 'private', 'protected', 'internal'];
+
+const ANGULAR_LIFE_CYCLE_METHODS = [
+  'ngOnChanges',
+  'ngOnInit',
+  'ngDoCheck',
+  'ngAfterContentInit',
+  'ngAfterContentChecked',
+  'ngAfterViewInit',
+  'ngAfterViewChecked',
+  'ngOnDestroy',
+];
 
 /**
  * @description
@@ -54,10 +70,21 @@ function resolvePrimitiveType(nodeType: ParsePrimitiveType): string | null {
 }
 
 /**
- * Generates the final JSON that is written to a file from the
- * generated AST.
+ * @class
+ * @classdesc
+ * The meta resolver is responsible to take the parsed abstract syntax tree that was
+ * generated with the parsed nodes classes and resolves it to a more human readable object
+ * format. So any nodes that we do not need in the output will be dropped by returning null
+ * and the nodes where we need the information are getting visited and returned as custom
+ * objects or arrays.
+ * We try to reduce the complex AST to the angular components that can have properties as members.
+ * This Resolver needs the resolved references from the `ReferenceResolver` to generate a meaningful
+ * output.
+ *
+ * The output is going to be consumed by the `@sketchmine/app-builder` to generate the different variants
+ * of the angular components.
  */
-export class JSONResolver extends NullVisitor implements ParsedVisitor {
+export class MetaResolver extends NullVisitor implements ParsedVisitor {
 
   /**
    * @description
@@ -81,15 +108,16 @@ export class JSONResolver extends NullVisitor implements ParsedVisitor {
     // of this class
     if (!node.isAngularComponent()) {
       // return the members array merged with the extending
-      return flatten([extending, ...members]);
+      return flatten([extending, ...members]).filter(m => !!m);
     }
 
-    const mergedMembers = flatten([extending, ...members]).filter(m => m !== undefined);
+    const mergedMembers = flatten([extending, ...members]).filter(m => !!m);
+    const decorator = this.visitWithParent(node.decorators[0], node);
 
     return {
       name: node.name,
       angularComponent: node.isAngularComponent(),
-      decorator: this.visitWithParent(node.decorators[0], node),
+      decorator,
       members: mergedMembers,
     };
   }
@@ -116,8 +144,11 @@ export class JSONResolver extends NullVisitor implements ParsedVisitor {
         }));
       return properties;
     }
-
-    log.warning(`Only Decorators from Angular Components handled yet!\nNot from ${node._parentNode.constructor.name}`);
+    // TODO: lukas.holzer visitDecorator in method and property as well
+    // currently not reachable! – we check for angular components in visit class declaration
+//     log.warning(`Only @Component decorators are handled yet!
+// Not @${node.name}
+//     `);
   }
 
   /**
@@ -136,22 +167,39 @@ export class JSONResolver extends NullVisitor implements ParsedVisitor {
     const members = this.visitAllWithParent(node.members, node);
     const extending = this.visitWithParent(node.extending, node);
 
-    // TODO: lukas.holzer merge extends with members
+    if (!!extending) {
+      // return the merged and flattened values from the extending and members
+      // and filter all falsy values (undefined, null)
+      return flatten([extending, members]).filter(v => !!v);
+    }
+
     return members;
   }
 
   /**
    * @description
    * return a flattened array of the visited types of an intersection type.
+   * An intersection type combines multiple types to one.
    */
   visitIntersectionType(node: ParseIntersectionType): any {
     const types = this.visitAllWithParent(node.types, node);
     return flatten(types);
   }
 
+  /**
+   * @description
+   * visits the method and if the parent node is a class it will return undefined
+   * if the methods parent is not a class declaration we want to know the return type
+   * in case that the method is used to assign data.
+   *
+   * @todo lukas.holzer@dynatrace.com check for method parameters later
+   * if there is the need to call methods on a component to get a state!
+   */
   visitMethod(node: ParseMethod): any {
     const returnType = this.visitWithParent(node.returnType, node);
 
+    // if the parent node is not a class declaration we do not need the parameters only
+    // the return type.
     if (
       node._parentNode &&
       node._parentNode.constructor !== ParseClassDeclaration
@@ -159,12 +207,22 @@ export class JSONResolver extends NullVisitor implements ParsedVisitor {
       return returnType;
     }
 
-    // TODO: lukas.holzer
-    // it is a class member so maybe we need the parameters as well…
-    // return {
-    //   _class: 'ParseMethod',
-    //   returnType,
-    // };
+    const isLifeCycleHook = ANGULAR_LIFE_CYCLE_METHODS.includes(node.name);
+    const isInternal = node.tags.some((tag: NodeTags) =>
+      INTERNAL_MEMBERS.includes(tag));
+
+    // if the method is private or internal or an angular life cycle hook we can skip
+    // it in the resulting object.
+    if (isInternal || isLifeCycleHook) {
+      return;
+    }
+
+    return {
+      type: 'method',
+      key: node.name,
+      parameters: this.visitAllWithParent(node.parameters, node),
+      returnType,
+    };
   }
 
   /**
@@ -176,13 +234,25 @@ export class JSONResolver extends NullVisitor implements ParsedVisitor {
   }
 
   visitProperty(node: ParseProperty): any {
+
+    // TODO: lukas.holzer rethink this expression later on
     // we only want to parse @Input's of an Angular component
     // so when a property is a child of a class declaration we need to
     // check if it has an input decorator if it is not we can ignore it
-    if (
-      node._parentNode &&
-      node._parentNode.constructor === ParseClassDeclaration &&
-      !node.isAngularInput()) {
+    // if (
+    //   node._parentNode &&
+    //   node._parentNode.constructor === ParseClassDeclaration &&
+    //   !node.isAngularInput()
+    // ) {
+    //   // return;
+    // }
+
+    // If a property includes some tags like private or internal we do not want
+    // to use this properties so return undefined instead.
+    const isInternal = node.tags.some((tag: NodeTags) =>
+      INTERNAL_MEMBERS.includes(tag));
+
+    if (isInternal) {
       return;
     }
 
@@ -233,7 +303,7 @@ export class JSONResolver extends NullVisitor implements ParsedVisitor {
    * returns the visited value of the variable declaration.
    */
   visitVariableDeclaration(node: ParseVariableDeclaration): any {
-    return this.visitWithParent(node.value, node);
+    return this.propertyVisitStrategy(node as ParseVariableDeclaration);
   }
 
   /**
@@ -243,11 +313,13 @@ export class JSONResolver extends NullVisitor implements ParsedVisitor {
   visitGeneric(node: ParseGeneric): any {
     const constraint = this.visitWithParent(node.constraint, node);
     const value = this.propertyVisitStrategy(node as ParseGeneric);
-
     if (!!constraint) {
-      flatten([constraint, value]);
+      // return the merged and flattened values from the constraints and values
+      // and filter all falsy values (undefined, null)
+      return flatten([constraint, value]).filter(v => !!v);
     }
 
+    // if we have no constraints return only the value.
     return value;
   }
 

@@ -1,6 +1,6 @@
 import { ParsedVisitor, ParseResult } from '../parsed-nodes';
 import { ReferenceResolver } from './reference-resolver';
-import { JSONResolver } from './json-resolver';
+import { MetaResolver } from './meta-resolver';
 
 export function applyTransformers<T>(parsedResults: Map<string, ParseResult>): Map<string, T> {
   let metaInformation = parsedResults;
@@ -12,7 +12,7 @@ export function applyTransformers<T>(parsedResults: Map<string, ParseResult>): M
   // parsed results
   const transformers: ParsedVisitor[] = [
     new ReferenceResolver(results),
-    new JSONResolver(),
+    new MetaResolver(),
   ];
 
   /** applies the transformers on the AST */
