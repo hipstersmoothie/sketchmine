@@ -203,6 +203,8 @@ export class Visitor {
         return this.visitConstructor(node as ts.ConstructorDeclaration);
       case ts.SyntaxKind.CallExpression:
         return this.visitCallExpression(node as ts.CallExpression);
+      case ts.SyntaxKind.EmptyStatement:
+        // this would be an empty statement: doSomething(() => {});
       case ts.SyntaxKind.PropertyAccessExpression:
       case ts.SyntaxKind.ExpressionStatement:
         // We do not need property accesses or expressionStatements (does not provide any value or type information)
