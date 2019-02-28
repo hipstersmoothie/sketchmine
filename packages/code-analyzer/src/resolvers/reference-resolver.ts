@@ -96,7 +96,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
    * be assigned to a variable declaration.
    */
   visitExpression(node: ParseExpression): any {
-    const method = this.getRootNodeByName(node.name) as ParseMethod;
+    const method = this.getRootNodeByName(node) as ParseMethod;
 
     if (!method) {
       return new ParseEmpty();
@@ -149,7 +149,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     // If the reference is not in the lookup Table search it in the root nodes
     // So now we know it is not a generic and we can search in the types and interfaces
     // if there is a matching Symbol name
-    const resolvedNode = this.getRootNodeByName(node.name) as typeParametersNode;
+    const resolvedNode = this.getRootNodeByName(node) as typeParametersNode;
 
     // if there is no resolved node we have to return ParseEmpty so we know it cannot be resolved
     if (!resolvedNode) {
@@ -198,15 +198,49 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     return cloned;
   }
 
+  findMatchingFunctionOverload(node: ParseExpression, overloads: ParseMethod[]) {
+    const typeArgument = node.typeArguments;
+    const args = node.args;
+
+    for (let i = 0, max = overloads.length; i < max; i += 1) {
+      const method = overloads[i];
+      // console.log()
+    }
+  }
+
   /**
    * @description
-   * Find a root Node by its name – used to find types and interfaces
+   * Find the matching expression or declaration for a reference type or
+   * expression call. In case there would be a function overload we have to check the
+   * type parameter length and the argument length to match the correct overload.
+   * @param referencedNode The reference that should be resolved either a reference type or an expression
    */
-  private getRootNodeByName(name: string): ParseDefinition | undefined {
+  private getRootNodeByName(referencedNode: ParseExpression | ParseReferenceType): ParseDefinition | undefined {
 
     // TODO: major: lukas.holzer build check if rootNode is not parent node,
     // otherwise we would get a circular structure that is causing a memory leak!
-    const rootNode = this.rootNodes.find((node: ParseDefinition) => node.name === name);
+
+    const rootNodes = this.rootNodes
+      .filter((node: ParseDefinition) => node.name === referencedNode.name);
+
+    // if we could not find any root node for the referenceNode we cannot resolve
+    // this type or expression
+    if (rootNodes.length < 1) {
+      return;
+    }
+
+    let rootNode = rootNodes[0];
+
+    // if we have more than one matching rootNode we have to check if it is an expression
+    // and then we have to choose the matching overload
+    if (referencedNode.constructor === ParseExpression) {
+      rootNode = rootNodes.find(node =>
+        node.constructor === ParseMethod && (node as parseMethod))
+    }
+
+
+    console.log(rootNodes.length)
+     = rootNodes[0];
     if (!rootNode) {
       return;
     }

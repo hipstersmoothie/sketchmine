@@ -2,7 +2,6 @@ export * from './adjust-path-aliases';
 export * from './check-node-tags';
 export * from './generate-variant-name';
 export * from './generate-variants';
-export * from './get-decorator-of-type';
 export * from './get-node-tags';
 export * from './get-symbol-name';
 export * from './has-export-modifier';

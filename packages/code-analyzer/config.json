@@ -1,5 +1,5 @@
 {
-  "rootDir": "/angular-components/",
+  "rootDir": "/Users/lukas.holzer/Sites/angular-components/",
   "library": "src/lib",
   "inFile": "index.ts",
   "outFile": "/shared/meta-information.json"

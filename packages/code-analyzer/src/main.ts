@@ -33,15 +33,17 @@ export async function main(
   const parseResults = new Map<string, ParseResult>();
 
   const config = await readTsConfig(tsconfig);
-  parseFile(entryFile, adjustPathAliases(config, join(rootDir, library)), parseResults, nodeModules);
+  await parseFile(entryFile, adjustPathAliases(config, join(rootDir, library)), parseResults, nodeModules);
 
-  const meta = Array.from(applyTransformers(parseResults).values());
-
-  if (inMemory) {
-    return meta;
-  }
-  /** write the JSON structure to the outFile */
-  await writeJSON(outFile, meta, false);
+  const meta = applyTransformers(parseResults).filter((c: any) => c.name === 'DtButton');
+  // console.log(meta)
+  const { inspect } = require('util')
+  console.log(inspect(meta, false, null, true));
+  // if (inMemory) {
+  //   return meta;
+  // }
+  // /** write the JSON structure to the outFile */
+  // await writeJSON(outFile, meta, false);
 
   // return exit code
   return 0;

@@ -1,8 +1,9 @@
 import { ParsedVisitor, ParseResult } from '../parsed-nodes';
 import { ReferenceResolver } from './reference-resolver';
 import { MetaResolver } from './meta-resolver';
+import { flatten } from 'lodash';
 
-export function applyTransformers<T>(parsedResults: Map<string, ParseResult>): Map<string, T> {
+export function applyTransformers<T>(parsedResults: Map<string, ParseResult>): T[] {
   let metaInformation = parsedResults;
   // we need the results array to provide it to the reference resolver
   // in case that we look for root nodes in there
@@ -24,5 +25,6 @@ export function applyTransformers<T>(parsedResults: Map<string, ParseResult>): M
     metaInformation = transformedResults;
   }
 
-  return metaInformation as Map<string, T & any>;
+  const meta = Array.from(metaInformation.values());
+  return flatten(meta) as unknown as T[];
 }

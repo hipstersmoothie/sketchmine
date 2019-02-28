@@ -21,11 +21,8 @@ import {
   Primitives,
   ParseEmpty,
 } from '../parsed-nodes';
-import { Logger } from '@sketchmine/node-helpers';
 import { flatten } from 'lodash';
 import { NodeTags } from '../utils';
-
-const log = new Logger();
 
 /**
  * @description
