@@ -55,6 +55,7 @@
     "@types/node": "^10.12.21",
     "chalk": "^2.4.0",
     "lodash": "^4.17.0",
+    "memfs": "^2.15.2",
     "minimatch": "^3.0.0",
     "minimist": "^1.2.0",
     "typescript": "^3.2.1"
