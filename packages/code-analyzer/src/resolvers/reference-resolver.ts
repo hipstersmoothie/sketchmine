@@ -198,14 +198,32 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     return cloned;
   }
 
-  findMatchingFunctionOverload(node: ParseExpression, overloads: ParseMethod[]) {
-    const typeArgument = node.typeArguments;
-    const args = node.args;
+  /**
+   * @description
+   * This function is used to find the matching function overload for a call expressions
+   * @param node the node that is calling the method
+   * @param overloads the available overloads
+   */
+  private findMatchingFunctionOverload(node: ParseExpression, overloads: ParseMethod[]) {
+    let foundOverload: ParseMethod = overloads[0];
 
     for (let i = 0, max = overloads.length; i < max; i += 1) {
       const method = overloads[i];
-      // console.log()
+      // filter the required parameters out of the function parameters
+      const requiredParameters = method.parameters.filter(param => !param.isOptional);
+
+      // to find the matching overload the amount of typeParameters has to match the typeArguments
+      // length that is provided from the node, then the amount of the provided arguments has to be
+      // greater or equal than the amount of the required parameters but less or equal the maximum amount of parameters
+      if (
+        node.typeArguments.length === method.typeParameters.length &&
+        node.args.length >= requiredParameters.length &&
+        node.args.length <= method.parameters.length
+      ) {
+        foundOverload = method;
+      }
     }
+    return foundOverload;
   }
 
   /**
@@ -233,14 +251,14 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
     // if we have more than one matching rootNode we have to check if it is an expression
     // and then we have to choose the matching overload
-    if (referencedNode.constructor === ParseExpression) {
-      rootNode = rootNodes.find(node =>
-        node.constructor === ParseMethod && (node as parseMethod))
+    if (rootNodes.length > 1 && referencedNode.constructor === ParseExpression) {
+      // filter out the methods to be sure we have an overload
+      const methods = rootNodes.filter(n => n.constructor === ParseMethod) as ParseMethod[];
+      rootNode = this.findMatchingFunctionOverload(referencedNode as ParseExpression, methods);
     }
 
-
-    console.log(rootNodes.length)
-     = rootNodes[0];
+    // console.log(rootNodes.length)
+    //  = rootNodes[0];
     if (!rootNode) {
       return;
     }
