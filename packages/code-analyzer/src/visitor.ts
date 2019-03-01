@@ -504,7 +504,10 @@ export class Visitor {
         .map((decorator: ts.Decorator) => this.visit(decorator));
     }
 
-    return new ParseProperty(location, name, tags, type, value, decorators);
+    // the isOptional marks a parameter as optional is used by function arguments like fn(a?: boolean)
+    const isOptional = node.hasOwnProperty('questionToken') && node.questionToken ? true : undefined;
+
+    return new ParseProperty(location, name, tags, type, value, decorators, isOptional);
   }
 
   /**

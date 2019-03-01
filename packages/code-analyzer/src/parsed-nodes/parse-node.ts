@@ -365,7 +365,7 @@ export class ParseDefinition extends ParseNode {
 /**
  * @description
  * A parseProperty is used to hold the information of object, interface or class members
- * it can be either a value or a function.
+ * it can be either a value or a function parameter.
  */
 export class ParseProperty extends ParseDefinition {
   constructor(
@@ -375,6 +375,7 @@ export class ParseProperty extends ParseDefinition {
     public type: ParseType,
     public value?: any,
     public decorators?: ParseDecorator[],
+    public isOptional?: boolean,
   ) {
     super(location, name, tags);
   }
