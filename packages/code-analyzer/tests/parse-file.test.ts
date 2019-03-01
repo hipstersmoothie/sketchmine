@@ -1,8 +1,15 @@
 import { vol, fs as mockedFs } from 'memfs';
 jest.mock('fs', () => mockedFs);
 
-import { parseFile, ParseResult, adjustPathAliases } from '../src';
-import { resolve } from 'path';
+import {
+  parseFile,
+  ParseResult,
+  adjustPathAliases,
+  ParseReferenceType,
+  ReferenceResolver,
+  ParseTypeAliasDeclaration,
+  ParsePrimitiveType,
+} from '../src';
 
 let fileTree: { [key: string]: string };
 let paths: Map<string, string>;
@@ -87,4 +94,42 @@ describe('[code-analyzer] › parse files with dependency tree', () => {
     await parseFile('src/lib/index.ts', paths, result, 'node_modules');
     expect(result.size).toBe(5);
   });
+});
+
+describe('[code-analyzer] › resolve references across multiple files', () => {
+
+  function resolveReferences() {
+    const results = Array.from(result.values());
+    const refResolver = new ReferenceResolver(results);
+
+    const transformedResults = new Map<string, ParseResult>();
+    result.forEach((result, fileName) => {
+      transformedResults.set(fileName, result.visit(refResolver));
+    });
+    result = transformedResults;
+  }
+
+  test('resolving constructor type that is located in a different file', async () => {
+    vol.fromJSON({
+      'lib/src/core/constructor.ts': 'export type Constructor<T> = new(...args: any[]) => T',
+      'lib/src/core/index.ts': 'export * from "./constructor"',
+      'lib/src/button/button.ts': 'import {Constructor} from "../core"; let a: Constructor<string>;',
+    });
+
+    await parseFile('lib/src/button/button.ts', paths, result, 'node_modules');
+    const node = result.get('lib/src/button/button.ts').nodes[0] as any;
+
+    expect(node.type).toBeInstanceOf(ParseReferenceType);
+    expect(node.type.name).toBe('Constructor');
+
+    resolveReferences();
+
+    const resolvedNode =  result.get('lib/src/button/button.ts').nodes[0] as any;
+
+    expect(resolvedNode.type).toBeInstanceOf(ParseTypeAliasDeclaration);
+    expect(resolvedNode.type.name).toBe('Constructor');
+    expect(resolvedNode.type.type.returnType.type).toBeInstanceOf(ParsePrimitiveType);
+    expect(resolvedNode.type.type.returnType.type.type).toBe('string');
+  });
+
 });
