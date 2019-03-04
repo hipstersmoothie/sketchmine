@@ -16,8 +16,72 @@ import {
 } from '../parsed-nodes';
 import { flatten, cloneDeep, clone } from 'lodash';
 import { Logger } from '@sketchmine/node-helpers';
+import { resolveModuleFilename } from '../utils';
 
 const log = new Logger();
+
+/**
+ * @description
+ * Delivers the module file path for a named import specifier in a file.
+ * for example `import { a } from 'b.ts'` would return `b.ts` if you pass a.
+ * If the import specifier set has a length of zero we know everything is exported
+ * or imported so we will return the path as well
+ */
+function getModuleNameForImportSpecifier(referenceName: string, result: ParseResult): string | undefined {
+
+  for (let i = 0, max = result.dependencyPaths.length; i < max; i += 1) {
+    const dependency = result.dependencyPaths[i];
+    // if the dependencies value has a size of 0 then it is an export specifier with a star.
+    // that means if it was specified but with a length of 0 we export everything so return the path in
+    // in this condition.
+    if (dependency.values.has(referenceName) || dependency.values.size === 0) {
+      return dependency.path;
+    }
+  }
+}
+
+/**
+ * @description
+ * This method is used to gather an expression or declaration for the matching *referenced node*
+ * So this function will look at first for the root nodes in the current file if there is a declaration or
+ * method that matches the name and if there is no it will take a look at the imports if an import was found with
+ * this name in the specifiers array it will check the root nodes again with a recursive call until a node was found
+ * or no import specifiers are there anymore.
+ * @param referencedNode The reference node where the matching declaration has to be searched.
+ * @param parsedResults All parsed pages where we have to find the declaration
+ * @param currentFileName the file name (used as index for the results) for the current file
+ */
+function getReferencedDeclarations(
+  referencedNode: ParseExpression | ParseReferenceType,
+  parsedResults: Map<string, ParseResult>,
+  currentFileName: string,
+): ParseDefinition[] {
+
+  if (!currentFileName) {
+    return [];
+  }
+  // get the result of the current file
+  const currentFile = parsedResults.get(currentFileName);
+  // check the root nodes for the node with the same name
+  const rootNodes = currentFile.nodes
+    .filter((node: ParseDefinition) => node.name === referencedNode.name);
+
+  if (rootNodes.length) {
+    return rootNodes;
+  }
+
+  const modulePath = getModuleNameForImportSpecifier(referencedNode.name, currentFile);
+
+  // if the module path is undefined we cannot resolve the reference so return undefined
+  if (!modulePath) {
+    return [];
+  }
+
+  // resolve the module path to a file on the disk
+  const resolvedModulePath = resolveModuleFilename(modulePath);
+  // recursive call to go through all the files to gather the imported declaration
+  return getReferencedDeclarations(referencedNode, parsedResults, resolvedModulePath);
+}
 
 /**
  * @description
@@ -49,12 +113,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
    */
   lookupTable = new Map<string, Map<number, ParseGeneric>>();
 
-  /**
-   * @description
-   * Store the imported declarations from a named import statement in an array to rely on the
-   * module structure and only get root Nodes from different files if they are imported.
-   */
-  private importedReferences: Map<string, string[]>;
+  private currentFileName: string;
 
   /**
    * @description
@@ -63,25 +122,16 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
    */
   private rootNodes: ParseDefinition[];
 
-  constructor(parseResults: ParseResult[]) {
+  constructor(public parsedResults: Map<string, ParseResult>) {
     super();
-    this.rootNodes = flatten(parseResults.map(result => result.nodes));
   }
 
   /**
    * @description
-   * Overrides the visitResult from the tree visitor to gather all the named import
-   * specifiers and store them per file.
-   * After storing the import specifiers we call the super function and return the value.
+   * Overrides the visitResult from the tree visitor to gather the current file name.
    */
   visitResult(node: ParseResult): any {
-    const importedReferences = new Map<string, string[]>();
-
-    for (let i = 0, max = node.dependencyPaths.length; i < max; i += 1) {
-      const dependency = node.dependencyPaths[i];
-      importedReferences.set(dependency.path, Array.from(dependency.values));
-    }
-    this.importedReferences = importedReferences;
+    this.currentFileName = node.location.path;
     return super.visitResult(node);
   }
 
@@ -252,22 +302,6 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
   /**
    * @description
-   * Delivers the module file path for a named import specifier in a file.
-   * for example `import { a } from 'b.ts'` would return `b.ts` if you pass a.
-   * Uses the global importedReferences map to find the matching filename
-   */
-  private getModuleNameForImportSpecifier(referenceName: string): string | undefined {
-    for (const dependency of this.importedReferences) {
-      const location = dependency[0];
-      const specifiers = dependency[1];
-      if (specifiers.includes(referenceName)) {
-        return location;
-      }
-    }
-  }
-
-  /**
-   * @description
    * Find the matching expression or declaration for a reference type or
    * expression call. In case there would be a function overload we have to check the
    * type parameter length and the argument length to match the correct overload.
@@ -277,24 +311,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
     // TODO: major: lukas.holzer build check if rootNode is not parent node,
     // otherwise we would get a circular structure that is causing a memory leak!
-
-    const rootNodes = this.rootNodes
-      .filter((node: ParseDefinition) => {
-        // early exit if the name of the nodes does not match head to the next node.
-        if (node.name !== referencedNode.name) {
-          return false;
-        }
-
-        const referenceImportLocation = this.getModuleNameForImportSpecifier(node.name);
-
-        if (
-          node.location.path === referencedNode.location.path ||
-          referenceImportLocation === node.location.path
-        ) {
-          return true;
-        }
-        return false;
-      });
+    const rootNodes = getReferencedDeclarations(referencedNode, this.parsedResults, this.currentFileName);
 
     // if we could not find any root node for the referenceNode we cannot resolve
     // this type or expression

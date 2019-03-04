@@ -31,7 +31,7 @@ import {
   Primitives,
   ParsePartialType,
 } from './parsed-nodes';
-import { getSymbolName, parseAbsoluteModulePath, getNodeTags, NodeTags, resolveModuleFilename } from './utils';
+import { getSymbolName, parseAbsoluteModulePath, getNodeTags, NodeTags } from './utils';
 import { Logger } from '@sketchmine/node-helpers';
 import { flatten } from 'lodash';
 import { dirname } from 'path';
@@ -742,7 +742,7 @@ export class Visitor {
     }
 
     this.dependencyPaths.push(
-      new ParseDependency(location, resolveModuleFilename(absolutePath), importSpecifier),
+      new ParseDependency(location, absolutePath, importSpecifier),
     );
   }
 
