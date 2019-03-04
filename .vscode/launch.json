@@ -3,19 +3,22 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Sketch 💎",
+      "name": "Debug Code Analyzer 🕵🏻‍",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/dist/angular-meta-parser/index.js",
-      "cwd": "${workspaceRoot}",
+      "program": "${workspaceFolder}/packages/code-analyzer/lib/bin.js",
+      "cwd": "${workspaceRoot}/packages/code-analyzer",
       "protocol": "inspector",
-      "env": { 
+      "env": {
         "DEBUG": "true",
-        "DEBUG_SVG": "true",
-        "DEBUG_BROWSER": "true",
-        "DEBUG_TRAVERSER": "true",
-        "SKETCH": "open-close"
-      }
+      },
+      "args": [
+        // "--rootDir=/Users/lukas.holzer/Sites/angular-components/",
+        // "--library=src/lib",
+        "--rootDir=/Users/lukas.holzer/Sites/playground/test/",
+        "--library=lib",
+        "--inFile=index.ts",
+      ]
     }
   ]
 }

@@ -31,7 +31,7 @@ import {
   Primitives,
   ParsePartialType,
 } from './parsed-nodes';
-import { getSymbolName, parseAbsoluteModulePath, getNodeTags, NodeTags } from './utils';
+import { getSymbolName, parseAbsoluteModulePath, getNodeTags, NodeTags, resolveModuleFilename } from './utils';
 import { Logger } from '@sketchmine/node-helpers';
 import { flatten } from 'lodash';
 import { dirname } from 'path';
@@ -327,13 +327,13 @@ export class Visitor {
         const parameterType = this.visitType(parameter.type);
         return new ParseIndexSignature(location, parameterName, tags, parameterType, type);
       case ts.SyntaxKind.CallSignature:
-        // TODO: implement call signature
+        // TODO: UX-9175 implement call signature
         // interface I2 {
         //   (source: string, subString: string): boolean;
         // }
         break;
       case ts.SyntaxKind.ConstructSignature:
-        // TODO: implement construct signature
+        // TODO: UX-9177 implement construct signature
         // interface ClockConstructor {
         //   new (hour: number, minute: number): ClockInterface;
         // }
@@ -742,7 +742,7 @@ export class Visitor {
     }
 
     this.dependencyPaths.push(
-      new ParseDependency(location, absolutePath, importSpecifier),
+      new ParseDependency(location, resolveModuleFilename(absolutePath), importSpecifier),
     );
   }
 

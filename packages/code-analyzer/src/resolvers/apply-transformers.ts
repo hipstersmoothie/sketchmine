@@ -1,4 +1,4 @@
-import { ParsedVisitor, ParseResult } from '../parsed-nodes';
+import { ParsedVisitor, ParseResult, ParseNode, ParseLocation } from '../parsed-nodes';
 import { ReferenceResolver } from './reference-resolver';
 import { MetaResolver } from './meta-resolver';
 import { flatten } from 'lodash';
@@ -11,8 +11,9 @@ export function applyTransformers<T>(parsedResults: Map<string, ParseResult>): T
 
   // list of transformers that should be applied to the
   // parsed results
+  const refResolver = new ReferenceResolver(results);
   const transformers: ParsedVisitor[] = [
-    new ReferenceResolver(results),
+    refResolver,
     new MetaResolver(),
   ];
 

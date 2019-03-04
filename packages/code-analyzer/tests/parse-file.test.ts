@@ -9,6 +9,9 @@ import {
   ReferenceResolver,
   ParseTypeAliasDeclaration,
   ParsePrimitiveType,
+  ParseInterfaceDeclaration,
+  ParseProperty,
+  applyTransformers,
 } from '../src';
 
 let fileTree: { [key: string]: string };
@@ -130,6 +133,60 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
     expect(resolvedNode.type.name).toBe('Constructor');
     expect(resolvedNode.type.type.returnType.type).toBeInstanceOf(ParsePrimitiveType);
     expect(resolvedNode.type.type.returnType.type.type).toBe('string');
+  });
+
+  test('resolving generics from different files', async () => {
+    vol.fromJSON({
+      'lib/src/core/constructor.ts': 'export type Constructor<T> = new(...args: any[]) => T',
+      'lib/src/core/index.ts': 'export * from "./constructor"',
+      'lib/src/button/button.ts': `
+        import {Constructor} from "../core";
+        interface A { a: boolean }
+        function m(): Constructor<A> {}
+        const x = m();
+      `,
+    });
+
+    await parseFile('lib/src/button/button.ts', paths, result, 'node_modules');
+
+    resolveReferences();
+
+    const resolvedNode =  result.get('lib/src/button/button.ts').nodes[2] as any;
+    const constructorType = resolvedNode.value.returnType.type;
+    expect(constructorType.returnType.type).toBeInstanceOf(ParseInterfaceDeclaration);
+    expect(constructorType.returnType.type.name).toBe('A');
+    expect(constructorType.returnType.type.members).toBeInstanceOf(Array);
+    expect(constructorType.returnType.type.members[0]).toBeInstanceOf(ParseProperty);
+    expect(constructorType.returnType.type.members[0].name).toBe('a');
+  });
+
+  test('resolving generics from different files', async () => {
+    vol.fromJSON({
+      'lib/src/core/constructor.ts': 'export type Constructor<C> = new(...args: any[]) => C',
+      'lib/src/core/index.ts': 'export * from "./constructor"',
+      'lib/src/button/button.ts': `
+        import { Constructor } from '../core'
+        interface CanDisable { disabled: boolean; }
+        function mixinDisabled<T extends Constructor<{}>>(base: T): Constructor<CanDisable> & T { }
+        class DtButtonBase {
+          constructor(public elementRef: ElementRef) { }
+        }
+        const _DtButtonMixinBase = mixinDisabled(DtButtonBase);
+        @Component()
+        class DtButton extends _DtButtonMixinBase {}
+      `,
+    });
+
+    await parseFile('lib/src/button/button.ts', paths, result, 'node_modules');
+
+    const transformed = applyTransformers<any>(result);
+    const members = transformed[0].members;
+
+    expect(members).toHaveLength(2);
+    expect(members).toMatchObject([
+      { type: 'property', key: 'disabled', value: 'true' },
+      { type: 'property', key: 'elementRef', value: undefined },
+    ]);
   });
 
 });
