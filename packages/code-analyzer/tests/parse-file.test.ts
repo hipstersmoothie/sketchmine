@@ -102,8 +102,7 @@ describe('[code-analyzer] › parse files with dependency tree', () => {
 describe('[code-analyzer] › resolve references across multiple files', () => {
 
   function resolveReferences() {
-    const results = Array.from(result.values());
-    const refResolver = new ReferenceResolver(results);
+    const refResolver = new ReferenceResolver(result);
 
     const transformedResults = new Map<string, ParseResult>();
     result.forEach((result, fileName) => {
