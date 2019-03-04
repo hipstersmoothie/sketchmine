@@ -30,6 +30,7 @@ import {
   ParseDefinition,
   ParseDependency,
   ParsePartialType,
+  LOOKUP_TABLE,
 } from '../../src';
 import { getParsedResult } from '../helpers';
 
@@ -474,61 +475,65 @@ describe('[code-analyzer] › Parsed tree visitor', () => {
 
 describe('[code-analyzer] › Reference tree visitor', () => {
 
+  beforeEach(() => {
+    LOOKUP_TABLE.clear();
+  });
+
   test('Collecting generics from ClassDeclaration', () => {
     const source = 'class a<T> { method<T>(...args: any[]): T { return null;}}';
     const result = getParsedResult(source) as any;
-    const refTreeVisitor = new ReferenceResolver([result]);
+    const results = new Map<string, ParseResult>();
+    results.set('test-case.ts', result);
+    const refTreeVisitor = new ReferenceResolver(results);
     const node = result.nodes[0] as ParseClassDeclaration;
 
     const visitClassDeclarationFn = jest.spyOn(refTreeVisitor, 'visitClassDeclaration');
 
-    const lookupTable = refTreeVisitor.lookupTable;
-
-    expect(lookupTable.size).toBe(0);
+    expect(LOOKUP_TABLE.size).toBe(0);
     expect(visitClassDeclarationFn).not.toBeCalled();
     refTreeVisitor.visit(node);
-    expect(lookupTable.size).toBe(1);
-    expect([...lookupTable.get('test-case.ts').values()][0]).toBeInstanceOf(ParseGeneric);
-    expect([...lookupTable.get('test-case.ts').values()][0].name).toBe('T');
+    expect(LOOKUP_TABLE.size).toBe(1);
+    expect([...LOOKUP_TABLE.get('test-case.ts').values()][0]).toBeInstanceOf(ParseGeneric);
+    expect([...LOOKUP_TABLE.get('test-case.ts').values()][0].name).toBe('T');
     visitClassDeclarationFn.mockRestore();
   });
 
   test('Collecting generics from TypeAliasDeclaration', () => {
     const source = 'type myFunc<T> = () => T';
     const result = getParsedResult(source) as any;
-    const refTreeVisitor = new ReferenceResolver([result]);
+    const results = new Map<string, ParseResult>();
+    results.set('test-case.ts', result);
+    const refTreeVisitor = new ReferenceResolver(results);
     const node = result.nodes[0] as ParseClassDeclaration;
 
     const visitTypeAliasDeclarationFn = jest.spyOn(refTreeVisitor, 'visitTypeAliasDeclaration');
 
-    const lookupTable = refTreeVisitor.lookupTable;
-
-    expect(lookupTable.size).toBe(0);
+    expect(LOOKUP_TABLE.size).toBe(0);
     expect(visitTypeAliasDeclarationFn).not.toBeCalled();
     refTreeVisitor.visit(node);
-    expect(lookupTable.size).toBe(1);
-    expect([...lookupTable.get('test-case.ts').values()][0]).toBeInstanceOf(ParseGeneric);
-    expect([...lookupTable.get('test-case.ts').values()][0].name).toBe('T');
+    expect(LOOKUP_TABLE.size).toBe(1);
+    expect([...LOOKUP_TABLE.get('test-case.ts').values()][0]).toBeInstanceOf(ParseGeneric);
+    expect([...LOOKUP_TABLE.get('test-case.ts').values()][0].name).toBe('T');
     visitTypeAliasDeclarationFn.mockRestore();
   });
 
   test('Adding generic to existing lookup table to the same file', () => {
     const source = 'type myFunc<T> = () => T; type secondFunc<P> = () => P';
     const result = getParsedResult(source) as any;
-    const refTreeVisitor = new ReferenceResolver([result]);
+    const results = new Map<string, ParseResult>();
+    results.set('test-case.ts', result);
+    const refTreeVisitor = new ReferenceResolver(results);
 
-    const lookupTable = refTreeVisitor.lookupTable;
-
-    expect(lookupTable.size).toBe(0);
+    expect(LOOKUP_TABLE.size).toBe(0);
     refTreeVisitor.visit(result.nodes[0]);
-    expect(lookupTable.size).toBe(1);
-    expect(lookupTable.get('test-case.ts').size).toBe(1);
-    expect([...lookupTable.get('test-case.ts').values()][0]).toBeInstanceOf(ParseGeneric);
-    expect([...lookupTable.get('test-case.ts').values()][0].name).toBe('T');
+    expect(LOOKUP_TABLE.size).toBe(1);
+    expect(LOOKUP_TABLE.get('test-case.ts').size).toBe(1);
+    expect([...LOOKUP_TABLE.get('test-case.ts').values()][0]).toBeInstanceOf(ParseGeneric);
+    expect([...LOOKUP_TABLE.get('test-case.ts').values()][0].name).toBe('T');
 
     refTreeVisitor.visit(result.nodes[1]);
-    expect(lookupTable.size).toBe(1);
-    expect(lookupTable.get('test-case.ts').size).toBe(2);
+    expect(LOOKUP_TABLE.size).toBe(1);
+    expect(LOOKUP_TABLE.get('test-case.ts').size).toBe(2);
 
   });
 });

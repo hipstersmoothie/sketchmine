@@ -10,6 +10,8 @@ import {
   ParseIntersectionType,
   ParseTypeLiteral,
   ParseProperty,
+  ParseResult,
+  LOOKUP_TABLE,
 } from '../../src';
 import { getParsedResult, resolveReferences } from '../helpers';
 
@@ -181,15 +183,21 @@ describe('[code-analyzer] › Resolving References', () => {
 
 describe('[code-analyzer] › Collect generics in reference resolver', () => {
 
+  beforeEach(() => {
+    LOOKUP_TABLE.clear();
+  });
+
   test('collect generic from interface', () => {
     const source = 'interface X<T> { member: T }';
     const result = getParsedResult(source);
-    const referenceResolver = new ReferenceResolver([result]);
+    const results = new Map<string, ParseResult>();
+    results.set('test-case.ts', result);
+    const referenceResolver = new ReferenceResolver(results);
 
-    expect(referenceResolver.lookupTable.size).toBe(0);
+    expect(LOOKUP_TABLE.size).toBe(0);
     result.visit(referenceResolver);
-    expect(referenceResolver.lookupTable.size).toBe(1);
-    const fileMap = referenceResolver.lookupTable.get('test-case.ts');
+    expect(LOOKUP_TABLE.size).toBe(1);
+    const fileMap = LOOKUP_TABLE.get('test-case.ts');
     expect(fileMap.size).toBe(1);
     const generic = Array.from(fileMap.values())[0];
     expect(generic).toBeInstanceOf(ParseGeneric);
@@ -199,12 +207,14 @@ describe('[code-analyzer] › Collect generics in reference resolver', () => {
   test('collect generic from class declaration', () => {
     const source = 'class X<T> { member: T }';
     const result = getParsedResult(source);
-    const referenceResolver = new ReferenceResolver([result]);
+    const results = new Map<string, ParseResult>();
+    results.set('test-case.ts', result);
+    const referenceResolver = new ReferenceResolver(results);
 
-    expect(referenceResolver.lookupTable.size).toBe(0);
+    expect(LOOKUP_TABLE.size).toBe(0);
     result.visit(referenceResolver);
-    expect(referenceResolver.lookupTable.size).toBe(1);
-    const fileMap = referenceResolver.lookupTable.get('test-case.ts');
+    expect(LOOKUP_TABLE.size).toBe(1);
+    const fileMap = LOOKUP_TABLE.get('test-case.ts');
     expect(fileMap.size).toBe(1);
     const generic = Array.from(fileMap.values())[0];
     expect(generic).toBeInstanceOf(ParseGeneric);
@@ -214,12 +224,14 @@ describe('[code-analyzer] › Collect generics in reference resolver', () => {
   test('collect generic from type declaration', () => {
     const source = 'type X<T> = () => T';
     const result = getParsedResult(source);
-    const referenceResolver = new ReferenceResolver([result]);
+    const results = new Map<string, ParseResult>();
+    results.set('test-case.ts', result);
+    const referenceResolver = new ReferenceResolver(results);
 
-    expect(referenceResolver.lookupTable.size).toBe(0);
+    expect(LOOKUP_TABLE.size).toBe(0);
     result.visit(referenceResolver);
-    expect(referenceResolver.lookupTable.size).toBe(1);
-    const fileMap = referenceResolver.lookupTable.get('test-case.ts');
+    expect(LOOKUP_TABLE.size).toBe(1);
+    const fileMap = LOOKUP_TABLE.get('test-case.ts');
     expect(fileMap.size).toBe(1);
     const generic = Array.from(fileMap.values())[0];
     expect(generic).toBeInstanceOf(ParseGeneric);
@@ -229,12 +241,14 @@ describe('[code-analyzer] › Collect generics in reference resolver', () => {
   test('collect generic from method', () => {
     const source = 'function f<T>(a: T): T { return T; }';
     const result = getParsedResult(source);
-    const referenceResolver = new ReferenceResolver([result]);
+    const results = new Map<string, ParseResult>();
+    results.set('test-case.ts', result);
+    const referenceResolver = new ReferenceResolver(results);
 
-    expect(referenceResolver.lookupTable.size).toBe(0);
+    expect(LOOKUP_TABLE.size).toBe(0);
     result.visit(referenceResolver);
-    expect(referenceResolver.lookupTable.size).toBe(1);
-    const fileMap = referenceResolver.lookupTable.get('test-case.ts');
+    expect(LOOKUP_TABLE.size).toBe(1);
+    const fileMap = LOOKUP_TABLE.get('test-case.ts');
     expect(fileMap.size).toBe(1);
     const generic = Array.from(fileMap.values())[0];
     expect(generic).toBeInstanceOf(ParseGeneric);

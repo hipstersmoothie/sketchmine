@@ -5,6 +5,8 @@ import { ParseResult, ReferenceResolver } from '../../src';
  * Applies the reference resolver to the result.
  */
 export function resolveReferences(result: ParseResult): ParseResult {
-  const referenceResolver = new ReferenceResolver([result]);
+  const results = new Map<string, ParseResult>();
+  results.set('test-case.ts', result);
+  const referenceResolver = new ReferenceResolver(results);
   return result.visit(referenceResolver);
 }
