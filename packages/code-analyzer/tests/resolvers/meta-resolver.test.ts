@@ -97,7 +97,7 @@ describe('[code-analyzer] › MetaResolver › resolving all different nodes', (
     expect(result).toBe(undefined);
   });
 
-  test('resolving a partial should return in null in case that we don\'t rely on Partials', () => {
+  test('resolving a partial should return null in case that we don\'t rely on Partials', () => {
     const source = 'type a = Partial<"a" | "b">;';
     const result = getParsedResult(source) as any;
     const nodes = resolveReferences(result).nodes as any[];

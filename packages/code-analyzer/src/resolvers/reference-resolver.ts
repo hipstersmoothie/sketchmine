@@ -20,6 +20,16 @@ import { resolveModuleFilename } from '../utils';
 
 const log = new Logger();
 
+
+/**
+ * @description
+ * Lookup Table for the Generics that are found in the tree
+ * The outer map is a map where the key represents the filename
+ * the value of this map is another map where the key represents the position
+ * in the file where the generic ocurred and holds as value the generic symbol
+ */
+export const LOOKUP_TABLE = new Map<string, Map<number, ParseGeneric>>();
+
 /**
  * @description
  * Delivers the module file path for a named import specifier in a file.
@@ -93,25 +103,28 @@ type typeParametersNode =
   | ParseMethod
   | ParseTypeAliasDeclaration;
 
-  /**
-   * @class
-   * @classdesc
-   * The reference resolver is used to get the values of interfaces, type alias declarations
-   * generics or methods and replace them with their place holding parse reference class.
-   * The first lookup is always in a lookup table that stores all generics. These generics are
-   * collected during the visiting process. If a reference type matches with a generic from the table
-   * the reference (pointer to the object) is placed instead.
-   */
+class RestoreGenericsReferenceResolver extends TreeVisitor implements ParsedVisitor {
+
+  visitGeneric(node: ParseGeneric) {
+    // return LOOKUP_TABLE
+    //   .get(node.location.path)
+    //   .get(node.location.position);
+    console.log(node.name)
+    return super.visitGeneric(node);
+  }
+}
+
+/**
+ * @class
+ * @classdesc
+ * The reference resolver is used to get the values of interfaces, type alias declarations
+ * generics or methods and replace them with their place holding parse reference class.
+ * The first lookup is always in a lookup table that stores all generics. These generics are
+ * collected during the visiting process. If a reference type matches with a generic from the table
+ * the reference (pointer to the object) is placed instead.
+ */
 export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
-  /**
-   * @description
-   * Lookup Table for the Generics that are found in the tree
-   * The outer map is a map where the key represents the filename
-   * the value of this map is another map where the key represents the position
-   * in the file where the generic ocurred and holds as value the generic symbol
-   */
-  lookupTable = new Map<string, Map<number, ParseGeneric>>();
 
   private currentFileName: string;
 
@@ -122,9 +135,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
    */
   private rootNodes: ParseDefinition[];
 
-  constructor(public parsedResults: Map<string, ParseResult>) {
-    super();
-  }
+  constructor(public parsedResults: Map<string, ParseResult>) { super(); }
 
   /**
    * @description
@@ -364,7 +375,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
    * The position is always unique in a file – *(the character position)*
    */
   private addGenericToLookupTable(location: ParseLocation, value: ParseGeneric): void {
-    const file = this.lookupTable.get(location.path);
+    const file = LOOKUP_TABLE.get(location.path);
 
     // file key already exists so we need to append it.
     // to the existing position Map.
@@ -376,7 +387,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     // and add a new position map.
     const positionMap = new Map<number, ParseGeneric>();
     positionMap.set(location.position, value);
-    this.lookupTable.set(location.path, positionMap);
+    LOOKUP_TABLE.set(location.path, positionMap);
   }
 
   /**
@@ -390,7 +401,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     const location = node.location;
     const value = node.name;
 
-    const positionMap = this.lookupTable.get(location.path);
+    const positionMap = LOOKUP_TABLE.get(location.path);
 
     // if the file is not in the position map return undefined
     if (!positionMap) {

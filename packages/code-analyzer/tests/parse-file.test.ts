@@ -159,7 +159,7 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
     expect(constructorType.returnType.type.members[0].name).toBe('a');
   });
 
-  test('resolving generics from different files', async () => {
+  test.skip('resolving generics from different files', async () => {
     vol.fromJSON({
       'lib/src/core/constructor.ts': 'export type Constructor<C> = new(...args: any[]) => C',
       'lib/src/core/index.ts': 'export * from "./constructor"',
