@@ -21,10 +21,10 @@ describe('[sketch-validator] › Text validation › Tests if the text validatio
     handler.rulesStack = {};
   });
 
-  test('should check if validation fails if invalid text color is used', () => {
+  test('should check if validation passes if valid text color is used', () => {
     // color is a valid text color
-    // rgb(69, 70, 70) == #454646 == $gray-700
-    validator.files = getSketchPagesWithText(0, 'rgb(69, 70, 70)');
+    // #454646 == $gray-700
+    validator.files = getSketchPagesWithText(0, '#454646');
     validator.validate();
 
     const result = handler.rulesStack['text-validation'];
@@ -32,10 +32,10 @@ describe('[sketch-validator] › Text validation › Tests if the text validatio
     expect(result.failing).toHaveLength(0);
   });
 
-  test('should check if validation passes if valid text color is used', () => {
+  test('should check if validation fails if invalid text color is used', () => {
     // color is part of the Dynatrace color palette but not a valid text color
-    // rgb(210, 239, 190) == #D2EFBE == $green-200
-    validator.files = getSketchPagesWithText(0, 'rgb(210, 239, 190)');
+    // #D2EFBE == $green-200
+    validator.files = getSketchPagesWithText(0, '#D2EFBE');
     validator.validate();
 
     const result = handler.rulesStack['text-validation'];
@@ -56,7 +56,7 @@ describe('[sketch-validator] › Text validation › Tests if the text validatio
 
   test('should check if no font smaller than 12px is used', () => {
     // color valid, text too small
-    validator.files = getSketchPagesWithText(0, 'rgb(69, 70, 70)', '11px');
+    validator.files = getSketchPagesWithText(0, '#454646', '11px');
     validator.validate();
 
     const result = handler.rulesStack['text-validation'];
@@ -67,7 +67,7 @@ describe('[sketch-validator] › Text validation › Tests if the text validatio
 
   test('should check if no font other than BerninaSans or Bitstream Vera is used', () => {
     // wrong font family
-    validator.files = getSketchPagesWithText(0, 'rgb(69, 70, 70)', '14px', 'Helvetica Neue');
+    validator.files = getSketchPagesWithText(0, '#454646', '14px', 'Helvetica Neue');
     validator.validate();
 
     const result = handler.rulesStack['text-validation'];
