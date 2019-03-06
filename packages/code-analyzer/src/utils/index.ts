@@ -1,7 +1,4 @@
 export * from './adjust-path-aliases';
-export * from './check-node-tags';
-export * from './generate-variant-name';
-export * from './generate-variants';
 export * from './get-node-tags';
 export * from './get-symbol-name';
 export * from './has-export-modifier';
@@ -11,5 +8,4 @@ export * from './parse-absolute-module-path';
 export * from './parse-commandline-args';
 export * from './read-ts-config';
 export * from './resolve-module-filename';
-export * from './variant-combination-generator';
 export * from './visit-jsdoc';

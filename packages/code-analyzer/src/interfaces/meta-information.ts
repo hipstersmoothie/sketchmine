@@ -22,7 +22,7 @@ export interface Component {
 
 export interface Variant {
   name: string;
-  changes: (VariantMethod | VariantProperty)[];
+  changes: (Method | Property)[];
 }
 
 export interface Property {
@@ -31,15 +31,9 @@ export interface Property {
   value: string[];
 }
 
-export interface VariantMethod {
+export interface Method {
   type: 'method';
   key: string;
-  arguments: any[];
+  parameters: Property[];
   returnType: any;
-}
-
-export interface VariantProperty {
-  type: 'property';
-  key: string;
-  value: string;
 }

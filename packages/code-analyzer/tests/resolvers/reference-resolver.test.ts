@@ -104,7 +104,7 @@ describe('[code-analyzer] › Resolving References', () => {
     const resolved = resolveReferences(result).nodes as any[];
 
     expect(resolved[1].value).toBeInstanceOf(ParseMethod);
-    expect(resolved[1].value.returnType).toBeInstanceOf(ParseEmpty);
+    expect(resolved[1].value.returnType).toBeNull();
   });
 
   test('should pass primitive arguments to expression call', () => {

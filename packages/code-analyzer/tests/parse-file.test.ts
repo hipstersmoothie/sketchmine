@@ -13,6 +13,7 @@ import {
   ParseProperty,
   applyTransformers,
 } from '../src';
+import { join } from 'path';
 
 let fileTree: { [key: string]: string };
 let paths: Map<string, string>;
@@ -49,11 +50,11 @@ describe('[code-analyzer] › parse files with dependency tree', () => {
     vol.fromJSON(fileTree);
     await parseFile('src/lib/index.ts', paths, result, 'node_modules');
     expect(result.size).toBe(5);
-    expect(result.get('src/lib/button/index.ts').dependencyPaths).toHaveLength(1);
-    expect(result.get('src/lib/button/button.ts').nodes).toHaveLength(1);
-    expect(result.get('src/lib/button/button.ts').dependencyPaths).toHaveLength(1);
-    expect(result.get('src/lib/core/mixin-disabled.ts').nodes).toHaveLength(1);
-    expect(result.get('src/lib/core/mixin-disabled.ts').dependencyPaths).toHaveLength(0);
+    expect(result.get(join(process.cwd(), 'src/lib/button/index.ts')).dependencyPaths).toHaveLength(1);
+    expect(result.get(join(process.cwd(), 'src/lib/button/button.ts')).nodes).toHaveLength(1);
+    expect(result.get(join(process.cwd(), 'src/lib/button/button.ts')).dependencyPaths).toHaveLength(1);
+    expect(result.get(join(process.cwd(), 'src/lib/core/mixin-disabled.ts')).nodes).toHaveLength(1);
+    expect(result.get(join(process.cwd(), 'src/lib/core/mixin-disabled.ts')).dependencyPaths).toHaveLength(0);
   });
 
   test('if the was already parsed skip this file and parse the other files', async () => {
@@ -82,9 +83,9 @@ describe('[code-analyzer] › parse files with dependency tree', () => {
     vol.fromJSON(fileTree);
     await parseFile('src/lib/index.ts', paths, result, 'node_modules');
     expect(result.size).toBe(3);
-    expect(result.get('src/lib/index.ts')).toBeInstanceOf(ParseResult);
-    expect(result.get('src/lib/button/index.ts')).toBeInstanceOf(ParseResult);
-    expect(result.get('src/lib/button/button.ts')).toBeInstanceOf(ParseResult);
+    expect(result.get(join(process.cwd(), 'src/lib/index.ts'))).toBeInstanceOf(ParseResult);
+    expect(result.get(join(process.cwd(), 'src/lib/button/index.ts'))).toBeInstanceOf(ParseResult);
+    expect(result.get(join(process.cwd(), 'src/lib/button/button.ts'))).toBeInstanceOf(ParseResult);
   });
 
   test('collecting a file from a path alias without the paths should fail', async () => {
@@ -119,14 +120,14 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
     });
 
     await parseFile('lib/src/button/button.ts', paths, result, 'node_modules');
-    const node = result.get('lib/src/button/button.ts').nodes[0] as any;
+    const node = result.get(join(process.cwd(), 'lib/src/button/button.ts')).nodes[0] as any;
 
     expect(node.type).toBeInstanceOf(ParseReferenceType);
     expect(node.type.name).toBe('Constructor');
 
     resolveReferences();
 
-    const resolvedNode =  result.get('lib/src/button/button.ts').nodes[0] as any;
+    const resolvedNode =  result.get(join(process.cwd(), 'lib/src/button/button.ts')).nodes[0] as any;
 
     expect(resolvedNode.type).toBeInstanceOf(ParseTypeAliasDeclaration);
     expect(resolvedNode.type.name).toBe('Constructor');
@@ -150,7 +151,7 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
 
     resolveReferences();
 
-    const resolvedNode =  result.get('lib/src/button/button.ts').nodes[2] as any;
+    const resolvedNode =  result.get(join(process.cwd(), 'lib/src/button/button.ts')).nodes[2] as any;
     const constructorType = resolvedNode.value.returnType.type;
     expect(constructorType.returnType.type).toBeInstanceOf(ParseInterfaceDeclaration);
     expect(constructorType.returnType.type.name).toBe('A');
@@ -159,7 +160,27 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
     expect(constructorType.returnType.type.members[0].name).toBe('a');
   });
 
-  test.skip('resolving generics from different files', async () => {
+  test('resolving simple mixin with constraint', async() => {
+    vol.fromJSON({
+      '/index.ts': `
+        export type Constructor<T> = new(...args: any[]) => T;
+        interface I1 { i: boolean; }
+        interface I2  { i2: number; }
+        function f<T extends Constructor<I1>>(a: T): T & Constructor<I2> { return a as any; }
+        const mixin = f
+        @Component()
+        class DtButton extends mixin {}
+      `,
+    });
+
+    await parseFile('/index.ts', paths, result, 'node_modules');
+
+    const transformed = applyTransformers<any>(result)[0].members;
+    expect(transformed[0]).toMatchObject({ type: 'property', key: 'i', value: 'true' });
+    expect(transformed[1]).toMatchObject({ type: 'property', key: 'i2', value: null });
+  });
+
+  test('resolving generics from different files', async () => {
     vol.fromJSON({
       'lib/src/core/constructor.ts': 'export type Constructor<C> = new(...args: any[]) => C',
       'lib/src/core/index.ts': 'export * from "./constructor"',
@@ -187,5 +208,4 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
       { type: 'property', key: 'elementRef', value: undefined },
     ]);
   });
-
 });

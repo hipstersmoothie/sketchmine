@@ -22,7 +22,7 @@ import {
   ParseEmpty,
 } from '../parsed-nodes';
 import { flatten } from 'lodash';
-import { NodeTags } from '../utils';
+import { NodeTags, mergeClassMembers } from '../utils';
 
 /**
  * @description
@@ -100,15 +100,16 @@ export class MetaResolver extends NullVisitor implements ParsedVisitor {
     const members = this.visitAllWithParent(node.members, node);
     const extending = this.visitWithParent(node.extending, node);
 
+    const mergedMembers = mergeClassMembers(extending, ...members);
+
     // if it is not an angular component we do not need the class information and
     // the decorator information we only want to know the extends and members
     // of this class
     if (!node.isAngularComponent()) {
       // return the members array merged with the extending
-      return flatten([extending, ...members]).filter(m => !!m);
+      return mergedMembers;
     }
 
-    const mergedMembers = flatten([extending, ...members]).filter(m => !!m);
     const decorator = this.visitWithParent(node.decorators[0], node);
 
     return {

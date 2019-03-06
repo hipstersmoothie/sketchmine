@@ -214,12 +214,6 @@ export class TreeVisitor extends NodeVisitor implements ParsedVisitor {
   visitGeneric(node: ParseGeneric): any {
     // we have to visit the constraints in case that they might be a reference type
     node.constraint = this.visit(node.constraint);
-
-    // // when the generic has a value we know it was resolved
-    // // so we don't need the ParseGeneric any more return only the value.
-    // if (node.value) {
-    //   return this.visit(node.value);
-    // }
     node.value = this.visit(node.value);
     node.type = this.visit(node.type);
     return node;

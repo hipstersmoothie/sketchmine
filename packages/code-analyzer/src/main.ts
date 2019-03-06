@@ -37,7 +37,7 @@ export async function main(
 
   const meta = applyTransformers(parseResults).filter((c: any) => c.name === 'DtButton');
   // console.log(meta)
-  const { inspect } = require('util')
+  const { inspect } = require('util');
   console.log(inspect(meta, false, null, true));
   // if (inMemory) {
   //   return meta;

@@ -1,22 +1,31 @@
 import * as ts from 'typescript';
-import { checkNodeTags } from '../src/utils/check-node-tags';
+import { getNodeTags } from '../src';
 
 describe('[code-analyzer] › utils › check node tags', () => {
 
   test('normal node should return no node tags', () => {
-    const code = 'export const VARIABLE = "test";';
+    const code = 'const VARIABLE = "test";';
     const sourceFile = ts.createSourceFile('', code, ts.ScriptTarget.Latest, true);
-    const tags = checkNodeTags(sourceFile.statements[0]);
+    const tags = getNodeTags(sourceFile.statements[0]);
     expect(tags).toBeInstanceOf(Array);
     expect(tags).toHaveLength(0);
+  });
+
+  test('exported node should contain exported', () => {
+    const code = 'export const VARIABLE = "test";';
+    const sourceFile = ts.createSourceFile('', code, ts.ScriptTarget.Latest, true);
+    const tags = getNodeTags(sourceFile.statements[0]);
+    expect(tags).toBeInstanceOf(Array);
+    expect(tags).toHaveLength(1);
+    expect(tags).toContain('exported');
   });
 
   test('jsdoc with design unrelated', () => {
     const code = `
 /** @design-unrelated */
-export const VARIABLE = "test";`;
+const VARIABLE = "test";`;
     const sourceFile = ts.createSourceFile('', code, ts.ScriptTarget.Latest, true);
-    const tags = checkNodeTags(sourceFile.statements[0]);
+    const tags = getNodeTags(sourceFile.statements[0]);
     expect(tags).toBeInstanceOf(Array);
     expect(tags).toHaveLength(1);
     expect(tags).toContain('unrelated');
@@ -28,17 +37,18 @@ export const VARIABLE = "test";`;
 /** @design-unrelated */
 export const VARIABLE = "test";`;
     const sourceFile = ts.createSourceFile('', code, ts.ScriptTarget.Latest, true);
-    const tags = checkNodeTags(sourceFile.statements[0]);
+    const tags = getNodeTags(sourceFile.statements[0]);
     expect(tags).toBeInstanceOf(Array);
-    expect(tags).toHaveLength(2);
-    expect(tags).toContain('unrelated');
+    expect(tags).toHaveLength(3);
     expect(tags).toContain('internal');
+    expect(tags).toContain('unrelated');
+    expect(tags).toContain('exported');
   });
 
   test('jsdoc with underscore variable', () => {
-    const code = 'export const _underscored = "test";';
+    const code = 'const _underscored = "test";';
     const sourceFile = ts.createSourceFile('', code, ts.ScriptTarget.Latest, true);
-    const tags = checkNodeTags(sourceFile.statements[0]);
+    const tags = getNodeTags(sourceFile.statements[0]);
     expect(tags).toBeInstanceOf(Array);
     expect(tags).toHaveLength(1);
     expect(tags).toContain('hasUnderscore');
@@ -51,7 +61,7 @@ export class Test {
 }
 `;
     const sourceFile = ts.createSourceFile('', code, ts.ScriptTarget.Latest, true);
-    const tags = checkNodeTags((sourceFile.statements[0] as ts.ClassDeclaration).members[0]);
+    const tags = getNodeTags((sourceFile.statements[0] as ts.ClassDeclaration).members[0]);
     expect(tags).toBeInstanceOf(Array);
     expect(tags).toHaveLength(1);
     expect(tags).toContain('private');
@@ -65,7 +75,7 @@ export class Test {
 }
 `;
     const sourceFile = ts.createSourceFile('', code, ts.ScriptTarget.Latest, true);
-    const tags = checkNodeTags((sourceFile.statements[0] as ts.ClassDeclaration).members[0]);
+    const tags = getNodeTags((sourceFile.statements[0] as ts.ClassDeclaration).members[0]);
     expect(tags).toBeInstanceOf(Array);
     expect(tags).toHaveLength(2);
     expect(tags).toContain('private');
@@ -90,9 +100,10 @@ export class DtIcon {
 }
 `;
     const sourceFile = ts.createSourceFile('', code, ts.ScriptTarget.Latest, true);
-    const tags = checkNodeTags((sourceFile.statements[0]));
+    const tags = getNodeTags((sourceFile.statements[0]));
     expect(tags).toBeInstanceOf(Array);
-    expect(tags).toHaveLength(1);
+    expect(tags).toHaveLength(2);
+    expect(tags).toContain('exported');
     expect(tags).toContain('noCombinations');
   });
 });
