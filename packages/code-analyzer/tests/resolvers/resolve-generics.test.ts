@@ -159,7 +159,7 @@ describe('[code-analyzer] › Resolving Generic Types', () => {
     expect(returnType[1].type.returnType.type).toMatchObject(interface2);
   });
 
-  test.skip('pass interfaces and types through the typeArguments to the generic', () => {
+  test('pass interfaces and types through the typeArguments to the generic', () => {
     const source = `
       function mixinColor<T, P >(base: T, defaultColor?: P): Constructor<P> & T { }
       type Constructor<T> = new(...args: any[]) => T;
@@ -176,26 +176,19 @@ describe('[code-analyzer] › Resolving Generic Types', () => {
     const mixinValue = nodes[4].value.returnType;
 
     // first part of intersection type should be main
-    // expect(mixinValue).toBeInstanceOf(ParseIntersectionType);
-    // expect(mixinValue.types[0]).toBeInstanceOf(ParseTypeAliasDeclaration);
-    // expect(mixinValue.types[0].type).toBeInstanceOf(ParseMethod);
-    // expect(mixinValue.types[0].type.returnType.type).toBeInstanceOf(ParseGeneric);
-    // expect(mixinValue.types[0].type.returnType.type).toBeInstanceOf(ParseGeneric);
-    // expect(mixinValue.types[0].type.returnType.type.value).toBeInstanceOf(ParseValueType);
-    // expect(mixinValue.types[0].type.returnType.type.value.value).toMatch('main');
-    // expect(mixinValue.types[0].type.returnType.type.type).toBeInstanceOf(ParseTypeAliasDeclaration);
+    expect(mixinValue).toBeInstanceOf(ParseIntersectionType);
+    expect(mixinValue.types[0]).toBeInstanceOf(ParseTypeAliasDeclaration);
+    expect(mixinValue.types[0].type).toBeInstanceOf(ParseMethod);
+    expect(mixinValue.types[0].type.returnType).toBeInstanceOf(ParseGeneric);
+    expect(mixinValue.types[0].type.returnType.type.value).toBeInstanceOf(ParseValueType);
+    expect(mixinValue.types[0].type.returnType.type.value.value).toMatch('main');
+    expect(mixinValue.types[0].type.returnType.type.type).toBeInstanceOf(ParseTypeAliasDeclaration);
 
+    const themePalette = mixinValue.types[0].type.returnType.type.type;
 
-    // const themePalette = mixinValue.types[0].type.returnType;
-    // console.log(themePalette);
-
-    // TODO: lukas.holzer
-    // second part should be the button theme palette
-    // expect(mixinValue.types[1]).toBeInstanceOf(ParseGeneric);
-    // expect(mixinValue.types[1].value).toBeInstanceOf(ParseClassDeclaration);
-    // expect(mixinValue.types[1].value.name).toBe('DtButtonBase');
-    // expect(mixinValue.types[1].value).toMatchObject(nodes[3]);
-
-    // console.log(mixinValue.types[1].value)
+    expect(themePalette.type).toBeInstanceOf(ParseUnionType);
+    expect(themePalette.type.types[0].value).toMatch('main');
+    expect(themePalette.type.types[1].value).toMatch('warning');
+    expect(themePalette.type.types[2].value).toMatch('cta');
   });
 });

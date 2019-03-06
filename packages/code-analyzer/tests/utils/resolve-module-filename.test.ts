@@ -5,6 +5,7 @@ import {
   resolveModuleFilename,
   RESOLVE_MODULE_FILENAME_ERROR,
 } from '../../src';
+import { join } from 'path';
 
 // reset the mocked volume after each test
 afterEach(vol.reset.bind(vol));
@@ -16,7 +17,7 @@ describe('[code-analyzer] › utils › resolve module filenames', () => {
     vol.fromJSON({ 'lib/src/button/button.ts': 'class Button {}' });
 
     const resolved = resolveModuleFilename(modulePath);
-    expect(resolved).toBe(modulePath);
+    expect(resolved).toBe(join(process.cwd(), modulePath));
   });
 
   test('if the file does not exist it should throw an error', () => {
@@ -30,7 +31,7 @@ describe('[code-analyzer] › utils › resolve module filenames', () => {
     vol.fromJSON({ 'lib/src/button/button.ts': 'class Button {}' });
 
     const resolved = resolveModuleFilename(modulePath);
-    expect(resolved).toBe(`${modulePath}.ts`);
+    expect(resolved).toBe(join(process.cwd(), `${modulePath}.ts`));
   });
 
   test('if the provided path is a path to a barrel file', () => {
@@ -38,7 +39,14 @@ describe('[code-analyzer] › utils › resolve module filenames', () => {
     vol.fromJSON({ 'lib/src/button/index.ts': 'class Button {}' });
 
     const resolved = resolveModuleFilename(modulePath);
-    expect(resolved).toBe(`${modulePath}/index.ts`);
+    expect(resolved).toBe(join(process.cwd(), `${modulePath}/index.ts`));
   });
 
+  test('if absolute path equals absolute path', () => {
+    const modulePath = '/lib/src/button';
+    vol.fromJSON({ '/lib/src/button/index.ts': 'class Button {}' });
+
+    const resolved = resolveModuleFilename(modulePath);
+    expect(resolved).toBe(`${modulePath}/index.ts`);
+  });
 });

@@ -1,4 +1,4 @@
-import { ParseResult, ReferenceResolver } from '../../src';
+import { ParseResult, ReferenceResolver, LOOKUP_TABLE } from '../../src';
 
 /**
  * @description
@@ -7,6 +7,8 @@ import { ParseResult, ReferenceResolver } from '../../src';
 export function resolveReferences(result: ParseResult): ParseResult {
   const results = new Map<string, ParseResult>();
   results.set('test-case.ts', result);
+
+  LOOKUP_TABLE.clear();
   const referenceResolver = new ReferenceResolver(results);
   return result.visit(referenceResolver);
 }

@@ -8,8 +8,12 @@ import {
   ParseProperty,
   ParseTypeLiteral,
   ParseDecorator,
+  applyTransformers,
+  ParseResult,
+  parseFile,
 } from '../../src';
 import { Logger } from '@sketchmine/node-helpers';
+import { join } from 'path';
 
 const log = new Logger();
 const jsonResolver = new MetaResolver();
@@ -434,4 +438,39 @@ describe('[code-analyzer] › MetaResolver › test merging constraints', () => 
       value: 1,
     }]);
   });
+});
+
+test('resolving a full fledged Button component', async () => {
+  const paths = new Map<string, string>();
+  const result = new Map<string, ParseResult>();
+
+  await parseFile(join(__dirname, '..', 'fixtures', 'button.ts'), paths, result, 'node_modules');
+
+  const transformed = applyTransformers<any>(result)[0].members;
+  expect(transformed).toMatchObject(
+    expect.arrayContaining([
+      expect.objectContaining({
+        type: 'property',
+        key: 'disabled',
+        value: 'true',
+      }),
+      expect.objectContaining({
+        type: 'property',
+        key: 'color',
+        value: ["'main'", "'warning'", "'cta'"],
+      }),
+      expect.objectContaining({
+        type: 'property',
+        key: 'variant',
+        value: ["'primary'", "'secondary'", "'nested'"],
+      }),
+      expect.objectContaining({
+        type: 'method',
+        key: 'focus',
+        parameters: [],
+        returnType: 'void',
+      }),
+    ]),
+  );
+
 });

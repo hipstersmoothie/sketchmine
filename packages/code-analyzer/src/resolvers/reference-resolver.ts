@@ -20,7 +20,6 @@ import { resolveModuleFilename } from '../utils';
 
 const log = new Logger();
 
-
 /**
  * @description
  * Lookup Table for the Generics that are found in the tree
@@ -59,19 +58,24 @@ function getModuleNameForImportSpecifier(referenceName: string, result: ParseRes
  * or no import specifiers are there anymore.
  * @param referencedNode The reference node where the matching declaration has to be searched.
  * @param parsedResults All parsed pages where we have to find the declaration
- * @param currentFileName the file name (used as index for the results) for the current file
+ * @param currentFilePath the file name (used as index for the results) for the current file
  */
 function getReferencedDeclarations(
   referencedNode: ParseExpression | ParseReferenceType,
   parsedResults: Map<string, ParseResult>,
-  currentFileName: string,
+  currentFilePath: string,
 ): ParseDefinition[] {
 
-  if (!currentFileName) {
+  if (!currentFilePath) {
     return [];
   }
   // get the result of the current file
-  const currentFile = parsedResults.get(currentFileName);
+  const currentFile = parsedResults.get(currentFilePath);
+
+  if (!currentFile) {
+    return [];
+  }
+
   // check the root nodes for the node with the same name
   const rootNodes = currentFile.nodes
     .filter((node: ParseDefinition) => node.name === referencedNode.name);
@@ -104,13 +108,26 @@ type typeParametersNode =
   | ParseTypeAliasDeclaration;
 
 class RestoreGenericsReferenceResolver extends TreeVisitor implements ParsedVisitor {
+  private internalLookupTable = new Map<string, Map<number, ParseGeneric>>();
 
   visitGeneric(node: ParseGeneric) {
-    // return LOOKUP_TABLE
-    //   .get(node.location.path)
-    //   .get(node.location.position);
-    console.log(node.name)
-    return super.visitGeneric(node);
+    const fileMap = this.internalLookupTable.get(node.location.path);
+
+    if (!fileMap) {
+      const position = new Map<number, ParseGeneric>();
+      position.set(node.location.position, node);
+      this.internalLookupTable.set(node.location.path, position);
+    } else if (!fileMap.has(node.location.position)) {
+      fileMap.set(node.location.position, node);
+    } else {
+      return fileMap.get(node.location.position);
+    }
+
+    return node;
+  }
+
+  resetTable(): void {
+    this.internalLookupTable.clear();
   }
 }
 
@@ -125,15 +142,14 @@ class RestoreGenericsReferenceResolver extends TreeVisitor implements ParsedVisi
  */
 export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
-
-  private currentFileName: string;
-
   /**
    * @description
-   * A collection of all rootNodes is used as second lookup table for the interfaces
-   * and types. In case that an interface or type can only be defined in the root of a file.
+   * The path of the file that is currently visited, gathered by the ParseResults
+   * location path. Is used to determine the matching rootNode in the module resolution.
    */
-  private rootNodes: ParseDefinition[];
+  private currentFilePath: string;
+
+  private genericsRestoreResolver = new RestoreGenericsReferenceResolver();
 
   constructor(public parsedResults: Map<string, ParseResult>) { super(); }
 
@@ -142,7 +158,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
    * Overrides the visitResult from the tree visitor to gather the current file name.
    */
   visitResult(node: ParseResult): any {
-    this.currentFileName = node.location.path;
+    this.currentFilePath = node.location.path;
     return super.visitResult(node);
   }
 
@@ -259,7 +275,11 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     // if we have typeArguments it is a generic and we have to clone the resolvedNode
     // because maybe it is used by other declarations as well.
     // So we won't modify the original reference.
-    const cloned = cloneDeep(resolvedNode) as T;
+    let cloned = cloneDeep(resolvedNode) as T;
+    // we have to clear the lookup table in case that we need a fresh value when we want to resolve the
+    // generic and not a pre filled table with values in there.
+    this.genericsRestoreResolver.resetTable();
+    cloned = cloned.visit(this.genericsRestoreResolver);
 
     // If we have typeArguments they have to be replaced with the arguments from the generic
     // after we replaced the generic type we can resolve the reference and replace the values
@@ -322,7 +342,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
     // TODO: major: lukas.holzer build check if rootNode is not parent node,
     // otherwise we would get a circular structure that is causing a memory leak!
-    const rootNodes = getReferencedDeclarations(referencedNode, this.parsedResults, this.currentFileName);
+    const rootNodes = getReferencedDeclarations(referencedNode, this.parsedResults, this.currentFilePath);
 
     // if we could not find any root node for the referenceNode we cannot resolve
     // this type or expression
@@ -419,5 +439,4 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
     return positionMap.get(genericPosition) || undefined;
   }
-
 }
