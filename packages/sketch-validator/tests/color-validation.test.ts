@@ -21,28 +21,26 @@ const WRONG_COLOR = colorToSketchColor('#E0FA6A');
 const VALID_COLOR = colorToSketchColor('#B4DC00');
 const THREE_DIGIT_COLOR = colorToSketchColor('#CCC');
 const SIX_DIGIT_COLOR = colorToSketchColor('#5EAD35');
+const WRONG_FILL = getFill(WRONG_COLOR);
+const VALID_FILL = getFill(VALID_COLOR);
 
-const WRONG_FILL: SketchFill = {
-  _class: SketchObjectTypes.Fill,
-  isEnabled: true,
-  color: WRONG_COLOR,
-  fillType: 0,
-  noiseIndex: 0,
-  noiseIntensity: 0,
-  patternFillType: 1,
-  patternTileScale: 1,
-};
-
-const VALID_FILL: SketchFill = {
-  _class: SketchObjectTypes.Fill,
-  isEnabled: true,
-  color: VALID_COLOR,
-  fillType: 0,
-  noiseIndex: 0,
-  noiseIntensity: 0,
-  patternFillType: 1,
-  patternTileScale: 1,
-};
+/**
+ * Returns a Sketch fill object.
+ * TODO: move this into a model in the sketch-file-format package.
+ * @param color - Sketch color object
+ */
+function getFill(color: SketchColor): SketchFill {
+  return {
+    _class: SketchObjectTypes.Fill,
+    isEnabled: true,
+    color,
+    fillType: 0,
+    noiseIndex: 0,
+    noiseIntensity: 0,
+    patternFillType: 1,
+    patternTileScale: 1,
+  };
+}
 
 function setUpColorValidator(env: string = 'product') {
   const log = new Logger();

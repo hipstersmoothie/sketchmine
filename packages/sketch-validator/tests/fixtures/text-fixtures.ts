@@ -9,7 +9,6 @@ import {
 } from '@sketchmine/sketch-file-format';
 import { SketchAttribute } from '@sketchmine/sketch-file-format/src/interfaces';
 import cloneDeep from 'lodash/cloneDeep';
-import { SAMPLE_BOUNDING } from './bounding-fixtures';
 import { generateValidSketchPages } from './page-fixtures';
 
 /**
@@ -26,7 +25,7 @@ function generateSketchTextLayer(color: string, fontSize: string, fontFamily: st
   STYLE_DECLARATION.fontFamily = fontFamily;
   STYLE_DECLARATION.fontSize = fontSize;
   // Generate text
-  const testString = new Text(SAMPLE_BOUNDING, STYLE_DECLARATION);
+  const testString = new Text({ x: 0, y: 0, width: 100, height: 100 }, STYLE_DECLARATION);
   testString.text = text;
   return testString.generateObject();
 }

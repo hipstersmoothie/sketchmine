@@ -34,7 +34,7 @@ describe('[sketch-validator] › Page validation › Tests if the page validatio
     validator.validate();
 
     const result = handler.rulesStack['page-validation'];
-    expect(result.failing).toHaveLength(4);
+    expect(result.failing).toHaveLength(3); // Three pages without artboards
     expect(result.failing[0]).toBeInstanceOf(NoArtboardFoundError);
   });
 
