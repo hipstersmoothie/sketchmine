@@ -16,8 +16,8 @@ import {
 import { join } from 'path';
 
 let fileTree: { [key: string]: string };
-let paths: Map<string, string>;
-let result: Map<string, ParseResult>;
+let paths = new Map<string, string>();
+let result = new Map<string, ParseResult>();
 
 const config = {
   compilerOptions: {
@@ -33,8 +33,8 @@ afterEach(vol.reset.bind(vol));
 
 beforeEach(() => {
   // reset the results map and the paths map
-  paths = new Map<string, string>();
-  result = new Map<string, ParseResult>();
+  paths.clear();
+  result.clear();
   fileTree = {
     'src/lib/button/button.ts': 'import {MixinDisabled} from "../core"; export class Button extends MixinDisabled {}',
     'src/lib/button/index.ts': 'export * from "./button"',
@@ -188,9 +188,7 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
         import { Constructor } from '../core'
         interface CanDisable { disabled: boolean; }
         function mixinDisabled<T extends Constructor<{}>>(base: T): Constructor<CanDisable> & T { }
-        class DtButtonBase {
-          constructor(public elementRef: ElementRef) { }
-        }
+        class DtButtonBase { constructor(public elementRef: ElementRef) { } }
         const _DtButtonMixinBase = mixinDisabled(DtButtonBase);
         @Component()
         class DtButton extends _DtButtonMixinBase {}
@@ -206,6 +204,39 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
     expect(members).toMatchObject([
       { type: 'property', key: 'disabled', value: 'true' },
       { type: 'property', key: 'elementRef', value: undefined },
+    ]);
+  });
+
+  test('resolving mixin disabled over multiple files', async () => {
+    vol.fromJSON({
+      'lib/src/core/common-behaviors/constructor.ts': `
+        export type Constructor<C> = new(...args: any[]) => C`,
+      'lib/src/core/common-behaviors/disabled.ts': `
+        import { Constructor } from './constructor';
+        export interface CanDisable { disabled: boolean; }
+        export function mixinDisabled<T extends Constructor<{}>>(base: T): Constructor<CanDisable> & T { }`,
+      'lib/src/core/common-behaviors/index.ts': `
+        export * from './constructor';
+        export * from './disabled';`,
+      'lib/src/core/index.ts': `
+        export * from './common-behaviors';`,
+      'lib/src/button/button.ts': `
+        import { mixinDisabled } from '../core';
+        class DtButtonBase { constructor(public elementRef: 'ElementRef') { } }
+        const _DtButtonMixinBase = mixinDisabled(DtButtonBase);
+        @Component()
+        class DtButton extends _DtButtonMixinBase {}`,
+    });
+
+    await parseFile('lib/src/button/button.ts', paths, result, 'node_modules');
+
+    const transformed = applyTransformers<any>(result);
+    const members = transformed[0].members;
+
+    expect(members).toHaveLength(2);
+    expect(members).toMatchObject([
+      { type: 'property', key: 'disabled', value: 'true' },
+      { type: 'property', key: 'elementRef', value: "'ElementRef'" },
     ]);
   });
 });

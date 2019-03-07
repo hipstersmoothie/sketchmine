@@ -1,5 +1,6 @@
 export * from './adjust-path-aliases';
 export * from './get-node-tags';
+export * from './get-referenced-declaration';
 export * from './get-symbol-name';
 export * from './has-export-modifier';
 export * from './jsdoc-annotations';
