@@ -69,6 +69,7 @@ function getReferencedDeclarations(
   if (!currentFilePath) {
     return [];
   }
+
   // get the result of the current file
   const currentFile = parsedResults.get(currentFilePath);
 
@@ -158,6 +159,8 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
    * Overrides the visitResult from the tree visitor to gather the current file name.
    */
   visitResult(node: ParseResult): any {
+    // clear lookup table on each file
+    LOOKUP_TABLE.clear();
     this.currentFilePath = node.location.path;
     return super.visitResult(node);
   }
