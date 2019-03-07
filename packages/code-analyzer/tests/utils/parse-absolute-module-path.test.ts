@@ -1,7 +1,7 @@
 import { parseAbsoluteModulePath } from '../../src';
 import { join } from 'path';
 
-describe('[code-analyzer] › utils › resolve module filenames', () => {
+describe('[code-analyzer] › utils › parse absolute module paths', () => {
   const map = new Map<string, string>();
   const iconPack = '@dynatrace/dt-iconpack';
   const nodeModules = 'node_modules';
