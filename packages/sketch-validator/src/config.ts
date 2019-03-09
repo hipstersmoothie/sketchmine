@@ -48,6 +48,7 @@ const VALID_TEXT_COLORS = [
   '#3F962A', // green-700
   '#14A8F5', // blue-500, chart tab (deselected)
   '#008CDB', // blue-600, chart tab (selected)
+  '#DEBBF3', // purple-200, syntax highlight color
   '#9355B7', // purple-500, chart tab (deselected)
   '#7C38A1', // purple-600, chart tab (selected)
   '#526CFF', // royal-blue-500, chart tab (deselected)
