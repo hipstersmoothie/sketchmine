@@ -35,7 +35,7 @@ export async function main(
   const config = await readTsConfig(tsconfig);
   await parseFile(entryFile, adjustPathAliases(config, join(rootDir, library)), parseResults, nodeModules);
 
-  const meta = applyTransformers(parseResults).filter((c: any) => c.name === 'DtButton');
+  const meta = applyTransformers(parseResults);
   // console.log(meta)
   const { inspect } = require('util');
   console.log(inspect(meta, false, null, true));

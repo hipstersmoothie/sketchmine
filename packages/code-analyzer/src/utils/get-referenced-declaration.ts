@@ -46,8 +46,15 @@ export function getReferencedDeclarations(
   const results = flatten(Array.from(parsedResults.values()).map(r => r.nodes));
   const found = [];
   for (let i = 0, max = results.length; i < max; i += 1) {
-    if (results[i].name === referencedNode.name) {
-      found.push(results[i]);
+    const node = results[i];
+    if (
+      node.name === referencedNode.name
+      // TODO: UX-9196
+      // &&
+      // node.tags &&
+      // node.tags.includes('exported')
+    ) {
+      found.push(node);
     }
   }
   return found;

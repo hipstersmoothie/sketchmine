@@ -294,7 +294,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
       rootNode = this.findMatchingFunctionOverload(referencedNode as ParseExpression, methods);
     }
 
-    if (!rootNode.hasOwnProperty('_visited') || (<any>rootNode)._visited !== true) {
+    if (rootNode && (!rootNode.hasOwnProperty('_visited') || (<any>rootNode)._visited !== true)) {
       // if the node was not visited yet we have to visit the root node first
       // before we are returning it!
       return rootNode.visit(this);

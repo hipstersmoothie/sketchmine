@@ -239,4 +239,34 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
       { type: 'property', key: 'elementRef', value: "'ElementRef'" },
     ]);
   });
+
+  test('resolving dependent references on each other', async () => {
+    vol.fromJSON({
+      'lib/src/button-group/index.ts': `
+        export * from './button-group-module';
+        export * from './button-group';`,
+      'lib/src/button-group/button-group.ts': `
+        @Component()
+        export class DtButtonGroup<T> {
+          selectedItem: DtButtonGroupItem<T> | null = null;
+        }
+
+        @Component()
+        export class DtButtonGroupItem<T> {
+          constructor(public buttonGroup: DtButtonGroup<T>) { }
+        }
+        `,
+      'lib/src/button-group/button-group-module.ts': `
+        import { DtButtonGroup, DtButtonGroupItem } from './button-group';
+        @NgModule({
+          declarations: [DtButtonGroup, DtButtonGroupItem]
+        })
+        export class DtButtonGroupModule {}`,
+    });
+
+    await parseFile('lib/src/button-group/index.ts', paths, result, 'node_modules');
+    const transformed = applyTransformers<any>(result);
+
+    expect(transformed).toHaveLength(2);
+  });
 });

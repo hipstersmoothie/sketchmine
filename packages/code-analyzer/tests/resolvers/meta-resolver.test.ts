@@ -196,7 +196,7 @@ describe('[code-analyzer] › MetaResolver › resolving all different nodes', (
   });
 
   test('a generic should return its value', () => {
-    const source = 'type a<T> = () => T; const a:a<"valueType">;';
+    const source = 'export type a<T> = () => T; const a:a<"valueType">;';
     const result = getParsedResult(source) as any;
     const nodes = resolveReferences(result).nodes as any[];
     const resolved = nodes[1].visit(jsonResolver);
@@ -206,8 +206,8 @@ describe('[code-analyzer] › MetaResolver › resolving all different nodes', (
 
   test('a intersection type should be combining all values', () => {
     const source = `
-      interface X { a: number }
-      interface Y { b: string }
+      export interface X { a: number }
+      export interface Y { b: string }
       function c(): X & Y {};
     `;
     const result = getParsedResult(source) as any;
@@ -403,7 +403,7 @@ describe('[code-analyzer] › MetaResolver › testing class members', () => {
 describe('[code-analyzer] › MetaResolver › test merging constraints', () => {
 
   test('extends of a class should be merged into the base class', () => {
-    const source = 'class a { a: 1; } class b extends a { b: 2; }';
+    const source = 'export class a { a: 1; } class b extends a { b: 2; }';
     const result = getParsedResult(source) as any;
     const nodes = resolveReferences(result).nodes as any[];
     const resolved = nodes[1].visit(jsonResolver);
@@ -415,7 +415,7 @@ describe('[code-analyzer] › MetaResolver › test merging constraints', () => 
   });
 
   test('extends of an interface should be merged into the base interface', () => {
-    const source = 'interface a { a: 1; } interface b extends a { b: 2; }';
+    const source = 'export interface a { a: 1; } interface b extends a { b: 2; }';
     const result = getParsedResult(source) as any;
     const nodes = resolveReferences(result).nodes as any[];
     const resolved = nodes[1].visit(jsonResolver);
@@ -427,7 +427,7 @@ describe('[code-analyzer] › MetaResolver › test merging constraints', () => 
   });
 
   test('a generic with a constraint should be merged and flattened', () => {
-    const source = 'class a { a: 1; } function b<T extends a> (): T {} const c = b();';
+    const source = 'export class a { a: 1; } export function b<T extends a> (): T {} const c = b();';
     const result = getParsedResult(source) as any;
     const nodes = resolveReferences(result).nodes as any[];
     const resolved = nodes[2].visit(jsonResolver);

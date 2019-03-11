@@ -302,6 +302,7 @@ export class Visitor {
 
   /**
    * @description
+   * @todo UX-9177, UX-9175
    * the visitSignature function visits the members of an typescript interface
    * can return
    * - ParseIndexSignature
