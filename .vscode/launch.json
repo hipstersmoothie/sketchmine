@@ -13,10 +13,8 @@
         "DEBUG": "true",
       },
       "args": [
-        // "--rootDir=/Users/lukas.holzer/Sites/angular-components/",
-        // "--library=src/lib",
-        "--rootDir=/Users/lukas.holzer/Sites/playground/test/",
-        "--library=lib",
+        "--rootDir=/Users/lukas.holzer/Sites/angular-components/",
+        "--library=src/lib",
         "--inFile=index.ts",
       ]
     }
