@@ -1,5 +1,48 @@
 # Changelog
 
+## v2.7.0 – 2019.2.1
+
+#### Contributors
+
+  - [Lara Aigmueller](mailto:lara.aigmueller@dynatrace.com)
+
+#### Commits
+
+##### Features
+
+* [[`c3f6b95`](https://github.com/Dynatrace/sketchmine/commit/c3f6b95)] -  **sketch-validator**:  add purple-200 to valid font colors  ([**Lara Aigmueller**](mailto:lara.aigmueller@dynatrace.com))
+
+##### Bug Fixes 🐞
+
+
+* [[`b42cdf7`](https://github.com/Dynatrace/sketchmine/commit/b42cdf7)] -  **sketch-validator**:  fix collecting modules  ([**Lara Aigmueller**](mailto:lara.aigmueller@dynatrace.com))
+
+
+## v2.6.1 – 2019.1.4
+
+#### Contributors
+
+  - [Lukas Holzer](mailto:lukas.holzer@dynatrace.com)
+  - [Lara Aigmueller](mailto:lara.aigmueller@dynatrace.com)
+
+#### Commits
+
+##### Bug Fixes 🐞
+
+* [[`35e2341`](https://github.com/Dynatrace/sketchmine/commit/35e2341)] -  **sketch-validator**:  fix breaking validation in docker image  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))    *issues:*    [UX-9128 ](https://dev-jira.dynatrace.org/browse/UX-9128 )
+* [[`a8d4163`](https://github.com/Dynatrace/sketchmine/commit/a8d4163)] -  **sketch-builder**:  fix semantic error conversion type  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))
+* [[`33f3bf2`](https://github.com/Dynatrace/sketchmine/commit/33f3bf2)] -  **sketch-validation-interface**:  add virtual scrolling to fix performance issues with a long list  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))    *issues:*    [UX-9064 ](https://dev-jira.dynatrace.org/browse/UX-9064 )
+* [[`39324bc`](https://github.com/Dynatrace/sketchmine/commit/39324bc)] -  **sketch-validation-interface**:  fix wordbreak in rules configuration  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))    *issues:*    [UX-9064 ](https://dev-jira.dynatrace.org/browse/UX-9064 )
+* [[`4799c5a`](https://github.com/Dynatrace/sketchmine/commit/4799c5a)] -  **sketch-validator**:  only check if artboard of current task is empty, fix check if page is symbol master  ([**Lara Aigmueller**](mailto:lara.aigmueller@dynatrace.com))    *issues:*    [UX-9039 ](https://dev-jira.dynatrace.org/browse/UX-9039 )
+* [[`7d5b7b3`](https://github.com/Dynatrace/sketchmine/commit/7d5b7b3)] -  **sketch-validator**:  fix merging of rule options and font family regex match  ([**Lara Aigmueller**](mailto:lara.aigmueller@dynatrace.com))
+* [[`04e6a9c`](https://github.com/Dynatrace/sketchmine/commit/04e6a9c)] -  **sketch-file-format**:  fix Bernina Sans font and kerning issues  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))    *issues:*    [UX-8785 ](https://dev-jira.dynatrace.org/browse/UX-8785 )
+
+##### Features
+
+
+* [[`1d474c1`](https://github.com/Dynatrace/sketchmine/commit/1d474c1)] -  **sketch-validator**:  add check if symbols page is valid  ([**Lara Aigmueller**](mailto:lara.aigmueller@dynatrace.com))    *issues:*    [UX-9039 ](https://dev-jira.dynatrace.org/browse/UX-9039 )
+
+
 ## v2.6.0 – 2019.1.30
 
 #### Contributors
@@ -33,7 +76,6 @@
 * [[`6a0890a`](https://github.com/Dynatrace/sketchmine/commit/6a0890a)] -  **sketch-builder**:  remove readFile in case that it is not present in npm package  ([**Lukas Holzer**](mailto:lukas.holzer@dynatrace.com))
 
 
-# Changelog
 
 ## v2.5.0 – 2019.1.16
 
