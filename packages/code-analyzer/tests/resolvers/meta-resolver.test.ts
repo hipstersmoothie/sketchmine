@@ -206,18 +206,31 @@ describe('[code-analyzer] › MetaResolver › resolving all different nodes', (
 
   test('a intersection type should be combining all values', () => {
     const source = `
-      export interface X { a: number }
-      export interface Y { b: string }
+      export interface X { a: boolean }
+      export interface Y { b: 1 }
       function c(): X & Y {};
     `;
     const result = getParsedResult(source) as any;
     const nodes = resolveReferences(result).nodes as any[];
     const resolved = nodes[2].visit(jsonResolver);
     expect(resolved.returnType).toMatchObject([
-      { type: 'property', key: 'a', value: null },
-      { type: 'property', key: 'b', value: null },
+      { type: 'property', key: 'a', value: 'true' },
+      { type: 'property', key: 'b', value: 1 },
     ]);
+  });
 
+  test('drop class that is marked as design-unrelated', () => {
+    const source = `
+    /** @design-unrelated */
+    @Component({})
+    class DtAnchor {
+      myMember: number = 1;
+    }`;
+
+    const result = getParsedResult(source) as any;
+    const nodes = resolveReferences(result).nodes as any[];
+    const resolved = nodes[0].visit(jsonResolver);
+    expect(resolved).toBeUndefined();
   });
 
   // test('when generic has no type use the value', () => {

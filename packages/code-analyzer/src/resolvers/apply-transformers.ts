@@ -20,9 +20,9 @@ export function applyTransformers<T>(parsedResults: Map<string, ParseResult>): T
   /** applies the transformers on the AST */
   for (const transformer of transformers) {
     const transformedResults = new Map<string, ParseResult>();
-    metaInformation.forEach((result, fileName) => {
+    for (const [fileName, result] of metaInformation) {
       transformedResults.set(fileName, result.visit(transformer));
-    });
+    }
     metaInformation = transformedResults;
   }
 

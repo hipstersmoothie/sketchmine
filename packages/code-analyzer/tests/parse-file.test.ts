@@ -165,7 +165,7 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
       '/index.ts': `
         export type Constructor<T> = new(...args: any[]) => T;
         interface I1 { i: boolean; }
-        interface I2  { i2: number; }
+        interface I2  { i2: 1; }
         function f<T extends Constructor<I1>>(a: T): T & Constructor<I2> { return a as any; }
         const mixin = f
         @Component()
@@ -177,7 +177,7 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
 
     const transformed = applyTransformers<any>(result)[0].members;
     expect(transformed[0]).toMatchObject({ type: 'property', key: 'i', value: 'true' });
-    expect(transformed[1]).toMatchObject({ type: 'property', key: 'i2', value: null });
+    expect(transformed[1]).toMatchObject({ type: 'property', key: 'i2', value: 1 });
   });
 
   test('resolving generics from different files', async () => {
@@ -188,7 +188,7 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
         import { Constructor } from '../core'
         interface CanDisable { disabled: boolean; }
         function mixinDisabled<T extends Constructor<{}>>(base: T): Constructor<CanDisable> & T { }
-        class DtButtonBase { constructor(public elementRef: ElementRef) { } }
+        class DtButtonBase { constructor(public elementRef: boolean) { } }
         const _DtButtonMixinBase = mixinDisabled(DtButtonBase);
         @Component()
         class DtButton extends _DtButtonMixinBase {}
@@ -203,7 +203,7 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
     expect(members).toHaveLength(2);
     expect(members).toMatchObject([
       { type: 'property', key: 'disabled', value: 'true' },
-      { type: 'property', key: 'elementRef', value: undefined },
+      { type: 'property', key: 'elementRef', value: 'true' },
     ]);
   });
 

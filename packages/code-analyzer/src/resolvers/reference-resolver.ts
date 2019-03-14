@@ -148,7 +148,9 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     // matching function declaration instead only passing some reference.
     node.args = this.visitAll(node.args);
 
-    node.args.forEach((arg, i: number) => {
+    for (let i = 0, max = node.args.length; i < max; i += 1) {
+      const arg = node.args[i];
+
       if (!cloned.parameters[i]) {
         log.error(
           `When resolving the expression ${node.name} – ` +
@@ -161,7 +163,8 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
       } else {
         cloned.parameters[i] = arg as any;
       }
-    });
+    }
+
     return cloned;
   }
 
@@ -193,7 +196,10 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
     // We need to check if we have typeArguments, and when we have some, we have
     // to pass it through the typeParameters of the matching `typeParametersNode`
+    // if (node.typeArguments && node.typeArguments.length) {
     return this.passTypeArguments(node, resolvedNode);
+    // }
+    // return resolvedNode;
   }
 
   /**
@@ -226,7 +232,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
         // before we pass it into the generic.
         // to limit our selfs not only to reference types we can call the generic
         // visit function of the typeArgument so it does not matter which class it is!
-        typeArgument = typeArgument.visit(this);
+        typeArgument = this.visit(typeArgument);
 
         if (cloned.typeParameters && cloned.typeParameters[i]) {
           (cloned.typeParameters[i] as ParseGeneric).type = typeArgument as ParseDefinition;
@@ -297,7 +303,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     if (rootNode && (!rootNode.hasOwnProperty('_visited') || (<any>rootNode)._visited !== true)) {
       // if the node was not visited yet we have to visit the root node first
       // before we are returning it!
-      return rootNode.visit(this);
+      return this.visit(rootNode);
     }
     // rootNode was visited and we can pass it!
     return rootNode;
@@ -309,7 +315,8 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
    * adds the generics to the lookup table.
    */
   private collectGenerics(node: typeParametersNode): void {
-    node.typeParameters.forEach((generic: ParseTypeParameter, index: number) => {
+    for (let i = 0, max = node.typeParameters.length; i < max; i += 1) {
+      const generic: ParseTypeParameter = node.typeParameters[i];
       let constraint;
 
       if (generic.constraint) {
@@ -319,8 +326,8 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
       const location = generic.location;
       const gen = new ParseGeneric(location, generic.name, constraint);
       this.addGenericToLookupTable(generic.location, gen);
-      node.typeParameters[index] = gen;
-    });
+      node.typeParameters[i] = gen;
+    }
   }
 
   /**

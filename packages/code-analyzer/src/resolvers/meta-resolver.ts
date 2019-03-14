@@ -97,6 +97,11 @@ export class MetaResolver extends NullVisitor implements ParsedVisitor {
    * or just a normal es6 class.
    */
   visitClassDeclaration(node: ParseClassDeclaration): any {
+    // if the class is marked as design unrelated we don't care anymore
+    if (node.tags.includes('unrelated')) {
+      return undefined;
+    }
+
     const members = this.visitAllWithParent(node.members, node);
     const extending = this.visitWithParent(node.extending, node);
 
@@ -105,7 +110,7 @@ export class MetaResolver extends NullVisitor implements ParsedVisitor {
     // if it is not an angular component we do not need the class information and
     // the decorator information we only want to know the extends and members
     // of this class
-    if (!node.isAngularComponent()) {
+    if (!node.isAngularComponent() || node._parentNode.constructor !== ParseResult) {
       // return the members array merged with the extending
       return mergedMembers;
     }
@@ -250,14 +255,16 @@ export class MetaResolver extends NullVisitor implements ParsedVisitor {
     const isInternal = node.tags.some((tag: NodeTags) =>
       INTERNAL_MEMBERS.includes(tag));
 
-    if (isInternal) {
+    const value = this.propertyVisitStrategy(node as ParseProperty);
+
+    if (isInternal || !value) {
       return;
     }
 
     return {
       type: 'property',
       key: node.name,
-      value: this.propertyVisitStrategy(node as ParseProperty),
+      value,
     };
   }
 
@@ -280,11 +287,22 @@ export class MetaResolver extends NullVisitor implements ParsedVisitor {
    * all root nodes for class declarations and then for angular components.
    */
   visitResult(node: ParseResult): any[] {
-    const rootNodes = node.nodes
-      .filter(rootNode =>
+    const rootNodes = [];
+
+    for (let i = 0, max = node.nodes.length; i < max; i += 1) {
+      const rootNode = node.nodes[i];
+      if (
+        rootNode &&
         rootNode.constructor === ParseClassDeclaration &&
-        (<ParseClassDeclaration>rootNode).isAngularComponent())
-      .map(rootNode => this.visitWithParent(rootNode, node));
+        (<ParseClassDeclaration>rootNode).isAngularComponent()
+      ) {
+        const visitedNode = this.visitWithParent(rootNode, node);
+        if (visitedNode) {
+          rootNodes.push(visitedNode);
+        }
+      }
+    }
+
     return rootNodes;
   }
 
@@ -343,13 +361,22 @@ export class MetaResolver extends NullVisitor implements ParsedVisitor {
    * Uses the same principles like the `visitAll` function from the NullVisitor,
    * with the only difference that it passes a parent node to the wrapping `visitWithParent` function.
    */
-  visitAllWithParent(nodes: ParseNode[], parent: ParseNode): any {
+  visitAllWithParent(nodes: ParseNode[], parent: ParseNode): any[] {
     // if we have no nodes return an empty array like the `visitAll` function in the NullVisitor.
     if (!nodes) { return []; }
 
-    return nodes.map((node: ParseNode) => {
-      return this.visitWithParent(node, parent);
-    });
+    const result = [];
+
+    for (let i = 0, max = nodes.length; i < max; i += 1) {
+      const node = nodes[i];
+
+      const visited = this.visitWithParent(node, parent);
+      if (visited) {
+        result.push(visited);
+      }
+    }
+
+    return result;
   }
 
   /**
