@@ -42,19 +42,19 @@ export function getReferencedDeclarations(
   parsedResults: Map<string, ParseResult>,
   currentFilePath: string,
 ): ParseDefinition[] {
-
-  const results = flatten(Array.from(parsedResults.values()).map(r => r.nodes));
   const found = [];
-  for (let i = 0, max = results.length; i < max; i += 1) {
-    const node = results[i];
-    if (
-      node.name === referencedNode.name
-      // TODO: UX-9196
-      // &&
-      // node.tags &&
-      // node.tags.includes('exported')
-    ) {
-      found.push(node);
+  for (const result of parsedResults.values()) {
+    for (let i = 0, max = result.nodes.length; i < max; i += 1) {
+      const node = result.nodes[i];
+      if (
+        node.name === referencedNode.name
+        // TODO: UX-9196
+        // &&
+        // node.tags &&
+        // node.tags.includes('exported')
+      ) {
+        found.push(node);
+      }
     }
   }
   return found;

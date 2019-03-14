@@ -12,6 +12,7 @@ import {
   ParseProperty,
   ParseResult,
   LOOKUP_TABLE,
+  applyTransformers,
 } from '../../src';
 import { getParsedResult, resolveReferences } from '../helpers';
 
@@ -178,7 +179,6 @@ describe('[code-analyzer] › Resolving References', () => {
     expect(value.returnType.types[1].type).toBeInstanceOf(ParseTypeLiteral);
     expect(value.returnType.types[1].type.members[0]).toBeInstanceOf(ParseProperty);
   });
-
 });
 
 describe('[code-analyzer] › Collect generics in reference resolver', () => {

@@ -85,7 +85,16 @@ export class NullVisitor implements ParsedVisitor {
   }
   visitAll(nodes: ParseNode[]): any[]  {
     if (!nodes) { return []; }
-    return nodes.map(node => this.visit(node));
+    const visited = [];
+    for (let i = 0, max = nodes.length; i < max; i += 1) {
+      const node = nodes[i];
+      const visitedNode = this.visit(node);
+
+      if (visitedNode) {
+        visited.push(visitedNode);
+      }
+    }
+    return visited;
   }
 }
 
