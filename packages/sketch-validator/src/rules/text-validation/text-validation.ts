@@ -68,7 +68,7 @@ export function textValidation(
       // Check text colors
       if (!task.ruleOptions.VALID_TEXT_COLORS.includes(colorHex)) {
         errors.push(new InvalidTextColorError({
-          message: INVALID_TEXT_COLOR_ERROR(task.name),
+          message: INVALID_TEXT_COLOR_ERROR(task.name, colorHex),
           ...object,
         } as IValidationErrorContext));
       } else {
