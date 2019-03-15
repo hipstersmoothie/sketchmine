@@ -1,6 +1,6 @@
-import { SketchColorBase, round } from '@sketchmine/sketch-file-format';
 import { rgbToHex } from '@sketchmine/helpers';
-import { ValidationError, ColorNotInPaletteError, COLOR_ERROR_MESSAGE } from '../../error';
+import { round, SketchColorBase, SketchObjectTypes } from '@sketchmine/sketch-file-format';
+import { ColorNotInPaletteError, COLOR_ERROR_MESSAGE, ValidationError } from '../../error';
 import { IValidationContext } from '../../interfaces/validation-rule.interface';
 import { generateMasterColors } from './generate-master-colors';
 
@@ -29,7 +29,11 @@ export function colorValidation(
   const colors: string[] = generateMasterColors(logoColors, allColors);
   const errors: (ValidationError | boolean)[] = [];
 
-  if (task.style) {
+  const isArtboard = task._class === SketchObjectTypes.Artboard;
+
+  // Fills and borders should not be validated for artboards. This is a temporary fix.
+  // TODO: Figure out why an artboard can have a fill and a border.
+  if (task.style && !isArtboard) {
     if (task.style.fills) {
       for (let i = 0, max = task.style.fills.length; i < max; i += 1) {
         const styleProperty = task.style.fills[i];
