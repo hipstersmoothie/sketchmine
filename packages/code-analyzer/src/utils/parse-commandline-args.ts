@@ -7,10 +7,11 @@ import { resolve } from 'path';
  */
 export interface ConfigArguments {
   rootDir: string;
-  library: string; /** path to library realitve fromm rootDir */
+  library: string; /** path to library relative fromm rootDir */
   inFile: string;
   tsConfig: string;
   outFile: string;
+  blackList?: string[];
 }
 
 const helpText = `

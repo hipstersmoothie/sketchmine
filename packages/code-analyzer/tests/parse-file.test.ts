@@ -269,4 +269,48 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
 
     expect(transformed).toHaveLength(2);
   });
+
+  // TODO: fix memory leak @lukas.holzer
+  test.skip('circular structure should not get heap out of memory', async () => {
+    vol.fromJSON({
+      'circular-structure.ts': `
+      export interface DtNodeDef {
+        autocomplete: DtAutocompleteDef | null;
+        option: DtOptionDef | null;
+        group: DtGroupDef | null;
+        freeText: DtFreeTextDef | null;
+      }
+
+      export interface DtAutocompleteDef {
+        distinct: boolean;
+        operators: DtNodeDef[];
+        optionsOrGroups: DtNodeDef[];
+      }
+
+      export interface DtFreeTextDef {
+        suggestions: DtNodeDef[];
+      }
+
+      export interface DtGroupDef {
+        label: string;
+        options: DtNodeDef[];
+        parentAutocomplete: DtNodeDef | null;
+      }
+
+      export interface DtOptionDef {
+        viewValue: string;
+        distinctId: string | null;
+        parentGroup: DtNodeDef | null;
+        parentAutocomplete: DtNodeDef | null;
+      }
+
+      @Component()
+      export class DtFilterField  {
+        autocompleteTrigger: DtAutocompleteTrigger<DtNodeDef>
+      }`,
+    });
+    await parseFile('circular-structure.ts', paths, result, 'node_modules');
+    const transformed = applyTransformers<any>(result);
+
+  });
 });

@@ -199,7 +199,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
     // if (node.typeArguments && node.typeArguments.length) {
     return this.passTypeArguments(node, resolvedNode);
     // }
-    // return resolvedNode;
+    // return clone(resolvedNode);
   }
 
   /**
