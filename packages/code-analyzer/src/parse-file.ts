@@ -6,6 +6,15 @@ import { ParseResult, ParseDependency } from './parsed-nodes';
 import { resolveModuleFilename } from './utils';
 const log = new Logger();
 
+function isBlackListed(fileName: string, list: Set<string>): boolean {
+  for (const entry of list.values()) {
+    if (fileName.includes(entry)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /**
  * Get Initial the index barrel file then visit file -> build ast and cycle again over the imports.
  * parses all the files in the file system and visits them with our visitor to generate the AST.
@@ -19,6 +28,7 @@ export async function parseFile(
   paths: Map<string, string>,
   result: Map<string, ParseResult>,
   modules: string,
+  blackList: Set<string> | null = null,
 ): Promise<void> {
   let resolvedFileName: string;
   try {
@@ -29,6 +39,11 @@ export async function parseFile(
 
   // If the module file could not be resolved skip this import or export
   if (!resolvedFileName) {
+    return;
+  }
+
+  // if the file is blacklisted ignore it
+  if (blackList && isBlackListed(resolvedFileName, blackList)) {
     return;
   }
 
@@ -60,6 +75,6 @@ export async function parseFile(
   // dependencies parse them as well
   if (parseResult.dependencyPaths && parseResult.dependencyPaths.length) {
     await asyncForEach(parseResult.dependencyPaths, async (dependency: ParseDependency) =>
-      await parseFile(dependency.path, paths, result, modules));
+      await parseFile(dependency.path, paths, result, modules, blackList));
   }
 }

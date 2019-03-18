@@ -1,11 +1,9 @@
 import { join, resolve, dirname } from 'path';
-import { ParseResult, ParsedVisitor } from './parsed-nodes';
+import { ParseResult } from './parsed-nodes';
 import { adjustPathAliases, readTsConfig } from './utils';
-import { ReferenceResolver, applyTransformers } from './resolvers';
-import { writeJSON } from '@sketchmine/node-helpers';
+import { applyTransformers } from './resolvers';
 import { parseFile } from './parse-file';
-import { renderASTtoJSON } from './render-ast-to-json';
-import { ComponentsList } from './interfaces';
+import { writeJSON } from '@sketchmine/node-helpers';
 
 /**
  * The Main function that takes command line args build the AST and transforms the AST,
@@ -20,6 +18,7 @@ export async function main(
   inFile: string = 'index.ts',
   tsConfig: string = 'tsconfig.json',
   inMemory: boolean = false,
+  blackList: Set<string> | null,
 ): Promise<number | any> {
 
   if (!rootDir || !library) {
@@ -34,17 +33,20 @@ export async function main(
   const parseResults = new Map<string, ParseResult>();
 
   const config = await readTsConfig(tsconfig);
-  await parseFile(entryFile, adjustPathAliases(config, join(rootDir, library)), parseResults, nodeModules);
+  await parseFile(entryFile, adjustPathAliases(config, join(rootDir, library)), parseResults, nodeModules, blackList);
 
   const meta = applyTransformers(parseResults);
-  // console.log(meta)
-  const { inspect } = require('util');
-  console.log(inspect(meta, false, null, true));
-  // if (inMemory) {
-  //   return meta;
-  // }
-  // /** write the JSON structure to the outFile */
-  // await writeJSON(outFile, meta, false);
+
+  const result = {
+    version: pkgJSON.version,
+    components: meta,
+  };
+
+  if (inMemory) {
+    return result;
+  }
+  /** write the JSON structure to the outFile */
+  await writeJSON(outFile, result, false);
 
   // return exit code
   return 0;

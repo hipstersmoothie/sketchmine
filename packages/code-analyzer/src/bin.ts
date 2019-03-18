@@ -3,9 +3,10 @@ import { parseCommandlineArgs } from './utils';
 
 export async function commandLineExecutor(): Promise<number> {
   const args = process.argv.slice(2);
-  const { rootDir, library, inFile, tsConfig, outFile } = parseCommandlineArgs(args);
+  const { rootDir, library, inFile, tsConfig, outFile, blackList } = parseCommandlineArgs(args);
 
-  return await main(rootDir, library, outFile, inFile, tsConfig, false) as number;
+  const ignoreFiles = blackList && blackList.length ? new Set(blackList) : null;
+  return await main(rootDir, library, outFile, inFile, tsConfig, false, ignoreFiles) as number;
 }
 
 commandLineExecutor()

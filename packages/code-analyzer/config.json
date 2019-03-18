@@ -1,6 +1,15 @@
 {
-  "rootDir": "/Users/lukas.holzer/Sites/angular-components/",
+  "rootDir": "/angular-components/",
   "library": "src/lib",
   "inFile": "index.ts",
-  "outFile": "/shared/meta-information.json"
+  "outFile": "/shared/meta-information.json",
+  "blackList": [
+    "src/lib/chart",
+    "src/lib/filter-field",
+    "src/lib/filter-field",
+    "src/lib/micro-chart",
+    "src/lib/table",
+    "src/lib/tree-table"
+
+  ]
 }
