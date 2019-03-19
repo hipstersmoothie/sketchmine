@@ -1,6 +1,6 @@
 {
   "name": "@sketchmine/sketch-validator",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "description": "Validation of the sketchfiles for the dynatrace design system.",
   "keywords": [
     "sketch",
