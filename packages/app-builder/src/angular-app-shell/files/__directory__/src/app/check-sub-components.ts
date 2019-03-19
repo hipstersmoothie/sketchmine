@@ -62,6 +62,7 @@ export function checkSubComponents(
  * Generates the name of the current variant that is used by the nested symbol
  * @param instance Found nested component instance of a dynatrace angular component
  * @param component The matched component in the JSON
+ * @param currentTheme The current theme for the name
  */
 export function getVariant(
   instance: any,
