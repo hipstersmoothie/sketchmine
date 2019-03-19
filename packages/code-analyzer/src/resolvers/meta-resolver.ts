@@ -58,10 +58,8 @@ function resolvePrimitiveType(nodeType: ParsePrimitiveType): string | null {
   switch (nodeType.type) {
     case Primitives.Boolean:
       return 'true';
-    // case Primitives.Null:
-    //   return 'null';
     default:
-      // don't resolve undefined we dont need the undefined state
+      // don't resolve undefined and null Values we dont need the undefined or null state
       return null;
   }
 }

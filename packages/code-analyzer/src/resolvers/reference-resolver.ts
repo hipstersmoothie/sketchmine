@@ -152,9 +152,8 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
       const arg = node.args[i];
 
       if (!cloned.parameters[i]) {
-        log.error(
-          `When resolving the expression ${node.name} – ` +
-          'a problem occurred, the found parameters did not match the provided ones!');
+        // tslint:disable-next-line: max-line-length
+        log.error(`When resolving the expression ${node.name} – a problem occurred, the found parameters did not match the provided ones!`);
       }
       const param = cloned.parameters[i].type;
 
@@ -196,10 +195,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
     // We need to check if we have typeArguments, and when we have some, we have
     // to pass it through the typeParameters of the matching `typeParametersNode`
-    // if (node.typeArguments && node.typeArguments.length) {
     return this.passTypeArguments(node, resolvedNode);
-    // }
-    // return clone(resolvedNode);
   }
 
   /**
@@ -230,7 +226,7 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
 
         // if the typeArgument is a reference type we have to resolve it
         // before we pass it into the generic.
-        // to limit our selfs not only to reference types we can call the generic
+        // to limit ourselves not only to reference types we can call the generic
         // visit function of the typeArgument so it does not matter which class it is!
         typeArgument = this.visit(typeArgument);
 
@@ -250,6 +246,10 @@ export class ReferenceResolver extends TreeVisitor implements ParsedVisitor {
    * @param overloads the available overloads
    */
   private findMatchingFunctionOverload(node: ParseExpression, overloads: ParseMethod[]) {
+    if (!overloads || !overloads.length) {
+      return;
+    }
+
     let foundOverload: ParseMethod = overloads[0];
 
     for (let i = 0, max = overloads.length; i < max; i += 1) {

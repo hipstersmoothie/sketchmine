@@ -5,9 +5,6 @@ import { flatten } from 'lodash';
 
 export function applyTransformers<T>(parsedResults: Map<string, ParseResult>): T[] {
   let metaInformation = parsedResults;
-  // we need the results array to provide it to the reference resolver
-  // in case that we look for root nodes in there
-  // const results = Array.from(parsedResults.values());
 
   // list of transformers that should be applied to the
   // parsed results
@@ -17,7 +14,7 @@ export function applyTransformers<T>(parsedResults: Map<string, ParseResult>): T
     new MetaResolver(),
   ];
 
-  /** applies the transformers on the AST */
+  // applies the transformers on the AST
   for (const transformer of transformers) {
     const transformedResults = new Map<string, ParseResult>();
     for (const [fileName, result] of metaInformation) {

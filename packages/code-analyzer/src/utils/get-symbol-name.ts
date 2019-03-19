@@ -56,10 +56,8 @@ export function getSymbolName(node: any): string | undefined {
     case ts.SyntaxKind.ConstructorType:
       // Array or Object Literal expressions can't have a name!
       return;
+    default:
+      // tslint:disable-next-line: max-line-length
+      log.warning(chalk`Unsupported Syntax kind {bgBlue  <${ts.SyntaxKind[node.kind]}> } {grey – function getSymbolName(node)}`);
   }
-
-  log.warning(
-    chalk`Unsupported Syntax kind {bgBlue  <${ts.SyntaxKind[node.kind]}> } ` +
-    chalk`{grey – function getSymbolName(node)}`,
-  );
 }

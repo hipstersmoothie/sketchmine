@@ -6,7 +6,6 @@
   "blackList": [
     "src/lib/chart",
     "src/lib/filter-field",
-    "src/lib/filter-field",
     "src/lib/micro-chart",
     "src/lib/table",
     "src/lib/tree-table"

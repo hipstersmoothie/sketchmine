@@ -129,7 +129,7 @@ export class ParsePartialType extends ParseUnionType {
 }
 
 /**
- * @descriptions
+ * @description
  * An intersection type combines multiple types into one.
  * `method(): T & U {…}`
  * @see https://www.typescriptlang.org/docs/handbook/advanced-types.html
@@ -148,7 +148,7 @@ export class ParseIntersectionType extends ParseNode {
 }
 
 /**
- * @descriptions
+ * @description
  * A parenthesized type combines multiple types to be applied for an array
  * type as an example: `type a = (number | string)[]`
  * So this array can hold numbers and strings
@@ -169,8 +169,8 @@ export class ParseParenthesizedType extends ParseNode {
 /**
  * @description
  * A value type is every type that holds a real value (has to be a primitive type)
- * For example `const a = 'myValue';` or `const b = 2;`. In this cases 'myValue' and 2
- * where value types.
+ * For example `const a = 'myValue';` or `const b = 2;`.
+ * In these cases 'myValue' and 2 are value types.
  */
 export class ParseValueType extends ParseNode {
   constructor(
@@ -224,7 +224,6 @@ export class ParseArrayType extends ParseNode {
  /**
   * @description
   * A type parameter is passed like a generic `type a<T> = () => T`
-  * it prov
   * @param constraint The constraint can extend the generic type T
   * like the following example `function f<T extends OtherType<I>>(): T`
   */
@@ -267,7 +266,7 @@ export class ParseTypeLiteral extends ParseNode {
 
 /**
  * @description
- * Visits a typescript visitDecorator
+ * Visits a typescript Decorator
  */
 export class ParseDecorator extends ParseNode {
   constructor(
@@ -305,7 +304,7 @@ export class ParseExpression extends ParseReferenceType {
 
 /**
  * @description
- * A parse object literal is an Object with properties.
+ * A parse object literal is an object with properties.
  */
 export class ParseObjectLiteral extends ParseNode {
   constructor(
@@ -323,7 +322,7 @@ export class ParseObjectLiteral extends ParseNode {
 
 /**
  * @description
- * A parse object literal is an Object with properties.
+ * A parse array literal is an array with properties.
  */
 export class ParseArrayLiteral extends ParseNode {
   constructor(
@@ -353,7 +352,7 @@ export class ParseDefinition extends ParseNode {
    * @param tags Array of jsDoc annotations like internal unrelated private or exported
    */
   constructor(
-    public location: ParseLocation,
+    location: ParseLocation,
     public name: string,
     public tags: NodeTags[],
   ) {
