@@ -12,10 +12,8 @@ import {
   ParseResult,
   parseFile,
 } from '../../src';
-import { Logger } from '@sketchmine/node-helpers';
 import { join } from 'path';
 
-const log = new Logger();
 const jsonResolver = new MetaResolver();
 
 describe('[code-analyzer] › MetaResolver › drop irrelevant root nodes', () => {
@@ -37,7 +35,12 @@ describe('[code-analyzer] › MetaResolver › drop irrelevant root nodes', () =
   });
 
   test('an angular component should not be dropped!', () => {
-    const source = '@Component({ selector: "my-selector"}) class myComponent { member: boolean; }';
+    const source = `
+      @Component({ selector: 'my-selector'})
+      export class myComponent {
+        member: boolean;
+      }
+    `;
     const result = getParsedResult(source) as any;
     const resolved = result.visit(jsonResolver);
     expect(resolved).toBeInstanceOf(Array);
@@ -49,7 +52,7 @@ describe('[code-analyzer] › MetaResolver › drop irrelevant root nodes', () =
       members: [{
         type: 'property',
         key: 'member',
-        value: 'true',
+        value: ['true'],
       }],
     });
   });
@@ -125,8 +128,8 @@ describe('[code-analyzer] › MetaResolver › resolving all different nodes', (
     const literal = new ParseObjectLiteral(testLocation, [], [prop1, prop2]);
     const resolved = literal.visit(jsonResolver);
     expect(resolved).toMatchObject([
-      { type: 'property', key: 'a', value: 'c' },
-      { type: 'property', key: 'b', value: 'd' },
+      { type: 'property', key: 'a', value: ['c'] },
+      { type: 'property', key: 'b', value: ['d'] },
     ]);
   });
 
@@ -138,8 +141,8 @@ describe('[code-analyzer] › MetaResolver › resolving all different nodes', (
     const literal = new ParseTypeLiteral(testLocation, [prop1, prop2]);
     const resolved = literal.visit(jsonResolver);
     expect(resolved).toMatchObject([
-      { type: 'property', key: 'a', value: 'c' },
-      { type: 'property', key: 'b', value: 'd' },
+      { type: 'property', key: 'a', value: ['c'] },
+      { type: 'property', key: 'b', value: ['d'] },
     ]);
   });
 
@@ -150,14 +153,15 @@ describe('[code-analyzer] › MetaResolver › resolving all different nodes', (
   });
 
   test('resolving an objectLiteral to a property', () => {
-    const source = 'const x =  {a: "b"};';
+    const source = 'const x =  {a: \'b\'};';
     const result = getParsedResult(source).nodes[0] as any;
     const resolved = result.visit(jsonResolver);
 
     expect(resolved[0]).toMatchObject({
       type: 'property',
       key: 'a',
-      value : '"b"',
+      // tslint:disable-next-line: quotemark
+      value : ["\"b\""],
     });
   });
 
@@ -174,7 +178,7 @@ describe('[code-analyzer] › MetaResolver › resolving all different nodes', (
     const result = getParsedResult(source) as any;
     const nodes = resolveReferences(result).nodes as any[];
     const resolved = nodes[0].visit(jsonResolver);
-    expect(resolved).toBe('null');
+    expect(resolved).toBeNull();
   });
 
   test('when variable declaration has no type use the value', () => {
@@ -182,7 +186,7 @@ describe('[code-analyzer] › MetaResolver › resolving all different nodes', (
     const result = getParsedResult(source) as any;
     const nodes = resolveReferences(result).nodes as any[];
     const resolved = nodes[0].visit(jsonResolver);
-    expect(resolved).toBe(2);
+    expect(resolved).toBe('2');
   });
 
   test('when variable declaration a type prefer it before value', () => {
@@ -190,9 +194,9 @@ describe('[code-analyzer] › MetaResolver › resolving all different nodes', (
     const result = getParsedResult(source) as any;
     const nodes = resolveReferences(result).nodes as any[];
     const resolved = nodes[1].visit(jsonResolver);
-    expect(resolved).not.toBe(2);
+    expect(resolved).not.toBe('2');
     expect(resolved).toBeInstanceOf(Array);
-    expect(resolved).toMatchObject([1, 2]);
+    expect(resolved).toMatchObject(['1', '2']);
   });
 
   test('a generic should return its value', () => {
@@ -214,8 +218,8 @@ describe('[code-analyzer] › MetaResolver › resolving all different nodes', (
     const nodes = resolveReferences(result).nodes as any[];
     const resolved = nodes[2].visit(jsonResolver);
     expect(resolved.returnType).toMatchObject([
-      { type: 'property', key: 'a', value: 'true' },
-      { type: 'property', key: 'b', value: 1 },
+      { type: 'property', key: 'a', value: ['true'] },
+      { type: 'property', key: 'b', value: ['1'] },
     ]);
   });
 
@@ -266,7 +270,7 @@ describe('[code-analyzer] › MetaResolver › testing class members', () => {
     const nodes = resolveReferences(result).nodes as any[];
     const resolved = nodes[0].visit(jsonResolver);
     expect(resolved).toMatchObject([
-      { type: 'property', key: 'a', value: 1 },
+      { type: 'property', key: 'a', value: ['1'] },
     ]);
   });
 
@@ -276,7 +280,7 @@ describe('[code-analyzer] › MetaResolver › testing class members', () => {
     const nodes = resolveReferences(result).nodes as any[];
     const resolved = nodes[0].visit(jsonResolver);
     expect(resolved).toMatchObject([
-      { type: 'property', key: 'a', value: 1 },
+      { type: 'property', key: 'a', value: ['1'] },
     ]);
   });
 
@@ -422,8 +426,8 @@ describe('[code-analyzer] › MetaResolver › test merging constraints', () => 
     const resolved = nodes[1].visit(jsonResolver);
 
     expect(resolved).toMatchObject([
-      { type: 'property', key: 'a', value: 1 },
-      { type: 'property', key: 'b', value: 2 },
+      { type: 'property', key: 'a', value: ['1'] },
+      { type: 'property', key: 'b', value: ['2'] },
     ]);
   });
 
@@ -434,8 +438,8 @@ describe('[code-analyzer] › MetaResolver › test merging constraints', () => 
     const resolved = nodes[1].visit(jsonResolver);
 
     expect(resolved).toMatchObject([
-      { type: 'property', key: 'a', value: 1 },
-      { type: 'property', key: 'b', value: 2 },
+      { type: 'property', key: 'a', value: ['1'] },
+      { type: 'property', key: 'b', value: ['2'] },
     ]);
   });
 
@@ -448,7 +452,7 @@ describe('[code-analyzer] › MetaResolver › test merging constraints', () => 
     expect(resolved).toMatchObject([{
       type: 'property',
       key: 'a',
-      value: 1,
+      value: ['1'],
     }]);
   });
 });
@@ -465,17 +469,19 @@ test('resolving a full fledged Button component', async () => {
       expect.objectContaining({
         type: 'property',
         key: 'disabled',
-        value: 'true',
+        value: ['true'],
       }),
       expect.objectContaining({
         type: 'property',
         key: 'color',
-        value: ["'main'", "'warning'", "'cta'"],
+        // tslint:disable-next-line: quotemark
+        value: ["\"main\"", "\"warning\"", "\"cta\""],
       }),
       expect.objectContaining({
         type: 'property',
         key: 'variant',
-        value: ["'primary'", "'secondary'", "'nested'"],
+        // tslint:disable-next-line: quotemark
+        value: ["\"primary\"", "\"secondary\"", "\"nested\""],
       }),
       expect.objectContaining({
         type: 'method',

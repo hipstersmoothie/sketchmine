@@ -176,8 +176,8 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
     await parseFile('/index.ts', paths, result, 'node_modules');
 
     const transformed = applyTransformers<any>(result)[0].members;
-    expect(transformed[0]).toMatchObject({ type: 'property', key: 'i', value: 'true' });
-    expect(transformed[1]).toMatchObject({ type: 'property', key: 'i2', value: 1 });
+    expect(transformed[0]).toMatchObject({ type: 'property', key: 'i', value: ['true'] });
+    expect(transformed[1]).toMatchObject({ type: 'property', key: 'i2', value: ['1'] });
   });
 
   test('resolving generics from different files', async () => {
@@ -202,8 +202,8 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
 
     expect(members).toHaveLength(2);
     expect(members).toMatchObject([
-      { type: 'property', key: 'disabled', value: 'true' },
-      { type: 'property', key: 'elementRef', value: 'true' },
+      { type: 'property', key: 'disabled', value: ['true' ]},
+      { type: 'property', key: 'elementRef', value: ['true' ]},
     ]);
   });
 
@@ -235,8 +235,9 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
 
     expect(members).toHaveLength(2);
     expect(members).toMatchObject([
-      { type: 'property', key: 'disabled', value: 'true' },
-      { type: 'property', key: 'elementRef', value: "'ElementRef'" },
+      { type: 'property', key: 'disabled', value: ['true'] },
+      // tslint:disable-next-line: quotemark
+      { type: 'property', key: 'elementRef', value: ["\"ElementRef\""] },
     ]);
   });
 

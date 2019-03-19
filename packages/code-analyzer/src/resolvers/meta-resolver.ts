@@ -114,14 +114,18 @@ export class MetaResolver extends NullVisitor implements ParsedVisitor {
     }
 
     const decorator = this.visitWithParent(node.decorators[0], node);
+    const selector = decorator && decorator.selector
+      ? decorator.selector
+        .split(',')
+        .map(s => s.replace(/[\`\s\'\"]/gm, ''))
+      : null;
 
-    const selector = decorator.selector
-      .split(',')
-      .map(s => s.replace(/[\`\s\'\"]/gm, ''));
+    const componentName = /.+?\/([^\/]+?).ts$/.exec(node.location.path);
+
     return {
       name: node.name,
       /** @example https://regex101.com/r/YduQlF/1 */
-      component: /.+?\/([^\/]+?).ts$/.exec(node.location.path)[1],
+      component: componentName && componentName.length && componentName.length < 1 ? componentName[1] : node.name,
       selector,
       angularComponent: node.isAngularComponent(),
       decorator,
@@ -290,6 +294,10 @@ export class MetaResolver extends NullVisitor implements ParsedVisitor {
   }
 
   visitValueType(node: ParseValueType) {
+    if (typeof node.value === 'number') {
+      return `${node.value}`;
+    }
+
     // if we have an empty string return undefined
     if (
       typeof node.value === 'string' &&
