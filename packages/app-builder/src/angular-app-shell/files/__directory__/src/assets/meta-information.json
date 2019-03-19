@@ -1,0 +1,2198 @@
+{
+  "version": "2.1.0",
+  "components": [
+    {
+      "name": "DtAlert",
+      "component": "alert",
+      "selector": ["dt-alert"],
+      "angularComponent": true,
+      "decorator": { "selector": "\"dt-alert\"" },
+      "combinedVariants": true,
+      "members": [
+        {
+          "type": "property",
+          "key": "severity",
+          "value": ["\"error\"", "\"warning\""]
+        }
+      ]
+    },
+    {
+      "name": "DtOption",
+      "component": "option",
+      "selector": ["dt-option"],
+      "angularComponent": true,
+      "decorator": { "selector": "\"dt-option\"", "exportAs": "\"dtOption\"" },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "disabled",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        { "type": "property", "key": "selected", "value": ["true"] },
+        { "type": "property", "key": "active", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "select",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "deselect",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "focus",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "setActiveStyles",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "setInactiveStyles",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "getLabel",
+          "parameters": [],
+          "returnType": null
+        }
+      ]
+    },
+    {
+      "name": "DtOptgroup",
+      "component": "optgroup",
+      "selector": ["dt-optgroup"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-optgroup\"",
+        "exportAs": "\"dtOptgroup\"",
+        "inputs": ["\"disabled\""]
+      },
+      "combinedVariants": true,
+      "members": [{ "type": "property", "key": "disabled", "value": ["true"] }]
+    },
+    {
+      "name": "DtIcon",
+      "component": "icon",
+      "selector": ["dt-icon"],
+      "angularComponent": true,
+      "decorator": { "selector": "\"dt-icon\"", "exportAs": "\"dtIcon\"" },
+      "combinedVariants": false,
+      "members": [
+        {
+          "type": "property",
+          "key": "name",
+          "value": [
+            "\"abort\"",
+            "\"actionspersession\"",
+            "\"addcolumnleft\"",
+            "\"addcolumnright\"",
+            "\"addrowonbottom\"",
+            "\"addrowontop\"",
+            "\"adk-sdk\"",
+            "\"agent\"",
+            "\"airplane\"",
+            "\"ai\"",
+            "\"aix\"",
+            "\"ajaxedition\"",
+            "\"ajax\"",
+            "\"akamai\"",
+            "\"akka\"",
+            "\"alarm-off\"",
+            "\"alarm-on\"",
+            "\"alert-notification\"",
+            "\"amazon-alb\"",
+            "\"amazon-asg\"",
+            "\"amazon-aws-marketplace-signet\"",
+            "\"amazon-aws-marketplace\"",
+            "\"amazon-ebs\"",
+            "\"amazon-echo\"",
+            "\"amazon-rds\"",
+            "\"amazon-s3bucket\"",
+            "\"amazon-s3\"",
+            "\"amazon\"",
+            "\"amazonwebservices\"",
+            "\"amp-signet\"",
+            "\"amp\"",
+            "\"analyze\"",
+            "\"and-not\"",
+            "\"android\"",
+            "\"and\"",
+            "\"angularjs\"",
+            "\"ansible-signet\"",
+            "\"ansible\"",
+            "\"apache-activemq\"",
+            "\"apache-ant-signet\"",
+            "\"apache-ant\"",
+            "\"apache-derby\"",
+            "\"apache-hbase-signet\"",
+            "\"apache-hbase\"",
+            "\"apache-jmeter\"",
+            "\"apache-logo\"",
+            "\"apache-solr\"",
+            "\"apache-spark-signet\"",
+            "\"apache-spark\"",
+            "\"apache\"",
+            "\"apache-tomcat\"",
+            "\"apmngcollector\"",
+            "\"appdynamics\"",
+            "\"apple\"",
+            "\"appliance\"",
+            "\"applicationhealth\"",
+            "\"applicationnetworkmonitoring\"",
+            "\"applicationserver\"",
+            "\"application\"",
+            "\"area-chart\"",
+            "\"aspnet\"",
+            "\"atlanta\"",
+            "\"atlassian-bamboo\"",
+            "\"atlassian-signet\"",
+            "\"atlassian\"",
+            "\"availability\"",
+            "\"aws-code-deploy-signet\"",
+            "\"aws-code-pipeline-signet\"",
+            "\"aws-iot-signet\"",
+            "\"axis2\"",
+            "\"azure-app-service\"",
+            "\"azure-container-service\"",
+            "\"azure-virtual-machines\"",
+            "\"azure-webapps\"",
+            "\"backbonejs\"",
+            "\"background\"",
+            "\"backup\"",
+            "\"banking\"",
+            "\"barcelona\"",
+            "\"bigdataserver\"",
+            "\"bigdata\"",
+            "\"bitbucket-signet\"",
+            "\"bitbucket\"",
+            "\"blackbox\"",
+            "\"blazemeter-signet\"",
+            "\"blazemeter\"",
+            "\"blog\"",
+            "\"bold\"",
+            "\"boston\"",
+            "\"bouncerate\"",
+            "\"brain-bulb\"",
+            "\"brasilia\"",
+            "\"browser\"",
+            "\"bug\"",
+            "\"businessimpact\"",
+            "\"business-transaction\"",
+            "\"cakephp-signet\"",
+            "\"cakephp\"",
+            "\"calendar\"",
+            "\"ca-lisa\"",
+            "\"camera\"",
+            "\"cassandra\"",
+            "\"centos\"",
+            "\"certificate\"",
+            "\"chart-2\"",
+            "\"chart-bar\"",
+            "\"chart-clustered-bar\"",
+            "\"chart-diffing-bar\"",
+            "\"chart-legend-area\"",
+            "\"chart-legend-bar\"",
+            "\"chart-legend-businesstransaction\"",
+            "\"chart-legend-line\"",
+            "\"chart-legend-meter\"",
+            "\"chart-legend-percentile\"",
+            "\"chart-legend-pie\"",
+            "\"chart-legend-step\"",
+            "\"chart-pie3d\"",
+            "\"chart-stacked-percentage-bar\"",
+            "\"chart-step\"",
+            "\"chart\"",
+            "\"checkmark-ok\"",
+            "\"checkmark\"",
+            "\"chef-signet\"",
+            "\"chef\"",
+            "\"chicago\"",
+            "\"chrome\"",
+            "\"cics\"",
+            "\"cinder\"",
+            "\"cisco\"",
+            "\"citrix\"",
+            "\"citrix-wts-network\"",
+            "\"city\"",
+            "\"cleanup\"",
+            "\"clientnetwork\"",
+            "\"clock-off\"",
+            "\"clock\"",
+            "\"cloudcontrol\"",
+            "\"cloud-download\"",
+            "\"cloudflare\"",
+            "\"cloud-foundry-signet\"",
+            "\"cloud-foundry\"",
+            "\"cloudshare\"",
+            "\"cloud\"",
+            "\"cloudsync\"",
+            "\"cloud-upload\"",
+            "\"cluster\"",
+            "\"coding\"",
+            "\"coldfusion-signet\"",
+            "\"collector\"",
+            "\"color\"",
+            "\"community\"",
+            "\"concourse-signet\"",
+            "\"concourse\"",
+            "\"container-lxc\"",
+            "\"container\"",
+            "\"contract\"",
+            "\"conversions\"",
+            "\"cordova-signet\"",
+            "\"cordova\"",
+            "\"coreos\"",
+            "\"cosminexus\"",
+            "\"couchbase\"",
+            "\"couchdb\"",
+            "\"cplusplus-signet\"",
+            "\"cpu-processor\"",
+            "\"creditcard\"",
+            "\"criticalevent\"",
+            "\"crossedagent\"",
+            "\"cucumber-signet\"",
+            "\"cucumber\"",
+            "\"customaction\"",
+            "\"dallas\"",
+            "\"darwin-apple\"",
+            "\"databaseserver\"",
+            "\"database\"",
+            "\"daymode\"",
+            "\"dc-os-signet\"",
+            "\"dc-os\"",
+            "\"debian\"",
+            "\"deis-signet\"",
+            "\"deis\"",
+            "\"delete\"",
+            "\"deploy\"",
+            "\"desktop-browser\"",
+            "\"desktop-not-visible\"",
+            "\"desktop\"",
+            "\"desktop-visible\"",
+            "\"detroit\"",
+            "\"django\"",
+            "\"dli\"",
+            "\"docker-logo\"",
+            "\"documentation\"",
+            "\"dojotoolkit\"",
+            "\"dont-watch\"",
+            "\"donut-chart\"",
+            "\"dotnet\"",
+            "\"download\"",
+            "\"drag-and-drop\"",
+            "\"dropdownclosed\"",
+            "\"dropdownopen\"",
+            "\"dropdown\"",
+            "\"drupal-signet\"",
+            "\"drupal\"",
+            "\"duplicate\"",
+            "\"dynamodb\"",
+            "\"dynatrace\"",
+            "\"dzone-signet\"",
+            "\"dzone\"",
+            "\"ec2\"",
+            "\"eclipse-signet\"",
+            "\"eclipse\"",
+            "\"edge-microsoft\"",
+            "\"edit1\"",
+            "\"edit2\"",
+            "\"education\"",
+            "\"elastic-load\"",
+            "\"elastic-signet\"",
+            "\"elastic\"",
+            "\"elb-amazon\"",
+            "\"electric-cloud-signet\"",
+            "\"electric-cloud\"",
+            "\"embedded-pc\"",
+            "\"emberjs\"",
+            "\"entry\"",
+            "\"environment\"",
+            "\"equals\"",
+            "\"erlang-logo\"",
+            "\"etcd-signet\"",
+            "\"etcd\"",
+            "\"eureka\"",
+            "\"event\"",
+            "\"exit\"",
+            "\"expand\"",
+            "\"expertservices\"",
+            "\"express-signet\"",
+            "\"express\"",
+            "\"externallink\"",
+            "\"extjs\"",
+            "\"f5\"",
+            "\"facebook\"",
+            "\"faileduseraction\"",
+            "\"fast\"",
+            "\"faultdomainanalysis\"",
+            "\"favorite\"",
+            "\"fedora\"",
+            "\"feedly\"",
+            "\"file-library\"",
+            "\"file\"",
+            "\"filter\"",
+            "\"finishflag\"",
+            "\"firefox\"",
+            "\"firewall\"",
+            "\"firstaid\"",
+            "\"fittoscreen\"",
+            "\"fixpack\"",
+            "\"flash\"",
+            "\"folder\"",
+            "\"font-size\"",
+            "\"foreground\"",
+            "\"forum\"",
+            "\"frankfurt\"",
+            "\"gatlingio-signet\"",
+            "\"gatlingio\"",
+            "\"gdansk\"",
+            "\"gettingstarted\"",
+            "\"github\"",
+            "\"git-signet\"",
+            "\"git\"",
+            "\"glance\"",
+            "\"glassfish\"",
+            "\"golang-signet\"",
+            "\"google-cloud-platform-signet\"",
+            "\"google-cloud-platform\"",
+            "\"google\"",
+            "\"googlewebkit\"",
+            "\"gradle-signet\"",
+            "\"gradle\"",
+            "\"grails\"",
+            "\"gravatar-signet\"",
+            "\"grpc-signet\"",
+            "\"grpc\"",
+            "\"h2\"",
+            "\"hadoop\"",
+            "\"hagenberg\"",
+            "\"hapi-signet\"",
+            "\"hapi\"",
+            "\"haproxy\"",
+            "\"harness-signet\"",
+            "\"harness\"",
+            "\"hdd-discdrive\"",
+            "\"headphones\"",
+            "\"healthstatus\"",
+            "\"help-bubble\"",
+            "\"heroku-signet\"",
+            "\"heroku\"",
+            "\"hibernate-signet\"",
+            "\"hibernate\"",
+            "\"hipchat\"",
+            "\"home\"",
+            "\"horizon\"",
+            "\"hornetq\"",
+            "\"hortonworks\"",
+            "\"host\"",
+            "\"hourglass\"",
+            "\"hp-ux\"",
+            "\"html5\"",
+            "\"https\"",
+            "\"hyperlyzer\"",
+            "\"hypervisor\"",
+            "\"hyperv\"",
+            "\"hystrix\"",
+            "\"ibm-bluemix\"",
+            "\"ibm-cloud-signet\"",
+            "\"ibm-cloud\"",
+            "\"ibm-db2\"",
+            "\"ibm-ims\"",
+            "\"ibm\"",
+            "\"ica-citrix\"",
+            "\"icefaces\"",
+            "\"icons-technologies-04-linkerd-signet\"",
+            "\"icons-technologies-04-linkerd\"",
+            "\"idle\"",
+            "\"iframe\"",
+            "\"iis-dotnet\"",
+            "\"iis-microsoft\"",
+            "\"image-file\"",
+            "\"incident\"",
+            "\"infinity-unlimited\"",
+            "\"information\"",
+            "\"informix-signet\"",
+            "\"informix\"",
+            "\"infrastructurehealth\"",
+            "\"infrastructure\"",
+            "\"instagram-font\"",
+            "\"instagram-signet\"",
+            "\"intellij-signet\"",
+            "\"intellij\"",
+            "\"internetexplorer\"",
+            "\"interstage-signet\"",
+            "\"intuit\"",
+            "\"io-input\"",
+            "\"io-output\"",
+            "\"ios\"",
+            "\"iot\"",
+            "\"ipv6\"",
+            "\"istio-signet\"",
+            "\"italic\"",
+            "\"ixia\"",
+            "\"java-script\"",
+            "\"java\"",
+            "\"jboss\"",
+            "\"jenkins\"",
+            "\"jetbrains-teamcity\"",
+            "\"jetty\"",
+            "\"jira-signet\"",
+            "\"jira\"",
+            "\"joomla-signet\"",
+            "\"joomla\"",
+            "\"jquery\"",
+            "\"jruby\"",
+            "\"junit\"",
+            "\"jython\"",
+            "\"kafka-signet\"",
+            "\"kafka\"",
+            "\"keystone\"",
+            "\"keystroke\"",
+            "\"klagenfurt\"",
+            "\"kony-signet\"",
+            "\"kony\"",
+            "\"kubernetes-signet\"",
+            "\"kubernetes\"",
+            "\"kvm\"",
+            "\"laboratory\"",
+            "\"lambda\"",
+            "\"laravel-signet\"",
+            "\"laravel\"",
+            "\"learn-more\"",
+            "\"leftend\"",
+            "\"left\"",
+            "\"light-bulb\"",
+            "\"like\"",
+            "\"link-2\"",
+            "\"linkedin-signet\"",
+            "\"linkedin\"",
+            "\"linux\"",
+            "\"linux-vm\"",
+            "\"linz\"",
+            "\"list-view\"",
+            "\"litespeed-logo\"",
+            "\"live-europe\"",
+            "\"live\"",
+            "\"loadaction\"",
+            "\"loadbalancer\"",
+            "\"loadrunner-signet\"",
+            "\"load\"",
+            "\"loadtest\"",
+            "\"lock\"",
+            "\"log4j-signet\"",
+            "\"log4j\"",
+            "\"logfile\"",
+            "\"logout\"",
+            "\"london\"",
+            "\"los-angeles\"",
+            "\"lost-and-found\"",
+            "\"magento-signet\"",
+            "\"magento\"",
+            "\"mailclosed\"",
+            "\"mailopen\"",
+            "\"mainframeserver\"",
+            "\"mainframe\"",
+            "\"maintenance\"",
+            "\"mariadb-signet\"",
+            "\"mariadb\"",
+            "\"marketing\"",
+            "\"marketo-signet\"",
+            "\"marketo\"",
+            "\"maven\"",
+            "\"measure\"",
+            "\"memcached\"",
+            "\"memory-ram\"",
+            "\"menu-close\"",
+            "\"menu-hamburger\"",
+            "\"menu\"",
+            "\"menu-tree\"",
+            "\"mesosphere-signet\"",
+            "\"mesosphere\"",
+            "\"mesos\"",
+            "\"messaging-queue\"",
+            "\"meter-chart\"",
+            "\"microfocus-signet\"",
+            "\"microfocus\"",
+            "\"microsoft-azure-fabric\"",
+            "\"microsoft-azure-signet\"",
+            "\"microsoft-azure\"",
+            "\"microsoft-hololens\"",
+            "\"microsoft-teams-signet\"",
+            "\"minus\"",
+            "\"mission-control\"",
+            "\"mobile-app\"",
+            "\"mobile-browser\"",
+            "\"mobile\"",
+            "\"mongo-db\"",
+            "\"mootools\"",
+            "\"more\"",
+            "\"msbuild-signet\"",
+            "\"msbuild\"",
+            "\"mule-signet\"",
+            "\"mule\"",
+            "\"multiple\"",
+            "\"mysql\"",
+            "\"nant\"",
+            "\"neotys-signet\"",
+            "\"neotys\"",
+            "\"netflix-oss\"",
+            "\"netty-logo\"",
+            "\"network\"",
+            "\"newrelic\"",
+            "\"news\"",
+            "\"new-york\"",
+            "\"nginx\"",
+            "\"nightmode\"",
+            "\"noc\"",
+            "\"node-js\"",
+            "\"notebook\"",
+            "\"nunit\"",
+            "\"oneagent-crossed\"",
+            "\"oneagent-sdk\"",
+            "\"oneagent\"",
+            "\"open-liberty-signet\"",
+            "\"open-liberty\"",
+            "\"openshift-signet\"",
+            "\"openshift\"",
+            "\"openstack-logo\"",
+            "\"openstack\"",
+            "\"opentracing-signet\"",
+            "\"opentracing\"",
+            "\"opera\"",
+            "\"opsgenie\"",
+            "\"options-menu\"",
+            "\"oraclecloud\"",
+            "\"oracledatabase\"",
+            "\"oracleforms\"",
+            "\"oraclejolt\"",
+            "\"oraclesolaris\"",
+            "\"oracle\"",
+            "\"oracletuxedo\"",
+            "\"oracleweblogic\"",
+            "\"orcestrationplatform\"",
+            "\"ordered-list\"",
+            "\"overview\"",
+            "\"page-paper\"",
+            "\"pagerduty\"",
+            "\"paperclip\"",
+            "\"paris\"",
+            "\"partner\"",
+            "\"pause\"",
+            "\"percentile-chart\"",
+            "\"perfromance-health\"",
+            "\"perl\"",
+            "\"phonegap-signet\"",
+            "\"phonegap\"",
+            "\"php\"",
+            "\"phpunit-signet\"",
+            "\"phpunit\"",
+            "\"pie-chart\"",
+            "\"pinpoint-location\"",
+            "\"pin\"",
+            "\"pivotal-cloud-foundry-signet\"",
+            "\"pivotal-cloud-foundry\"",
+            "\"pivotal\"",
+            "\"play-framework-logo\"",
+            "\"play\"",
+            "\"plugin-connection\"",
+            "\"plugin\"",
+            "\"plus-add\"",
+            "\"postgre\"",
+            "\"presales\"",
+            "\"processes\"",
+            "\"process\"",
+            "\"prototype\"",
+            "\"proxy\"",
+            "\"puppet-signet\"",
+            "\"puppet\"",
+            "\"purelytics\"",
+            "\"puremodel\"",
+            "\"purepath\"",
+            "\"purestack\"",
+            "\"python\"",
+            "\"qemu-signet\"",
+            "\"qemu\"",
+            "\"queue\"",
+            "\"rabbit-mq\"",
+            "\"radar-detection\"",
+            "\"react-js-signet\"",
+            "\"react-js\"",
+            "\"realuser-monitorwebsiteusers-\"",
+            "\"realuser-monitorwebsiteusers\"",
+            "\"realuser\"",
+            "\"rebuildstack\"",
+            "\"record\"",
+            "\"recurringissue\"",
+            "\"redhat\"",
+            "\"redis\"",
+            "\"refresh\"",
+            "\"registerdeals\"",
+            "\"removecolumn\"",
+            "\"removerow\"",
+            "\"repair\"",
+            "\"reports\"",
+            "\"request\"",
+            "\"resetpassword\"",
+            "\"resize\"",
+            "\"resource-contention\"",
+            "\"resourcerequest\"",
+            "\"rest-easy\"",
+            "\"restify-signet\"",
+            "\"restify\"",
+            "\"restore\"",
+            "\"resume\"",
+            "\"revert\"",
+            "\"riak\"",
+            "\"richfaces\"",
+            "\"rightend\"",
+            "\"right\"",
+            "\"robots\"",
+            "\"routes\"",
+            "\"rss\"",
+            "\"rubyonrails\"",
+            "\"ruby\"",
+            "\"ruxituser\"",
+            "\"safari\"",
+            "\"sales\"",
+            "\"saltstack-signet\"",
+            "\"saltstack\"",
+            "\"samba-signet\"",
+            "\"samba\"",
+            "\"san-jose\"",
+            "\"saopaulo\"",
+            "\"sap-hybris-signet\"",
+            "\"sap-hybris\"",
+            "\"sap-maxdb\"",
+            "\"sap\"",
+            "\"sap-sybase-signet\"",
+            "\"sap-sybase\"",
+            "\"scala\"",
+            "\"scale-compare\"",
+            "\"scatter-plot\"",
+            "\"scissors\"",
+            "\"script\"",
+            "\"sdk\"",
+            "\"search-magnifyingglass\"",
+            "\"seattle\"",
+            "\"selenium\"",
+            "\"sencha-touch\"",
+            "\"send-receive-traffic\"",
+            "\"sensor\"",
+            "\"serverbracket\"",
+            "\"server\"",
+            "\"servicenow-logo\"",
+            "\"servicenow\"",
+            "\"services\"",
+            "\"session-recording\"",
+            "\"sharepoint\"",
+            "\"share\"",
+            "\"shoppingcart\"",
+            "\"signal\"",
+            "\"singapore\"",
+            "\"sitecore-signet\"",
+            "\"sitecore\"",
+            "\"slack\"",
+            "\"slideshare\"",
+            "\"slow\"",
+            "\"smartbear\"",
+            "\"smartscape\"",
+            "\"smiley-enraged-1\"",
+            "\"smiley-enraged-2\"",
+            "\"smiley-happy-1\"",
+            "\"smiley-happy-2\"",
+            "\"smiley-neutral-1\"",
+            "\"smiley-neutral-2\"",
+            "\"smiley-ok-1\"",
+            "\"smiley-ok-2\"",
+            "\"smiley-unhappy-1\"",
+            "\"smiley-unhappy-2\"",
+            "\"soapui-signet\"",
+            "\"soapui\"",
+            "\"softwareag-signet\"",
+            "\"softwareag\"",
+            "\"sorter-down\"",
+            "\"sorter-up\"",
+            "\"splunk\"",
+            "\"spring-signet\"",
+            "\"spring\"",
+            "\"sql-lite-signet\"",
+            "\"sql-lite\"",
+            "\"sql-microsoft\"",
+            "\"stacked-area-chart\"",
+            "\"stacked-bar-chart\"",
+            "\"stackoverflow-signet\"",
+            "\"stackoverflow\"",
+            "\"star-empty\"",
+            "\"stop\"",
+            "\"storage-cloud\"",
+            "\"storage-local\"",
+            "\"storage\"",
+            "\"storm-apache\"",
+            "\"stride-signet\"",
+            "\"stride\"",
+            "\"struts\"",
+            "\"subversion\"",
+            "\"summary\"",
+            "\"support-contact\"",
+            "\"support-help\"",
+            "\"suselinux\"",
+            "\"swift\"",
+            "\"switch\"",
+            "\"sydney\"",
+            "\"symfony-signet\"",
+            "\"symfony\"",
+            "\"syntheticmonitoring\"",
+            "\"table\"",
+            "\"tablet\"",
+            "\"tabletui\"",
+            "\"tag\"",
+            "\"team\"",
+            "\"thermometer\"",
+            "\"tibco-signet\"",
+            "\"tibco\"",
+            "\"tile-view\"",
+            "\"timemeasurement\"",
+            "\"traffic-light\"",
+            "\"tree\"",
+            "\"trello-signet\"",
+            "\"trello\"",
+            "\"trend-chart-down\"",
+            "\"trend-chart-up\"",
+            "\"trend-down\"",
+            "\"trend-up\"",
+            "\"trialdaycounter\"",
+            "\"trophy-outline\"",
+            "\"trophy\"",
+            "\"tvos\"",
+            "\"twilio-signet\"",
+            "\"twilio\"",
+            "\"twitter\"",
+            "\"ubuntulinux\"",
+            "\"ufo\"",
+            "\"umbrella\"",
+            "\"underconstruction\"",
+            "\"unknown-server\"",
+            "\"unknown\"",
+            "\"unknown-user\"",
+            "\"unlock\"",
+            "\"usage1\"",
+            "\"usage2\"",
+            "\"usergroup\"",
+            "\"user-uem\"",
+            "\"varnishcache\"",
+            "\"vault-safe\"",
+            "\"vcenter\"",
+            "\"versatile\"",
+            "\"vert-x\"",
+            "\"victorops\"",
+            "\"video\"",
+            "\"virtualbox\"",
+            "\"virtualizationlayer\"",
+            "\"visual-resolution-path\"",
+            "\"visualstudio-microsoft\"",
+            "\"visual-studio-tfs\"",
+            "\"vm-ec2\"",
+            "\"vm-hyperv\"",
+            "\"vm-kvm\"",
+            "\"vm-openstack\"",
+            "\"vm-virtualbox\"",
+            "\"vm-vmware\"",
+            "\"vmware\"",
+            "\"vm-xen\"",
+            "\"voip\"",
+            "\"w3c\"",
+            "\"was-liberty-profile\"",
+            "\"web2py\"",
+            "\"webhook\"",
+            "\"webpages\"",
+            "\"webserver\"",
+            "\"web-sphere\"",
+            "\"web\"",
+            "\"wercker-signet\"",
+            "\"wercker\"",
+            "\"wifi-bandwidth\"",
+            "\"wildfly\"",
+            "\"windows\"",
+            "\"windows-vm\"",
+            "\"wordpress-signet\"",
+            "\"wordpress\"",
+            "\"xcode\"",
+            "\"xebialabs-signet\"",
+            "\"xebialabs\"",
+            "\"xen\"",
+            "\"xhr-load-action\"",
+            "\"xhrprocess\"",
+            "\"xmatters-signet\"",
+            "\"xmatters\"",
+            "\"yui\"",
+            "\"zeromq\"",
+            "\"zkoss\"",
+            "\"zoomin-found\"",
+            "\"zoomout-notfound\"",
+            "\"zos\""
+          ]
+        },
+        {
+          "type": "property",
+          "key": "color",
+          "value": [
+            "\"main\"",
+            "\"accent\"",
+            "\"warning\"",
+            "\"error\"",
+            "\"cta\"",
+            "\"recovered\"",
+            "\"light\"",
+            "\"dark\""
+          ]
+        },
+        {
+          "type": "method",
+          "key": "color",
+          "parameters": [
+            {
+              "type": "property",
+              "key": "value",
+              "value": [
+                "\"main\"",
+                "\"accent\"",
+                "\"warning\"",
+                "\"error\"",
+                "\"cta\"",
+                "\"recovered\"",
+                "\"light\"",
+                "\"dark\""
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DtFormField",
+      "component": "form-field",
+      "selector": ["dt-form-field"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-form-field\"",
+        "exportAs": "\"dtFormField\""
+      },
+      "combinedVariants": true,
+      "members": [
+        {
+          "type": "method",
+          "key": "getConnectedOverlayOrigin",
+          "parameters": []
+        }
+      ]
+    },
+    {
+      "name": "DtAutocomplete",
+      "component": "autocomplete",
+      "selector": ["dt-autocomplete"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-autocomplete\"",
+        "exportAs": "\"dtAutocomplete\""
+      },
+      "combinedVariants": true,
+      "members": [
+        {
+          "type": "property",
+          "key": "autoActiveFirstOption",
+          "value": ["true"]
+        },
+        {
+          "type": "method",
+          "key": "autoActiveFirstOption",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        { "type": "method", "key": "classList", "parameters": [] },
+        { "type": "property", "key": "isOpen", "value": ["true"] }
+      ]
+    },
+    {
+      "name": "DtInfoGroup",
+      "component": "info-group",
+      "selector": ["dt-info-group"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-info-group\"",
+        "exportAs": "\"dtInfoGroup\""
+      },
+      "combinedVariants": true,
+      "members": []
+    },
+    {
+      "name": "DtExpandablePanel",
+      "component": "expandable-panel",
+      "selector": ["dt-expandable-panel"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-expandable-panel\"",
+        "exportAs": "\"dtExpandablePanel\""
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "opened", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "opened",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        {
+          "type": "method",
+          "key": "toggle",
+          "parameters": [],
+          "returnType": "true"
+        },
+        {
+          "type": "method",
+          "key": "open",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "close",
+          "parameters": [],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtInlineEditor",
+      "component": "inline-editor",
+      "selector": ["[dt-inline-editor]"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"[dt-inline-editor]\"",
+        "exportAs": "\"dt-inline-editor\""
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "required", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "required",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        { "type": "method", "key": "value", "parameters": [] },
+        {
+          "type": "method",
+          "key": "onKeyDown",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "enterEditing",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "saveAndQuitEditing",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "cancelAndQuitEditing",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "writeValue",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "registerOnChange",
+          "parameters": [
+            { "type": "property", "key": "fn", "value": ["void"] }
+          ],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "registerOnTouched",
+          "parameters": [
+            { "type": "property", "key": "fn", "value": ["void"] }
+          ],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "focus",
+          "parameters": [],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtButton",
+      "component": "button",
+      "selector": ["button[dt-button]", "button[dt-icon-button]"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"`button[dt-button], button[dt-icon-button]`\"",
+        "exportAs": "\"dtButton\"",
+        "inputs": ["\"disabled\"", "\"color\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        {
+          "type": "property",
+          "key": "color",
+          "value": ["\"main\"", "\"warning\"", "\"cta\""]
+        },
+        {
+          "type": "property",
+          "key": "variant",
+          "value": ["\"primary\"", "\"secondary\"", "\"nested\""]
+        },
+        {
+          "type": "method",
+          "key": "variant",
+          "parameters": [
+            {
+              "type": "property",
+              "key": "value",
+              "value": ["\"primary\"", "\"secondary\"", "\"nested\""]
+            }
+          ]
+        },
+        {
+          "type": "method",
+          "key": "focus",
+          "parameters": [],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtLoadingSpinner",
+      "component": "loading-spinner",
+      "selector": ["dt-loading-spinner"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-loading-spinner\"",
+        "exportAs": "\"dtLoadingSpinner\""
+      },
+      "combinedVariants": true,
+      "members": []
+    },
+    {
+      "name": "DtLoadingDistractor",
+      "component": "loading-distractor",
+      "selector": ["dt-loading-distractor"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-loading-distractor\"",
+        "exportAs": "\"dtLoadingDistractor\""
+      },
+      "combinedVariants": true,
+      "members": []
+    },
+    {
+      "name": "DtExpandableSectionHeader",
+      "component": "expandable-section",
+      "selector": ["dt-expandable-section-header"],
+      "angularComponent": true,
+      "decorator": {
+        "exportAs": "\"dtExpandableSectionHeader\"",
+        "selector": "\"dt-expandable-section-header\""
+      },
+      "combinedVariants": true,
+      "members": []
+    },
+    {
+      "name": "DtExpandableSection",
+      "component": "expandable-section",
+      "selector": ["dt-expandable-section"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-expandable-section\"",
+        "exportAs": "\"dtExpandableSection\""
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "opened", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "opened",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "disabled",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        {
+          "type": "method",
+          "key": "toggle",
+          "parameters": [],
+          "returnType": "true"
+        },
+        {
+          "type": "method",
+          "key": "open",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "close",
+          "parameters": [],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtButtonGroup",
+      "component": "button-group",
+      "selector": ["dt-button-group"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-button-group\"",
+        "exportAs": "\"dtButtonGroup\"",
+        "inputs": ["\"disabled\"", "\"tabIndex\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        { "type": "method", "key": "value", "parameters": [] },
+        {
+          "type": "method",
+          "key": "disabled",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DtButtonGroupItem",
+      "component": "button-group",
+      "selector": ["dt-button-group-item"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-button-group-item\"",
+        "exportAs": "\"dtButtonGroupItem\"",
+        "inputs": ["\"color\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        {
+          "type": "property",
+          "key": "color",
+          "value": ["\"main\"", "\"error\""]
+        },
+        { "type": "property", "key": "selected", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "selected",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        {
+          "type": "method",
+          "key": "disabled",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        { "type": "method", "key": "value", "parameters": [] }
+      ]
+    },
+    {
+      "name": "DtTile",
+      "component": "tile",
+      "selector": ["dt-tile"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-tile\"",
+        "exportAs": "\"dtTile\"",
+        "inputs": ["\"disabled\"", "\"tabIndex\"", "\"color\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        {
+          "type": "property",
+          "key": "color",
+          "value": ["\"main\"", "\"error\"", "\"recovered\""]
+        }
+      ]
+    },
+    {
+      "name": "DtCtaCard",
+      "component": "cta-card",
+      "selector": ["dt-cta-card"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-cta-card\"",
+        "exportAs": "\"dtCtaCard\""
+      },
+      "combinedVariants": true,
+      "members": []
+    },
+    {
+      "name": "DtCard",
+      "component": "card",
+      "selector": ["dt-card"],
+      "angularComponent": true,
+      "decorator": { "selector": "\"dt-card\"", "exportAs": "\"dtCard\"" },
+      "combinedVariants": true,
+      "members": []
+    },
+    {
+      "name": "DtContextDialog",
+      "component": "context-dialog",
+      "selector": ["dt-context-dialog"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-context-dialog\"",
+        "inputs": ["\"disabled\"", "\"tabIndex\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "open",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "close",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "focus",
+          "parameters": [],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtCopyToClipboard",
+      "component": "copy-to-clipboard",
+      "selector": ["dt-copy-to-clipboard"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-copy-to-clipboard\"",
+        "exportAs": "\"dtCopyToClipboard\""
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "disabled",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        {
+          "type": "method",
+          "key": "copyToClipboard",
+          "parameters": [],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtCopyToClipboardLabel",
+      "component": "copy-to-clipboard-label",
+      "selector": ["dt-copy-to-clipboard-label"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-copy-to-clipboard-label\"",
+        "exportAs": "\"dtCopyToClipboardLabel\""
+      },
+      "combinedVariants": true,
+      "members": []
+    },
+    {
+      "name": "DtTag",
+      "component": "tag",
+      "selector": ["dt-tag", "[dt-tag]", "[dtTag]"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-tag, [dt-tag], [dtTag]\"",
+        "inputs": ["\"disabled\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        { "type": "property", "key": "removable", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "removable",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DtKeyValueList",
+      "component": "key-value-list",
+      "selector": ["dt-key-value-list"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-key-value-list\"",
+        "exportAs": "\"dtKeyValueList\""
+      },
+      "combinedVariants": true,
+      "members": []
+    },
+    {
+      "name": "DtKeyValueListItem",
+      "component": "key-value-list-item",
+      "selector": ["dt-key-value-list-item"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-key-value-list-item\"",
+        "exportAs": "\"dtKeyValueListItem\""
+      },
+      "combinedVariants": true,
+      "members": []
+    },
+    {
+      "name": "DtPagination",
+      "component": "pagination",
+      "selector": ["dt-pagination"],
+      "angularComponent": true,
+      "decorator": { "selector": "\"dt-pagination\"" },
+      "combinedVariants": true,
+      "members": [
+        { "type": "method", "key": "maxPages", "parameters": [] },
+        { "type": "method", "key": "currentPage", "parameters": [] }
+      ]
+    },
+    {
+      "name": "DtRadioButton",
+      "component": "radio",
+      "selector": ["dt-radio-button"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-radio-button\"",
+        "exportAs": "\"dtRadioButton\"",
+        "inputs": ["\"tabIndex\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        { "type": "property", "key": "required", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "required",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        {
+          "type": "method",
+          "key": "disabled",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        { "type": "property", "key": "checked", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "checked",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        { "type": "method", "key": "value", "parameters": [] },
+        {
+          "type": "method",
+          "key": "focus",
+          "parameters": [],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtShowMore",
+      "component": "show-more",
+      "selector": ["dt-show-more"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-show-more\"",
+        "exportAs": "\"dtShowMore\"",
+        "inputs": ["\"disabled\"", "\"tabIndex\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        { "type": "property", "key": "showLess", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "showLess",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DtCheckbox",
+      "component": "checkbox",
+      "selector": ["dt-checkbox"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-checkbox\"",
+        "exportAs": "\"dtCheckbox\"",
+        "inputs": ["\"disabled\"", "\"tabIndex\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        { "type": "property", "key": "checked", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "checked",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        { "type": "method", "key": "id", "parameters": [] },
+        { "type": "property", "key": "required", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "required",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        {
+          "type": "method",
+          "key": "disabled",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        { "type": "property", "key": "indeterminate", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "indeterminate",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        {
+          "type": "method",
+          "key": "focus",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "toggle",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "writeValue",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "registerOnChange",
+          "parameters": [
+            { "type": "property", "key": "fn", "value": ["void"] }
+          ],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "registerOnTouched",
+          "parameters": [
+            { "type": "property", "key": "fn", "value": ["void"] }
+          ],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "setDisabledState",
+          "parameters": [
+            { "type": "property", "key": "isDisabled", "value": ["true"] }
+          ],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtProgressBar",
+      "component": "progress-bar",
+      "selector": ["dt-progress-bar"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-progress-bar\"",
+        "exportAs": "\"dtProgressBar\"",
+        "inputs": ["\"color\"", "\"value\"", "\"min\"", "\"max\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        {
+          "type": "property",
+          "key": "color",
+          "value": [
+            "\"main\"",
+            "\"accent\"",
+            "\"warning\"",
+            "\"recovered\"",
+            "\"error\""
+          ]
+        },
+        {
+          "type": "property",
+          "key": "align",
+          "value": ["\"start\"", "\"end\""]
+        }
+      ]
+    },
+    {
+      "name": "DtProgressCircle",
+      "component": "progress-circle",
+      "selector": ["dt-progress-circle"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-progress-circle\"",
+        "exportAs": "\"dtProgressCircle\"",
+        "inputs": ["\"color\"", "\"value\"", "\"min\"", "\"max\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        {
+          "type": "property",
+          "key": "color",
+          "value": [
+            "\"main\"",
+            "\"accent\"",
+            "\"warning\"",
+            "\"recovered\"",
+            "\"error\""
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DtSwitch",
+      "component": "switch",
+      "selector": ["dt-switch"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-switch\"",
+        "exportAs": "\"dtSwitch\"",
+        "inputs": ["\"disabled\"", "\"tabIndex\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        { "type": "property", "key": "checked", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "checked",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        { "type": "method", "key": "id", "parameters": [] },
+        { "type": "property", "key": "required", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "required",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        {
+          "type": "method",
+          "key": "disabled",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        {
+          "type": "method",
+          "key": "toggle",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "writeValue",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "registerOnChange",
+          "parameters": [
+            { "type": "property", "key": "fn", "value": ["void"] }
+          ],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "registerOnTouched",
+          "parameters": [
+            { "type": "property", "key": "fn", "value": ["void"] }
+          ],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "setDisabledState",
+          "parameters": [
+            { "type": "property", "key": "isDisabled", "value": ["true"] }
+          ],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "focus",
+          "parameters": [],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtBreadcrumbsItem",
+      "component": "breadcrumbs-item",
+      "selector": ["dt-breadcrumbs-item"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-breadcrumbs-item\"",
+        "exportAs": "\"dtBreadcrumbsItem\""
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "external", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "external",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DtBreadcrumbs",
+      "component": "breadcrumbs",
+      "selector": ["dt-breadcrumbs"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-breadcrumbs\"",
+        "exportAs": "\"dtBreadcrumbs\"",
+        "inputs": ["\"color\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        {
+          "type": "property",
+          "key": "color",
+          "value": ["\"main\"", "\"error\"", "\"neutral\""]
+        }
+      ]
+    },
+    {
+      "name": "DtTabGroup",
+      "component": "tab-group",
+      "selector": ["dt-tab-group"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-tab-group\"",
+        "exportAs": "\"dtTabGroup\""
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        {
+          "type": "property",
+          "key": "color",
+          "value": ["\"main\"", "\"recovered\"", "\"error\""]
+        }
+      ]
+    },
+    {
+      "name": "DtTab",
+      "component": "tab",
+      "selector": ["dt-tab"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-tab\"",
+        "exportAs": "\"dtTab\"",
+        "inputs": ["\"disabled\"", "\"color\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        { "type": "method", "key": "id", "parameters": [] },
+        {
+          "type": "method",
+          "key": "disabled",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        { "type": "property", "key": "selected", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "selected",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        {
+          "type": "property",
+          "key": "color",
+          "value": ["\"main\"", "\"error\"", "\"recovered\""]
+        },
+        {
+          "type": "method",
+          "key": "color",
+          "parameters": [
+            {
+              "type": "property",
+              "key": "value",
+              "value": ["\"main\"", "\"error\"", "\"recovered\""]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DtTabBody",
+      "component": "tab-body",
+      "selector": ["dt-tab-body"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-tab-body\"",
+        "exportAs": "\"dtTabBody\""
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "active", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "active",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DtToastContainer",
+      "component": "toast-container",
+      "selector": ["dt-toast"],
+      "angularComponent": true,
+      "decorator": { "selector": "\"dt-toast\"", "exportAs": "\"dtToast\"" },
+      "combinedVariants": true,
+      "members": [
+        {
+          "type": "method",
+          "key": "enter",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "exit",
+          "parameters": [],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtSelect",
+      "component": "select",
+      "selector": ["dt-select"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-select\"",
+        "exportAs": "\"dtSelect\"",
+        "inputs": ["\"disabled\"", "\"tabIndex\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        { "type": "property", "key": "errorState", "value": ["true"] },
+        { "type": "method", "key": "placeholder", "parameters": [] },
+        { "type": "property", "key": "required", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "required",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        {
+          "type": "method",
+          "key": "compareWith",
+          "parameters": [{ "type": "property", "key": "fn", "value": ["true"] }]
+        },
+        { "type": "method", "key": "value", "parameters": [] },
+        { "type": "method", "key": "id", "parameters": [] },
+        {
+          "type": "method",
+          "key": "toggle",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "open",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "close",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "focus",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "writeValue",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "registerOnChange",
+          "parameters": [
+            { "type": "property", "key": "fn", "value": ["void"] }
+          ],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "registerOnTouched",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "setDisabledState",
+          "parameters": [
+            { "type": "property", "key": "isDisabled", "value": ["true"] }
+          ],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "setDescribedByIds",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "onContainerClick",
+          "parameters": [],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtOverlayContainer",
+      "component": "overlay-container",
+      "selector": ["dt-overlay-container"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-overlay-container\"",
+        "exportAs": "\"dtOverlayContainer\""
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "method", "key": "attachComponentPortal", "parameters": [] },
+        { "type": "method", "key": "attachTemplatePortal", "parameters": [] },
+        {
+          "type": "method",
+          "key": "exit",
+          "parameters": [],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtSelectionArea",
+      "component": "selection-area",
+      "selector": ["dt-selection-area"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-selection-area\"",
+        "exportAs": "\"dtSelectionArea\""
+      },
+      "combinedVariants": true,
+      "members": [
+        {
+          "type": "method",
+          "key": "close",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "focus",
+          "parameters": [],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtSelectionAreaContainer",
+      "component": "selection-area-container",
+      "selector": ["dt-selection-area-container"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-selection-area-container\"",
+        "exportAs": "\"dtSelectionAreaContainer\""
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "close",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "focus",
+          "parameters": [],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtBarIndicator",
+      "component": "bar-indicator",
+      "selector": ["dt-bar-indicator"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-bar-indicator\"",
+        "exportAs": "\"dtBarIndicator\"",
+        "inputs": ["\"color\"", "\"value\"", "\"min\"", "\"max\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        {
+          "type": "property",
+          "key": "color",
+          "value": ["\"main\"", "\"recovered\"", "\"error\""]
+        },
+        {
+          "type": "property",
+          "key": "align",
+          "value": ["\"start\"", "\"end\""]
+        }
+      ]
+    },
+    {
+      "name": "DtDrawerContainer",
+      "component": "drawer-container",
+      "selector": ["dt-drawer-container"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-drawer-container\"",
+        "exportAs": "\"dtDrawerContainer\""
+      },
+      "combinedVariants": true,
+      "members": [
+        {
+          "type": "method",
+          "key": "open",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "close",
+          "parameters": [],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtDrawer",
+      "component": "drawer",
+      "selector": ["dt-drawer"],
+      "angularComponent": true,
+      "decorator": { "selector": "\"dt-drawer\"", "exportAs": "\"dtDrawer\"" },
+      "combinedVariants": true,
+      "members": [
+        {
+          "type": "property",
+          "key": "mode",
+          "value": ["\"side\"", "\"over\""]
+        },
+        {
+          "type": "method",
+          "key": "mode",
+          "parameters": [
+            {
+              "type": "property",
+              "key": "value",
+              "value": ["\"side\"", "\"over\""]
+            }
+          ]
+        },
+        {
+          "type": "property",
+          "key": "position",
+          "value": ["\"start\"", "\"end\""]
+        },
+        {
+          "type": "method",
+          "key": "position",
+          "parameters": [
+            {
+              "type": "property",
+              "key": "value",
+              "value": ["\"start\"", "\"end\""]
+            }
+          ]
+        },
+        { "type": "property", "key": "opened", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "opened",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        {
+          "type": "method",
+          "key": "open",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "close",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "toggle",
+          "parameters": [
+            { "type": "property", "key": "opened", "value": ["true"] }
+          ],
+          "returnType": "void"
+        }
+      ]
+    },
+    {
+      "name": "DtToggleButtonGroup",
+      "component": "toggle-button-group",
+      "selector": ["dt-toggle-button-group"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"dt-toggle-button-group\"",
+        "exportAs": "\"dtToggleButtonGroup\""
+      },
+      "combinedVariants": true,
+      "members": []
+    },
+    {
+      "name": "DtToggleButtonItem",
+      "component": "toggle-button-item",
+      "selector": ["button[dt-toggle-button-item]"],
+      "angularComponent": true,
+      "decorator": {
+        "selector": "\"button[dt-toggle-button-item]\"",
+        "exportAs": "\"dtToggleButtonItem\"",
+        "inputs": ["\"disabled\"", "\"tabIndex\""]
+      },
+      "combinedVariants": true,
+      "members": [
+        { "type": "property", "key": "disabled", "value": ["true"] },
+        { "type": "property", "key": "selected", "value": ["true"] },
+        {
+          "type": "method",
+          "key": "selected",
+          "parameters": [
+            { "type": "property", "key": "value", "value": ["true"] }
+          ]
+        },
+        { "type": "method", "key": "value", "parameters": [] },
+        {
+          "type": "method",
+          "key": "focus",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "select",
+          "parameters": [],
+          "returnType": "void"
+        },
+        {
+          "type": "method",
+          "key": "deselect",
+          "parameters": [],
+          "returnType": "void"
+        }
+      ]
+    }
+  ]
+}

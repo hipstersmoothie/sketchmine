@@ -25,7 +25,8 @@ export class DebugComponent implements OnInit, OnDestroy {
     this.metaSubscription = this._metaService.getMeta()
     .subscribe(async (components: MetaComponent[]) => {
       const view = (this._viewContainerRef as any)._data.componentView as ViewData;
-      checkSubComponents(view, components, components[0]);
+      await waitForDraw();
+      checkSubComponents(view, components, components[0], 'my-theme');
       handleDraw('button').then();
     });
   }
@@ -39,7 +40,6 @@ async function handleDraw(comp: string) {
   if (!window.sketchGenerator) {
     return;
   }
-  await waitForDraw();
   await window.sketchGenerator.emitDraw(comp);
   await window.sketchGenerator.emitFinish();
 }
