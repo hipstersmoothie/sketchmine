@@ -3,10 +3,10 @@ import { ViewData } from '@angular/core/src/view'; // not exported from core (on
 
 /**
    * find the instance in the hidden view of Angular for an example
-   * the button has a wrapper arround and the true button instance where we have to apply
+   * the button has a wrapper around and the true button instance where we have to apply
    * the properties is somewhere in the dom
    * @param ref ComponentRef
-   * @param element the HTMLelement we should find
+   * @param element the HTMLElement we should find
    */
 export function findComponentInstance<E, C>(ref: ComponentRef<E>, element: HTMLElement): Type<C> | null {
   const rootView = (ref.hostView as any)._view as ViewData;

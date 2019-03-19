@@ -10,19 +10,25 @@ import {
 } from '@angular/core';
 import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { ViewData } from '@angular/core/src/view'; // not exported from core (only for POC)
-import { MetaService } from './meta.service';
-import {
-  Component as MetaComponent,
-  Variant as MetaVariant,
-  VariantMethod as MetaVariantMethod,
-  VariantProperty as MetaVariantProperty,
-} from '@sketchmine/code-analyzer/lib/@types';
+import { Component as MetaComponent } from '@sketchmine/code-analyzer';
 import { asyncForEach } from '@sketchmine/helpers';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { MetaService } from './meta.service';
 import { ExamplesRegistry } from './examples-registry';
 import { checkSubComponents } from './check-sub-components';
-import { Subscription } from 'rxjs';
-import { waitForDraw, findComponentInstance } from './utils';
-import { map } from 'rxjs/operators';
+import { waitForDraw, findComponentInstance, mutateVariants } from './utils';
+
+export interface Variant {
+  name: string;
+  changes: VariantChange[];
+}
+
+export interface VariantChange {
+  type: 'property' | 'method';
+  key: string;
+  value: string;
+}
 
 declare var window: any;
 
@@ -32,31 +38,36 @@ declare var window: any;
 })
 export class AppComponent implements OnInit, OnDestroy {
 
+  currentTheme = 'light-bg';
   metaSubscription: Subscription;
   @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
   constructor(
-    private _viewContainerRef: ViewContainerRef,
-    private _metaService: MetaService,
-    private _registry: ExamplesRegistry,
+    private viewContainerRef: ViewContainerRef,
+    private metaService: MetaService,
+    private registry: ExamplesRegistry,
   ) { }
 
   ngOnInit() {
     // get list of mapped examples in the examples module file
-    const availableExamples = this._registry.getExamplesList();
-    this.metaSubscription = this._metaService.getMeta()
+    const availableExamples = this.registry.getExamplesList();
+    this.metaSubscription = this.metaService.getMeta()
       .pipe(
         map((comps: MetaComponent[]) => comps.filter(comp => availableExamples.includes(comp.component))),
       )
       .subscribe(async (components: MetaComponent[]) => {
         await asyncForEach(components, async (componentMeta: MetaComponent) => {
-          if (componentMeta.variants.length) {
-            await asyncForEach(componentMeta.variants, async (variant: MetaVariant) => {
-              await this._applyChange(componentMeta, variant, components);
+          // if (componentMeta.name !== 'DtAlert') { return }
+          if (componentMeta.members.length) {
+            // generate mutations of the variants
+            const mutations = mutateVariants(componentMeta, this.currentTheme);
+
+            await asyncForEach(mutations, async (member: Variant) => {
+              await this.applyChange(componentMeta, member, components);
             });
           } else {
             // if there are no variants from the parser instance it with the defaults
             const variant = { name: `${componentMeta.component}/default`, changes: [] };
-            await this._applyChange(componentMeta, variant, components);
+            await this.applyChange(componentMeta, variant, components);
           }
         });
 
@@ -70,25 +81,26 @@ export class AppComponent implements OnInit, OnDestroy {
     this.metaSubscription.unsubscribe();
   }
 
-  private async _applyChange(componentMeta: MetaComponent, variant: MetaVariant, components: MetaComponent[]) {
-    const exampleType = this._registry.getExampleByName(componentMeta.component);
+  private async applyChange(componentMeta: MetaComponent, variant: Variant, components: MetaComponent[]) {
+    const exampleType = this.registry.getExampleByName(componentMeta.component);
     if (!exampleType) {
       return;
     }
-    const exampleComponentRef = this._instanceComponent(exampleType);
-    const componentInstances = this._getCompInstances(componentMeta, exampleComponentRef);
+
+    const exampleComponentRef = this.instanceComponent(exampleType);
+    const componentInstances = getComponentInstances(componentMeta.selector, exampleComponentRef);
 
     exampleComponentRef.changeDetectorRef.detectChanges();
 
-    await asyncForEach(variant.changes, async (change: MetaVariantMethod | MetaVariantProperty) => {
+    await asyncForEach(variant.changes, async (change: VariantChange) => {
       if (change.type === 'property') {
         await asyncForEach(componentInstances, async (instance) => {
           const value = (change.value === 'undefined') ? undefined : JSON.parse(change.value);
-          const oldvalue = instance[change.key];
+          const oldValue = instance[change.key];
           instance[change.key] = value;
           if (instance.ngOnChanges) {
             instance.ngOnChanges({
-              [change.key]: new SimpleChange(oldvalue, value, false),
+              [change.key]: new SimpleChange(oldValue, value, false),
             });
           }
           // if (window.sketchGenerator) {
@@ -104,33 +116,36 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // detect child angular components and annotate the variant in the tree
     const view = (exampleComponentRef.hostView as any)._view.nodes[0].componentView as ViewData;
-    checkSubComponents(view, components, componentMeta);
 
     // wait for browser draw
     await waitForDraw();
+
+    // has to be after wait for draw in case that components can be loaded later
+    checkSubComponents(view, components, componentMeta, this.currentTheme);
+
     if (window.sketchGenerator) {
       await window.sketchGenerator.emitDraw(variant.name);
     }
   }
 
-  private _getCompInstances<C>(componentMeta: MetaComponent, exampleComponentRef: ComponentRef<C>) {
-    const componentInstances = [];
-    componentMeta.selector.forEach((selector: string) => {
-      const exampleElement = exampleComponentRef.location.nativeElement.querySelector(selector);
-      const compInstance = findComponentInstance(exampleComponentRef, exampleElement);
-      if (compInstance) {
-        componentInstances.push(compInstance);
-      }
-    });
-
-    return componentInstances;
-  }
-
-  private _instanceComponent<C>(exampleType: Type<C>) {
+  private instanceComponent<C>(exampleType: Type<C>) {
     if (this.portalOutlet.hasAttached()) {
       this.portalOutlet.detach();
     }
-    const portal = new ComponentPortal(exampleType, this._viewContainerRef);
+    const portal = new ComponentPortal(exampleType, this.viewContainerRef);
     return this.portalOutlet.attachComponentPortal(portal);
   }
+}
+
+function getComponentInstances<C>(selectors: string[], exampleComponentRef: ComponentRef<C>) {
+  const componentInstances = [];
+  selectors.forEach((selector: string) => {
+    const exampleElement = exampleComponentRef.location.nativeElement.querySelector(selector);
+    const compInstance = findComponentInstance(exampleComponentRef, exampleElement);
+    if (compInstance) {
+      componentInstances.push(compInstance);
+    }
+  });
+
+  return componentInstances;
 }
