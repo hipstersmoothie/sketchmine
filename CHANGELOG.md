@@ -1,10 +1,23 @@
 # Changelog
 
+
+## v2.7.1 – 2019.2.2
+
+#### Contributors
+
+- [Lara Aigmueller](mailto:lara.aigmueller@dynatrace.com)
+
+#### Commits
+
+##### Bug Fixes 🐞
+
+* [[`1d2f2f9`](https://github.com/Dynatrace/sketchmine/commit/1d2f2f9)] -  **sketch-validator**:  don't validate fill- and border-colors of artboards ([**Lara Aigmueller**](mailto:lara.aigmueller@dynatrace.com))
+
 ## v2.7.0 – 2019.2.1
 
 #### Contributors
 
-  - [Lara Aigmueller](mailto:lara.aigmueller@dynatrace.com)
+- [Lara Aigmueller](mailto:lara.aigmueller@dynatrace.com)
 
 #### Commits
 
@@ -14,16 +27,14 @@
 
 ##### Bug Fixes 🐞
 
-
 * [[`b42cdf7`](https://github.com/Dynatrace/sketchmine/commit/b42cdf7)] -  **sketch-validator**:  fix collecting modules  ([**Lara Aigmueller**](mailto:lara.aigmueller@dynatrace.com))
-
 
 ## v2.6.1 – 2019.1.4
 
 #### Contributors
 
-  - [Lukas Holzer](mailto:lukas.holzer@dynatrace.com)
-  - [Lara Aigmueller](mailto:lara.aigmueller@dynatrace.com)
+- [Lukas Holzer](mailto:lukas.holzer@dynatrace.com)
+- [Lara Aigmueller](mailto:lara.aigmueller@dynatrace.com)
 
 #### Commits
 
