@@ -33,7 +33,8 @@ export function mergeClassMembers(...members: any[]): Member[] {
         const value = Array.from(new Set<string>(merged));
         found.value = value;
       }
-    } else {
+    // member needs property type otherwise it would be anything else that we can drop!
+    } else if (member.hasOwnProperty('type')) {
       result.push(member);
     }
   }

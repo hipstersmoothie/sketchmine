@@ -58,8 +58,8 @@ function resolvePrimitiveType(nodeType: ParsePrimitiveType): string | null {
   switch (nodeType.type) {
     case Primitives.Boolean:
       return 'true';
-    case Primitives.Null:
-      return 'null';
+    // case Primitives.Null:
+    //   return 'null';
     default:
       // don't resolve undefined we dont need the undefined state
       return null;
@@ -117,10 +117,17 @@ export class MetaResolver extends NullVisitor implements ParsedVisitor {
 
     const decorator = this.visitWithParent(node.decorators[0], node);
 
+    const selector = decorator.selector
+      .split(',')
+      .map(s => s.replace(/[\`\s\'\"]/gm, ''));
     return {
       name: node.name,
+      /** @example https://regex101.com/r/YduQlF/1 */
+      component: /.+?\/([^\/]+?).ts$/.exec(node.location.path)[1],
+      selector,
       angularComponent: node.isAngularComponent(),
       decorator,
+      combinedVariants: !node.tags.includes('noCombinations'),
       members: mergedMembers,
     };
   }
@@ -261,14 +268,22 @@ export class MetaResolver extends NullVisitor implements ParsedVisitor {
       return;
     }
 
+    const propertyValue = Array.isArray(value) ? value : [value];
+
+    // only string values are allowed in the property Values array every value has to be escaped as string!
+    if (typeof propertyValue[0] !== 'string') {
+      return;
+    }
+
     return {
       type: 'property',
       key: node.name,
-      value,
+      value: propertyValue,
     };
   }
 
   visitPrimitiveType(node: ParsePrimitiveType) {
+
     return resolvePrimitiveType(node);
   }
 
@@ -277,6 +292,13 @@ export class MetaResolver extends NullVisitor implements ParsedVisitor {
   }
 
   visitValueType(node: ParseValueType) {
+    // if we have an empty string return undefined
+    if (
+      typeof node.value === 'string' &&
+      node.value.replace(/\"/gm, '').trim().length === 0
+    ) {
+      return;
+    }
     return node.value;
   }
 

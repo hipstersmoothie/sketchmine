@@ -274,7 +274,7 @@ export class Visitor {
         return new ParseValueType(location, parseInt(node.getText(), 10));
       case ts.SyntaxKind.FirstTemplateToken:
       case ts.SyntaxKind.StringLiteral:
-        return new ParseValueType(location, node.getText());
+        return new ParseValueType(location, `\"${node.getText().replace(/\'/gm, '')}\"`);
       case ts.SyntaxKind.TypeLiteral:
         const typeLiteralMembers: ParseProperty[] = (<ts.TypeLiteralNode>node).members
           .map((member: ts.PropertySignature) => this.visitSignature(member));

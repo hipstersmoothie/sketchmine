@@ -4,6 +4,7 @@ import { adjustPathAliases, readTsConfig } from './utils';
 import { applyTransformers } from './resolvers';
 import { parseFile } from './parse-file';
 import { writeJSON } from '@sketchmine/node-helpers';
+import { Library, Component } from './interfaces';
 
 /**
  * The Main function that takes command line args build the AST and transforms the AST,
@@ -19,7 +20,7 @@ export async function main(
   tsConfig: string = 'tsconfig.json',
   inMemory: boolean = false,
   blackList: Set<string> | null,
-): Promise<number | any> {
+): Promise<number | Library> {
 
   if (!rootDir || !library) {
     throw new Error('The --rootDir and the --library, to the angular components has to be specified!');
@@ -35,9 +36,9 @@ export async function main(
   const config = await readTsConfig(tsconfig);
   await parseFile(entryFile, adjustPathAliases(config, join(rootDir, library)), parseResults, nodeModules, blackList);
 
-  const meta = applyTransformers(parseResults);
+  const meta = applyTransformers<Component>(parseResults);
 
-  const result = {
+  const result: Library = {
     version: pkgJSON.version,
     components: meta,
   };

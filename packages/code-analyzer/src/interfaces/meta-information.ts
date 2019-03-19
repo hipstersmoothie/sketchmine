@@ -3,26 +3,24 @@
  * The outFile structure follows this interface
  */
 
-export interface ComponentsList {
+export interface Library {
   version: string;
-  components: { [key: string]: Component };
+  components: Component[];
+}
+
+export interface ComponentDecorator {
+  selector: string;
+  exportAs?: string;
 }
 
 export interface Component {
-  className: string;
-  component: string;
-  location: string;
-  clickable: boolean;
-  hoverable: boolean;
-  selector: string[];
-  properties: string[];
-  variants: Variant[];
-  combinedVariants: boolean; // defines if the variants are combined or not
-}
-
-export interface Variant {
   name: string;
-  changes: (Method | Property)[];
+  component: string;
+  selector: string[];
+  angularComponent: boolean;
+  decorator: ComponentDecorator;
+  members: (Method | Property)[];
+  combinedVariants?: boolean; // defines if the variants are combined or not
 }
 
 export interface Property {
