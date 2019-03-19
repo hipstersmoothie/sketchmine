@@ -1,6 +1,6 @@
-import { Result as MetaResult } from '@sketchmine/code-analyzer';
+import { Library } from '@sketchmine/code-analyzer';
 
-export function getComponentSelectors(meta: MetaResult): string[] {
+export function getComponentSelectors(meta: Library): string[] {
   const selectors = [];
 
   if (!meta) {

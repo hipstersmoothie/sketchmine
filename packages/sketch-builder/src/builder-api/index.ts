@@ -1,5 +1,5 @@
 import { TraversedSymbol, TraversedLibrary } from '@sketchmine/dom-agent/lib/@types/public-api';
-import { Result as MetaResult } from '@sketchmine/code-analyzer';
+import { Library } from '@sketchmine/code-analyzer';
 import { Logger } from '@sketchmine/node-helpers';
 import { getComponentSelectors } from '../helpers/get-component-selectors';
 import { InjectedWindow } from './api.interface';
@@ -10,7 +10,7 @@ export interface SketchGeneratorApiConfig {
   url: string;
   rootSelector: string;
   traverser: string;
-  metaInformation: MetaResult;
+  metaInformation: Library;
 }
 
 declare var window: InjectedWindow;
@@ -95,9 +95,9 @@ export async function sketchGeneratorApi(config: SketchGeneratorApiConfig): Prom
       });
     }
     /**
-     * get a useraction by id and calls the function and remove it from
+     * get a user action by id and calls the function and remove it from
      * the pending stack
-     * @param cbID Id of the useraction to be resolved
+     * @param cbID Id of the user action to be resolved
      */
     function resolvePending(cbID: number) {
       const cb = pending.get(cbID);

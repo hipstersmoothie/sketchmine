@@ -1,18 +1,18 @@
 import { ElementFetcher } from './element-fetcher';
 import { SketchBuilderConfig } from './config.interface';
 import { exec } from 'child_process';
-import { Result as MetaResult } from '@sketchmine/code-analyzer';
+import { Library } from '@sketchmine/code-analyzer';
 import ora from 'ora';
 import chalk from 'chalk';
 
 /**
  * @description the main entry point of this package
  * @param {SketchBuilderConfig} config The Object from the configuration file
- * @param {MetaResult | undefined} meta optional the meta information from the code-analyzer can be passed to
+ * @param {Library | undefined} meta optional the meta information from the code-analyzer can be passed to
  * detect symbols from the library.
  * @returns {number} process exit code: 0 if everything went alright and the file was generated.
  */
-export async function main(config: SketchBuilderConfig, meta?: MetaResult | undefined): Promise<number> {
+export async function main(config: SketchBuilderConfig, meta?: Library | undefined): Promise<number> {
   /**
    * If the process environment variable `SKETCH` is set
    * with open-close it will close and after creating the file automatically open

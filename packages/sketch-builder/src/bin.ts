@@ -1,7 +1,7 @@
 import { main } from './main';
 import { parseCommandlineArgs } from './cli';
 import { readFile } from '@sketchmine/node-helpers';
-import { Result } from '@sketchmine/code-analyzer';
+import { Library } from '@sketchmine/code-analyzer';
 import { join } from 'path';
 
 const DEFAULT_AGENT = require.resolve('@sketchmine/dom-agent');
@@ -34,7 +34,7 @@ export async function commandLineExecutor(): Promise<number> {
   const config = { ...defaultConfig, ...loadedConfig };
 
   // the meta option is optional in the main function
-  let meta: Result;
+  let meta: Library;
 
   /**
    * you can provide the meta information, it will be used to detect
