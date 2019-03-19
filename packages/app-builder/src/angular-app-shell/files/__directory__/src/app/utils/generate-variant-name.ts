@@ -1,5 +1,5 @@
-import { Property, Method } from '@sketchmine/code-analyzer/lib/@types';
 import { kebabCase } from 'lodash';
+import { VariantChange } from '../app.component';
 
 const ACTIONS = ['disabled', 'active', 'hover', 'click'];
 
@@ -13,15 +13,15 @@ const ACTIONS = ['disabled', 'active', 'hover', 'click'];
  * button/warning
  * ...
  */
-export function generateVariantName(base: string, theme: string, changes: any[]): string {
+export function generateVariantName(base: string, theme: string, changes: VariantChange[]): string {
 
   const parts = [];
   const actions = [];
 
-  changes.forEach((change: Method | Property) => {
+  changes.forEach((change: VariantChange) => {
 
     if (change.type === 'property') {
-      const name = parseBooleanValue(change as Property);
+      const name = parseValue(change);
       if (ACTIONS.includes(change.key)) {
         actions.push(name);
       } else {
@@ -33,8 +33,9 @@ export function generateVariantName(base: string, theme: string, changes: any[])
   });
 
   parts.sort();
+  actions.sort();
 
-  const actionPart = actions.length ? `/${actions.sort().join('/')}` : '/default';
+  const actionPart = actions.length ? `/${actions.join('/')}` : '/default';
   const variantPart = parts.length ? `/${parts.join('/')}` : '';
   const basePart = kebabCase(base);
 
@@ -42,12 +43,13 @@ export function generateVariantName(base: string, theme: string, changes: any[])
 }
 
 /**
- * parses the change to a string depending on the type. Booleans should return the key
- * in case of that true does not say anything and undefined and number get the key as well.
- * if it is a string than return just the value like "main", "primary" or "secondary"
+ * parses the change to a string depending on the type. Booleans should return the key of the change
+ * in case, that true does not specify the name very well.
+ * For example disabled -> true would only return disabled.
+ * If the value is a string return the string.
  * @param change the change as property
  */
-function parseBooleanValue(change: any): string {
+function parseValue(change: VariantChange): string {
   if (change.value === 'undefined') {
     throw Error('Value have to be defined for name generation!');
   }
