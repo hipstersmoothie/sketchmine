@@ -12,9 +12,7 @@ import { exec } from 'child_process';
 import { SketchBuilderConfig } from './config.interface';
 import { readFile, Logger } from '@sketchmine/node-helpers';
 import { sketchGeneratorApi } from './builder-api';
-import {
-  Result as MetaResult,
-  Component as MetaComponent,
+import { Library, Component,
 } from '@sketchmine/code-analyzer';
 import { resolve } from 'path';
 
@@ -31,7 +29,7 @@ export class ElementFetcher {
   // private _assetHsandler: AssetHandler = new AssetHandler();
   result: (TraversedPage | TraversedLibrary)[] = [];
 
-  constructor(public conf: SketchBuilderConfig, public meta?: MetaResult) {}
+  constructor(public conf: SketchBuilderConfig, public meta?: Library) {}
 
   async generateSketchFile(): Promise<number> {
     this.sortSymbols();
@@ -122,8 +120,8 @@ export class ElementFetcher {
 
       comp.hasNestedSymbols.forEach((symbol) => {
         // TODO: @lukas.holzer make this more efficient
-        const comp: MetaComponent = Object.values(this.meta.components).find(
-          (comp: MetaComponent) => comp.selector.includes(symbol),
+        const comp: Component = Object.values(this.meta.components).find(
+          (comp: Component) => comp.selector.includes(symbol),
         );
         const pos = sorted.indexOf(comp.component);
 
