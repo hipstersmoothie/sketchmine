@@ -118,7 +118,7 @@ export async function sketchGeneratorApi(config: SketchGeneratorApiConfig): Prom
   });
 
   await page.evaluateOnNewDocument(config.traverser);
-  await page.goto(config.url, { waitUntil: 'networkidle0' });
+  await page.goto(config.url, { waitUntil: 'networkidle0', timeout: 0 });
 
   await finished;
 
