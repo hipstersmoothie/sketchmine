@@ -81,7 +81,7 @@ const _DtButtonMixinBase = mixinDisabled(mixinColor<Constructor<DtButtonBase>, D
   },
   templateUrl: 'button.html',
   styleUrls: ['button.scss'],
-  inputs: ['disabled', ],
+  inputs: ['disabled', 'color' ],
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,

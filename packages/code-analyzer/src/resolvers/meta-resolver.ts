@@ -36,7 +36,7 @@ const COMPONENT_DECORATOR_ITEMS = ['selector', 'exportAs', 'inputs'];
  * A list of NodeTags for properties that should not be exported.
  * Those properties where only used to resolve types.
  */
-const INTERNAL_MEMBERS: NodeTags[] = ['hasUnderscore', 'private', 'protected', 'internal'];
+const INTERNAL_MEMBERS: NodeTags[] = ['hasUnderscore', 'private', 'protected', 'internal', 'unrelated'];
 
 const ANGULAR_LIFE_CYCLE_METHODS = [
   'ngOnChanges',
@@ -102,7 +102,6 @@ export class MetaResolver extends NullVisitor implements ParsedVisitor {
 
     const members = this.visitAllWithParent(node.members, node);
     const extending = this.visitWithParent(node.extending, node);
-
     const mergedMembers = mergeClassMembers(extending, ...members);
 
     // if it is not an angular component we do not need the class information and
@@ -122,15 +121,26 @@ export class MetaResolver extends NullVisitor implements ParsedVisitor {
 
     const componentName = /.+?\/([^\/]+?).ts$/.exec(node.location.path);
 
+    // add the keys of the members to the allowed members set this set is used to check if
+    // only @Inputs and inputs from the component decorator are used as members.
+    const allowedMembers = new Set<string>(members.map(member => member.key));
+
+    if (decorator.inputs && decorator.inputs.length) {
+      for (let i = 0, max = decorator.inputs.length; i < max; i += 1) {
+        const input = decorator.inputs[i].replace(/[\`\s\'\"]/gm, '');
+        allowedMembers.add(input);
+      }
+    }
+
     return {
       name: node.name,
       /** @example https://regex101.com/r/YduQlF/1 */
-      component: componentName && componentName.length && componentName.length < 1 ? componentName[1] : node.name,
+      component: componentName && componentName.length && componentName.length > 0 ? componentName[1] : node.name,
       selector,
       angularComponent: node.isAngularComponent(),
       decorator,
       combinedVariants: !node.tags.includes('noCombinations'),
-      members: mergedMembers,
+      members: mergedMembers.filter(m => allowedMembers.has(m.key)),
     };
   }
 
@@ -212,9 +222,12 @@ export class MetaResolver extends NullVisitor implements ParsedVisitor {
 
     // if the parent node is not a class declaration we do not need the parameters only
     // the return type.
+    // if the parent type is a property then the property was a method like
+    // `compareWith(fn: (v1: T, v2: T) => boolean)` – In this case we want to know that the property is a method!
     if (
       node._parentNode &&
-      node._parentNode.constructor !== ParseClassDeclaration
+      node._parentNode.constructor !== ParseClassDeclaration &&
+      node._parentNode.constructor !== ParseProperty
     ) {
       return returnType;
     }
@@ -247,17 +260,17 @@ export class MetaResolver extends NullVisitor implements ParsedVisitor {
 
   visitProperty(node: ParseProperty): any {
 
-    // TODO: lukas.holzer rethink this expression later on
     // we only want to parse @Input's of an Angular component
     // so when a property is a child of a class declaration we need to
     // check if it has an input decorator if it is not we can ignore it
-    // if (
-    //   node._parentNode &&
-    //   node._parentNode.constructor === ParseClassDeclaration &&
-    //   !node.isAngularInput()
-    // ) {
-    //   // return;
-    // }
+    if (
+      node._parentNode &&
+      node._parentNode.constructor === ParseClassDeclaration &&
+      (<ParseClassDeclaration>node._parentNode).isAngularComponent() &&
+      !node.isAngularInput()
+    ) {
+      return;
+    }
 
     // If a property includes some tags like private or internal we do not want
     // to use this properties so return undefined instead.

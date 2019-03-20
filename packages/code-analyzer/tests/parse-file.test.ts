@@ -168,7 +168,9 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
         interface I2  { i2: 1; }
         function f<T extends Constructor<I1>>(a: T): T & Constructor<I2> { return a as any; }
         const mixin = f
-        @Component()
+        @Component({
+          inputs: ['i', 'i2'],
+        })
         class DtButton extends mixin {}
       `,
     });
@@ -190,7 +192,9 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
         function mixinDisabled<T extends Constructor<{}>>(base: T): Constructor<CanDisable> & T { }
         class DtButtonBase { constructor(public elementRef: boolean) { } }
         const _DtButtonMixinBase = mixinDisabled(DtButtonBase);
-        @Component()
+        @Component({
+          inputs: ['disabled'],
+        })
         class DtButton extends _DtButtonMixinBase {}
       `,
     });
@@ -200,10 +204,9 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
     const transformed = applyTransformers<any>(result);
     const members = transformed[0].members;
 
-    expect(members).toHaveLength(2);
+    expect(members).toHaveLength(1);
     expect(members).toMatchObject([
       { type: 'property', key: 'disabled', value: ['true' ]},
-      { type: 'property', key: 'elementRef', value: ['true' ]},
     ]);
   });
 
@@ -224,7 +227,9 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
         import { mixinDisabled } from '../core';
         class DtButtonBase { constructor(public elementRef: 'ElementRef') { } }
         const _DtButtonMixinBase = mixinDisabled(DtButtonBase);
-        @Component()
+        @Component({
+          inputs: ['disabled', 'elementRef'],
+        })
         class DtButton extends _DtButtonMixinBase {}`,
     });
 
@@ -269,6 +274,143 @@ describe('[code-analyzer] › resolve references across multiple files', () => {
     const transformed = applyTransformers<any>(result);
 
     expect(transformed).toHaveLength(2);
+  });
+
+  test('should resolve the method type as parameter correctly', async () => {
+    vol.fromJSON({
+      'lib/src/select/select.ts': `
+        @Component()
+        export class DtSelect {
+          @Input()
+          get compareWith(): () => boolean { true }
+          set compareWith(fn: () => boolean) {  }
+        }
+        `,
+    });
+
+    await parseFile('lib/src/select/select.ts', paths, result, 'node_modules');
+    const transformed = applyTransformers<any>(result);
+    expect(transformed[0].members).toHaveLength(1);
+    expect(transformed[0].members).toMatchObject([
+      {
+        type: 'method',
+        key: 'compareWith',
+        parameters: [],
+      },
+    ]);
+  });
+
+  test('should only use the @Input of an angular component', async () => {
+    vol.fromJSON({
+      'lib/src/inline-editor/inline-editor.ts': `
+        @Component()
+        export class DtInlineEditor {
+          @Input()
+          get required(): boolean { return this._required; }
+          set required(value: boolean) { this._required = coerceBooleanProperty(value); }
+
+          get editing(): boolean { return true; }
+        }
+        `,
+    });
+
+    await parseFile('lib/src/inline-editor/inline-editor.ts', paths, result, 'node_modules');
+    const transformed = applyTransformers<any>(result);
+
+    expect(transformed[0].members).toHaveLength(2);
+    expect(transformed[0].members).toMatchObject([
+      { type: 'property', key: 'required', value: ['true'] },
+      {
+        type: 'method',
+        key: 'required',
+        parameters: [
+          { type: 'property', key: 'value', value: ['true'] },
+        ],
+      },
+    ]);
+  });
+
+  test('should drop properties that are extended but not listed as input in the component decorator', async () => {
+    vol.fromJSON({
+      'lib/src/core/common-behaviors/constructor.ts': `
+        export type Constructor<C> = new(...args: any[]) => C`,
+      'lib/src/core/common-behaviors/disabled.ts': `
+        import { Constructor } from './constructor';
+        export interface CanDisable { disabled: boolean; }
+        export function mixinDisabled<T extends Constructor<{}>>(base: T): Constructor<CanDisable> & T { }`,
+      'lib/src/core/common-behaviors/index.ts': `
+        export * from './constructor';
+        export * from './disabled';`,
+      'lib/src/core/index.ts': `
+        export * from './common-behaviors';`,
+      'lib/src/button/button.ts': `
+        import { mixinDisabled } from '../core';
+        class DtButtonBase { constructor(public elementRef: 'ElementRef') { } }
+        const _DtButtonMixinBase = mixinDisabled(DtButtonBase);
+        @Component({
+          inputs: ['disabled'],
+        })
+        class DtButton extends _DtButtonMixinBase {
+          get editing(): boolean { return true; }
+
+          @Input()
+          get variant(): boolean { return true; }
+          set variant(value: boolean) { }
+        }`,
+    });
+
+    await parseFile('lib/src/button/button.ts', paths, result, 'node_modules');
+    const transformed = applyTransformers<any>(result);
+
+    expect(transformed[0].members).toHaveLength(3);
+    expect(transformed[0].members).toMatchObject([
+      { type: 'property', key: 'disabled', value: ['true'] },
+      { type: 'property', key: 'variant', value: ['true'] },
+      {
+        type: 'method',
+        key: 'variant',
+        parameters: [
+          { type: 'property', key: 'value', value: ['true'] },
+        ],
+      },
+    ]);
+  });
+
+  test('should get the @Input of extended classes', async () => {
+    vol.fromJSON({
+      'lib/src/core/common-behaviors/constructor.ts': `
+        export type Constructor<C> = new(...args: any[]) => C`,
+      'lib/src/core/common-behaviors/disabled.ts': `
+        import { Constructor } from './constructor';
+        export interface CanDisable {
+          disabled: boolean;
+          someOtherProperty: boolean;
+        }
+        export function mixinDisabled<T extends Constructor<{}>>(base: T): Constructor<CanDisable> & T { }`,
+      'lib/src/core/common-behaviors/index.ts': `
+        export * from './constructor';
+        export * from './disabled';`,
+      'lib/src/core/index.ts': `
+        export * from './common-behaviors';`,
+      'lib/src/button/button.ts': `
+        import { mixinDisabled } from '../core';
+        class DtButtonBase { constructor(public elementRef: 'ElementRef') { } }
+        const _DtButtonMixinBase = mixinDisabled(DtButtonBase);
+        @Component({
+          inputs: ['disabled'],
+        })
+        class DtButton extends _DtButtonMixinBase {
+          get editing(): boolean { return true; }
+        }`,
+    });
+
+    await parseFile('lib/src/button/button.ts', paths, result, 'node_modules');
+    const transformed = applyTransformers<any>(result);
+
+    expect(transformed[0].members).toHaveLength(1);
+    expect(transformed[0].members).toMatchObject([
+      { type: 'property', key: 'disabled', value: ['true'] },
+    ]);
   });
 
   // TODO: fix memory leak @lukas.holzer

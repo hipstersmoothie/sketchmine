@@ -38,7 +38,9 @@ describe('[code-analyzer] › MetaResolver › drop irrelevant root nodes', () =
     const source = `
       @Component({ selector: 'my-selector'})
       export class myComponent {
-        member: boolean;
+        @Input()
+        get member(): boolean { return true; }
+        set member(value: boolean) { }
       }
     `;
     const result = getParsedResult(source) as any;
@@ -49,11 +51,18 @@ describe('[code-analyzer] › MetaResolver › drop irrelevant root nodes', () =
       name: 'myComponent',
       angularComponent: true,
       decorator: { selector: '"my-selector"' },
-      members: [{
-        type: 'property',
-        key: 'member',
-        value: ['true'],
-      }],
+      members: [
+        {
+          type: 'property',
+          key: 'member',
+          value: ['true'],
+        },
+        {
+          type: 'method',
+          key: 'member',
+          parameters: [{ type: 'property', key: 'value', value: ['true'] }],
+        },
+      ],
     });
   });
 

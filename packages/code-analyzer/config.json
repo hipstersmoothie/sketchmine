@@ -9,6 +9,5 @@
     "src/lib/micro-chart",
     "src/lib/table",
     "src/lib/tree-table"
-
   ]
 }
