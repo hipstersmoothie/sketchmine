@@ -49,9 +49,32 @@ jobs:
       - attach_workspace:
           at: ~/repo
 
-      - run:
-          name: Run all the tests 🧙🏻‍♂️
-          command: yarn test
+      - run: yarn lerna run --scope=@sketchmine/app-builder test
+      - run: yarn lerna run --scope=@sketchmine/code-analyzer test
+      - run: yarn lerna run --scope=@sketchmine/dom-agent test
+      - run: yarn lerna run --scope=@sketchmine/helpers test
+      - run: yarn lerna run --scope=@sketchmine/node-helpers test
+      - run: yarn lerna run --scope=@sketchmine/sketch-builder test
+      - run: yarn lerna run --scope=@sketchmine/sketch-color-replacer test
+      - run: yarn lerna run --scope=@sketchmine/sketch-file-builder test
+      - run: yarn lerna run --scope=@sketchmine/sketch-file-format test
+      - run: yarn lerna run --scope=@sketchmine/sketch-svg-parser test
+      - run: yarn lerna run --scope=@sketchmine/sketch-validation-interface test
+      - run: yarn lerna run --scope=@sketchmine/sketch-validation-plugin test
+      - run: yarn lerna run --scope=@sketchmine/sketch-validator-nodejs-wrapper test
+      - run: yarn lerna run --scope=@sketchmine/sketch-validator test
+
+  # test-only-changed:
+  #   <<: *defaults
+  #   steps:
+  #     - attach_workspace:
+  #         at: ~/repo
+
+  #     - run:
+  #         name: Run all the tests 🧙🏻‍♂️
+  #         command: |
+  #           changed_packages="$(npx lerna changed | grep "@sketchmine" | paste -sd "," -)"
+  #           yarn lerna run --scope={${changed_packages}} test
 
   deploy:
     <<: *defaults
