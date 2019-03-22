@@ -34,21 +34,6 @@ jobs:
           name: Build the application 👷🏼‍♀️
           command: yarn build
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      - persist_to_workspace:
-          root: ~/repo
-          paths: .
-
-  test:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/repo
-
       - run: yarn lerna run --scope=@sketchmine/app-builder test
       - run: yarn lerna run --scope=@sketchmine/code-analyzer test
       - run: yarn lerna run --scope=@sketchmine/dom-agent test
@@ -64,6 +49,22 @@ jobs:
       - run: yarn lerna run --scope=@sketchmine/sketch-validator-nodejs-wrapper test
       - run: yarn lerna run --scope=@sketchmine/sketch-validator test
 
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+
+  # test:
+  #   <<: *defaults
+  #   steps:
+  #     - attach_workspace:
+  #         at: ~/repo
+
+
   # test-only-changed:
   #   <<: *defaults
   #   steps:
@@ -76,24 +77,24 @@ jobs:
   #           changed_packages="$(npx lerna changed | grep "@sketchmine" | paste -sd "," -)"
   #           yarn lerna run --scope={${changed_packages}} test
 
-  deploy:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/repo
+  # deploy:
+  #   <<: *defaults
+  #   steps:
+  #     - attach_workspace:
+  #         at: ~/repo
 
-      - run:
-          name: Deploy
-          command: echo "should deploy!"
+  #     - run:
+  #         name: Deploy
+  #         command: echo "should deploy!"
 
 workflows:
   version: 2
   build-test:
     jobs:
       - build
-      - test:
-          requires:
-            - build
-      - deploy:
-          requires:
-            - test
+      # - test:
+      #     requires:
+      #       - build
+      # - deploy:
+      #     requires:
+      #       - test
