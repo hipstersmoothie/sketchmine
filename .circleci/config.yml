@@ -18,8 +18,8 @@ jobs:
             - v1-dependencies-
 
       - run:
-        name: Install dependencies 📦
-        command: yarn
+          name: Install dependencies 📦
+          command: yarn
 
       - save_cache:
           paths:
@@ -27,5 +27,5 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run:
-        name: Bootstrapping the Lerna workspace 🧰
-        command: yarn bootstrap
+          name: Bootstrapping the Lerna workspace 🧰
+          command: yarn bootstrap
