@@ -29,3 +29,11 @@ jobs:
       - run:
           name: Bootstrapping the Lerna workspace 🧰
           command: yarn bootstrap
+
+      - run:
+          name: Lint the source code 🕵🏻‍♂️
+          command: yarn Lint
+
+      - run:
+          name: Build the application 👷🏼‍♀️
+          command: yarn build
