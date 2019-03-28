@@ -41,7 +41,7 @@ export function artboardValidation(
       homework.ruleNames.includes('artboard-validation'))
     .some(homework =>
       homework.frame &&
-      homework.frame.width === parseInt(task.parents.page, 10));
+      Math.round(homework.frame.width) === parseInt(task.parents.page, 10));
 
   /**
    * Check if the artboard is empty.
